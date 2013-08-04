@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8" standalone="no"?><web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+	<!-- Public DWR -->
+	<servlet>
+		<display-name>DWR Servlet</display-name>
+		<servlet-name>dwr-invoker</servlet-name>
+		<servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
+		<init-param>
+			<param-name>debug</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<init-param>
+			<param-name>classes</param-name>
+			<param-value>
+				com.erep.dist.dwr.TestService,
+				com.erep.dist.dwr.TestDTO,
+				com.erep.dist.dwr.TestDTO$TestEnum				
+    		</param-value>
+		</init-param>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>dwr-invoker</servlet-name>
+		<url-pattern>/dwr/*</url-pattern>
+	</servlet-mapping>
+
+	<!-- Private DWR -->
+	<servlet>
+		<display-name>DWR Admin Servlet</display-name>
+		<servlet-name>dwr-admin-invoker</servlet-name>
+		<servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
+		<init-param>
+			<param-name>debug</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<init-param>
+			<param-name>classes</param-name>
+			<param-value>
+				com.erep.dist.dwr.AdminService,
+				
+				com.erep.dist.dwr.dto.PlayerQuery,
+				
+				com.erep.dist.data.Player,
+				com.erep.dist.data.Request,
+				com.erep.dist.data.DistRequest,
+				com.erep.dist.data.RocketRequest,
+				
+				com.erep.dist.data.enums.PlayerStatus,
+				com.erep.dist.data.enums.RocketQuality,
+				com.erep.dist.data.enums.RequestStatus
+    		</param-value>
+		</init-param>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>dwr-admin-invoker</servlet-name>
+		<url-pattern>/admin/dwr/*</url-pattern>
+	</servlet-mapping>
+
+	<!-- Tasks -->
+	<servlet>
+		<servlet-name>getUserInfoTask</servlet-name>
+		<servlet-class>com.erep.dist.servlets.GetUserInfoTask</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>getUserInfoTask</servlet-name>
+		<url-pattern>/admin/tasks/getUserInfo</url-pattern>
+	</servlet-mapping>
+
+
+	<!-- Default File -->
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+
+
+	<!-- Google Stuff -->
+	<servlet>
+		<servlet-name>SystemServiceServlet</servlet-name>
+		<servlet-class>com.google.api.server.spi.SystemServiceServlet</servlet-class>
+		<init-param>
+			<param-name>services</param-name>
+			<param-value/>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>SystemServiceServlet</servlet-name>
+		<url-pattern>/_ah/spi/*</url-pattern>
+	</servlet-mapping>
+
+
+</web-app>

@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>eDist 0.1 - Exército Brasileiro</title>
+
+<script type='text/javascript' src='/dwr/engine.js'></script>
+<script type='text/javascript' src='/dwr/interface/TestService.js'></script>
+<script type='text/javascript'
+	src='/admin/dwr/interface/AdminService.js'></script>
+
+<script type='text/javascript' src='jquery-1.10.2.min.js'></script>
+
+<script type="text/javascript">
+	// 		function test() {
+	// 			TestService.theAnswer({
+	// 				callback : function(str) {
+	// 					$('#test').append(str + '<br />');
+	// 				},
+	// 				errorHandler : errorHandlerFunction
+	// 			});
+
+	// 			TestService.multiply(10, 2, {
+	// 				callback : function(str) {
+	// 					$('#test').append(str + '<br />');
+	// 				}
+	// 			});
+
+	// 			TestService.testDTO('123456', {
+	// 				callback : function(object) {
+	// 					$('#test').append(object.playerErId + '<br />');
+	// 					$('#test').append(object.status + '<br />');
+	// 					$('#test').append(object.currentMaxDailyFF + '<br />');
+	// 					$('#test').append(object.testEnum + '<br />');
+	// 					$('#test').append(object.rocketEnum + '<br />');
+	// 				}
+	// 			});
+	// 		}
+
+	function addTestPlayer(erId) {
+		if (!erId) {
+			erId = Math.floor(Math.random() * 100000000);
+		}
+		var player = {
+			erId : '' + erId,
+			status : 'NEW',
+			currentMaxDailyFF : 160,
+			rocketEnabled : null,
+			autoSend : false
+		};
+		AdminService.add(player, {
+			callback : function(response) {
+				$('#test2').append('<br /> Player adicionado? ' + response);
+			},
+			errorHandler : errorHandlerFunction
+		});
+	}
+
+	function listPlayers(cursor) {
+		AdminService.listPlayers(cursor, {
+			callback : function(response) {
+				$('#test3').append(
+						'<br/> Cursor para próximos resultados: '
+								+ response.encodedCursor);
+				response.results.forEach(function(item) {
+					$('#test3').append('<br/>' + JSON.stringify(item));
+				});
+
+				$('#test3').append(
+						'<br /><button onclick="listPlayers(\''
+								+ response.encodedCursor
+								+ '\')">Próxima página</button>');
+			},
+			errorHandler : errorHandlerFunction
+		});
+	}
+
+	function errorHandlerFunction(message) {
+		alert("Oops: " + message);
+	}
+</script>
+
+</head>
+
+<body onload="">
+	<h1>Hello App Engine!</h1>
+	<div id='test'></div>
+	<div id='test2'>
+		<button onclick="addTestPlayer('5313713')">Adicionar player</button>
+		<button onclick="addTestPlayer()">Adicionar player fake</button>
+	</div>
+	<div id='test3'>
+		<button onclick="listPlayers('')">Listar players</button>
+	</div>
+</body>
+</html>
