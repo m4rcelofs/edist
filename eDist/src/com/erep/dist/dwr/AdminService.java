@@ -11,6 +11,7 @@ import com.erep.dist.CloseablePM;
 import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
 import com.erep.dist.data.Player;
+import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.dwr.dto.PlayerQuery;
 import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
@@ -19,17 +20,31 @@ import com.google.appengine.datanucleus.query.JDOCursorHelper;
 @RemoteProxy
 public class AdminService {
 
-	// @RemoteMethod
-	// public boolean addGroup(PlayerGroupDTO group) {
-	// // TODO
-	// return false;
-	// }
-	//
-	// @RemoteMethod
-	// public boolean editGroup(PlayerGroupDTO group) {
-	// // TODO
-	// return false;
-	// }
+	@RemoteMethod
+	public boolean addGroup(PlayerGroup group) {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			return new DataAccessObject(pm).add(group);
+		}
+	}
+
+	@RemoteMethod
+	public boolean editGroup(PlayerGroup group) {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			return new DataAccessObject(pm).edit(group);
+		}
+	}
+
+	@RemoteMethod
+	public List<PlayerGroup> listGroups() {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+
+			pm.getFetchPlan().addGroup("groupListing");
+
+			List<PlayerGroup> groups = new DataAccessObject(pm).listAllGroups();
+
+			return groups;
+		}
+	}
 
 	@RemoteMethod
 	public boolean addPlayer(Player player) {

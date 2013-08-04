@@ -2,6 +2,7 @@ package com.erep.dist;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +27,35 @@ public class DataAccessObject {
 
 	public DataAccessObject(PersistenceManager pm) {
 		this.pm = pm;
+	}
+
+	public boolean add(PlayerGroup group) {
+		try {
+			pm.getObjectById(PlayerGroup.class, createKey(group));
+			return edit(group);
+		} catch (JDOObjectNotFoundException e) {
+			group.setPlayers(new HashSet<Player>());
+			pm.makePersistent(group);
+			return true;
+		}
+	}
+
+	public boolean edit(PlayerGroup group) {
+		// TODO distribuidor
+		PlayerGroup oldGroup = findGroup(group);
+		oldGroup.setGroupName(group.getGroupName());
+		oldGroup.getConfig().setAutoSend(group.getConfig().getAutoSend());
+		oldGroup.getConfig().setCurrentMaxDailyFF(
+				group.getConfig().getCurrentMaxDailyFF());
+		oldGroup.getConfig().setRocketAllowed(
+				group.getConfig().getRocketAllowed());
+		return true;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<PlayerGroup> listAllGroups() {
+		Query q = pm.newQuery(PlayerGroup.class);
+		return (List<PlayerGroup>) q.execute();
 	}
 
 	public boolean add(Player newPlayer) {
