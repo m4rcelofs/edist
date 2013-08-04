@@ -33,7 +33,7 @@ public class DistConfig {
 	private Boolean		autoSend;
 
 	@Unowned
-	@Persistent
+	@Persistent(defaultFetchGroup = "true")
 	private Distributor	distributor;
 
 	public DistConfig() {}

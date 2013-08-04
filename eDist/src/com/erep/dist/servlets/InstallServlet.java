@@ -81,7 +81,7 @@ public class InstallServlet extends HttpServlet {
 		Distributor distributor = new Distributor();
 		distributor.setEmail("exemplo@exemplo.com");
 		distributor.setPassword("");
-		distributor.setId(KeyFactory.createKey(
+		distributor.setKey(KeyFactory.createKey(
 				Distributor.class.getSimpleName(), ServerConstants.DEFAULT));
 
 		distConfig.setDistributor(distributor);
