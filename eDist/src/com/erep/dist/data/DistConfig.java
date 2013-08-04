@@ -29,6 +29,8 @@ public class DistConfig {
 	@Persistent
 	private Distributor	distributor;
 
+	public DistConfig() {}
+
 	public Key getId() {
 		return id;
 	}

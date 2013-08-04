@@ -10,13 +10,9 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
-import org.directwebremoting.annotations.DataTransferObject;
-import org.directwebremoting.annotations.RemoteProperty;
-
 import com.erep.dist.data.enums.RequestStatus;
 import com.google.appengine.api.datastore.Key;
 
-@DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 @Inheritance(strategy = InheritanceStrategy.SUBCLASS_TABLE)
 public abstract class Request {
@@ -26,22 +22,65 @@ public abstract class Request {
 	private Key				id;
 
 	@Persistent
-	@RemoteProperty
 	private Player			player;
 
 	@Persistent
-	@RemoteProperty
 	private Integer			eRepDay;
 
 	@Persistent
-	@RemoteProperty
 	private RequestStatus	status;
 
 	@Persistent
-	@RemoteProperty
 	private Date			requestedAt;
 
 	@Persistent
-	@RemoteProperty
 	private Date			completedAt;
+
+	public Key getId() {
+		return id;
+	}
+
+	public void setId(Key id) {
+		this.id = id;
+	}
+
+	public Player getPlayer() {
+		return player;
+	}
+
+	public void setPlayer(Player player) {
+		this.player = player;
+	}
+
+	public Integer geteRepDay() {
+		return eRepDay;
+	}
+
+	public void seteRepDay(Integer eRepDay) {
+		this.eRepDay = eRepDay;
+	}
+
+	public RequestStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(RequestStatus status) {
+		this.status = status;
+	}
+
+	public Date getRequestedAt() {
+		return requestedAt;
+	}
+
+	public void setRequestedAt(Date requestedAt) {
+		this.requestedAt = requestedAt;
+	}
+
+	public Date getCompletedAt() {
+		return completedAt;
+	}
+
+	public void setCompletedAt(Date completedAt) {
+		this.completedAt = completedAt;
+	}
 }

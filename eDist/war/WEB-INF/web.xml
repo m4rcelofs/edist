@@ -38,13 +38,11 @@
 			<param-value>
 				com.erep.dist.dwr.AdminService,
 				
+				com.erep.dist.dwr.dto.DistConfigDTO,
+				com.erep.dist.dwr.dto.PlayerDTO,
+				com.erep.dist.dwr.dto.PlayerGroupDTO,
 				com.erep.dist.dwr.dto.PlayerQuery,
-				
-				com.erep.dist.data.Player,
-				com.erep.dist.data.Request,
-				com.erep.dist.data.DistRequest,
-				com.erep.dist.data.RocketRequest,
-				
+
 				com.erep.dist.data.enums.PlayerStatus,
 				com.erep.dist.data.enums.RocketQuality,
 				com.erep.dist.data.enums.RequestStatus
@@ -68,6 +66,16 @@
 		<url-pattern>/admin/tasks/getUserInfo</url-pattern>
 	</servlet-mapping>
 
+	<!-- Install -->
+	<servlet>
+		<servlet-name>installServlet</servlet-name>
+		<servlet-class>com.erep.dist.servlets.InstallServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>installServlet</servlet-name>
+		<url-pattern>/admin/install</url-pattern>
+	</servlet-mapping>
 
 	<!-- Default File -->
 	<welcome-file-list>

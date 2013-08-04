@@ -5,8 +5,6 @@ import java.util.List;
 import org.directwebremoting.annotations.DataTransferObject;
 import org.directwebremoting.annotations.RemoteProperty;
 
-import com.erep.dist.data.Player;
-
 @DataTransferObject
 public class PlayerQuery {
 
@@ -14,7 +12,7 @@ public class PlayerQuery {
 	private String			encodedCursor;
 
 	@RemoteProperty
-	private List<Player>	results;
+	private List<PlayerDTO>	results;
 
 	public String getEncodedCursor() {
 		return encodedCursor;
@@ -24,11 +22,11 @@ public class PlayerQuery {
 		this.encodedCursor = encodedCursor;
 	}
 
-	public List<Player> getResults() {
+	public List<PlayerDTO> getResults() {
 		return results;
 	}
 
-	public void setResults(List<Player> results) {
+	public void setResults(List<PlayerDTO> results) {
 		this.results = results;
 	}
 }

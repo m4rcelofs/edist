@@ -48,4 +48,12 @@ public class ServerConfig {
 		this.granularity = granularity;
 	}
 
+	public Key getId() {
+		return id;
+	}
+
+	public void setId(Key id) {
+		this.id = id;
+	}
+
 }

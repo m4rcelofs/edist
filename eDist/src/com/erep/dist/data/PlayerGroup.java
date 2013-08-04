@@ -8,12 +8,8 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
-import org.directwebremoting.annotations.DataTransferObject;
-import org.directwebremoting.annotations.RemoteProperty;
-
 import com.google.appengine.api.datastore.Key;
 
-@DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class PlayerGroup {
 
@@ -22,7 +18,6 @@ public class PlayerGroup {
 	private Key				id;
 
 	@Persistent
-	@RemoteProperty
 	private String			groupName;
 
 	@Persistent

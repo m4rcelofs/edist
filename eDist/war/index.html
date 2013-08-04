@@ -45,11 +45,14 @@
 		var player = {
 			erId : '' + erId,
 			status : 'NEW',
-			currentMaxDailyFF : 160,
-			rocketEnabled : null,
-			autoSend : false
+			rocketEnabled : 'Q3',
+			config : {
+				currentMaxDailyFF : 160,
+				rocketAllowed : false,
+				autoSend : false
+			}
 		};
-		AdminService.add(player, {
+		AdminService.addPlayer(player, {
 			callback : function(response) {
 				$('#test2').append('<br /> Player adicionado? ' + response);
 			},

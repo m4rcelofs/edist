@@ -7,14 +7,11 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
-import org.directwebremoting.annotations.DataTransferObject;
-import org.directwebremoting.annotations.RemoteProperty;
-
 import com.erep.dist.data.enums.PlayerStatus;
 import com.erep.dist.data.enums.RocketQuality;
+import com.erep.dist.dwr.dto.PlayerDTO;
 import com.google.appengine.api.datastore.Key;
 
-@DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class Player {
 
@@ -26,19 +23,15 @@ public class Player {
 	private Key					id;
 
 	@Persistent
-	@RemoteProperty
 	private String				erId;
 
 	@Persistent
-	@RemoteProperty
 	private String				name;
 
 	@Persistent
-	@RemoteProperty
 	private String				avatar;
 
 	@Persistent
-	@RemoteProperty
 	private PlayerStatus		status;
 
 	@Persistent
@@ -48,7 +41,6 @@ public class Player {
 	private DistConfig			config;
 
 	@Persistent
-	@RemoteProperty
 	private RocketQuality		rocketEnabled;
 
 	@Persistent(mappedBy = "player")
@@ -56,6 +48,8 @@ public class Player {
 
 	@Persistent(mappedBy = "player")
 	private List<RocketRequest>	rocketRequests;
+
+	public Player() {}
 
 	public String getErId() {
 		return erId;
@@ -119,6 +113,22 @@ public class Player {
 
 	public void setId(Key id) {
 		this.id = id;
+	}
+
+	public PlayerGroup getGroup() {
+		return group;
+	}
+
+	public void setGroup(PlayerGroup group) {
+		this.group = group;
+	}
+
+	public DistConfig getConfig() {
+		return config;
+	}
+
+	public void setConfig(DistConfig config) {
+		this.config = config;
 	}
 
 }

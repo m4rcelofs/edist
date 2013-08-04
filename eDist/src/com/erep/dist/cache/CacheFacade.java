@@ -10,6 +10,8 @@ import javax.cache.CacheManager;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 
+import com.erep.dist.ServerConstants;
+
 /**
  * Fa�ade to help access to AppEngine cache, since you can't get it by name
  * 

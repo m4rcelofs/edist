@@ -1,5 +1,7 @@
 package com.erep.dist;
 
+import static com.erep.dist.dwr.dto.TransferHelper.fromDTO;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +11,9 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
 import com.erep.dist.data.Player;
+import com.erep.dist.data.PlayerGroup;
+import com.erep.dist.dwr.dto.PlayerDTO;
+import com.erep.dist.dwr.dto.PlayerGroupDTO;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
@@ -24,7 +29,7 @@ public class DataAccessObject {
 		this.pm = pm;
 	}
 
-	public boolean add(Player newPlayer) {
+	public boolean add(PlayerDTO newPlayer) {
 		Key playerKey = createKey(newPlayer);
 
 		try {
@@ -32,21 +37,35 @@ public class DataAccessObject {
 			edit(newPlayer);
 			return false;
 		} catch (JDOObjectNotFoundException e) {
-			newPlayer.setId(playerKey);
-			pm.makePersistent(newPlayer);
+
+			Player player = new Player();
+			player.setId(playerKey);
+			player.setErId(newPlayer.getErId());
+			player.setRocketEnabled(newPlayer.getRocketEnabled());
+			player.setStatus(newPlayer.getStatus());
+
+			player.setConfig(fromDTO(newPlayer.getConfig()));
+
+			player.setGroup(findGroup(newPlayer.getGroup()));
+
+			pm.makePersistent(player);
 			return true;
 		}
 	}
 
-	public boolean edit(Player newPlayer) {
+	public boolean edit(PlayerDTO newPlayer) {
 
 		Key playerKey = createKey(newPlayer);
 		Player oldPlayer = pm.getObjectById(Player.class, playerKey);
 
-		oldPlayer.setAutoSend(newPlayer.getAutoSend());
-		oldPlayer.setCurrentMaxDailyFF(newPlayer.getCurrentMaxDailyFF());
+		oldPlayer.getConfig().setAutoSend(newPlayer.getConfig().getAutoSend());
+		oldPlayer.getConfig().setCurrentMaxDailyFF(
+				newPlayer.getConfig().getCurrentMaxDailyFF());
+
 		oldPlayer.setRocketEnabled(newPlayer.getRocketEnabled());
 		oldPlayer.setStatus(newPlayer.getStatus());
+
+		oldPlayer.setGroup(findGroup(newPlayer.getGroup()));
 
 		return true;
 	}
@@ -71,7 +90,29 @@ public class DataAccessObject {
 		return (List<Player>) q.execute();
 	}
 
-	private Key createKey(Player player) {
+	public PlayerGroup findGroup(PlayerGroupDTO dto) {
+		try {
+			if (dto == null || dto.getId() == null
+					|| dto.getId().trim().isEmpty())
+				return defaultGroup();
+
+			return pm.getObjectById(PlayerGroup.class, createKey(dto));
+		} catch (JDOObjectNotFoundException e) {
+			return defaultGroup();
+		}
+	}
+
+	private PlayerGroup defaultGroup() {
+		return pm.getObjectById(PlayerGroup.class, KeyFactory.createKey(
+				PlayerGroup.class.getSimpleName(), ServerConstants.DEFAULT));
+	}
+
+	private Key createKey(PlayerGroupDTO group) {
+		return KeyFactory.createKey(PlayerGroup.class.getSimpleName(),
+				group.getId());
+	}
+
+	private Key createKey(PlayerDTO player) {
 		return KeyFactory.createKey(Player.class.getSimpleName(),
 				player.getErId());
 	}
