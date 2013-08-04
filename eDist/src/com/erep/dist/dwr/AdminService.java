@@ -56,7 +56,7 @@ public class AdminService {
 			if (created) {
 				Queue queue = QueueFactory.getQueue("api");
 				queue.add(withUrl("/admin/tasks/getUserInfo").param("id",
-						player.getErId()));
+						player.getId()));
 			}
 			return created;
 		}

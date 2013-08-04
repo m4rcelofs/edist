@@ -28,11 +28,11 @@ public class Player {
 	 */
 	@PrimaryKey
 	@Persistent
-	private Key					id;
+	private Key					key;
 
 	@NotPersistent
 	@RemoteProperty
-	private String				erId;
+	private String				id;
 
 	@Persistent
 	@RemoteProperty
@@ -67,14 +67,14 @@ public class Player {
 
 	public Player() {}
 
-	public String getErId() {
-		if (id != null)
-			return id.getName();
-		return erId;
+	public String getId() {
+		if (key != null)
+			return key.getName();
+		return id;
 	}
 
-	public void setErId(String erId) {
-		this.erId = erId;
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -125,12 +125,12 @@ public class Player {
 		this.rocketRequests = rocketRequests;
 	}
 
-	public Key getId() {
-		return id;
+	public Key getKey() {
+		return key;
 	}
 
-	public void setId(Key id) {
-		this.id = id;
+	public void setKey(Key key) {
+		this.key = key;
 	}
 
 	public PlayerGroup getGroup() {

@@ -13,7 +13,7 @@ public class ServerConfig {
 
 	@PrimaryKey
 	@Persistent
-	private Key					id;
+	private Key					key;
 
 	@Persistent
 	private String				muName;
@@ -48,12 +48,12 @@ public class ServerConfig {
 		this.granularity = granularity;
 	}
 
-	public Key getId() {
-		return id;
+	public Key getKey() {
+		return key;
 	}
 
-	public void setId(Key id) {
-		this.id = id;
+	public void setKey(Key key) {
+		this.key = key;
 	}
 
 }

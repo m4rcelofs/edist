@@ -43,7 +43,7 @@ public class GetUserInfoTask extends HttpServlet {
 			try (ErepScrapper scrapper = new ErepScrapper()) {
 
 				String html = scrapper.scrape(eRepURL.CITIZEN.getUrl(player
-						.getErId()));
+						.getId()));
 
 				Map<String, String> playerInfo = new CitizenParser()
 						.parse(html);

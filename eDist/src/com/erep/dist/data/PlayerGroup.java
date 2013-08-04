@@ -23,11 +23,11 @@ public class PlayerGroup {
 
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private Key			id;
+	private Key			key;
 
 	@NotPersistent
 	@RemoteProperty
-	private String		idAsString;
+	private String		id;
 
 	@Persistent
 	@RemoteProperty
@@ -41,22 +41,22 @@ public class PlayerGroup {
 	@Persistent
 	private Set<Player>	players;
 
-	public Key getId() {
+	public Key getKey() {
+		return key;
+	}
+
+	public String getId() {
+		if (key != null)
+			return key.getName();
 		return id;
 	}
 
-	public String getIdAsString() {
-		if (id != null)
-			return id.getName();
-		return idAsString;
-	}
-
-	public void setIdAsString(String idAsString) {
-		this.idAsString = idAsString;
-	}
-
-	public void setId(Key id) {
+	public void setId(String id) {
 		this.id = id;
+	}
+
+	public void setKey(Key key) {
+		this.key = key;
 	}
 
 	public String getGroupName() {

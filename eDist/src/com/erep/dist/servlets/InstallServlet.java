@@ -56,7 +56,7 @@ public class InstallServlet extends HttpServlet {
 		PlayerGroup group = new PlayerGroup();
 
 		group.setGroupName("Default");
-		group.setId(KeyFactory.createKey(PlayerGroup.class.getSimpleName(),
+		group.setKey(KeyFactory.createKey(PlayerGroup.class.getSimpleName(),
 				ServerConstants.DEFAULT));
 		group.setPlayers(new HashSet<Player>());
 
@@ -66,13 +66,13 @@ public class InstallServlet extends HttpServlet {
 	private ServerConfig defaultConfig() {
 		ServerConfig config = new ServerConfig();
 
-		config.setId(KeyFactory.createKey(ServerConfig.class.getSimpleName(),
+		config.setKey(KeyFactory.createKey(ServerConfig.class.getSimpleName(),
 				ServerConstants.DEFAULT));
 		config.setGranularity(ConfigGranularity.MU);
 		config.setMuName("  ");
 
 		DistConfig distConfig = new DistConfig();
-		distConfig.setId(KeyFactory.createKey(DistConfig.class.getSimpleName(),
+		distConfig.setKey(KeyFactory.createKey(DistConfig.class.getSimpleName(),
 				ServerConstants.DEFAULT));
 		distConfig.setAutoSend(false);
 		distConfig.setCurrentMaxDailyFF(160);

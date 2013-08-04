@@ -19,7 +19,7 @@ public abstract class Request {
 
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private Key				id;
+	private Key				key;
 
 	@Persistent
 	private Player			player;
@@ -36,12 +36,12 @@ public abstract class Request {
 	@Persistent
 	private Date			completedAt;
 
-	public Key getId() {
-		return id;
+	public Key getKey() {
+		return key;
 	}
 
-	public void setId(Key id) {
-		this.id = id;
+	public void setKey(Key key) {
+		this.key = key;
 	}
 
 	public Player getPlayer() {

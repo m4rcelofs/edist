@@ -67,7 +67,7 @@ public class DataAccessObject {
 			return false;
 		} catch (JDOObjectNotFoundException e) {
 
-			newPlayer.setId(playerKey);
+			newPlayer.setKey(playerKey);
 			newPlayer.setFfRequests(new ArrayList<DistRequest>());
 			newPlayer.setRocketRequests(new ArrayList<RocketRequest>());
 
@@ -125,8 +125,8 @@ public class DataAccessObject {
 
 	public PlayerGroup findGroup(PlayerGroup group) {
 		try {
-			if (group == null || group.getIdAsString() == null
-					|| group.getIdAsString().trim().isEmpty())
+			if (group == null || group.getId() == null
+					|| group.getId().trim().isEmpty())
 				return defaultGroup();
 
 			return pm.getObjectById(PlayerGroup.class, createKey(group));
@@ -142,12 +142,12 @@ public class DataAccessObject {
 
 	private Key createKey(PlayerGroup group) {
 		return KeyFactory.createKey(PlayerGroup.class.getSimpleName(),
-				group.getIdAsString());
+				group.getId());
 	}
 
 	private Key createKey(Player player) {
 		return KeyFactory.createKey(Player.class.getSimpleName(),
-				player.getErId());
+				player.getId());
 	}
 
 }
