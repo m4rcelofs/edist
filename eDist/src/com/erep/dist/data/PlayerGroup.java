@@ -1,6 +1,6 @@
 package com.erep.dist.data;
 
-import java.util.List;
+import java.util.Set;
 
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -9,22 +9,24 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.datanucleus.annotations.Unowned;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class PlayerGroup {
 
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private Key				id;
+	private Key			id;
 
 	@Persistent
-	private String			groupName;
+	private String		groupName;
 
 	@Persistent
-	private DistConfig		config;
+	private DistConfig	config;
 
-	@Persistent(mappedBy = "group")
-	private List<Player>	players;
+	@Unowned
+	@Persistent
+	private Set<Player>	players;
 
 	public Key getId() {
 		return id;
@@ -50,12 +52,20 @@ public class PlayerGroup {
 		this.config = config;
 	}
 
-	public List<Player> getPlayers() {
+	public Set<Player> getPlayers() {
 		return players;
 	}
 
-	public void setPlayers(List<Player> players) {
+	public void setPlayers(Set<Player> players) {
 		this.players = players;
+	}
+
+	public boolean addPlayer(Player player) {
+		return this.players.add(player);
+	}
+
+	public boolean removePlayer(Player player) {
+		return this.players.remove(player);
 	}
 
 }

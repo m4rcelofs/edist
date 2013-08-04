@@ -2,6 +2,7 @@ package com.erep.dist;
 
 import static com.erep.dist.dwr.dto.TransferHelper.fromDTO;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,8 +11,10 @@ import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
+import com.erep.dist.data.DistRequest;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
+import com.erep.dist.data.RocketRequest;
 import com.erep.dist.dwr.dto.PlayerDTO;
 import com.erep.dist.dwr.dto.PlayerGroupDTO;
 import com.google.appengine.api.datastore.Cursor;
@@ -43,12 +46,17 @@ public class DataAccessObject {
 			player.setErId(newPlayer.getErId());
 			player.setRocketEnabled(newPlayer.getRocketEnabled());
 			player.setStatus(newPlayer.getStatus());
+			player.setFfRequests(new ArrayList<DistRequest>());
+			player.setRocketRequests(new ArrayList<RocketRequest>());
 
 			player.setConfig(fromDTO(newPlayer.getConfig()));
 
-			player.setGroup(findGroup(newPlayer.getGroup()));
+			PlayerGroup group = findGroup(newPlayer.getGroup());
+			player.setGroup(group);
+			group.addPlayer(player);
 
 			pm.makePersistent(player);
+
 			return true;
 		}
 	}
@@ -65,7 +73,12 @@ public class DataAccessObject {
 		oldPlayer.setRocketEnabled(newPlayer.getRocketEnabled());
 		oldPlayer.setStatus(newPlayer.getStatus());
 
-		oldPlayer.setGroup(findGroup(newPlayer.getGroup()));
+		PlayerGroup oldGroup = oldPlayer.getGroup();
+		PlayerGroup newGroup = findGroup(newPlayer.getGroup());
+
+		oldPlayer.setGroup(newGroup);
+		newGroup.addPlayer(oldPlayer);
+		oldGroup.removePlayer(oldPlayer);
 
 		return true;
 	}

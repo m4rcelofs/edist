@@ -31,8 +31,9 @@ public class GetUserInfoTask extends HttpServlet {
 
 		if (erId == null || erId.trim().isEmpty())
 			return;
-		//
+
 		Key playerId = KeyFactory.createKey(Player.class.getSimpleName(), erId);
+		
 
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 

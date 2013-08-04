@@ -9,8 +9,8 @@ import javax.jdo.annotations.PrimaryKey;
 
 import com.erep.dist.data.enums.PlayerStatus;
 import com.erep.dist.data.enums.RocketQuality;
-import com.erep.dist.dwr.dto.PlayerDTO;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.datanucleus.annotations.Unowned;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class Player {
@@ -19,14 +19,14 @@ public class Player {
 	 * Player ID on eRepublik
 	 */
 	@PrimaryKey
-	@Persistent
+	@Persistent 
 	private Key					id;
 
 	@Persistent
 	private String				erId;
 
 	@Persistent
-	private String				name;
+	private String				name; 
 
 	@Persistent
 	private String				avatar;
@@ -34,8 +34,9 @@ public class Player {
 	@Persistent
 	private PlayerStatus		status;
 
+	@Unowned
 	@Persistent
-	private PlayerGroup			group;
+	private PlayerGroup			group; 
 
 	@Persistent
 	private DistConfig			config;

@@ -1,6 +1,8 @@
 package com.erep.dist.servlets;
 
 import java.io.IOException;
+import java.util.Date;
+import java.util.HashSet;
 
 import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
@@ -14,6 +16,7 @@ import com.erep.dist.PMF;
 import com.erep.dist.ServerConstants;
 import com.erep.dist.data.DistConfig;
 import com.erep.dist.data.Distributor;
+import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.ServerConfig;
 import com.erep.dist.data.enums.ConfigGranularity;
@@ -30,12 +33,15 @@ public class InstallServlet extends HttpServlet {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			try {
 				pm.getObjectById(ServerConfig.class, ServerConstants.DEFAULT);
-				// already installed
+				resp.getWriter().write("Already installed!");
 				return;
 			} catch (JDOObjectNotFoundException e) {
-				resp.getWriter().write("Installing, please wait...");
+				resp.getWriter().write("Installing, please wait... \n");
+				long init = new Date().getTime();
 				install(pm);
-				resp.getWriter().write("Installed successfully (:");
+				long time = new Date().getTime() - init;
+				resp.getWriter().write(
+						"Installed successfully in " + time + "ms (:");
 			}
 		}
 
@@ -52,6 +58,7 @@ public class InstallServlet extends HttpServlet {
 		group.setGroupName("Default");
 		group.setId(KeyFactory.createKey(PlayerGroup.class.getSimpleName(),
 				ServerConstants.DEFAULT));
+		group.setPlayers(new HashSet<Player>());
 
 		return group;
 	}
