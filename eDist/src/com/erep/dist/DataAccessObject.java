@@ -1,7 +1,5 @@
 package com.erep.dist;
 
-import static com.erep.dist.dwr.dto.TransferHelper.fromDTO;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -15,8 +13,6 @@ import com.erep.dist.data.DistRequest;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.RocketRequest;
-import com.erep.dist.dwr.dto.PlayerDTO;
-import com.erep.dist.dwr.dto.PlayerGroupDTO;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
@@ -32,7 +28,7 @@ public class DataAccessObject {
 		this.pm = pm;
 	}
 
-	public boolean add(PlayerDTO newPlayer) {
+	public boolean add(Player newPlayer) {
 		Key playerKey = createKey(newPlayer);
 
 		try {
@@ -41,27 +37,21 @@ public class DataAccessObject {
 			return false;
 		} catch (JDOObjectNotFoundException e) {
 
-			Player player = new Player();
-			player.setId(playerKey);
-			player.setErId(newPlayer.getErId());
-			player.setRocketEnabled(newPlayer.getRocketEnabled());
-			player.setStatus(newPlayer.getStatus());
-			player.setFfRequests(new ArrayList<DistRequest>());
-			player.setRocketRequests(new ArrayList<RocketRequest>());
-
-			player.setConfig(fromDTO(newPlayer.getConfig()));
+			newPlayer.setId(playerKey);
+			newPlayer.setFfRequests(new ArrayList<DistRequest>());
+			newPlayer.setRocketRequests(new ArrayList<RocketRequest>());
 
 			PlayerGroup group = findGroup(newPlayer.getGroup());
-			player.setGroup(group);
-			group.addPlayer(player);
+			newPlayer.setGroup(group);
+			group.addPlayer(newPlayer);
 
-			pm.makePersistent(player);
+			pm.makePersistent(newPlayer);
 
 			return true;
 		}
 	}
 
-	public boolean edit(PlayerDTO newPlayer) {
+	public boolean edit(Player newPlayer) {
 
 		Key playerKey = createKey(newPlayer);
 		Player oldPlayer = pm.getObjectById(Player.class, playerKey);
@@ -103,13 +93,13 @@ public class DataAccessObject {
 		return (List<Player>) q.execute();
 	}
 
-	public PlayerGroup findGroup(PlayerGroupDTO dto) {
+	public PlayerGroup findGroup(PlayerGroup group) {
 		try {
-			if (dto == null || dto.getId() == null
-					|| dto.getId().trim().isEmpty())
+			if (group == null || group.getIdAsString() == null
+					|| group.getIdAsString().trim().isEmpty())
 				return defaultGroup();
 
-			return pm.getObjectById(PlayerGroup.class, createKey(dto));
+			return pm.getObjectById(PlayerGroup.class, createKey(group));
 		} catch (JDOObjectNotFoundException e) {
 			return defaultGroup();
 		}
@@ -120,12 +110,12 @@ public class DataAccessObject {
 				PlayerGroup.class.getSimpleName(), ServerConstants.DEFAULT));
 	}
 
-	private Key createKey(PlayerGroupDTO group) {
+	private Key createKey(PlayerGroup group) {
 		return KeyFactory.createKey(PlayerGroup.class.getSimpleName(),
-				group.getId());
+				group.getIdAsString());
 	}
 
-	private Key createKey(PlayerDTO player) {
+	private Key createKey(Player player) {
 		return KeyFactory.createKey(Player.class.getSimpleName(),
 				player.getErId());
 	}

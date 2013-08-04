@@ -2,26 +2,39 @@ package com.erep.dist.data;
 
 import java.util.Set;
 
+import javax.jdo.annotations.FetchGroup;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import org.directwebremoting.annotations.DataTransferObject;
+import org.directwebremoting.annotations.RemoteProperty;
+
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.datanucleus.annotations.Unowned;
 
+@DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
+@FetchGroup(name = "groupListing", members = { @Persistent(name = "config") })
 public class PlayerGroup {
 
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
 	private Key			id;
 
+	@NotPersistent
+	@RemoteProperty
+	private String		idAsString;
+
 	@Persistent
+	@RemoteProperty
 	private String		groupName;
 
 	@Persistent
+	@RemoteProperty
 	private DistConfig	config;
 
 	@Unowned
@@ -30,6 +43,16 @@ public class PlayerGroup {
 
 	public Key getId() {
 		return id;
+	}
+
+	public String getIdAsString() {
+		if (id != null)
+			return id.getName();
+		return idAsString;
+	}
+
+	public void setIdAsString(String idAsString) {
+		this.idAsString = idAsString;
 	}
 
 	public void setId(Key id) {

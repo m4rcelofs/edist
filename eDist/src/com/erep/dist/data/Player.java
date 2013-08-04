@@ -2,46 +2,61 @@ package com.erep.dist.data;
 
 import java.util.List;
 
+import javax.jdo.annotations.FetchGroup;
 import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+
+import org.directwebremoting.annotations.DataTransferObject;
+import org.directwebremoting.annotations.RemoteProperty;
 
 import com.erep.dist.data.enums.PlayerStatus;
 import com.erep.dist.data.enums.RocketQuality;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.datanucleus.annotations.Unowned;
 
+@DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
+@FetchGroup(name = "playerListing", members = { @Persistent(name = "group"),
+		@Persistent(name = "config") })
 public class Player {
 
 	/**
 	 * Player ID on eRepublik
 	 */
 	@PrimaryKey
-	@Persistent 
+	@Persistent
 	private Key					id;
 
-	@Persistent
+	@NotPersistent
+	@RemoteProperty
 	private String				erId;
 
 	@Persistent
-	private String				name; 
+	@RemoteProperty
+	private String				name;
 
 	@Persistent
+	@RemoteProperty
 	private String				avatar;
 
 	@Persistent
+	@RemoteProperty
 	private PlayerStatus		status;
 
 	@Unowned
 	@Persistent
-	private PlayerGroup			group; 
+	@RemoteProperty
+	private PlayerGroup			group;
 
 	@Persistent
+	@RemoteProperty
 	private DistConfig			config;
 
 	@Persistent
+	@RemoteProperty
 	private RocketQuality		rocketEnabled;
 
 	@Persistent(mappedBy = "player")
@@ -53,6 +68,8 @@ public class Player {
 	public Player() {}
 
 	public String getErId() {
+		if (id != null)
+			return id.getName();
 		return erId;
 	}
 

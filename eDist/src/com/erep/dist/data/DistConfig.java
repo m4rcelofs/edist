@@ -6,9 +6,13 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import org.directwebremoting.annotations.DataTransferObject;
+import org.directwebremoting.annotations.RemoteProperty;
+
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.datanucleus.annotations.Unowned;
 
+@DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class DistConfig {
 
@@ -17,12 +21,15 @@ public class DistConfig {
 	private Key			id;
 
 	@Persistent
+	@RemoteProperty
 	private Integer		currentMaxDailyFF;
 
 	@Persistent
+	@RemoteProperty
 	private Boolean		rocketAllowed;
 
 	@Persistent
+	@RemoteProperty
 	private Boolean		autoSend;
 
 	@Unowned
