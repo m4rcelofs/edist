@@ -75,22 +75,47 @@ public class DataAccessObject {
 	}
 
 	public boolean edit(PlayerGroup group) {
-		PlayerGroup old = findGroup(group);
+		PlayerGroup old = find(group);
 		return edit(old, group);
 	}
 
 	private boolean edit(PlayerGroup old, PlayerGroup newest) {
-		// TODO distribuidor
+
 		old.setGroupName(newest.getGroupName());
 		old.getConfig().setAutoSend(newest.getConfig().getAutoSend());
 		old.getConfig().setCurrentMaxDailyFF(
 				newest.getConfig().getCurrentMaxDailyFF());
 		old.getConfig().setRocketAllowed(newest.getConfig().getRocketAllowed());
+		old.getConfig().setDistributor(
+				find(newest.getConfig().getDistributor()));
+
+		return true;
+	}
+
+	public boolean delete(PlayerGroup dto) {
+		if (ServerConstants.DEFAULT.equalsIgnoreCase(dto.getId()))
+			return false;
+		try {
+			PlayerGroup group = pm.getObjectById(PlayerGroup.class,
+					createKey(PlayerGroup.class, dto));
+
+			PlayerGroup defaultGroup = find(new PlayerGroup());
+
+			defaultGroup.getPlayers().addAll(group.getPlayers());
+			for (Player p : group.getPlayers())
+				p.setGroup(defaultGroup);
+
+			pm.deletePersistent(group);
+
+		} catch (JDOObjectNotFoundException e) {
+			return false;
+		}
+
 		return true;
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<PlayerGroup> listAllGroups() {
+	public List<PlayerGroup> listGroups() {
 		Query q = pm.newQuery(PlayerGroup.class);
 		return (List<PlayerGroup>) q.execute();
 	}
@@ -107,7 +132,7 @@ public class DataAccessObject {
 			newPlayer.setFfRequests(new ArrayList<DistRequest>());
 			newPlayer.setRocketRequests(new ArrayList<RocketRequest>());
 
-			PlayerGroup group = findGroup(newPlayer.getGroup());
+			PlayerGroup group = find(newPlayer.getGroup());
 			newPlayer.setGroup(group);
 			group.addPlayer(newPlayer);
 
@@ -132,7 +157,7 @@ public class DataAccessObject {
 		old.setStatus(newest.getStatus());
 
 		PlayerGroup oldGroup = old.getGroup();
-		PlayerGroup newGroup = findGroup(newest.getGroup());
+		PlayerGroup newGroup = find(newest.getGroup());
 
 		old.setGroup(newGroup);
 		newGroup.addPlayer(old);
@@ -145,7 +170,7 @@ public class DataAccessObject {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Player> listAllPlayers(String encodedCursor) {
+	public List<Player> listPlayers(String encodedCursor) {
 		Query q = pm.newQuery(Player.class);
 
 		if (encodedCursor != null && !encodedCursor.trim().isEmpty()) {
@@ -160,7 +185,7 @@ public class DataAccessObject {
 		return (List<Player>) q.execute();
 	}
 
-	public PlayerGroup findGroup(PlayerGroup group) {
+	public PlayerGroup find(PlayerGroup group) {
 		try {
 			if (group == null || group.getId() == null
 					|| group.getId().trim().isEmpty())
@@ -171,6 +196,24 @@ public class DataAccessObject {
 		} catch (JDOObjectNotFoundException e) {
 			return defaultGroup();
 		}
+	}
+
+	public Distributor find(Distributor dist) {
+		try {
+			if (dist == null || dist.getId() == null
+					|| dist.getId().trim().isEmpty())
+				return defaultDistributor();
+
+			return pm.getObjectById(Distributor.class,
+					createKey(Distributor.class, dist));
+		} catch (JDOObjectNotFoundException e) {
+			return defaultDistributor();
+		}
+	}
+
+	private Distributor defaultDistributor() {
+		return pm.getObjectById(Distributor.class, KeyFactory.createKey(
+				Distributor.class.getSimpleName(), ServerConstants.DEFAULT));
 	}
 
 	private PlayerGroup defaultGroup() {

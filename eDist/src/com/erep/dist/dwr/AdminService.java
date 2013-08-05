@@ -29,6 +29,22 @@ public class AdminService {
 	}
 
 	@RemoteMethod
+	public boolean editDistributor(Distributor dist) {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			return new DataAccessObject(pm).add(dist);
+		}
+	}
+
+	@RemoteMethod
+	public List<Distributor> listDistributors() {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			List<Distributor> dists = new DataAccessObject(pm)
+					.listDistributors();
+			return dists;
+		}
+	}
+
+	@RemoteMethod
 	public boolean addGroup(PlayerGroup group) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			return new DataAccessObject(pm).add(group);
@@ -43,12 +59,19 @@ public class AdminService {
 	}
 
 	@RemoteMethod
+	public boolean deleteGroup(PlayerGroup group) {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			return new DataAccessObject(pm).delete(group);
+		}
+	}
+
+	@RemoteMethod
 	public List<PlayerGroup> listGroups() {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 
 			pm.getFetchPlan().addGroup("groupListing");
 
-			List<PlayerGroup> groups = new DataAccessObject(pm).listAllGroups();
+			List<PlayerGroup> groups = new DataAccessObject(pm).listGroups();
 
 			return groups;
 		}
@@ -85,8 +108,7 @@ public class AdminService {
 			pm.getFetchPlan().addGroup("playerListing");
 
 			PlayerQuery queryResults = new PlayerQuery();
-			List<Player> players = new DataAccessObject(pm)
-					.listAllPlayers(cursor);
+			List<Player> players = new DataAccessObject(pm).listPlayers(cursor);
 
 			queryResults.setResults(players);
 			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(players)
