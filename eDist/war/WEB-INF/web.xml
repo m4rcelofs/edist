@@ -13,6 +13,7 @@
 			<param-name>classes</param-name>
 			<param-value>
 				com.erep.dist.dwr.TestService,
+				com.erep.dist.dwr.FormTester,
 				com.erep.dist.dwr.TestDTO,
 				com.erep.dist.dwr.TestDTO$TestEnum				
     		</param-value>
