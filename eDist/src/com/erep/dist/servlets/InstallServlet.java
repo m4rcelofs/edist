@@ -1,6 +1,8 @@
 package com.erep.dist.servlets;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashSet;
 
@@ -16,27 +18,38 @@ import com.erep.dist.PMF;
 import com.erep.dist.ServerConstants;
 import com.erep.dist.data.DistConfig;
 import com.erep.dist.data.Distributor;
+import com.erep.dist.data.InstallLog;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.ServerConfig;
 import com.erep.dist.data.enums.ConfigGranularity;
+import com.erep.dist.erep.eRepTimeCalculator;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserServiceFactory;
+import com.google.appengine.api.utils.SystemProperty;
 
 public class InstallServlet extends HttpServlet {
 
-	private static final long	serialVersionUID	= 1L;
+	private static final long		serialVersionUID	= 1L;
+
+	private static final String		DB_VERSION			= "0.1";
+	private static final DateFormat	dateFormat			= new SimpleDateFormat(
+																"yyyy.MM.dd HH:mm:ss zzzz 'GMT' Z");
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
+		resp.setCharacterEncoding("UTF-8");
+		resp.setContentType("text/html");
+
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			try {
 				pm.getObjectById(ServerConfig.class, ServerConstants.DEFAULT);
 				resp.getWriter().write("Already installed!");
-				return;
 			} catch (JDOObjectNotFoundException e) {
-				resp.getWriter().write("Installing, please wait... \n");
+				resp.getWriter().write("Installing, please wait... <br />");
 				long init = new Date().getTime();
 				install(pm);
 				long time = new Date().getTime() - init;
@@ -45,11 +58,51 @@ public class InstallServlet extends HttpServlet {
 			}
 		}
 
+		writeStats(resp);
+
+	}
+
+	private void writeStats(HttpServletResponse resp) throws IOException {
+		resp.getWriter().write("\n<hr />\n");
+		resp.getWriter().write("<b>Your current setup:</b> <br />");
+		resp.getWriter().write(
+				"App ID: " + SystemProperty.applicationId.get() + "<br />");
+		resp.getWriter().write(
+				"App Version: " + SystemProperty.applicationVersion.get()
+						+ "<br />");
+		resp.getWriter().write("Database Version: " + DB_VERSION + "<br />");
+		resp.getWriter().write(
+				"AppEngine SDK version: " + SystemProperty.version.get()
+						+ "<br />");
+
+		User currentUser = UserServiceFactory.getUserService().getCurrentUser();
+		resp.getWriter().write(
+				"You are: "
+						+ (currentUser != null ? currentUser.getEmail()
+								: "not logged in") + "<br />");
+
+		resp.getWriter().write(
+				"Server time: " + dateFormat.format(new Date()) + "<br />");
+		resp.getWriter().write(
+				"eRepublik day: " + eRepTimeCalculator.geteRepDay() + " "
+						+ eRepTimeCalculator.geteRepTime());
+
 	}
 
 	private void install(PersistenceManager pm) {
 		pm.makePersistent(defaultGroup());
 		pm.makePersistent(defaultConfig());
+
+		InstallLog log = new InstallLog();
+		log.setDate(new Date());
+		log.setDbVersion(DB_VERSION);
+		log.setAppVersion(SystemProperty.applicationVersion.get());
+		log.setAppEngineVersion(SystemProperty.version.get());
+		User currentUser = UserServiceFactory.getUserService().getCurrentUser();
+		log.setUserEmail(currentUser != null ? currentUser.getEmail()
+				: "not logged in");
+
+		pm.makePersistent(log);
 	}
 
 	private PlayerGroup defaultGroup() {
@@ -72,8 +125,8 @@ public class InstallServlet extends HttpServlet {
 		config.setMuName("  ");
 
 		DistConfig distConfig = new DistConfig();
-		distConfig.setKey(KeyFactory.createKey(DistConfig.class.getSimpleName(),
-				ServerConstants.DEFAULT));
+		distConfig.setKey(KeyFactory.createKey(
+				DistConfig.class.getSimpleName(), ServerConstants.DEFAULT));
 		distConfig.setAutoSend(false);
 		distConfig.setCurrentMaxDailyFF(160);
 		distConfig.setRocketAllowed(false);
