@@ -21,6 +21,8 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.datanucleus.query.JDOCursorHelper;
 
+import static com.erep.dist.CipherUtils.encrypt;
+
 public class DataAccessObject {
 
 	private static final Integer	PAGE_LIMIT	= 20;
@@ -49,11 +51,15 @@ public class DataAccessObject {
 	}
 
 	private boolean edit(Distributor old, Distributor newest) {
-		old.setEmail(newest.getEmail());
-		if (newest.getPassword() != null
-				&& !newest.getPassword().trim().isEmpty())
-			old.setPassword(newest.getPassword());
-		return true;
+		try {
+			old.setEmail(newest.getEmail());
+			if (newest.getPassword() != null
+					&& !newest.getPassword().trim().isEmpty())
+				old.setPassword(encrypt(newest.getPassword()));
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 	@SuppressWarnings("unchecked")

@@ -28,7 +28,6 @@ public class Distributor implements HasTransitID {
 	@RemoteProperty
 	private String	name;
 
-	@Persistent(defaultFetchGroup = "false")
 	@RemoteProperty
 	private String	email;
 
