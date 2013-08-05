@@ -19,7 +19,7 @@ import com.google.appengine.datanucleus.annotations.Unowned;
 @DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 @FetchGroup(name = "groupListing", members = { @Persistent(name = "config") })
-public class PlayerGroup {
+public class PlayerGroup implements HasTransitID {
 
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)

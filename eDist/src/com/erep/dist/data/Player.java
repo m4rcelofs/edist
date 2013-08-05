@@ -21,7 +21,7 @@ import com.google.appengine.datanucleus.annotations.Unowned;
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 @FetchGroup(name = "playerListing", members = { @Persistent(name = "group"),
 		@Persistent(name = "config") })
-public class Player {
+public class Player implements HasTransitID {
 
 	/**
 	 * Player ID on eRepublik

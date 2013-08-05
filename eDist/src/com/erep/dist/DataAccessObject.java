@@ -11,6 +11,8 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
 import com.erep.dist.data.DistRequest;
+import com.erep.dist.data.Distributor;
+import com.erep.dist.data.HasTransitID;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.RocketRequest;
@@ -29,10 +31,42 @@ public class DataAccessObject {
 		this.pm = pm;
 	}
 
+	public boolean add(Distributor dist) {
+		try {
+			Distributor old = pm.getObjectById(Distributor.class,
+					createKey(Distributor.class, dist));
+			return edit(old, dist);
+		} catch (JDOObjectNotFoundException e) {
+			pm.makePersistent(dist);
+			return true;
+		}
+	}
+
+	public boolean edit(Distributor dist) {
+		Distributor old = pm.getObjectById(Distributor.class,
+				createKey(Distributor.class, dist));
+		return edit(old, dist);
+	}
+
+	private boolean edit(Distributor old, Distributor newest) {
+		old.setEmail(newest.getEmail());
+		if (newest.getPassword() != null
+				&& !newest.getPassword().trim().isEmpty())
+			old.setPassword(newest.getPassword());
+		return true;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Distributor> listDistributors() {
+		Query q = pm.newQuery(Distributor.class);
+		return (List<Distributor>) q.execute();
+	}
+
 	public boolean add(PlayerGroup group) {
 		try {
-			pm.getObjectById(PlayerGroup.class, createKey(group));
-			return edit(group);
+			PlayerGroup old = pm.getObjectById(PlayerGroup.class,
+					createKey(PlayerGroup.class, group));
+			return edit(old, group);
 		} catch (JDOObjectNotFoundException e) {
 			group.setPlayers(new HashSet<Player>());
 			pm.makePersistent(group);
@@ -41,14 +75,17 @@ public class DataAccessObject {
 	}
 
 	public boolean edit(PlayerGroup group) {
+		PlayerGroup old = findGroup(group);
+		return edit(old, group);
+	}
+
+	private boolean edit(PlayerGroup old, PlayerGroup newest) {
 		// TODO distribuidor
-		PlayerGroup oldGroup = findGroup(group);
-		oldGroup.setGroupName(group.getGroupName());
-		oldGroup.getConfig().setAutoSend(group.getConfig().getAutoSend());
-		oldGroup.getConfig().setCurrentMaxDailyFF(
-				group.getConfig().getCurrentMaxDailyFF());
-		oldGroup.getConfig().setRocketAllowed(
-				group.getConfig().getRocketAllowed());
+		old.setGroupName(newest.getGroupName());
+		old.getConfig().setAutoSend(newest.getConfig().getAutoSend());
+		old.getConfig().setCurrentMaxDailyFF(
+				newest.getConfig().getCurrentMaxDailyFF());
+		old.getConfig().setRocketAllowed(newest.getConfig().getRocketAllowed());
 		return true;
 	}
 
@@ -59,12 +96,11 @@ public class DataAccessObject {
 	}
 
 	public boolean add(Player newPlayer) {
-		Key playerKey = createKey(newPlayer);
+		Key playerKey = createKey(Player.class, newPlayer);
 
 		try {
-			pm.getObjectById(Player.class, playerKey);
-			edit(newPlayer);
-			return false;
+			Player oldPlayer = pm.getObjectById(Player.class, playerKey);
+			return edit(oldPlayer, newPlayer);
 		} catch (JDOObjectNotFoundException e) {
 
 			newPlayer.setKey(playerKey);
@@ -82,24 +118,25 @@ public class DataAccessObject {
 	}
 
 	public boolean edit(Player newPlayer) {
+		Player oldPlayer = pm.getObjectById(Player.class,
+				createKey(Player.class, newPlayer));
+		return edit(oldPlayer, newPlayer);
+	}
 
-		Key playerKey = createKey(newPlayer);
-		Player oldPlayer = pm.getObjectById(Player.class, playerKey);
+	private boolean edit(Player old, Player newest) {
+		old.getConfig().setAutoSend(newest.getConfig().getAutoSend());
+		old.getConfig().setCurrentMaxDailyFF(
+				newest.getConfig().getCurrentMaxDailyFF());
 
-		oldPlayer.getConfig().setAutoSend(newPlayer.getConfig().getAutoSend());
-		oldPlayer.getConfig().setCurrentMaxDailyFF(
-				newPlayer.getConfig().getCurrentMaxDailyFF());
+		old.setRocketEnabled(newest.getRocketEnabled());
+		old.setStatus(newest.getStatus());
 
-		oldPlayer.setRocketEnabled(newPlayer.getRocketEnabled());
-		oldPlayer.setStatus(newPlayer.getStatus());
+		PlayerGroup oldGroup = old.getGroup();
+		PlayerGroup newGroup = findGroup(newest.getGroup());
 
-		PlayerGroup oldGroup = oldPlayer.getGroup();
-		PlayerGroup newGroup = findGroup(newPlayer.getGroup());
-
-		oldPlayer.setGroup(newGroup);
-		newGroup.addPlayer(oldPlayer);
-		oldGroup.removePlayer(oldPlayer);
-
+		old.setGroup(newGroup);
+		newGroup.addPlayer(old);
+		oldGroup.removePlayer(old);
 		return true;
 	}
 
@@ -129,7 +166,8 @@ public class DataAccessObject {
 					|| group.getId().trim().isEmpty())
 				return defaultGroup();
 
-			return pm.getObjectById(PlayerGroup.class, createKey(group));
+			return pm.getObjectById(PlayerGroup.class,
+					createKey(PlayerGroup.class, group));
 		} catch (JDOObjectNotFoundException e) {
 			return defaultGroup();
 		}
@@ -140,14 +178,8 @@ public class DataAccessObject {
 				PlayerGroup.class.getSimpleName(), ServerConstants.DEFAULT));
 	}
 
-	private Key createKey(PlayerGroup group) {
-		return KeyFactory.createKey(PlayerGroup.class.getSimpleName(),
-				group.getId());
-	}
-
-	private Key createKey(Player player) {
-		return KeyFactory.createKey(Player.class.getSimpleName(),
-				player.getId());
+	private Key createKey(Class<?> clazz, HasTransitID object) {
+		return KeyFactory.createKey(clazz.getSimpleName(), object.getId());
 	}
 
 }

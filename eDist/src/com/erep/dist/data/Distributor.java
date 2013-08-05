@@ -14,7 +14,7 @@ import com.google.appengine.api.datastore.Key;
 
 @DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class Distributor {
+public class Distributor implements HasTransitID {
 
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)

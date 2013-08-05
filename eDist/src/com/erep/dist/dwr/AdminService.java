@@ -10,6 +10,7 @@ import org.directwebremoting.annotations.RemoteProxy;
 import com.erep.dist.CloseablePM;
 import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
+import com.erep.dist.data.Distributor;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.dwr.dto.PlayerQuery;
@@ -19,6 +20,13 @@ import com.google.appengine.datanucleus.query.JDOCursorHelper;
 
 @RemoteProxy
 public class AdminService {
+
+	@RemoteMethod
+	public boolean addDistributor(Distributor dist) {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			return new DataAccessObject(pm).add(dist);
+		}
+	}
 
 	@RemoteMethod
 	public boolean addGroup(PlayerGroup group) {
