@@ -26,6 +26,10 @@ public class Distributor implements HasTransitID {
 
 	@Persistent
 	@RemoteProperty
+	private String	name;
+
+	@Persistent(defaultFetchGroup = "false")
+	@RemoteProperty
 	private String	email;
 
 	@Persistent(defaultFetchGroup = "false")
@@ -64,6 +68,14 @@ public class Distributor implements HasTransitID {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 }

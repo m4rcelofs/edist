@@ -69,8 +69,8 @@ public class ErepScrapper implements Closeable {
 		List<NameValuePair> nvps = new ArrayList<NameValuePair>(4);
 		nvps.add(new BasicNameValuePair("_token", hiddenToken));
 		nvps.add(new BasicNameValuePair("citizen_email",
-				"brazilianbot@gmail.com"));
-		nvps.add(new BasicNameValuePair("citizen_password", "cfthuv78eRS"));
+				"email@gmail.com"));
+		nvps.add(new BasicNameValuePair("citizen_password", "password"));
 		// nvps.add(new BasicNameValuePair("remember", "on"));
 
 		httpPost.setEntity(new UrlEncodedFormEntity(nvps, Consts.UTF_8));
