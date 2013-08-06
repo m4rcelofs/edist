@@ -3,7 +3,9 @@ package com.erep.dist.dwr;
 import org.directwebremoting.annotations.RemoteMethod;
 import org.directwebremoting.annotations.RemoteProxy;
 
+import com.erep.dist.ServerConstants;
 import com.erep.dist.data.Player;
+import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.enums.PlayerStatus;
 import com.erep.dist.data.enums.RocketQuality;
 import com.erep.dist.dwr.dto.RequestAttempt;
@@ -14,7 +16,7 @@ public class RequestService {
 	@RemoteMethod
 	public RequestAttempt getCurrentStatus(String idNameOrLink) {
 		RequestAttempt dto = new RequestAttempt();
-		//TODO
+		// TODO
 		dto.setAvailableFF(160);
 		dto.setRocketEnabled(true);
 
@@ -24,6 +26,10 @@ public class RequestService {
 		player.setName("nW0lf");
 		player.setRocketEnabled(RocketQuality.Q5);
 		player.setStatus(PlayerStatus.ENABLED);
+		PlayerGroup group = new PlayerGroup();
+		group.setId(ServerConstants.DEFAULT);
+		group.setGroupName("default");
+		player.setGroup(group);
 		dto.setPlayer(player);
 
 		return dto;

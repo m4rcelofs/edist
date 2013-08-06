@@ -3,6 +3,7 @@ package com.erep.dist.data;
 import java.util.List;
 
 import javax.jdo.annotations.FetchGroup;
+import javax.jdo.annotations.FetchGroups;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
@@ -19,8 +20,10 @@ import com.google.appengine.datanucleus.annotations.Unowned;
 
 @DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-@FetchGroup(name = "playerListing", members = { @Persistent(name = "group"),
-		@Persistent(name = "config") })
+@FetchGroups({
+		@FetchGroup(name = "playerListing", members = {
+				@Persistent(name = "group"), @Persistent(name = "config") }),
+		@FetchGroup(name = "requestAttempt", members = { @Persistent(name = "group") }) })
 public class Player implements HasTransitID {
 
 	/**
