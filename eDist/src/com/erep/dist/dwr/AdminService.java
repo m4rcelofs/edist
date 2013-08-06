@@ -58,12 +58,12 @@ public class AdminService {
 		}
 	}
 
-	@RemoteMethod
-	public boolean deleteGroup(PlayerGroup group) {
-		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			return new DataAccessObject(pm).delete(group);
-		}
-	}
+	// @RemoteMethod
+	// public boolean deleteGroup(PlayerGroup group) {
+	// try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+	// return new DataAccessObject(pm).delete(group);
+	// }
+	// }
 
 	@RemoteMethod
 	public List<PlayerGroup> listGroups() {

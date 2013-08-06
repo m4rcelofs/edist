@@ -98,27 +98,27 @@ public class DataAccessObject {
 		return true;
 	}
 
-	public boolean delete(PlayerGroup dto) {
-		if (ServerConstants.DEFAULT.equalsIgnoreCase(dto.getId()))
-			return false;
-		try {
-			PlayerGroup group = pm.getObjectById(PlayerGroup.class,
-					createKey(PlayerGroup.class, dto));
-
-			PlayerGroup defaultGroup = find(new PlayerGroup());
-
-			defaultGroup.getPlayers().addAll(group.getPlayers());
-			for (Player p : group.getPlayers())
-				p.setGroup(defaultGroup);
-
-			pm.deletePersistent(group);
-
-		} catch (JDOObjectNotFoundException e) {
-			return false;
-		}
-
-		return true;
-	}
+//	public boolean delete(PlayerGroup dto) {
+//		if (ServerConstants.DEFAULT.equalsIgnoreCase(dto.getId()))
+//			return false;
+//		try {
+//			PlayerGroup group = pm.getObjectById(PlayerGroup.class,
+//					createKey(PlayerGroup.class, dto));
+//
+//			PlayerGroup defaultGroup = find(new PlayerGroup());
+//
+//			defaultGroup.getPlayers().addAll(group.getPlayers());
+//			for (Player p : group.getPlayers())
+//				p.setGroup(defaultGroup);
+//
+//			pm.deletePersistent(group);
+//
+//		} catch (JDOObjectNotFoundException e) {
+//			return false;
+//		}
+//
+//		return true;
+//	}
 
 	@SuppressWarnings("unchecked")
 	public List<PlayerGroup> listGroups() {

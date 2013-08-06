@@ -16,11 +16,15 @@
 		<init-param>
 			<param-name>classes</param-name>
 			<param-value>
-				com.erep.dist.dwr.TestService,
-				com.erep.dist.dwr.FormTester,
-				com.erep.dist.dwr.TestDTO,
-				com.erep.dist.dwr.TestDTO$TestEnum				
-    		</param-value>
+				com.erep.dist.dwr.RequestService,
+				
+				com.erep.dist.data.enums.DistType,
+				com.erep.dist.data.enums.PlayerStatus,
+				
+				com.erep.dist.data.Player,
+				
+				com.erep.dist.dwr.dto.RequestAttempt
+			</param-value>
 		</init-param>
 	</servlet>
 
@@ -51,6 +55,7 @@
 				com.erep.dist.data.ServerConfig,
 				
 				com.erep.dist.dwr.AdminService,
+				com.erep.dist.dwr.ReportService,
 				
 				com.erep.dist.dwr.dto.PlayerQuery,
 
