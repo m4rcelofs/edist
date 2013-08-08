@@ -10,6 +10,7 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.erep.dist.data.enums.DistType;
 import com.erep.dist.data.enums.RequestStatus;
 import com.google.appengine.api.datastore.Key;
 
@@ -29,6 +30,9 @@ public abstract class Request {
 
 	@Persistent
 	private RequestStatus	status;
+
+	@Persistent
+	private DistType		type;
 
 	@Persistent
 	private Date			requestedAt;

@@ -6,5 +6,5 @@ import org.directwebremoting.convert.EnumConverter;
 @DataTransferObject(converter = EnumConverter.class)
 public enum DistType
 {
-	WEAPONS, FOOD, BOTH
+	WEAPONS, FOOD, WEAPONS_FOOD, ROCKET
 }

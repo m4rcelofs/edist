@@ -4,15 +4,18 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 
-import com.erep.dist.data.enums.DistType;
-
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class DistRequest extends Request {
 
 	@Persistent
-	private DistType	type;
+	private Integer	requestedFF;
 
-	@Persistent
-	private Integer		requestedFF;
+	public Integer getRequestedFF() {
+		return requestedFF;
+	}
+
+	public void setRequestedFF(Integer requestedFF) {
+		this.requestedFF = requestedFF;
+	}
 
 }

@@ -6,6 +6,7 @@ import org.directwebremoting.annotations.RemoteProxy;
 import com.erep.dist.ServerConstants;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
+import com.erep.dist.data.enums.DistType;
 import com.erep.dist.data.enums.PlayerStatus;
 import com.erep.dist.data.enums.RocketQuality;
 import com.erep.dist.dwr.dto.RequestAttempt;
@@ -14,8 +15,16 @@ import com.erep.dist.dwr.dto.RequestAttempt;
 public class RequestService {
 
 	@RemoteMethod
+	public boolean sendRequest(Player player, Integer requestedFF, DistType type) {
+		return false;
+	}
+
+	@RemoteMethod
 	public RequestAttempt getCurrentStatus(String idNameOrLink) {
 		RequestAttempt dto = new RequestAttempt();
+
+		Player p = identifyRequestString(idNameOrLink);
+
 		// TODO
 		dto.setAvailableFF(160);
 		dto.setRocketEnabled(true);
@@ -31,7 +40,12 @@ public class RequestService {
 		group.setGroupName("default");
 		player.setGroup(group);
 		dto.setPlayer(player);
-
+		//
 		return dto;
+	}
+
+	private Player identifyRequestString(String idNameOrLink) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
