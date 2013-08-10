@@ -31,42 +31,39 @@ public class Player implements HasTransitID {
 	 */
 	@PrimaryKey
 	@Persistent
-	private Key					key;
+	private Key				key;
 
 	@NotPersistent
 	@RemoteProperty
-	private String				id;
+	private String			id;
 
 	@Persistent
 	@RemoteProperty
-	private String				name;
+	private String			name;
 
 	@Persistent
 	@RemoteProperty
-	private String				avatar;
+	private String			avatar;
 
 	@Persistent
 	@RemoteProperty
-	private PlayerStatus		status;
+	private PlayerStatus	status;
 
 	@Unowned
 	@Persistent
 	@RemoteProperty
-	private PlayerGroup			group;
+	private PlayerGroup		group;
 
 	@Persistent
 	@RemoteProperty
-	private DistConfig			config;
+	private DistConfig		config;
 
 	@Persistent
 	@RemoteProperty
-	private RocketQuality		rocketEnabled;
+	private RocketQuality	rocketEnabled;
 
 	@Persistent(mappedBy = "player")
-	private List<DistRequest>	ffRequests;
-
-	@Persistent(mappedBy = "player")
-	private List<RocketRequest>	rocketRequests;
+	private List<Request>	requests;
 
 	public Player() {}
 
@@ -112,22 +109,6 @@ public class Player implements HasTransitID {
 		this.rocketEnabled = rocketEnabled;
 	}
 
-	public List<DistRequest> getFfRequests() {
-		return ffRequests;
-	}
-
-	public void setFfRequests(List<DistRequest> ffRequests) {
-		this.ffRequests = ffRequests;
-	}
-
-	public List<RocketRequest> getRocketRequests() {
-		return rocketRequests;
-	}
-
-	public void setRocketRequests(List<RocketRequest> rocketRequests) {
-		this.rocketRequests = rocketRequests;
-	}
-
 	public Key getKey() {
 		return key;
 	}
@@ -150,6 +131,14 @@ public class Player implements HasTransitID {
 
 	public void setConfig(DistConfig config) {
 		this.config = config;
+	}
+
+	public List<Request> getRequests() {
+		return requests;
+	}
+
+	public void setRequests(List<Request> requests) {
+		this.requests = requests;
 	}
 
 }

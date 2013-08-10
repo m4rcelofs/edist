@@ -14,6 +14,7 @@ import org.apache.commons.io.IOUtils;
 import com.erep.dist.CloseablePM;
 import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
+import com.erep.dist.cache.CacheFacade;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.enums.PlayerStatus;
 import com.erep.dist.erep.CitizenParser;
@@ -66,6 +67,9 @@ public class GetUserInfoTask extends HttpServlet {
 			player.setAvatar(playerInfo.get("avatar"));
 			player.setStatus(PlayerStatus.ENABLED);
 
+			CacheFacade
+					.remove("com.erep.dist.DataAccessObject.findPlayerId(String="
+							+ player.getName() + ";)");
 		}
 
 	}

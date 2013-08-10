@@ -12,6 +12,7 @@ import javax.jdo.annotations.PrimaryKey;
 
 import com.erep.dist.data.enums.DistType;
 import com.erep.dist.data.enums.RequestStatus;
+import com.erep.dist.data.enums.RocketQuality;
 import com.google.appengine.api.datastore.Key;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
@@ -33,6 +34,14 @@ public abstract class Request {
 
 	@Persistent
 	private DistType		type;
+
+	// if DistType == rocket only
+	@Persistent
+	private RocketQuality	quality;
+
+	// if DistType != rocket
+	@Persistent
+	private Integer			requestedFF;
 
 	@Persistent
 	private Date			requestedAt;
@@ -86,5 +95,29 @@ public abstract class Request {
 
 	public void setCompletedAt(Date completedAt) {
 		this.completedAt = completedAt;
+	}
+
+	public DistType getType() {
+		return type;
+	}
+
+	public void setType(DistType type) {
+		this.type = type;
+	}
+
+	public RocketQuality getQuality() {
+		return quality;
+	}
+
+	public void setQuality(RocketQuality quality) {
+		this.quality = quality;
+	}
+
+	public Integer getRequestedFF() {
+		return requestedFF;
+	}
+
+	public void setRequestedFF(Integer requestedFF) {
+		this.requestedFF = requestedFF;
 	}
 }

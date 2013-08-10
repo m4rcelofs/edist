@@ -1,5 +1,7 @@
 package com.erep.dist;
 
+import static com.erep.dist.CipherUtils.encrypt;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -10,18 +12,16 @@ import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
-import com.erep.dist.data.DistRequest;
+import com.erep.dist.cache.Cacheable;
 import com.erep.dist.data.Distributor;
 import com.erep.dist.data.HasTransitID;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
-import com.erep.dist.data.RocketRequest;
+import com.erep.dist.data.Request;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.datanucleus.query.JDOCursorHelper;
-
-import static com.erep.dist.CipherUtils.encrypt;
 
 public class DataAccessObject {
 
@@ -98,27 +98,27 @@ public class DataAccessObject {
 		return true;
 	}
 
-//	public boolean delete(PlayerGroup dto) {
-//		if (ServerConstants.DEFAULT.equalsIgnoreCase(dto.getId()))
-//			return false;
-//		try {
-//			PlayerGroup group = pm.getObjectById(PlayerGroup.class,
-//					createKey(PlayerGroup.class, dto));
-//
-//			PlayerGroup defaultGroup = find(new PlayerGroup());
-//
-//			defaultGroup.getPlayers().addAll(group.getPlayers());
-//			for (Player p : group.getPlayers())
-//				p.setGroup(defaultGroup);
-//
-//			pm.deletePersistent(group);
-//
-//		} catch (JDOObjectNotFoundException e) {
-//			return false;
-//		}
-//
-//		return true;
-//	}
+	// public boolean delete(PlayerGroup dto) {
+	// if (ServerConstants.DEFAULT.equalsIgnoreCase(dto.getId()))
+	// return false;
+	// try {
+	// PlayerGroup group = pm.getObjectById(PlayerGroup.class,
+	// createKey(PlayerGroup.class, dto));
+	//
+	// PlayerGroup defaultGroup = find(new PlayerGroup());
+	//
+	// defaultGroup.getPlayers().addAll(group.getPlayers());
+	// for (Player p : group.getPlayers())
+	// p.setGroup(defaultGroup);
+	//
+	// pm.deletePersistent(group);
+	//
+	// } catch (JDOObjectNotFoundException e) {
+	// return false;
+	// }
+	//
+	// return true;
+	// }
 
 	@SuppressWarnings("unchecked")
 	public List<PlayerGroup> listGroups() {
@@ -135,8 +135,7 @@ public class DataAccessObject {
 		} catch (JDOObjectNotFoundException e) {
 
 			newPlayer.setKey(playerKey);
-			newPlayer.setFfRequests(new ArrayList<DistRequest>());
-			newPlayer.setRocketRequests(new ArrayList<RocketRequest>());
+			newPlayer.setRequests(new ArrayList<Request>());
 
 			PlayerGroup group = find(newPlayer.getGroup());
 			newPlayer.setGroup(group);
@@ -189,6 +188,29 @@ public class DataAccessObject {
 		q.setRange(0, PAGE_LIMIT);
 
 		return (List<Player>) q.execute();
+	}
+
+	public Player find(Player player) {
+		try {
+			if (player == null || player.getId() == null
+					|| player.getId().trim().isEmpty())
+				return null;
+
+			return pm.getObjectById(Player.class,
+					createKey(Player.class, player));
+
+		} catch (JDOObjectNotFoundException e) {
+			return null;
+		}
+	}
+
+	@Cacheable
+	public Key findPlayerKey(String playerName) {
+		Query q = pm.newQuery(Player.class);
+		q.setFilter("name == '" + playerName + "'");
+		q.setResult("key");
+		q.setUnique(true);
+		return (Key) q.execute();
 	}
 
 	public PlayerGroup find(PlayerGroup group) {
