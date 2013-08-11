@@ -1,4 +1,4 @@
-package com.erep.dist.servlets;
+package com.erep.dist.servlets.install;
 
 import java.io.IOException;
 import java.text.DateFormat;
@@ -26,7 +26,6 @@ public class InstallServlet extends HttpServlet {
 
 	private static final long		serialVersionUID	= 1L;
 
-	private static final String		DB_VERSION			= "0.1";
 	private static final DateFormat	dateFormat			= new SimpleDateFormat(
 																"yyyy.MM.dd HH:mm:ss zzzz 'GMT' Z");
 
@@ -63,7 +62,8 @@ public class InstallServlet extends HttpServlet {
 		resp.getWriter().write(
 				"App Version: " + SystemProperty.applicationVersion.get()
 						+ "<br />");
-		resp.getWriter().write("Database Version: " + DB_VERSION + "<br />");
+		resp.getWriter().write(
+				"Database Version: " + ServerConstants.DB_VERSION + "<br />");
 		resp.getWriter().write(
 				"AppEngine SDK version: " + SystemProperty.version.get()
 						+ "<br />");
@@ -88,7 +88,7 @@ public class InstallServlet extends HttpServlet {
 
 		InstallLog log = new InstallLog();
 		log.setDate(new Date());
-		log.setDbVersion(DB_VERSION);
+		log.setDbVersion(ServerConstants.DB_VERSION);
 		log.setAppVersion(SystemProperty.applicationVersion.get());
 		log.setAppEngineVersion(SystemProperty.version.get());
 		User currentUser = UserServiceFactory.getUserService().getCurrentUser();

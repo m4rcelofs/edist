@@ -87,7 +87,7 @@
 	<!-- Install -->
 	<servlet>
 		<servlet-name>installServlet</servlet-name>
-		<servlet-class>com.erep.dist.servlets.InstallServlet</servlet-class>
+		<servlet-class>com.erep.dist.servlets.install.InstallServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
@@ -108,6 +108,7 @@
 	<!-- Default File -->
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
 
 

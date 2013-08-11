@@ -20,6 +20,7 @@ import com.erep.dist.data.HasTransitID;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.Request;
+import com.erep.dist.data.ServerConfig;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
@@ -258,6 +259,12 @@ public class DataAccessObject {
 	private Key createKey(Class<?> clazz, HasTransitID object) {
 		return KeyFactory.createKey(clazz.getSimpleName(),
 				Long.valueOf(object.getId()));
+	}
+
+	@Cacheable
+	// TODO clear cache
+	public ServerConfig getServerConfig() {
+		return pm.getObjectById(ServerConfig.class, ServerConstants.DEFAULT_ID);
 	}
 
 }

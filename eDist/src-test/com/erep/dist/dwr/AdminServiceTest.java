@@ -18,7 +18,7 @@ import com.erep.dist.data.DistConfig;
 import com.erep.dist.data.Distributor;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
-import com.erep.dist.servlets.InstallHelper;
+import com.erep.dist.servlets.install.InstallHelper;
 import com.google.appengine.tools.development.testing.LocalDatastoreServiceTestConfig;
 import com.google.appengine.tools.development.testing.LocalServiceTestHelper;
 

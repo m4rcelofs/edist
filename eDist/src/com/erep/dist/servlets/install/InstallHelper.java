@@ -1,4 +1,4 @@
-package com.erep.dist.servlets;
+package com.erep.dist.servlets.install;
 
 import java.util.HashSet;
 
