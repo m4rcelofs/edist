@@ -48,7 +48,7 @@ public class GetUserInfoTask extends HttpServlet {
 			URLFetchService fetchService = URLFetchServiceFactory
 					.getURLFetchService();
 			HTTPResponse response = fetchService.fetch(new URL(eRepURL.CITIZEN
-					.getUrl(player.getId())));
+					.getUrl(player.getId() + "")));
 
 			if (response.getResponseCode() == 404) {
 				player.setStatus(PlayerStatus.ERROR);

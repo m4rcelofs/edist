@@ -22,12 +22,13 @@ public class Distributor implements HasTransitID {
 
 	@NotPersistent
 	@RemoteProperty
-	private String	id;
+	private Long	id;
 
 	@Persistent
 	@RemoteProperty
 	private String	name;
 
+	@Persistent
 	@RemoteProperty
 	private String	email;
 
@@ -43,13 +44,13 @@ public class Distributor implements HasTransitID {
 		this.key = key;
 	}
 
-	public String getId() {
+	public Long getId() {
 		if (key != null)
-			return key.getName();
+			return key.getId();
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

@@ -1,0 +1,52 @@
+package com.erep.dist.servlets;
+
+import java.util.HashSet;
+
+import com.erep.dist.ServerConstants;
+import com.erep.dist.data.DistConfig;
+import com.erep.dist.data.Distributor;
+import com.erep.dist.data.Player;
+import com.erep.dist.data.PlayerGroup;
+import com.erep.dist.data.ServerConfig;
+import com.erep.dist.data.enums.ConfigGranularity;
+import com.google.appengine.api.datastore.KeyFactory;
+
+public class InstallHelper {
+	public static ServerConfig newDefaultConfig() {
+		ServerConfig config = new ServerConfig();
+
+		config.setKey(KeyFactory.createKey(ServerConfig.class.getSimpleName(),
+				ServerConstants.DEFAULT_ID));
+		config.setGranularity(ConfigGranularity.MU);
+		config.setMuName("  ");
+
+		DistConfig distConfig = new DistConfig();
+		distConfig.setKey(KeyFactory.createKey(
+				DistConfig.class.getSimpleName(), ServerConstants.DEFAULT_ID));
+		distConfig.setAutoSend(false);
+		distConfig.setCurrentMaxDailyFF(160);
+		distConfig.setRocketAllowed(false);
+
+		Distributor distributor = new Distributor();
+		distributor.setEmail("exemplo@exemplo.com");
+		distributor.setPassword("");
+		distributor.setKey(KeyFactory.createKey(
+				Distributor.class.getSimpleName(), ServerConstants.DEFAULT_ID));
+
+		distConfig.setDistributor(distributor);
+		config.setMuConfig(distConfig);
+
+		return config;
+	}
+
+	public static PlayerGroup newDefaultGroup() {
+		PlayerGroup group = new PlayerGroup();
+
+		group.setGroupName("Default");
+		group.setKey(KeyFactory.createKey(PlayerGroup.class.getSimpleName(),
+				ServerConstants.DEFAULT_ID));
+		group.setPlayers(new HashSet<Player>());
+
+		return group;
+	}
+}

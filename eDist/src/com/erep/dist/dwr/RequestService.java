@@ -50,12 +50,12 @@ public class RequestService {
 
 		Player player = new Player();
 		player.setAvatar("http://static.erepublik.net/uploads/avatars/Citizens/2011/11/11/a77319cdddeccec56e795892984edec9.jpg");
-		player.setId("5313713");
+		player.setId(5313713l);
 		player.setName("nW0lf");
 		player.setRocketEnabled(RocketQuality.Q5);
 		player.setStatus(PlayerStatus.ENABLED);
 		PlayerGroup group = new PlayerGroup();
-		group.setId(ServerConstants.DEFAULT);
+		group.setId(ServerConstants.DEFAULT_ID);
 		group.setGroupName("default");
 		player.setGroup(group);
 		dto.setPlayer(player);
@@ -67,12 +67,11 @@ public class RequestService {
 			String idNameOrLink) {
 		Player p = new Player();
 		try {
-			Long.valueOf(idNameOrLink);
-			p.setId(idNameOrLink);
+			p.setId(Long.valueOf(idNameOrLink));
 		} catch (NumberFormatException e) {
 			Matcher matcher = profilePattern.matcher(idNameOrLink);
 			if (matcher.matches())
-				p.setId(matcher.group("id"));
+				p.setId(Long.valueOf(matcher.group("id")));
 			else
 				p.setKey(dao.findPlayerKey(idNameOrLink));
 		}

@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashSet;
 
 import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
@@ -16,15 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 import com.erep.dist.CloseablePM;
 import com.erep.dist.PMF;
 import com.erep.dist.ServerConstants;
-import com.erep.dist.data.DistConfig;
-import com.erep.dist.data.Distributor;
 import com.erep.dist.data.InstallLog;
-import com.erep.dist.data.Player;
-import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.ServerConfig;
-import com.erep.dist.data.enums.ConfigGranularity;
 import com.erep.dist.erep.eRepTimeCalculator;
-import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.utils.SystemProperty;
@@ -90,8 +83,8 @@ public class InstallServlet extends HttpServlet {
 	}
 
 	private void install(PersistenceManager pm) {
-		pm.makePersistent(defaultGroup());
-		pm.makePersistent(defaultConfig());
+		pm.makePersistent(InstallHelper.newDefaultGroup());
+		pm.makePersistent(InstallHelper.newDefaultConfig());
 
 		InstallLog log = new InstallLog();
 		log.setDate(new Date());
@@ -105,41 +98,4 @@ public class InstallServlet extends HttpServlet {
 		pm.makePersistent(log);
 	}
 
-	private PlayerGroup defaultGroup() {
-		PlayerGroup group = new PlayerGroup();
-
-		group.setGroupName("Default");
-		group.setKey(KeyFactory.createKey(PlayerGroup.class.getSimpleName(),
-				ServerConstants.DEFAULT));
-		group.setPlayers(new HashSet<Player>());
-
-		return group;
-	}
-
-	private ServerConfig defaultConfig() {
-		ServerConfig config = new ServerConfig();
-
-		config.setKey(KeyFactory.createKey(ServerConfig.class.getSimpleName(),
-				ServerConstants.DEFAULT));
-		config.setGranularity(ConfigGranularity.MU);
-		config.setMuName("  ");
-
-		DistConfig distConfig = new DistConfig();
-		distConfig.setKey(KeyFactory.createKey(
-				DistConfig.class.getSimpleName(), ServerConstants.DEFAULT));
-		distConfig.setAutoSend(false);
-		distConfig.setCurrentMaxDailyFF(160);
-		distConfig.setRocketAllowed(false);
-
-		Distributor distributor = new Distributor();
-		distributor.setEmail("exemplo@exemplo.com");
-		distributor.setPassword("");
-		distributor.setKey(KeyFactory.createKey(
-				Distributor.class.getSimpleName(), ServerConstants.DEFAULT));
-
-		distConfig.setDistributor(distributor);
-		config.setMuConfig(distConfig);
-
-		return config;
-	}
 }

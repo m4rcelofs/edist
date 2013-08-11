@@ -22,16 +22,14 @@ import com.google.appengine.datanucleus.query.JDOCursorHelper;
 public class AdminService {
 
 	@RemoteMethod
-	public boolean addDistributor(Distributor dist) {
-		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			return new DataAccessObject(pm).add(dist);
-		}
-	}
+	public boolean saveDistributor(Distributor dist) {
 
-	@RemoteMethod
-	public boolean editDistributor(Distributor dist) {
+		if (dist == null || dist.getEmail() == null
+				|| dist.getEmail().trim().isEmpty())
+			return false;
+
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			return new DataAccessObject(pm).add(dist);
+			return new DataAccessObject(pm).save(dist);
 		}
 	}
 
@@ -45,34 +43,17 @@ public class AdminService {
 	}
 
 	@RemoteMethod
-	public boolean addGroup(PlayerGroup group) {
+	public boolean saveGroup(PlayerGroup group) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			return new DataAccessObject(pm).add(group);
+			return new DataAccessObject(pm).save(group);
 		}
 	}
-
-	@RemoteMethod
-	public boolean editGroup(PlayerGroup group) {
-		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			return new DataAccessObject(pm).edit(group);
-		}
-	}
-
-	// @RemoteMethod
-	// public boolean deleteGroup(PlayerGroup group) {
-	// try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-	// return new DataAccessObject(pm).delete(group);
-	// }
-	// }
 
 	@RemoteMethod
 	public List<PlayerGroup> listGroups() {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-
 			pm.getFetchPlan().addGroup("groupListing");
-
 			List<PlayerGroup> groups = new DataAccessObject(pm).listGroups();
-
 			return groups;
 		}
 	}
@@ -82,12 +63,12 @@ public class AdminService {
 
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 
-			boolean created = new DataAccessObject(pm).add(player);
+			boolean created = new DataAccessObject(pm).save(player);
 
 			if (created) {
 				Queue queue = QueueFactory.getQueue("api");
 				queue.add(withUrl("/admin/tasks/getUserInfo").param("id",
-						player.getId()));
+						player.getId() + ""));
 			}
 			return created;
 		}
@@ -97,7 +78,7 @@ public class AdminService {
 	@RemoteMethod
 	public boolean editPlayer(Player player) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			return new DataAccessObject(pm).edit(player);
+			return new DataAccessObject(pm).save(player);
 		}
 	}
 

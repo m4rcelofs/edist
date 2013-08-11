@@ -1,10 +1,13 @@
 package com.erep.dist;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -29,6 +32,9 @@ public class CipherUtils {
 			0x3A, 0x44, 0x37, 0x25, 0x1E	};
 
 	private static String		serverPasswordBuffered;
+
+	private static Logger		logger		= Logger.getLogger(CipherUtils.class
+													.getName());
 
 	public static String encrypt(String strToEncrypt) throws Exception {
 		return encrypt(getServerPassword(), strToEncrypt);
@@ -66,6 +72,10 @@ public class CipherUtils {
 			try (BufferedReader reader = new BufferedReader(new FileReader(
 					"WEB-INF/default.key"))) {
 				serverPasswordBuffered = IOUtils.toString(reader);
+			} catch (FileNotFoundException e) {
+				logger.log(Level.SEVERE,
+						"Could not find crypto key, using default");
+				return ServerConstants.DEFAULT;
 			}
 		}
 		return serverPasswordBuffered;

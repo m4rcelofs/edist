@@ -7,6 +7,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
@@ -29,29 +31,48 @@ public class DataAccessObject {
 
 	private PersistenceManager		pm;
 
+	private static Logger			logger		= Logger.getLogger(DataAccessObject.class
+														.getName());
+
 	public DataAccessObject(PersistenceManager pm) {
 		this.pm = pm;
 	}
 
-	public boolean add(Distributor dist) {
+	public boolean save(Distributor dist) {
+		if (dist.getId() != null)
+			return edit(dist);
+		return add(dist);
+	}
+
+	private boolean add(Distributor dist) {
+		if (dist.getPassword() == null || dist.getPassword().trim().isEmpty()
+				|| dist.getEmail() == null
+				|| dist.getPassword().trim().isEmpty())
+			return false;
+		try {
+			dist.setPassword(encrypt(dist.getPassword()));
+			pm.makePersistent(dist);
+			return true;
+		} catch (Exception e) {
+			logger.log(Level.SEVERE,
+					"Exception while trying to add a distributor", e);
+			return false;
+		}
+	}
+
+	private boolean edit(Distributor dist) {
 		try {
 			Distributor old = pm.getObjectById(Distributor.class,
 					createKey(Distributor.class, dist));
 			return edit(old, dist);
 		} catch (JDOObjectNotFoundException e) {
-			pm.makePersistent(dist);
-			return true;
+			return false;
 		}
-	}
-
-	public boolean edit(Distributor dist) {
-		Distributor old = pm.getObjectById(Distributor.class,
-				createKey(Distributor.class, dist));
-		return edit(old, dist);
 	}
 
 	private boolean edit(Distributor old, Distributor newest) {
 		try {
+			old.setName(newest.getName());
 			old.setEmail(newest.getEmail());
 			if (newest.getPassword() != null
 					&& !newest.getPassword().trim().isEmpty())
@@ -68,57 +89,44 @@ public class DataAccessObject {
 		return (List<Distributor>) q.execute();
 	}
 
-	public boolean add(PlayerGroup group) {
+	public boolean save(PlayerGroup group) {
+		if (group.getId() != null)
+			return edit(group);
+		else
+			return add(group);
+	}
+
+	private boolean add(PlayerGroup group) {
+		group.setPlayers(new HashSet<Player>());
+		pm.makePersistent(group);
+		return true;
+	}
+
+	private boolean edit(PlayerGroup group) {
 		try {
 			PlayerGroup old = pm.getObjectById(PlayerGroup.class,
 					createKey(PlayerGroup.class, group));
 			return edit(old, group);
 		} catch (JDOObjectNotFoundException e) {
-			group.setPlayers(new HashSet<Player>());
-			pm.makePersistent(group);
-			return true;
+			return false;
 		}
-	}
-
-	public boolean edit(PlayerGroup group) {
-		PlayerGroup old = find(group);
-		return edit(old, group);
 	}
 
 	private boolean edit(PlayerGroup old, PlayerGroup newest) {
 
 		old.setGroupName(newest.getGroupName());
-		old.getConfig().setAutoSend(newest.getConfig().getAutoSend());
-		old.getConfig().setCurrentMaxDailyFF(
-				newest.getConfig().getCurrentMaxDailyFF());
-		old.getConfig().setRocketAllowed(newest.getConfig().getRocketAllowed());
-		old.getConfig().setDistributor(
-				find(newest.getConfig().getDistributor()));
+		if (newest.getConfig() != null) {
+			old.getConfig().setAutoSend(newest.getConfig().getAutoSend());
+			old.getConfig().setCurrentMaxDailyFF(
+					newest.getConfig().getCurrentMaxDailyFF());
+			old.getConfig().setRocketAllowed(
+					newest.getConfig().getRocketAllowed());
+			old.getConfig().setDistributor(
+					find(newest.getConfig().getDistributor()));
+		}
 
 		return true;
 	}
-
-	// public boolean delete(PlayerGroup dto) {
-	// if (ServerConstants.DEFAULT.equalsIgnoreCase(dto.getId()))
-	// return false;
-	// try {
-	// PlayerGroup group = pm.getObjectById(PlayerGroup.class,
-	// createKey(PlayerGroup.class, dto));
-	//
-	// PlayerGroup defaultGroup = find(new PlayerGroup());
-	//
-	// defaultGroup.getPlayers().addAll(group.getPlayers());
-	// for (Player p : group.getPlayers())
-	// p.setGroup(defaultGroup);
-	//
-	// pm.deletePersistent(group);
-	//
-	// } catch (JDOObjectNotFoundException e) {
-	// return false;
-	// }
-	//
-	// return true;
-	// }
 
 	@SuppressWarnings("unchecked")
 	public List<PlayerGroup> listGroups() {
@@ -126,37 +134,38 @@ public class DataAccessObject {
 		return (List<PlayerGroup>) q.execute();
 	}
 
-	public boolean add(Player newPlayer) {
-		Key playerKey = createKey(Player.class, newPlayer);
-
+	public boolean save(Player player) {
+		Key playerKey = createKey(Player.class, player);
 		try {
 			Player oldPlayer = pm.getObjectById(Player.class, playerKey);
-			return edit(oldPlayer, newPlayer);
+			return edit(oldPlayer, player);
 		} catch (JDOObjectNotFoundException e) {
-
-			newPlayer.setKey(playerKey);
-			newPlayer.setRequests(new ArrayList<Request>());
-
-			PlayerGroup group = find(newPlayer.getGroup());
-			newPlayer.setGroup(group);
-			group.addPlayer(newPlayer);
-
-			pm.makePersistent(newPlayer);
-
-			return true;
+			player.setKey(playerKey);
+			return add(player);
 		}
 	}
 
-	public boolean edit(Player newPlayer) {
-		Player oldPlayer = pm.getObjectById(Player.class,
-				createKey(Player.class, newPlayer));
-		return edit(oldPlayer, newPlayer);
+	private boolean add(Player newPlayer) {
+
+		newPlayer.setRequests(new ArrayList<Request>());
+
+		PlayerGroup group = find(newPlayer.getGroup());
+		newPlayer.setGroup(group);
+		group.addPlayer(newPlayer);
+
+		pm.makePersistent(newPlayer);
+
+		return true;
 	}
 
 	private boolean edit(Player old, Player newest) {
-		old.getConfig().setAutoSend(newest.getConfig().getAutoSend());
-		old.getConfig().setCurrentMaxDailyFF(
-				newest.getConfig().getCurrentMaxDailyFF());
+		if (old.getConfig() == null)
+			old.setConfig(newest.getConfig());
+		else {
+			old.getConfig().setAutoSend(newest.getConfig().getAutoSend());
+			old.getConfig().setCurrentMaxDailyFF(
+					newest.getConfig().getCurrentMaxDailyFF());
+		}
 
 		old.setRocketEnabled(newest.getRocketEnabled());
 		old.setStatus(newest.getStatus());
@@ -192,8 +201,7 @@ public class DataAccessObject {
 
 	public Player find(Player player) {
 		try {
-			if (player == null || player.getId() == null
-					|| player.getId().trim().isEmpty())
+			if (player == null || player.getId() == null)
 				return null;
 
 			return pm.getObjectById(Player.class,
@@ -215,8 +223,7 @@ public class DataAccessObject {
 
 	public PlayerGroup find(PlayerGroup group) {
 		try {
-			if (group == null || group.getId() == null
-					|| group.getId().trim().isEmpty())
+			if (group == null || group.getId() == null)
 				return defaultGroup();
 
 			return pm.getObjectById(PlayerGroup.class,
@@ -228,8 +235,7 @@ public class DataAccessObject {
 
 	public Distributor find(Distributor dist) {
 		try {
-			if (dist == null || dist.getId() == null
-					|| dist.getId().trim().isEmpty())
+			if (dist == null || dist.getId() == null)
 				return defaultDistributor();
 
 			return pm.getObjectById(Distributor.class,
@@ -241,16 +247,17 @@ public class DataAccessObject {
 
 	private Distributor defaultDistributor() {
 		return pm.getObjectById(Distributor.class, KeyFactory.createKey(
-				Distributor.class.getSimpleName(), ServerConstants.DEFAULT));
+				Distributor.class.getSimpleName(), ServerConstants.DEFAULT_ID));
 	}
 
 	private PlayerGroup defaultGroup() {
 		return pm.getObjectById(PlayerGroup.class, KeyFactory.createKey(
-				PlayerGroup.class.getSimpleName(), ServerConstants.DEFAULT));
+				PlayerGroup.class.getSimpleName(), ServerConstants.DEFAULT_ID));
 	}
 
 	private Key createKey(Class<?> clazz, HasTransitID object) {
-		return KeyFactory.createKey(clazz.getSimpleName(), object.getId());
+		return KeyFactory.createKey(clazz.getSimpleName(),
+				Long.valueOf(object.getId()));
 	}
 
 }

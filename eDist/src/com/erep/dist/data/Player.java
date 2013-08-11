@@ -35,7 +35,7 @@ public class Player implements HasTransitID {
 
 	@NotPersistent
 	@RemoteProperty
-	private String			id;
+	private Long			id;
 
 	@Persistent
 	@RemoteProperty
@@ -67,13 +67,13 @@ public class Player implements HasTransitID {
 
 	public Player() {}
 
-	public String getId() {
+	public Long getId() {
 		if (key != null)
-			return key.getName();
+			return key.getId();
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

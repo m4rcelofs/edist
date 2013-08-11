@@ -2,8 +2,8 @@ package com.erep.dist.data;
 
 public interface HasTransitID {
 
-	public String getId();
+	public Long getId();
 
-	public void setId(String id);
+	public void setId(Long id);
 
 }
