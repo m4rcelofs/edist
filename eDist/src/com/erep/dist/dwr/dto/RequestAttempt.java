@@ -15,7 +15,7 @@ public class RequestAttempt {
 	private Integer	availableFF;
 
 	@RemoteProperty
-	private Boolean	rocketEnabled;
+	private Boolean	rocketAllowed;
 
 	public Player getPlayer() {
 		return player;
@@ -33,12 +33,12 @@ public class RequestAttempt {
 		this.availableFF = availableFF;
 	}
 
-	public Boolean getRocketEnabled() {
-		return rocketEnabled;
+	public Boolean getRocketAllowed() {
+		return rocketAllowed;
 	}
 
-	public void setRocketEnabled(Boolean rocketEnabled) {
-		this.rocketEnabled = rocketEnabled;
+	public void setRocketAllowed(Boolean rocketAllowed) {
+		this.rocketAllowed = rocketAllowed;
 	}
 
 }

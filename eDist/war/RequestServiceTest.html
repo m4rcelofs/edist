@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>eDist 0.1 - Exército Brasileiro</title>
+
+<script type='text/javascript' src='/dwr/engine.js'></script>
+<script type='text/javascript' src='/dwr/interface/RequestService.js'></script>
+
+<script type='text/javascript' src='js/jquery-1.10.2.min.cache.js'></script>
+
+<script type="text/javascript">
+	function errorHandlerFunction(message) {
+		alert("Oops: " + message);
+	}
+
+	function getCurrentStatus(string) {
+		RequestService.getCurrentStatus(string, {
+			callback : function(response) {
+				$('#test1').append('<br/>' + JSON.stringify(response));
+			},
+			errorHandler : errorHandlerFunction
+		});
+	}
+</script>
+
+</head>
+
+<body onload="">
+	<h1>Hello App Engine!</h1>
+	<div id="test1">
+		<button onclick="getCurrentStatus('5313713')">getStatus (id)</button>
+		<br />
+		<button
+			onclick="getCurrentStatus('http://www.erepublik.com/en/citizen/profile/5313713')">getStatus
+			(link)</button>
+		<br />
+		<button onclick="getCurrentStatus('nW0lf')">getStatus (nick)</button>
+	</div>
+</body>
+</html>

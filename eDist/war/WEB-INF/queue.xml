@@ -12,4 +12,15 @@
 			<min-backoff-seconds>30</min-backoff-seconds>
 		</retry-parameters>
 	</queue>
+	<queue>
+		<name>
+			erepublik-logged-in
+		</name>
+		<rate>1/s</rate>
+		<max-concurrent-requests>1</max-concurrent-requests>
+		<bucket-size>1</bucket-size>
+		<retry-parameters>
+			<min-backoff-seconds>30</min-backoff-seconds>
+		</retry-parameters>
+	</queue>
 </queue-entries>

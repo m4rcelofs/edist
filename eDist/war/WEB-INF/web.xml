@@ -20,10 +20,13 @@
 				
 				com.erep.dist.data.enums.DistType,
 				com.erep.dist.data.enums.PlayerStatus,
+				com.erep.dist.data.enums.RocketQuality,
 				
 				com.erep.dist.data.Player,
+				com.erep.dist.data.PlayerGroup,
 				
 				com.erep.dist.dwr.dto.RequestAttempt
+				
 			</param-value>
 		</init-param>
 	</servlet>
@@ -80,6 +83,16 @@
 	<servlet-mapping>
 		<servlet-name>getUserInfoTask</servlet-name>
 		<url-pattern>/admin/tasks/getUserInfo</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<servlet-name>processRequestTask</servlet-name>
+		<servlet-class>com.erep.dist.servlets.ProcessRequestTask</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>processRequestTask</servlet-name>
+		<url-pattern>/admin/tasks/processRequest</url-pattern>
 	</servlet-mapping>
 
 	<!-- Install -->

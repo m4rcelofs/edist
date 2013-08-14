@@ -137,6 +137,10 @@ public class Player implements HasTransitID {
 		return requests;
 	}
 
+	public void addRequest(Request request) {
+		this.requests.add(request);
+	}
+
 	public void setRequests(List<Request> requests) {
 		this.requests = requests;
 	}
