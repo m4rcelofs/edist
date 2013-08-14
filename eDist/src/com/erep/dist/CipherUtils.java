@@ -74,7 +74,7 @@ public class CipherUtils {
 				serverPasswordBuffered = IOUtils.toString(reader);
 			} catch (FileNotFoundException e) {
 				logger.log(Level.SEVERE,
-						"Could not find crypto key, using default");
+						"Could not find crypto key, using code default");
 				return ServerConstants.DEFAULT;
 			}
 		}

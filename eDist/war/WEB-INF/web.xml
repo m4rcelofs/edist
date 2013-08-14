@@ -46,12 +46,10 @@
 			<param-name>classes</param-name>
 			<param-value>
 				com.erep.dist.data.DistConfig,
-				com.erep.dist.data.DistRequest,
 				com.erep.dist.data.Distributor,
 				com.erep.dist.data.Player,
 				com.erep.dist.data.PlayerGroup,
 				com.erep.dist.data.Request,
-				com.erep.dist.data.RocketRequest,
 				com.erep.dist.data.ServerConfig,
 				
 				com.erep.dist.dwr.AdminService,

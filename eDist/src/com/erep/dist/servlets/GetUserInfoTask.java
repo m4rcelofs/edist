@@ -19,8 +19,6 @@ import com.erep.dist.data.Player;
 import com.erep.dist.data.enums.PlayerStatus;
 import com.erep.dist.erep.CitizenParser;
 import com.erep.dist.erep.eRepURL;
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.urlfetch.HTTPResponse;
 import com.google.appengine.api.urlfetch.URLFetchService;
 import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
@@ -38,12 +36,10 @@ public class GetUserInfoTask extends HttpServlet {
 		if (erId == null || erId.trim().isEmpty())
 			return;
 
-		Key playerId = KeyFactory.createKey(Player.class.getSimpleName(), erId);
-
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 
 			DataAccessObject dao = new DataAccessObject(pm);
-			Player player = dao.getPlayer(playerId);
+			Player player = dao.getPlayer(erId);
 
 			URLFetchService fetchService = URLFetchServiceFactory
 					.getURLFetchService();

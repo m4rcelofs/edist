@@ -154,8 +154,6 @@ public class DataAccessObject {
 		newPlayer.setGroup(group);
 		group.addPlayer(newPlayer);
 
-		pm.makePersistent(newPlayer);
-
 		return true;
 	}
 
@@ -180,8 +178,10 @@ public class DataAccessObject {
 		return true;
 	}
 
-	public Player getPlayer(Key key) {
-		return pm.getObjectById(Player.class, key);
+	public Player getPlayer(String id) {
+		Key playerKey = KeyFactory.createKey(Player.class.getSimpleName(),
+				Long.valueOf(id));
+		return pm.getObjectById(Player.class, playerKey);
 	}
 
 	@SuppressWarnings("unchecked")

@@ -1,5 +1,6 @@
 package com.erep.dist.data;
 
+import javax.jdo.annotations.FetchGroup;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -14,6 +15,7 @@ import com.google.appengine.datanucleus.annotations.Unowned;
 
 @DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
+@FetchGroup(name = "groupListing", members = { @Persistent(name = "distributor") })
 public class DistConfig {
 
 	@PrimaryKey
@@ -33,7 +35,8 @@ public class DistConfig {
 	private Boolean		autoSend;
 
 	@Unowned
-	@Persistent(defaultFetchGroup = "true")
+	@Persistent
+	@RemoteProperty
 	private Distributor	distributor;
 
 	public DistConfig() {}
