@@ -12,6 +12,7 @@ import org.directwebremoting.annotations.RemoteProxy;
 import com.erep.dist.CloseablePM;
 import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
+import com.erep.dist.RequestsHelper;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.Request;
 import com.erep.dist.data.enums.DistType;
@@ -31,9 +32,10 @@ public class RequestService {
 
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			DataAccessObject dao = new DataAccessObject(pm);
+			RequestsHelper helper = new RequestsHelper(dao);
 
 			Player dbPlayer = dao.find(player);
-			Request request = newRequest(dbPlayer, requestedFF, type);
+			Request request = newRequest(helper, dbPlayer, requestedFF, type);
 
 			addToQueue(request);
 
@@ -41,7 +43,8 @@ public class RequestService {
 		}
 	}
 
-	private Request newRequest(Player player, Integer requestedFF, DistType type) {
+	private Request newRequest(RequestsHelper helper, Player player,
+			Integer requestedFF, DistType type) {
 		Request request = new Request();
 		request.setRequestedAt(new Date());
 		request.setType(type);
@@ -51,8 +54,8 @@ public class RequestService {
 			// TODO
 			// request.setQuality(quality)
 		} else {
-			// TODO verify
-			request.setRequestedFF(requestedFF);
+			int maxFF = helper.verifyMaxFF(player);
+			request.setRequestedFF(requestedFF < maxFF ? requestedFF : maxFF);
 		}
 
 		request.setPlayer(player);
@@ -79,18 +82,16 @@ public class RequestService {
 			pm.getFetchPlan().addGroup("requestAttempt");
 
 			DataAccessObject dao = new DataAccessObject(pm);
+			RequestsHelper helper = new RequestsHelper(dao);
 
 			Player p = identifyRequestString(dao, idNameOrLink.trim());
+
 			dto.setPlayer(p);
-			// TODO
+			dto.setRocketAllowed(helper.verifyRocketAllowed(p));
+			dto.setAvailableFF(helper.verifyMaxFF(p));
+
+			return dto;
 		}
-
-		//
-		dto.setAvailableFF(160);
-		dto.setRocketAllowed(false);
-		//
-
-		return dto;
 	}
 
 	private Player identifyRequestString(DataAccessObject dao,

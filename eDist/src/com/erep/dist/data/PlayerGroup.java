@@ -91,4 +91,24 @@ public class PlayerGroup implements HasTransitID {
 		return this.players.remove(player);
 	}
 
+	public Integer getCurrentMaxDailyFF() {
+		if (config != null)
+			return config.getCurrentMaxDailyFF();
+		// fallback to default
+		return null;
+	}
+
+	public Boolean getRocketAllowed() {
+		if (config != null)
+			return config.getRocketAllowed();
+		// fallback to default
+		return null;
+	}
+
+	public Distributor getDistributor() {
+		if (config != null)
+			return config.getDistributor();
+		// fallback to default
+		return null;
+	}
 }

@@ -145,4 +145,28 @@ public class Player implements HasTransitID {
 		this.requests = requests;
 	}
 
+	public Integer getCurrentMaxDailyFF() {
+		if (config != null && config.getCurrentMaxDailyFF() != null)
+			return getCurrentMaxDailyFF();
+		else
+			// fallback to group
+			return group.getCurrentMaxDailyFF();
+	}
+
+	public Boolean getRocketAllowed() {
+		if (config != null && config.getRocketAllowed() != null)
+			return config.getRocketAllowed();
+		else
+			// fallback to group
+			return group.getRocketAllowed();
+	}
+
+	public Distributor getDistributor() {
+		if (config != null && config.getDistributor() != null)
+			return config.getDistributor();
+		else
+			// fallback to group
+			return group.getDistributor();
+	}
+
 }
