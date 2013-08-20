@@ -18,6 +18,7 @@ import com.erep.dist.data.Request;
 import com.erep.dist.data.enums.DistType;
 import com.erep.dist.data.enums.RequestStatus;
 import com.erep.dist.dwr.dto.RequestAttempt;
+import com.erep.dist.erep.eRepTimeCalculator;
 import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
 
@@ -51,6 +52,7 @@ public class RequestService {
 			Integer requestedFF, DistType type) {
 		Request request = new Request();
 		request.setRequestedAt(new Date());
+		request.seteRepDay(eRepTimeCalculator.geteRepDay());
 		request.setType(type);
 		request.setStatus(RequestStatus.REQUESTED);
 

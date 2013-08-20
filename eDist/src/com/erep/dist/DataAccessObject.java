@@ -193,17 +193,17 @@ public class DataAccessObject {
 	}
 
 	public List<Request> listRequests(Distributor dist, String encodedCursor) {
-		String filter = "distributor == " + createKey(Distributor.class, dist);
+		String filter = "distributor == " + dist.getId();
 		return listRequests(filter, encodedCursor);
 	}
 
 	public List<Request> listRequests(Player player, String encodedCursor) {
-		String filter = "player == " + createKey(Player.class, player);
+		String filter = "player == " + player.getId();
 		return listRequests(filter, encodedCursor);
 	}
 
 	public List<Request> listRequests(PlayerGroup group, String encodedCursor) {
-		String filter = "group == " + createKey(PlayerGroup.class, group);
+		String filter = "group == " + group.getId();
 		return listRequests(filter, encodedCursor);
 	}
 
@@ -215,6 +215,11 @@ public class DataAccessObject {
 		setCursor(q, encodedCursor);
 		q.setRange(0, ServerConstants.QUERY_PAGE_LIMIT);
 		return (List<Request>) q.execute();
+	}
+
+	public Request getRequest(Long id) {
+		Key key = KeyFactory.createKey(Request.class.getSimpleName(), id);
+		return pm.getObjectById(Request.class, key);
 	}
 
 	public Player find(Player player) {

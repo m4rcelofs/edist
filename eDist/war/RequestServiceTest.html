@@ -23,6 +23,20 @@
 			errorHandler : errorHandlerFunction
 		});
 	}
+
+	function fakeRequest(playerId) {
+		var player = {
+			id : playerId
+		};
+
+		RequestService.sendRequest(player, 0, 'WEAPONS_FOOD', {
+			callback : function(response) {
+				$('#test2').append('<br/>' + JSON.stringify(response));
+			},
+			errorHandler : errorHandlerFunction
+		});
+
+	}
 </script>
 
 </head>
@@ -30,13 +44,16 @@
 <body onload="">
 	<h1>Hello App Engine!</h1>
 	<div id="test1">
-		<button onclick="getCurrentStatus('5313713')">getStatus (id)</button>
+		<button onclick="getCurrentStatus('5313713')">getStatus (string id)</button>
 		<br />
 		<button
 			onclick="getCurrentStatus('http://www.erepublik.com/en/citizen/profile/5313713')">getStatus
 			(link)</button>
 		<br />
 		<button onclick="getCurrentStatus('nW0lf')">getStatus (nick)</button>
+	</div>
+	<div id="test2">
+		<button onclick="fakeRequest(5313713)">fakeRequest (id)</button>
 	</div>
 </body>
 </html>

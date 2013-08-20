@@ -8,7 +8,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.erep.dist.CloseablePM;
+import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
+import com.erep.dist.data.Request;
 
 public class ProcessRequestTask extends HttpServlet {
 
@@ -24,7 +26,12 @@ public class ProcessRequestTask extends HttpServlet {
 			return;
 
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+
+			DataAccessObject dao = new DataAccessObject(pm);
+			Request request = dao.getRequest(Long.valueOf(requestId));
+
 			// TODO
+			request.setDistributor(dao.listDistributors().get(0)); // test
 		}
 
 	}

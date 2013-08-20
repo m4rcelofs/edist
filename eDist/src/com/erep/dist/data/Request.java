@@ -44,7 +44,7 @@ public class Request {
 	// if DistType == rocket only
 	@Persistent
 	@RemoteProperty
-	private RocketQuality	quality;
+	private RocketQuality	rocketQuality;
 
 	// if DistType != rocket
 	@Persistent
@@ -130,12 +130,12 @@ public class Request {
 		this.type = type;
 	}
 
-	public RocketQuality getQuality() {
-		return quality;
+	public RocketQuality getRocketQuality() {
+		return rocketQuality;
 	}
 
-	public void setQuality(RocketQuality quality) {
-		this.quality = quality;
+	public void setRocketQuality(RocketQuality quality) {
+		this.rocketQuality = quality;
 	}
 
 	public Integer getRequestedFF() {
