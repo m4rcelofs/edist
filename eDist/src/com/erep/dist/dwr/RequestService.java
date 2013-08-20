@@ -2,7 +2,6 @@ package com.erep.dist.dwr;
 
 import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withUrl;
 
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

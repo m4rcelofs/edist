@@ -1,5 +1,8 @@
 package com.erep.dist.erep;
 
+import java.util.Date;
+
+import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
@@ -22,6 +25,11 @@ public class eRepTimeCalculator {
 
 	public static int toErepDate(LocalDate date) {
 		return new eRepTimeCalculator().daysBetween(eRepLaunch, date);
+	}
+
+	public static int toErepDate(Date date) {
+		return toErepDate(new DateTime(date).toDateTime(eRepTimeZone)
+				.toLocalDate());
 	}
 
 	@Cacheable

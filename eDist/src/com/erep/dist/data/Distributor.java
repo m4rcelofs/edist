@@ -1,5 +1,6 @@
 package com.erep.dist.data;
 
+import javax.jdo.annotations.FetchGroup;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.NotPersistent;
@@ -14,6 +15,7 @@ import com.google.appengine.api.datastore.Key;
 
 @DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
+@FetchGroup(name = "distributorListing", members = { @Persistent(name = "email") })
 public class Distributor implements HasTransitID {
 
 	@PrimaryKey
@@ -28,7 +30,7 @@ public class Distributor implements HasTransitID {
 	@RemoteProperty
 	private String	name;
 
-	@Persistent
+	@Persistent(defaultFetchGroup = "false")
 	@RemoteProperty
 	private String	email;
 

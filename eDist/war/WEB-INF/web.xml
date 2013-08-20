@@ -59,6 +59,7 @@
 				com.erep.dist.dwr.ReportService,
 				
 				com.erep.dist.dwr.dto.PlayerQuery,
+				com.erep.dist.dwr.dto.ReportQuery,
 
 				com.erep.dist.data.enums.ConfigGranularity,
 				com.erep.dist.data.enums.DistType,

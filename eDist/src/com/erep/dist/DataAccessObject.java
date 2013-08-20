@@ -17,6 +17,7 @@ import com.erep.dist.data.Distributor;
 import com.erep.dist.data.HasTransitID;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
+import com.erep.dist.data.Request;
 import com.erep.dist.data.ServerConfig;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.Key;
@@ -25,12 +26,10 @@ import com.google.appengine.datanucleus.query.JDOCursorHelper;
 
 public class DataAccessObject {
 
-	private static final Integer	PAGE_LIMIT	= 20;
+	private PersistenceManager	pm;
 
-	private PersistenceManager		pm;
-
-	private static Logger			logger		= Logger.getLogger(DataAccessObject.class
-														.getName());
+	private static Logger		logger	= Logger.getLogger(DataAccessObject.class
+												.getName());
 
 	public DataAccessObject(PersistenceManager pm) {
 		this.pm = pm;
@@ -179,17 +178,43 @@ public class DataAccessObject {
 	@SuppressWarnings("unchecked")
 	public List<Player> listPlayers(String encodedCursor) {
 		Query q = pm.newQuery(Player.class);
-
-		if (encodedCursor != null && !encodedCursor.trim().isEmpty()) {
-			Cursor cursor = Cursor.fromWebSafeString(encodedCursor);
-			Map<String, Object> extensionMap = new HashMap<>();
-			extensionMap.put(JDOCursorHelper.CURSOR_EXTENSION, cursor);
-			q.setExtensions(extensionMap);
-		}
-
-		q.setRange(0, PAGE_LIMIT);
-
+		setCursor(q, encodedCursor);
+		q.setRange(0, ServerConstants.QUERY_PAGE_LIMIT);
 		return (List<Player>) q.execute();
+	}
+
+	public List<Request> listRequests(String encodedCursor) {
+		return listRequests("", encodedCursor);
+	}
+
+	public List<Request> listRequests(Integer eRepDay, String encodedCursor) {
+		String filter = "eRepDay == " + eRepDay;
+		return listRequests(filter, encodedCursor);
+	}
+
+	public List<Request> listRequests(Distributor dist, String encodedCursor) {
+		String filter = "distributor == " + createKey(Distributor.class, dist);
+		return listRequests(filter, encodedCursor);
+	}
+
+	public List<Request> listRequests(Player player, String encodedCursor) {
+		String filter = "player == " + createKey(Player.class, player);
+		return listRequests(filter, encodedCursor);
+	}
+
+	public List<Request> listRequests(PlayerGroup group, String encodedCursor) {
+		String filter = "group == " + createKey(PlayerGroup.class, group);
+		return listRequests(filter, encodedCursor);
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Request> listRequests(String filter, String encodedCursor) {
+		Query q = pm.newQuery(Request.class);
+		if (filter != null && !filter.trim().isEmpty())
+			q.setFilter(filter);
+		setCursor(q, encodedCursor);
+		q.setRange(0, ServerConstants.QUERY_PAGE_LIMIT);
+		return (List<Request>) q.execute();
 	}
 
 	public Player find(Player player) {
@@ -202,6 +227,15 @@ public class DataAccessObject {
 
 		} catch (JDOObjectNotFoundException e) {
 			return null;
+		}
+	}
+
+	private void setCursor(Query query, String encodedCursor) {
+		if (encodedCursor != null && !encodedCursor.trim().isEmpty()) {
+			Cursor cursor = Cursor.fromWebSafeString(encodedCursor);
+			Map<String, Object> extensionMap = new HashMap<>();
+			extensionMap.put(JDOCursorHelper.CURSOR_EXTENSION, cursor);
+			query.setExtensions(extensionMap);
 		}
 	}
 

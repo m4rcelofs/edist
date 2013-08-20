@@ -36,6 +36,7 @@ public class AdminService {
 	@RemoteMethod
 	public List<Distributor> listDistributors() {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			pm.getFetchPlan().addGroup("distributorListing");
 			List<Distributor> dists = new DataAccessObject(pm)
 					.listDistributors();
 			return dists;

@@ -2,11 +2,15 @@ package com.erep.dist.data;
 
 import java.util.Date;
 
+import javax.jdo.annotations.FetchGroup;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
+
+import org.directwebremoting.annotations.DataTransferObject;
+import org.directwebremoting.annotations.RemoteProperty;
 
 import com.erep.dist.data.enums.DistType;
 import com.erep.dist.data.enums.RequestStatus;
@@ -14,7 +18,11 @@ import com.erep.dist.data.enums.RocketQuality;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.datanucleus.annotations.Unowned;
 
+@DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
+@FetchGroup(name = "reportListing", members = {
+		@Persistent(name = "distributor"), @Persistent(name = "player"),
+		@Persistent(name = "group") })
 public class Request {
 
 	@PrimaryKey
@@ -22,38 +30,48 @@ public class Request {
 	private Key				key;
 
 	@Persistent
+	@RemoteProperty
 	private Integer			eRepDay;
 
 	@Persistent
+	@RemoteProperty
 	private RequestStatus	status;
 
 	@Persistent
+	@RemoteProperty
 	private DistType		type;
 
 	// if DistType == rocket only
 	@Persistent
+	@RemoteProperty
 	private RocketQuality	quality;
 
 	// if DistType != rocket
 	@Persistent
+	@RemoteProperty
 	private Integer			requestedFF;
 
 	@Persistent
+	@RemoteProperty
 	private Date			requestedAt;
 
 	@Persistent
+	@RemoteProperty
 	private Date			completedAt;
 
 	@Unowned
 	@Persistent
+	@RemoteProperty
 	private Distributor		distributor;
 
 	@Unowned
 	@Persistent
+	@RemoteProperty
 	private Player			player;
 
 	@Unowned
 	@Persistent
+	@RemoteProperty
 	private PlayerGroup		group;
 
 	public Key getKey() {
