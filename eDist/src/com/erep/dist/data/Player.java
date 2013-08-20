@@ -1,7 +1,5 @@
 package com.erep.dist.data;
 
-import java.util.List;
-
 import javax.jdo.annotations.FetchGroup;
 import javax.jdo.annotations.FetchGroups;
 import javax.jdo.annotations.IdentityType;
@@ -61,9 +59,6 @@ public class Player implements HasTransitID {
 	@Persistent
 	@RemoteProperty
 	private RocketQuality	rocketEnabled;
-
-	@Persistent(mappedBy = "player")
-	private List<Request>	requests;
 
 	public Player() {}
 
@@ -131,18 +126,6 @@ public class Player implements HasTransitID {
 
 	public void setConfig(DistConfig config) {
 		this.config = config;
-	}
-
-	public List<Request> getRequests() {
-		return requests;
-	}
-
-	public void addRequest(Request request) {
-		this.requests.add(request);
-	}
-
-	public void setRequests(List<Request> requests) {
-		this.requests = requests;
 	}
 
 	public Integer getCurrentMaxDailyFF() {

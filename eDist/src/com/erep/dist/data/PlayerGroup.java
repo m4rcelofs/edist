@@ -1,7 +1,5 @@
 package com.erep.dist.data;
 
-import java.util.Set;
-
 import javax.jdo.annotations.FetchGroup;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -14,7 +12,6 @@ import org.directwebremoting.annotations.DataTransferObject;
 import org.directwebremoting.annotations.RemoteProperty;
 
 import com.google.appengine.api.datastore.Key;
-import com.google.appengine.datanucleus.annotations.Unowned;
 
 @DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
@@ -36,10 +33,6 @@ public class PlayerGroup implements HasTransitID {
 	@Persistent
 	@RemoteProperty
 	private DistConfig	config;
-
-	@Unowned
-	@Persistent
-	private Set<Player>	players;
 
 	public Key getKey() {
 		return key;
@@ -73,22 +66,6 @@ public class PlayerGroup implements HasTransitID {
 
 	public void setConfig(DistConfig config) {
 		this.config = config;
-	}
-
-	public Set<Player> getPlayers() {
-		return players;
-	}
-
-	public void setPlayers(Set<Player> players) {
-		this.players = players;
-	}
-
-	public boolean addPlayer(Player player) {
-		return this.players.add(player);
-	}
-
-	public boolean removePlayer(Player player) {
-		return this.players.remove(player);
 	}
 
 	public Integer getCurrentMaxDailyFF() {

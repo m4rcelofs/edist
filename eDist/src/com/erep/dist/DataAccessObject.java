@@ -2,9 +2,7 @@ package com.erep.dist;
 
 import static com.erep.dist.CipherUtils.encrypt;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
@@ -19,7 +17,6 @@ import com.erep.dist.data.Distributor;
 import com.erep.dist.data.HasTransitID;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
-import com.erep.dist.data.Request;
 import com.erep.dist.data.ServerConfig;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.Key;
@@ -98,7 +95,6 @@ public class DataAccessObject {
 	}
 
 	private boolean add(PlayerGroup group) {
-		group.setPlayers(new HashSet<Player>());
 		pm.makePersistent(group);
 		return true;
 	}
@@ -148,11 +144,9 @@ public class DataAccessObject {
 
 	private boolean add(Player newPlayer) {
 
-		newPlayer.setRequests(new ArrayList<Request>());
-
 		PlayerGroup group = find(newPlayer.getGroup());
 		newPlayer.setGroup(group);
-		group.addPlayer(newPlayer);
+		pm.makePersistent(newPlayer);
 
 		return true;
 	}
@@ -169,12 +163,10 @@ public class DataAccessObject {
 		old.setRocketEnabled(newest.getRocketEnabled());
 		old.setStatus(newest.getStatus());
 
-		PlayerGroup oldGroup = old.getGroup();
 		PlayerGroup newGroup = find(newest.getGroup());
 
 		old.setGroup(newGroup);
-		newGroup.addPlayer(old);
-		oldGroup.removePlayer(old);
+
 		return true;
 	}
 

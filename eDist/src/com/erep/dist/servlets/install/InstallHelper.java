@@ -1,11 +1,8 @@
 package com.erep.dist.servlets.install;
 
-import java.util.HashSet;
-
 import com.erep.dist.ServerConstants;
 import com.erep.dist.data.DistConfig;
 import com.erep.dist.data.Distributor;
-import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.ServerConfig;
 import com.erep.dist.data.enums.ConfigGranularity;
@@ -45,7 +42,6 @@ public class InstallHelper {
 		group.setGroupName("Default");
 		group.setKey(KeyFactory.createKey(PlayerGroup.class.getSimpleName(),
 				ServerConstants.DEFAULT_ID));
-		group.setPlayers(new HashSet<Player>());
 
 		return group;
 	}

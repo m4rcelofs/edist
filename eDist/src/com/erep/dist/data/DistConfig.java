@@ -33,7 +33,6 @@ public class DistConfig {
 	@Persistent
 	@RemoteProperty
 	private Boolean		autoSend;
-	// TODO link to parent so filtering can be done
 
 	@Unowned
 	@Persistent

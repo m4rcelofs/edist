@@ -12,6 +12,7 @@ import com.erep.dist.data.enums.DistType;
 import com.erep.dist.data.enums.RequestStatus;
 import com.erep.dist.data.enums.RocketQuality;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.datanucleus.annotations.Unowned;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class Request {
@@ -19,9 +20,6 @@ public class Request {
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
 	private Key				key;
-
-	@Persistent
-	private Player			player;
 
 	@Persistent
 	private Integer			eRepDay;
@@ -45,6 +43,18 @@ public class Request {
 
 	@Persistent
 	private Date			completedAt;
+
+	@Unowned
+	@Persistent
+	private Distributor		distributor;
+
+	@Unowned
+	@Persistent
+	private Player			player;
+
+	@Unowned
+	@Persistent
+	private PlayerGroup		group;
 
 	public Key getKey() {
 		return key;
@@ -116,5 +126,21 @@ public class Request {
 
 	public void setRequestedFF(Integer requestedFF) {
 		this.requestedFF = requestedFF;
+	}
+
+	public Distributor getDistributor() {
+		return distributor;
+	}
+
+	public void setDistributor(Distributor distributor) {
+		this.distributor = distributor;
+	}
+
+	public PlayerGroup getGroup() {
+		return group;
+	}
+
+	public void setGroup(PlayerGroup group) {
+		this.group = group;
 	}
 }

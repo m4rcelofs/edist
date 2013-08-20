@@ -2,6 +2,7 @@ package com.erep.dist.dwr;
 
 import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withUrl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -37,6 +38,10 @@ public class RequestService {
 			Player dbPlayer = dao.find(player);
 			Request request = newRequest(helper, dbPlayer, requestedFF, type);
 
+			if (request == null)
+				return false;
+
+			pm.makePersistent(request);
 			addToQueue(request);
 
 			return true;
@@ -55,11 +60,15 @@ public class RequestService {
 			// request.setQuality(quality)
 		} else {
 			int maxFF = helper.verifyMaxFF(player);
+
+			if (maxFF <= 0)
+				return null;
+
 			request.setRequestedFF(requestedFF < maxFF ? requestedFF : maxFF);
 		}
 
 		request.setPlayer(player);
-		player.addRequest(request);
+		request.setGroup(player.getGroup());
 
 		return request;
 	}
