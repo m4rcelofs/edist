@@ -96,6 +96,18 @@
 		<url-pattern>/admin/tasks/processRequest</url-pattern>
 	</servlet-mapping>
 
+	<!-- Cron jobs -->
+	<servlet>
+		<servlet-name>autoDistJob</servlet-name>
+		<servlet-class>com.erep.dist.servlets.AutoDistJob</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>autoDistJob</servlet-name>
+		<url-pattern>/admin/cron/autoDist</url-pattern>
+	</servlet-mapping>
+
+
 	<!-- Install -->
 	<servlet>
 		<servlet-name>installServlet</servlet-name>
