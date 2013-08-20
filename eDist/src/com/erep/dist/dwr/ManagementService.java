@@ -19,7 +19,7 @@ import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.datanucleus.query.JDOCursorHelper;
 
 @RemoteProxy
-public class AdminService {
+public class ManagementService {
 
 	@RemoteMethod
 	public boolean saveDistributor(Distributor dist) {

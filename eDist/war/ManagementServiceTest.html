@@ -5,9 +5,9 @@
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <title>eDist 0.1 - Exército Brasileiro</title>
 
-<script type='text/javascript' src='/admin/dwr/engine.js'></script>
+<script type='text/javascript' src='/management/dwr/engine.js'></script>
 <script type='text/javascript'
-	src='/admin/dwr/interface/AdminService.js'></script>
+	src='/management/dwr/interface/ManagementService.js'></script>
 
 <script type='text/javascript' src='js/jquery-1.10.2.min.cache.js'></script>
 
@@ -26,7 +26,7 @@
 				autoSend : false
 			}
 		};
-		AdminService.addPlayer(player, {
+		ManagementService.addPlayer(player, {
 			callback : function(response) {
 				$('#test2').append('<br /> Player adicionado? ' + response);
 			},
@@ -35,7 +35,7 @@
 	}
 
 	function listPlayers(cursor) {
-		AdminService.listPlayers(cursor, {
+		ManagementService.listPlayers(cursor, {
 			callback : function(response) {
 				$('#test3').append(
 						'<br/> Cursor para próximos resultados: '
@@ -59,7 +59,7 @@
 			email : 'blabla@bla.com',
 			password : '1234567890'
 		};
-		AdminService.saveDistributor(dist, {
+		ManagementService.saveDistributor(dist, {
 			callback : function(response) {
 				$('#test4').append('ok');
 			},
@@ -68,7 +68,7 @@
 	}
 
 	function listDistributors() {
-		AdminService.listDistributors({
+		ManagementService.listDistributors({
 			callback : function(response) {
 				response.forEach(function(item) {
 					$('#test4').append('<br/>' + JSON.stringify(item));
@@ -88,7 +88,7 @@
 				autoSend: false
 			}
 		};
-		AdminService.saveGroup(group, {
+		ManagementService.saveGroup(group, {
 			callback : function(response) {
 				$('#test5').append('ok');
 			},
@@ -97,7 +97,7 @@
 	}
 
 	function listGroups() {
-		AdminService.listGroups({
+		ManagementService.listGroups({
 			callback : function(response) {
 				response.forEach(function(item) {
 					$('#test5').append('<br/>' + JSON.stringify(item));

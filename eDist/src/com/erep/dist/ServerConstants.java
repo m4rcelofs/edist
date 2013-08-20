@@ -11,4 +11,6 @@ public class ServerConstants {
 	public static final Long	DEFAULT_ID			= 1l;
 
 	public static final Integer	QUERY_PAGE_LIMIT	= 20;
+
+	public static final boolean	MOD_FILTER_ACTIVE	= false;		// FIXME
 }

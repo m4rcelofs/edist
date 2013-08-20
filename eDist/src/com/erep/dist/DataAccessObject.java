@@ -12,6 +12,7 @@ import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
+import com.erep.dist.auth.RegisteredUser;
 import com.erep.dist.cache.Cacheable;
 import com.erep.dist.data.Distributor;
 import com.erep.dist.data.HasTransitID;
@@ -22,6 +23,7 @@ import com.erep.dist.data.ServerConfig;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.users.User;
 import com.google.appengine.datanucleus.query.JDOCursorHelper;
 
 public class DataAccessObject {
@@ -275,6 +277,22 @@ public class DataAccessObject {
 		} catch (JDOObjectNotFoundException e) {
 			return defaultDistributor();
 		}
+	}
+
+	@Cacheable
+	public RegisteredUser find(User user) {
+		try {
+			return pm.getObjectById(RegisteredUser.class, user.getUserId());
+		} catch (JDOObjectNotFoundException e) {
+			RegisteredUser regUser = new RegisteredUser(user.getUserId(),
+					user.getEmail());
+			pm.makePersistent(regUser);
+			return regUser;
+		}
+	}
+
+	public RegisteredUser find(RegisteredUser user) {
+		return pm.getObjectById(RegisteredUser.class, user.getgId());
 	}
 
 	private Distributor defaultDistributor() {

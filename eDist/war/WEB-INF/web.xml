@@ -38,8 +38,8 @@
 
 	<!-- Private DWR -->
 	<servlet>
-		<display-name>DWR Admin Servlet</display-name>
-		<servlet-name>dwr-admin-invoker</servlet-name>
+		<display-name>DWR Management Servlet</display-name>
+		<servlet-name>dwr-management-invoker</servlet-name>
 		<servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
 		<init-param>
 			<param-name>debug</param-name>
@@ -55,7 +55,7 @@
 				com.erep.dist.data.Request,
 				com.erep.dist.data.ServerConfig,
 				
-				com.erep.dist.dwr.AdminService,
+				com.erep.dist.dwr.ManagementService,
 				com.erep.dist.dwr.ReportService,
 				
 				com.erep.dist.dwr.dto.PlayerQuery,
@@ -71,8 +71,8 @@
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>dwr-admin-invoker</servlet-name>
-		<url-pattern>/admin/dwr/*</url-pattern>
+		<servlet-name>dwr-management-invoker</servlet-name>
+		<url-pattern>/management/dwr/*</url-pattern>
 	</servlet-mapping>
 
 	<!-- Tasks -->
@@ -108,14 +108,41 @@
 	</servlet-mapping>
 
 	<!-- Security -->
+
+	<!-- Admin only (including app tasks) -->
 	<security-constraint>
 		<web-resource-collection>
 			<url-pattern>/admin/*</url-pattern>
 		</web-resource-collection>
+		<auth-constraint>
+			<role-name>admin</role-name>
+		</auth-constraint>
 		<user-data-constraint>
 			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
 		</user-data-constraint>
 	</security-constraint>
+
+	<!-- Management only (reports, etc) -->
+	<security-constraint>
+		<web-resource-collection>
+			<url-pattern>/management/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>*</role-name>
+		</auth-constraint>
+		<user-data-constraint>
+			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+	<filter>
+		<filter-name>moderatorsFilter</filter-name>
+		<filter-class>com.erep.dist.auth.ModeratorsFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>moderatorsFilter</filter-name>
+		<url-pattern>/management/*</url-pattern>
+	</filter-mapping>
 
 	<!-- Default File -->
 	<welcome-file-list>
