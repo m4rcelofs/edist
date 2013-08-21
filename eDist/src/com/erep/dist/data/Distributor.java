@@ -1,5 +1,6 @@
 package com.erep.dist.data;
 
+import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.FetchGroup;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -36,6 +37,7 @@ public class Distributor implements HasTransitID {
 
 	@Persistent(defaultFetchGroup = "false")
 	@RemoteProperty
+	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	private String	password;
 
 	public Key getKey() {

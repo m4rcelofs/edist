@@ -1,5 +1,6 @@
 package com.erep.dist.data;
 
+import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.FetchGroup;
 import javax.jdo.annotations.FetchGroups;
 import javax.jdo.annotations.IdentityType;
@@ -42,6 +43,7 @@ public class Player implements HasTransitID {
 
 	@Persistent
 	@RemoteProperty
+	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	private String			avatar;
 
 	@Persistent
