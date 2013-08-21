@@ -1,8 +1,5 @@
 package com.erep.dist.dwr;
 
-import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withUrl;
-
-import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -14,13 +11,8 @@ import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
 import com.erep.dist.RequestsHelper;
 import com.erep.dist.data.Player;
-import com.erep.dist.data.Request;
 import com.erep.dist.data.enums.DistType;
-import com.erep.dist.data.enums.RequestStatus;
 import com.erep.dist.dwr.dto.RequestAttempt;
-import com.erep.dist.erep.eRepTimeCalculator;
-import com.google.appengine.api.taskqueue.Queue;
-import com.google.appengine.api.taskqueue.QueueFactory;
 
 @RemoteProxy
 public class RequestService {
@@ -36,48 +28,11 @@ public class RequestService {
 			RequestsHelper helper = new RequestsHelper(dao);
 
 			Player dbPlayer = dao.find(player);
-			Request request = newRequest(helper, dbPlayer, requestedFF, type);
 
-			if (request == null)
-				return false;
-
-			pm.makePersistent(request);
-			addToQueue(request);
+			helper.createRequest(dbPlayer, requestedFF, type);
 
 			return true;
 		}
-	}
-
-	private Request newRequest(RequestsHelper helper, Player player,
-			Integer requestedFF, DistType type) {
-		Request request = new Request();
-		request.setRequestedAt(new Date());
-		request.seteRepDay(eRepTimeCalculator.geteRepDay());
-		request.setType(type);
-		request.setStatus(RequestStatus.REQUESTED);
-
-		if (type == DistType.ROCKET) {
-			// TODO
-			// request.setQuality(quality)
-		} else {
-			int maxFF = helper.verifyMaxFF(player);
-
-			if (maxFF <= 0)
-				return null;
-
-			request.setRequestedFF(requestedFF < maxFF ? requestedFF : maxFF);
-		}
-
-		request.setPlayer(player);
-		request.setGroup(player.getGroup());
-
-		return request;
-	}
-
-	private void addToQueue(Request request) {
-		Queue queue = QueueFactory.getQueue("erepublik-logged-in");
-		queue.add(withUrl("/admin/tasks/processRequest").param("id",
-				request.getKey().getId() + ""));
 	}
 
 	@RemoteMethod

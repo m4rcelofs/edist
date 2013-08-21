@@ -37,6 +37,10 @@ public class DataAccessObject {
 		this.pm = pm;
 	}
 
+	public void save(Request request) {
+		pm.makePersistent(request);
+	}
+
 	public boolean save(Distributor dist) {
 		if (dist.getId() != null)
 			return edit(dist);
@@ -175,6 +179,12 @@ public class DataAccessObject {
 		Key playerKey = KeyFactory.createKey(Player.class.getSimpleName(),
 				Long.valueOf(id));
 		return pm.getObjectById(Player.class, playerKey);
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Player> listAllPlayers() {
+		Query q = pm.newQuery(Player.class);
+		return (List<Player>) q.execute();
 	}
 
 	@SuppressWarnings("unchecked")

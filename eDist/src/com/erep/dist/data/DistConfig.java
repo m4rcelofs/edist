@@ -10,6 +10,7 @@ import javax.jdo.annotations.PrimaryKey;
 import org.directwebremoting.annotations.DataTransferObject;
 import org.directwebremoting.annotations.RemoteProperty;
 
+import com.erep.dist.data.enums.DistType;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.datanucleus.annotations.Unowned;
 
@@ -33,6 +34,13 @@ public class DistConfig {
 	@Persistent
 	@RemoteProperty
 	private Boolean		autoSend;
+
+	/**
+	 * weapon, food, or both
+	 */
+	@Persistent
+	@RemoteProperty
+	private DistType	allowedType;
 
 	@Unowned
 	@Persistent
@@ -79,6 +87,14 @@ public class DistConfig {
 
 	public void setDistributor(Distributor distributor) {
 		this.distributor = distributor;
+	}
+
+	public DistType getAllowedType() {
+		return allowedType;
+	}
+
+	public void setAllowedType(DistType allowedType) {
+		this.allowedType = allowedType;
 	}
 
 }

@@ -5,7 +5,7 @@
 		<url>/admin/cron/autoDist</url>
 		<description>Starts auto dist tasks every day
 		</description>
-		<schedule>every day 00:05</schedule>
+		<schedule>every day 00:02</schedule>
 		<timezone>America/Los_Angeles</timezone>
 	</cron>
 

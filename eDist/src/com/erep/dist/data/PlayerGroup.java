@@ -11,6 +11,7 @@ import javax.jdo.annotations.PrimaryKey;
 import org.directwebremoting.annotations.DataTransferObject;
 import org.directwebremoting.annotations.RemoteProperty;
 
+import com.erep.dist.data.enums.DistType;
 import com.google.appengine.api.datastore.Key;
 
 @DataTransferObject
@@ -68,6 +69,13 @@ public class PlayerGroup implements HasTransitID {
 		this.config = config;
 	}
 
+	public Boolean getAutoSend() {
+		if (config != null)
+			return config.getAutoSend();
+		// fallback to default
+		return null;
+	}
+
 	public Integer getCurrentMaxDailyFF() {
 		if (config != null)
 			return config.getCurrentMaxDailyFF();
@@ -85,6 +93,13 @@ public class PlayerGroup implements HasTransitID {
 	public Distributor getDistributor() {
 		if (config != null)
 			return config.getDistributor();
+		// fallback to default
+		return null;
+	}
+
+	public DistType getAllowedType() {
+		if (config != null)
+			return config.getAllowedType();
 		// fallback to default
 		return null;
 	}
