@@ -3,7 +3,8 @@ package com.erep.dist;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import static com.erep.dist.CipherUtils.*;
+
+import static com.erep.dist.auth.SymmetricCipherUtils.*;
 
 public class CipherUtilsTest {
 

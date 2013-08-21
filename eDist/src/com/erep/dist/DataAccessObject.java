@@ -1,6 +1,6 @@
 package com.erep.dist;
 
-import static com.erep.dist.CipherUtils.encrypt;
+import static com.erep.dist.auth.SymmetricCipherUtils.encrypt;
 
 import java.util.HashMap;
 import java.util.List;

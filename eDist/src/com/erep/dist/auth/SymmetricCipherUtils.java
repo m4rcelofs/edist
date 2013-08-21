@@ -1,4 +1,4 @@
-package com.erep.dist;
+package com.erep.dist.auth;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -19,7 +19,9 @@ import javax.crypto.spec.SecretKeySpec;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.IOUtils;
 
-public class CipherUtils {
+import com.erep.dist.ServerConstants;
+
+public class SymmetricCipherUtils {
 
 	private static final String	CIPHER		= "AES/CBC/PKCS5Padding";
 	private static final String	ALGORITHM	= "AES";
@@ -31,21 +33,26 @@ public class CipherUtils {
 	private static final byte[]	salt		= new byte[] { 0x0A, 0x01, 0x15,
 			0x3A, 0x44, 0x37, 0x25, 0x1E	};
 
-	private static String		serverPasswordBuffered;
+	private static SecretKey	serverKeyBuffered;
 
-	private static Logger		logger		= Logger.getLogger(CipherUtils.class
+	private static Logger		logger		= Logger.getLogger(SymmetricCipherUtils.class
 													.getName());
 
 	public static String encrypt(String strToEncrypt) throws Exception {
-		return encrypt(getServerPassword(), strToEncrypt);
+		return encrypt(getServerKey(), strToEncrypt);
 	}
 
 	public static String encrypt(String password, String strToEncrypt)
 			throws Exception {
+		SecretKey key = derivedKey(password);
+		return encrypt(key, strToEncrypt);
+	}
+
+	public static String encrypt(SecretKey key, String strToEncrypt)
+			throws Exception {
 
 		Cipher cipher = Cipher.getInstance(CIPHER);
-		SecretKey secret = derivedKey(password);
-		cipher.init(Cipher.ENCRYPT_MODE, secret, new IvParameterSpec(iv));
+		cipher.init(Cipher.ENCRYPT_MODE, key, new IvParameterSpec(iv));
 
 		return Base64
 				.encodeBase64String(cipher.doFinal(strToEncrypt.getBytes()));
@@ -53,32 +60,43 @@ public class CipherUtils {
 	}
 
 	public static String decrypt(String strToDecrypt) throws Exception {
-		return decrypt(getServerPassword(), strToDecrypt);
+		return decrypt(getServerKey(), strToDecrypt);
 	}
 
 	public static String decrypt(String password, String strToDecrypt)
 			throws Exception {
+		SecretKey key = derivedKey(password);
+		return decrypt(key, strToDecrypt);
+	}
 
+	public static String decrypt(SecretKey key, String strToDecrypt)
+			throws Exception {
 		Cipher cipher = Cipher.getInstance(CIPHER);
-		SecretKey secret = derivedKey(password);
-		cipher.init(Cipher.DECRYPT_MODE, secret, new IvParameterSpec(iv));
-
+		cipher.init(Cipher.DECRYPT_MODE, key, new IvParameterSpec(iv));
 		return new String(cipher.doFinal(Base64.decodeBase64(strToDecrypt)));
+	}
 
+	private static SecretKey getServerKey() throws Exception {
+		if (serverKeyBuffered == null) {
+			String password = getServerPassword();
+			serverKeyBuffered = derivedKey(password);
+		}
+		return serverKeyBuffered;
 	}
 
 	private static String getServerPassword() throws Exception {
-		if (serverPasswordBuffered == null) {
-			try (BufferedReader reader = new BufferedReader(new FileReader(
-					"WEB-INF/default.key"))) {
-				serverPasswordBuffered = IOUtils.toString(reader);
-			} catch (FileNotFoundException e) {
-				logger.log(Level.SEVERE,
-						"Could not find crypto key, using code default");
-				return ServerConstants.DEFAULT;
-			}
+
+		try (BufferedReader reader = new BufferedReader(new FileReader(
+				"WEB-INF/keys/default.key"))) {
+
+			return IOUtils.toString(reader);
+
+		} catch (FileNotFoundException e) {
+			logger.log(Level.SEVERE,
+					"Could not find crypto key, using code default");
+			return ServerConstants.DEFAULT;
 		}
-		return serverPasswordBuffered;
+
 	}
 
 	private static SecretKey derivedKey(String password)
