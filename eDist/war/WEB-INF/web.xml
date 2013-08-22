@@ -4,15 +4,15 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
-	<!-- Public DWR -->
+	<!-- Public DWR (requests) -->
 	<servlet>
 		<display-name>DWR Servlet</display-name>
 		<servlet-name>dwr-invoker</servlet-name>
 		<servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
-		<init-param>
-			<param-name>debug</param-name>
-			<param-value>true</param-value>
-		</init-param>
+	<!-- <init-param> -->
+	<!-- <param-name>debug</param-name> -->
+	<!-- <param-value>true</param-value> -->
+	<!-- </init-param> -->
 		<init-param>
 			<param-name>classes</param-name>
 			<param-value>
@@ -37,15 +37,15 @@
 		<url-pattern>/dwr/*</url-pattern>
 	</servlet-mapping>
 
-	<!-- Private DWR -->
+	<!-- Private DWR (management) -->
 	<servlet>
 		<display-name>DWR Management Servlet</display-name>
 		<servlet-name>dwr-management-invoker</servlet-name>
 		<servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
-		<init-param>
-			<param-name>debug</param-name>
-			<param-value>true</param-value>
-		</init-param>
+	<!-- <init-param> -->
+	<!-- <param-name>debug</param-name> -->
+	<!-- <param-value>true</param-value> -->
+	<!-- </init-param> -->
 		<init-param>
 			<param-name>classes</param-name>
 			<param-value>
@@ -57,10 +57,8 @@
 				com.erep.dist.data.ServerConfig,
 				
 				com.erep.dist.dwr.ManagementService,
-				com.erep.dist.dwr.ReportService,
 				
 				com.erep.dist.dwr.dto.PlayerQuery,
-				com.erep.dist.dwr.dto.ReportQuery,
 
 				com.erep.dist.data.enums.ConfigGranularity,
 				com.erep.dist.data.enums.DistType,
@@ -74,6 +72,41 @@
 	<servlet-mapping>
 		<servlet-name>dwr-management-invoker</servlet-name>
 		<url-pattern>/management/dwr/*</url-pattern>
+	</servlet-mapping>
+
+	<!-- Private DWR (reports) -->
+	<servlet>
+		<display-name>DWR Reports Servlet</display-name>
+		<servlet-name>dwr-reports-invoker</servlet-name>
+		<servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
+	<!-- <init-param> -->
+	<!-- <param-name>debug</param-name> -->
+	<!-- <param-value>true</param-value> -->
+	<!-- </init-param> -->
+		<init-param>
+			<param-name>classes</param-name>
+			<param-value>
+				com.erep.dist.data.DistConfig,
+				com.erep.dist.data.Distributor,
+				com.erep.dist.data.Player,
+				com.erep.dist.data.PlayerGroup,
+				com.erep.dist.data.Request,
+				
+				com.erep.dist.dwr.ReportService,
+				
+				com.erep.dist.dwr.dto.ReportQuery,
+
+				com.erep.dist.data.enums.DistType,
+				com.erep.dist.data.enums.PlayerStatus,
+				com.erep.dist.data.enums.RequestStatus,
+				com.erep.dist.data.enums.RocketQuality
+    		</param-value>
+		</init-param>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>dwr-reports-invoker</servlet-name>
+		<url-pattern>/reports/dwr/*</url-pattern>
 	</servlet-mapping>
 
 	<!-- Tasks -->
@@ -135,18 +168,22 @@
 		</user-data-constraint>
 	</security-constraint>
 
-	<!-- Management only (reports, etc) -->
+	<!-- Management only -->
 	<security-constraint>
 		<web-resource-collection>
 			<url-pattern>/management/*</url-pattern>
+			<!-- REMOVE THIS LINE FOR PUBLIC REPORTS -->
+			<url-pattern>/reports/*</url-pattern>
 		</web-resource-collection>
 		<auth-constraint>
-	<role-name>*</role-name>
+			<role-name>*</role-name>
 		</auth-constraint>
 		<user-data-constraint>
 			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
 		</user-data-constraint>
 	</security-constraint>
+
+	<!-- Filters -->
 	<filter>
 		<filter-name>moderatorsFilter</filter-name>
 		<filter-class>com.erep.dist.auth.ModeratorsFilter</filter-class>
@@ -155,6 +192,8 @@
 	<filter-mapping>
 		<filter-name>moderatorsFilter</filter-name>
 		<url-pattern>/management/*</url-pattern>
+		<!-- REMOVE THIS LINE FOR PUBLIC REPORTS -->
+		<url-pattern>/reports/*</url-pattern>
 	</filter-mapping>
 
 	<!-- Default File -->
