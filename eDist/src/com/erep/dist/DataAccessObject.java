@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
+import javax.jdo.Transaction;
 
 import com.erep.dist.auth.RegisteredUser;
 import com.erep.dist.cache.Cacheable;
@@ -64,13 +65,23 @@ public class DataAccessObject {
 	}
 
 	private boolean edit(Distributor dist) {
+		boolean result = true;
+		Transaction tx = pm.currentTransaction();
 		try {
+			tx.begin();
 			Distributor old = pm.getObjectById(Distributor.class,
 					createKey(Distributor.class, dist));
-			return edit(old, dist);
+			result = edit(old, dist);
+			tx.commit();
 		} catch (JDOObjectNotFoundException e) {
-			return false;
+			result = false;
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+				result = false;
+			}
 		}
+		return result;
 	}
 
 	private boolean edit(Distributor old, Distributor newest) {
@@ -105,13 +116,23 @@ public class DataAccessObject {
 	}
 
 	private boolean edit(PlayerGroup group) {
+		Transaction tx = pm.currentTransaction();
+		boolean result = true;
 		try {
+			tx.begin();
 			PlayerGroup old = pm.getObjectById(PlayerGroup.class,
 					createKey(PlayerGroup.class, group));
-			return edit(old, group);
+			result = edit(old, group);
+			tx.commit();
 		} catch (JDOObjectNotFoundException e) {
-			return false;
+			result = false;
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+				result = false;
+			}
 		}
+		return result;
 	}
 
 	private boolean edit(PlayerGroup old, PlayerGroup newest) {
@@ -138,13 +159,29 @@ public class DataAccessObject {
 
 	public boolean save(Player player) {
 		Key playerKey = createKey(Player.class, player);
+		player.setKey(playerKey);
 		try {
-			Player oldPlayer = pm.getObjectById(Player.class, playerKey);
-			return edit(oldPlayer, player);
+			return edit(player);
 		} catch (JDOObjectNotFoundException e) {
-			player.setKey(playerKey);
 			return add(player);
 		}
+	}
+
+	private boolean edit(Player player) {
+		Transaction tx = pm.currentTransaction();
+		boolean result = true;
+		try {
+			tx.begin();
+			Player oldPlayer = pm.getObjectById(Player.class, player.getKey());
+			result = edit(oldPlayer, player);
+			tx.commit();
+		} finally {
+			if (tx.isActive()) {
+				tx.rollback();
+				result = false;
+			}
+		}
+		return result;
 	}
 
 	private boolean add(Player newPlayer) {
