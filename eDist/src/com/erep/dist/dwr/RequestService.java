@@ -3,6 +3,8 @@ package com.erep.dist.dwr;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.jdo.Transaction;
+
 import org.directwebremoting.annotations.RemoteMethod;
 import org.directwebremoting.annotations.RemoteProxy;
 
@@ -28,15 +30,26 @@ public class RequestService {
 			return false;
 
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			DataAccessObject dao = new DataAccessObject(pm);
-			RequestsHelper helper = new RequestsHelper(dao);
+			boolean response = true;
+			Transaction tx = pm.currentTransaction();
+			try {
+				tx.begin();
+				DataAccessObject dao = new DataAccessObject(pm);
+				RequestsHelper helper = new RequestsHelper(dao);
 
-			Player dbPlayer = dao.find(player);
-			if (dbPlayer == null)
-				return false;
+				Player dbPlayer = dao.find(player);
+				if (dbPlayer == null)
+					return false;
 
-			return helper.createRequest(dbPlayer, requestedFF, type);
-
+				response = helper.createRequest(dbPlayer, requestedFF, type);
+				tx.commit();
+			} finally {
+				if (tx.isActive()) {
+					tx.rollback();
+					response = false;
+				}
+			}
+			return response;
 		}
 	}
 
