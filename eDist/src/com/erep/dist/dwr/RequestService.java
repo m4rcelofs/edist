@@ -23,15 +23,20 @@ public class RequestService {
 	@RemoteMethod
 	public boolean sendRequest(Player player, Integer requestedFF, DistType type) {
 
+		if (player == null || player.getId() == null || requestedFF == null
+				|| requestedFF <= 0 || type == null)
+			return false;
+
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			DataAccessObject dao = new DataAccessObject(pm);
 			RequestsHelper helper = new RequestsHelper(dao);
 
 			Player dbPlayer = dao.find(player);
+			if (dbPlayer == null)
+				return false;
 
-			helper.createRequest(dbPlayer, requestedFF, type);
+			return helper.createRequest(dbPlayer, requestedFF, type);
 
-			return true;
 		}
 	}
 
@@ -49,11 +54,13 @@ public class RequestService {
 			DataAccessObject dao = new DataAccessObject(pm);
 			RequestsHelper helper = new RequestsHelper(dao);
 
-			Player p = identifyRequestString(dao, idNameOrLink.trim());
+			Player dbPlayer = identifyRequestString(dao, idNameOrLink.trim());
 
-			dto.setPlayer(p);
-			dto.setRocketAllowed(helper.verifyRocketAllowed(p));
-			dto.setAvailableFF(helper.verifyMaxFF(p));
+			if (dbPlayer != null) {
+				dto.setPlayer(dbPlayer);
+				dto.setRocketAllowed(helper.verifyRocketAllowed(dbPlayer));
+				dto.setAvailableFF(helper.verifyMaxFF(dbPlayer));
+			}
 
 			return dto;
 		}

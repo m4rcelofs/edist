@@ -229,6 +229,14 @@ public class DataAccessObject {
 		return (List<Request>) q.execute();
 	}
 
+	public int getDailyRequestedFF(Player player, int eRepDay) {
+		Query q = pm.newQuery(Request.class);
+		q.setFilter("eRepDay == " + eRepDay + " && player == " + player.getId());
+		q.setResult("sum(requestedFF)");
+		Long response = ((Long) q.execute());
+		return response != null ? response.intValue() : 0;
+	}
+
 	public Request getRequest(Long id) {
 		Key key = KeyFactory.createKey(Request.class.getSimpleName(), id);
 		return pm.getObjectById(Request.class, key);

@@ -29,7 +29,7 @@
 			id : playerId
 		};
 
-		RequestService.sendRequest(player, 0, 'WEAPONS_FOOD', {
+		RequestService.sendRequest(player, 10, 'WEAPONS_FOOD', {
 			callback : function(response) {
 				$('#test2').append('<br/>' + JSON.stringify(response));
 			},
