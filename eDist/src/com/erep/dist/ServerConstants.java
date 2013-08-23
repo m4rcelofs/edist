@@ -12,5 +12,8 @@ public class ServerConstants {
 
 	public static final Integer	QUERY_PAGE_LIMIT	= 20;
 
-	public static final boolean	MOD_FILTER_ACTIVE	= false;		// FIXME
+	// FIXME
+	public static final boolean	MOD_FILTER_ACTIVE	= false;
+
+	public static final String	LICENCE_SERVER		= "https://edist-licence.appspot.com/getlicence?appId={appId}";
 }

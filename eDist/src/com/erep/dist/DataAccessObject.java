@@ -13,12 +13,13 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import javax.jdo.Transaction;
 
-import com.erep.dist.auth.RegisteredUser;
 import com.erep.dist.cache.Cacheable;
 import com.erep.dist.data.Distributor;
 import com.erep.dist.data.HasTransitID;
+import com.erep.dist.data.Licence;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
+import com.erep.dist.data.RegisteredUser;
 import com.erep.dist.data.Request;
 import com.erep.dist.data.ServerConfig;
 import com.google.appengine.api.datastore.Cursor;
@@ -277,6 +278,11 @@ public class DataAccessObject {
 	public Request getRequest(Long id) {
 		Key key = KeyFactory.createKey(Request.class.getSimpleName(), id);
 		return pm.getObjectById(Request.class, key);
+	}
+
+	public Licence getLicence() {
+		return (Licence) pm.getObjectById(Licence.class, KeyFactory.createKey(
+				Licence.class.getSimpleName(), ServerConstants.DEFAULT_ID));
 	}
 
 	public Player find(Player player) {

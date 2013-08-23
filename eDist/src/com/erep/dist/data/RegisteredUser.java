@@ -1,4 +1,4 @@
-package com.erep.dist.auth;
+package com.erep.dist.data;
 
 import java.util.Date;
 
@@ -10,7 +10,7 @@ import javax.jdo.annotations.PrimaryKey;
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class RegisteredUser {
 
-	enum Role
+	public enum Role
 	{
 		NONE, MODERATOR
 	}

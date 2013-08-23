@@ -26,7 +26,7 @@ public class SymmetricCipherUtils {
 	private static final String	CIPHER		= "AES/CBC/PKCS5Padding";
 	private static final String	ALGORITHM	= "AES";
 	private static final int	KEY_LENGTH	= 128;
-	private static final int	ITERATIONS	= 65536;
+	private static final int	ITERATIONS	= 10000;
 
 	private static final byte[]	iv			= new byte[] { -47, 80, 82, -98,
 			-80, 62, 127, 48, -126, -9, 51, 11, 39, -96, 41, 49 };

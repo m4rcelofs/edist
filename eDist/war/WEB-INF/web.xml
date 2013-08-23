@@ -9,10 +9,10 @@
 		<display-name>DWR Servlet</display-name>
 		<servlet-name>dwr-invoker</servlet-name>
 		<servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
-	<!-- <init-param> -->
-	<!-- <param-name>debug</param-name> -->
-	<!-- <param-value>true</param-value> -->
-	<!-- </init-param> -->
+		<!-- <init-param> -->
+		<!-- <param-name>debug</param-name> -->
+		<!-- <param-value>true</param-value> -->
+		<!-- </init-param> -->
 		<init-param>
 			<param-name>classes</param-name>
 			<param-value>
@@ -42,10 +42,10 @@
 		<display-name>DWR Management Servlet</display-name>
 		<servlet-name>dwr-management-invoker</servlet-name>
 		<servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
-	<!-- <init-param> -->
-	<!-- <param-name>debug</param-name> -->
-	<!-- <param-value>true</param-value> -->
-	<!-- </init-param> -->
+		<!-- <init-param> -->
+		<!-- <param-name>debug</param-name> -->
+		<!-- <param-value>true</param-value> -->
+		<!-- </init-param> -->
 		<init-param>
 			<param-name>classes</param-name>
 			<param-value>
@@ -79,10 +79,10 @@
 		<display-name>DWR Reports Servlet</display-name>
 		<servlet-name>dwr-reports-invoker</servlet-name>
 		<servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
-	<!-- <init-param> -->
-	<!-- <param-name>debug</param-name> -->
-	<!-- <param-value>true</param-value> -->
-	<!-- </init-param> -->
+		<!-- <init-param> -->
+		<!-- <param-name>debug</param-name> -->
+		<!-- <param-value>true</param-value> -->
+		<!-- </init-param> -->
 		<init-param>
 			<param-name>classes</param-name>
 			<param-value>
@@ -141,6 +141,15 @@
 		<url-pattern>/admin/cron/autoDist</url-pattern>
 	</servlet-mapping>
 
+	<servlet>
+		<servlet-name>licensingJob</servlet-name>
+		<servlet-class>com.erep.dist.servlets.LicensingJob</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>licensingJob</servlet-name>
+		<url-pattern>/admin/cron/licence</url-pattern>
+	</servlet-mapping>
 
 	<!-- Install -->
 	<servlet>

@@ -3,6 +3,7 @@ package com.erep.dist.servlets.install;
 import com.erep.dist.ServerConstants;
 import com.erep.dist.data.DistConfig;
 import com.erep.dist.data.Distributor;
+import com.erep.dist.data.Licence;
 import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.ServerConfig;
 import com.erep.dist.data.enums.ConfigGranularity;
@@ -46,5 +47,13 @@ public class InstallHelper {
 				ServerConstants.DEFAULT_ID));
 
 		return group;
+	}
+
+	public static Licence newDefaultLicence() {
+		Licence licence = new Licence();
+		licence.setId(KeyFactory.createKey(Licence.class.getSimpleName(),
+				ServerConstants.DEFAULT_ID));
+		licence.setSigned("");
+		return licence;
 	}
 }
