@@ -12,7 +12,7 @@ import javax.jdo.annotations.PrimaryKey;
 import org.directwebremoting.annotations.DataTransferObject;
 import org.directwebremoting.annotations.RemoteProperty;
 
-import com.erep.dist.data.enums.DistType;
+import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.data.enums.PlayerStatus;
 import com.erep.dist.data.enums.RocketQuality;
 import com.google.appengine.api.datastore.Key;
@@ -163,7 +163,7 @@ public class Player implements HasTransitID {
 			return group.getDistributor();
 	}
 	
-	public DistType getAllowedType() {
+	public RequestType getAllowedType() {
 		if (config != null && config.getAllowedType() != null)
 			return config.getAllowedType();
 		else

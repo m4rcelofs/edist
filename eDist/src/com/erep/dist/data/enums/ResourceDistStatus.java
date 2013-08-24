@@ -4,7 +4,7 @@ import org.directwebremoting.annotations.DataTransferObject;
 import org.directwebremoting.convert.EnumConverter;
 
 @DataTransferObject(converter = EnumConverter.class)
-public enum DistType
+public enum ResourceDistStatus
 {
-	WEAPONS, FOOD, WEAPONS_FOOD, ROCKET
+	REQUESTED, ERROR, SENT
 }

@@ -18,7 +18,7 @@
 			<param-value>
 				com.erep.dist.dwr.RequestService,
 				
-				com.erep.dist.data.enums.DistType,
+				com.erep.dist.data.enums.RequestType,
 				com.erep.dist.data.enums.PlayerStatus,
 				com.erep.dist.data.enums.RocketQuality,
 				com.erep.dist.data.DistConfig,
@@ -61,7 +61,7 @@
 				com.erep.dist.dwr.dto.PlayerQuery,
 
 				com.erep.dist.data.enums.ConfigGranularity,
-				com.erep.dist.data.enums.DistType,
+				com.erep.dist.data.enums.RequestType,
 				com.erep.dist.data.enums.PlayerStatus,
 				com.erep.dist.data.enums.RequestStatus,
 				com.erep.dist.data.enums.RocketQuality
@@ -96,7 +96,7 @@
 				
 				com.erep.dist.dwr.dto.ReportQuery,
 
-				com.erep.dist.data.enums.DistType,
+				com.erep.dist.data.enums.RequestType,
 				com.erep.dist.data.enums.PlayerStatus,
 				com.erep.dist.data.enums.RequestStatus,
 				com.erep.dist.data.enums.RocketQuality
@@ -121,13 +121,13 @@
 	</servlet-mapping>
 
 	<servlet>
-		<servlet-name>processRequestTask</servlet-name>
-		<servlet-class>com.erep.dist.servlets.ProcessRequestTask</servlet-class>
+		<servlet-name>sendResourceTask</servlet-name>
+		<servlet-class>com.erep.dist.servlets.SendResourceTask</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>processRequestTask</servlet-name>
-		<url-pattern>/admin/tasks/processRequest</url-pattern>
+		<servlet-name>sendResourceTask</servlet-name>
+		<url-pattern>/admin/tasks/sendResource</url-pattern>
 	</servlet-mapping>
 
 	<!-- Cron jobs -->

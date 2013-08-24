@@ -12,7 +12,7 @@ import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
 import com.erep.dist.data.Request;
 
-public class ProcessRequestTask extends HttpServlet {
+public class SendResourceTask extends HttpServlet {
 
 	private static final long	serialVersionUID	= 1L;
 
@@ -28,10 +28,9 @@ public class ProcessRequestTask extends HttpServlet {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 
 			DataAccessObject dao = new DataAccessObject(pm);
-			Request request = dao.getRequest(Long.valueOf(requestId));
 
 			// TODO
-			request.setDistributor(dao.listDistributors().get(0)); // test
+
 		}
 
 	}

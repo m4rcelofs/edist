@@ -13,7 +13,7 @@ import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
 import com.erep.dist.RequestsHelper;
 import com.erep.dist.data.Player;
-import com.erep.dist.data.enums.DistType;
+import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.dwr.dto.RequestAttempt;
 
 @RemoteProxy
@@ -23,7 +23,7 @@ public class RequestService {
 													.compile("(http://|https://)?(www\\.)?erepublik\\.com/\\D{2,3}/citizen/profile/(?<id>\\d+)");
 
 	@RemoteMethod
-	public boolean sendRequest(Player player, Integer requestedFF, DistType type) {
+	public boolean sendRequest(Player player, Integer requestedFF, RequestType type) {
 
 		if (player == null || player.getId() == null || requestedFF == null
 				|| requestedFF <= 0 || type == null)

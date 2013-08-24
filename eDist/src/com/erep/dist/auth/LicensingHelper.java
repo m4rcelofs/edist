@@ -12,9 +12,10 @@ import com.erep.dist.DataAccessObject;
 import com.erep.dist.ServerConstants;
 import com.erep.dist.data.Licence;
 import com.erep.dist.erep.eRepTimeCalculator;
+import com.google.appengine.api.urlfetch.HTTPRequest;
 import com.google.appengine.api.urlfetch.URLFetchService;
 import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
-import com.google.apphosting.api.ApiProxy;
+import com.google.appengine.api.utils.SystemProperty;
 
 public class LicensingHelper {
 
@@ -81,12 +82,14 @@ public class LicensingHelper {
 	private String fetchLicence(URL licenceServer) throws IOException {
 		URLFetchService fetchService = URLFetchServiceFactory
 				.getURLFetchService();
+		HTTPRequest request = new HTTPRequest(licenceServer);
+		request.getFetchOptions().setDeadline(300d);
 		return new String(fetchService.fetch(licenceServer).getContent(),
 				"UTF-8");
 	}
 
 	private URL getLicenceServer() throws MalformedURLException {
-		String appId = ApiProxy.getCurrentEnvironment().getAppId();
+		String appId = SystemProperty.applicationId.get();
 		String licenceServer = ServerConstants.LICENCE_SERVER.replace(
 				"{appId}", appId);
 		return new URL(licenceServer);

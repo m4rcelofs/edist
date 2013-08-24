@@ -1,6 +1,7 @@
 package com.erep.dist.data;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.jdo.annotations.FetchGroup;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -12,7 +13,7 @@ import javax.jdo.annotations.PrimaryKey;
 import org.directwebremoting.annotations.DataTransferObject;
 import org.directwebremoting.annotations.RemoteProperty;
 
-import com.erep.dist.data.enums.DistType;
+import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.data.enums.RequestStatus;
 import com.erep.dist.data.enums.RocketQuality;
 import com.google.appengine.api.datastore.Key;
@@ -39,14 +40,14 @@ public class Request {
 
 	@Persistent
 	@RemoteProperty
-	private DistType		type;
+	private RequestType		type;
 
-	// if DistType == rocket only
+	// if RequestType == rocket only
 	@Persistent
 	@RemoteProperty
 	private RocketQuality	rocketQuality;
 
-	// if DistType != rocket
+	// if RequestType != rocket
 	@Persistent
 	@RemoteProperty
 	private Integer			requestedFF;
@@ -59,6 +60,10 @@ public class Request {
 	@RemoteProperty
 	private Date			completedAt;
 
+	@Persistent //TODO two way relation
+	@RemoteProperty
+	private List<ResourceDist> resources;
+	
 	@Unowned
 	@Persistent
 	@RemoteProperty
@@ -73,6 +78,7 @@ public class Request {
 	@Persistent
 	@RemoteProperty
 	private PlayerGroup		group;
+	
 
 	public Key getKey() {
 		return key;
@@ -122,11 +128,11 @@ public class Request {
 		this.completedAt = completedAt;
 	}
 
-	public DistType getType() {
+	public RequestType getType() {
 		return type;
 	}
 
-	public void setType(DistType type) {
+	public void setType(RequestType type) {
 		this.type = type;
 	}
 
@@ -160,5 +166,13 @@ public class Request {
 
 	public void setGroup(PlayerGroup group) {
 		this.group = group;
+	}
+
+	public List<ResourceDist> getResources() {
+		return resources;
+	}
+
+	public void setResources(List<ResourceDist> resources) {
+		this.resources = resources;
 	}
 }

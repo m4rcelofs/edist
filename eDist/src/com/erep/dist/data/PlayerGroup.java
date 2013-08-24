@@ -11,7 +11,7 @@ import javax.jdo.annotations.PrimaryKey;
 import org.directwebremoting.annotations.DataTransferObject;
 import org.directwebremoting.annotations.RemoteProperty;
 
-import com.erep.dist.data.enums.DistType;
+import com.erep.dist.data.enums.RequestType;
 import com.google.appengine.api.datastore.Key;
 
 @DataTransferObject
@@ -97,7 +97,7 @@ public class PlayerGroup implements HasTransitID {
 		return null;
 	}
 
-	public DistType getAllowedType() {
+	public RequestType getAllowedType() {
 		if (config != null)
 			return config.getAllowedType();
 		// fallback to default

@@ -2,12 +2,18 @@ package com.erep.dist;
 
 import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withUrl;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import com.erep.dist.data.Player;
 import com.erep.dist.data.Request;
-import com.erep.dist.data.enums.DistType;
+import com.erep.dist.data.ResourceDist;
 import com.erep.dist.data.enums.RequestStatus;
+import com.erep.dist.data.enums.RequestType;
+import com.erep.dist.data.enums.ResourceDistStatus;
+import com.erep.dist.data.enums.ResourceQuality;
+import com.erep.dist.data.enums.ResourceType;
 import com.erep.dist.erep.eRepTimeCalculator;
 import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
@@ -37,11 +43,12 @@ public class RequestsHelper {
 	}
 
 	public boolean createRequest(Player player) {
-		return createRequest(player, Integer.MAX_VALUE, DistType.WEAPONS_FOOD);
+		return createRequest(player, Integer.MAX_VALUE,
+				RequestType.WEAPONS_FOOD);
 	}
 
 	public boolean createRequest(Player player, Integer requestedFF,
-			DistType type) {
+			RequestType type) {
 
 		Request request = newRequest(player, requestedFF, type);
 
@@ -54,19 +61,20 @@ public class RequestsHelper {
 	}
 
 	private Request newRequest(Player player, Integer requestedFF,
-			DistType requestedType) {
+			RequestType requestedType) {
 		Request request = new Request();
 		request.setRequestedAt(new Date());
 		request.seteRepDay(eRepTimeCalculator.geteRepDay());
 		request.setStatus(RequestStatus.REQUESTED);
 
-		if (requestedType == DistType.ROCKET) {
+		if (requestedType == RequestType.ROCKET) {
 			if (!config.getConfigRocketAllowed(player))
 				return null;
 			request.setRocketQuality(player.getRocketEnabled());
+			request.setResources(getRocketResources(request));
 		} else {
 
-			DistType allowedType = decideDistType(player, requestedType);
+			RequestType allowedType = decideDistType(player, requestedType);
 			request.setType(allowedType);
 			int maxFF = verifyMaxFF(player);
 
@@ -74,21 +82,64 @@ public class RequestsHelper {
 				return null;
 
 			request.setRequestedFF(requestedFF < maxFF ? requestedFF : maxFF);
+			request.setResources(getFFResources(request));
 		}
 
 		request.setPlayer(player);
 		request.setGroup(player.getGroup());
+		// TODO set distributor
 
 		return request;
 	}
 
-	private DistType decideDistType(Player player, DistType requested) {
+	private List<ResourceDist> getFFResources(Request request) {
+		List<ResourceDist> resources = new ArrayList<>();
+
+		boolean sendFood = request.getType() == RequestType.FOOD
+				|| request.getType() == RequestType.WEAPONS_FOOD;
+		boolean sendWeapons = request.getType() == RequestType.WEAPONS
+				|| request.getType() == RequestType.WEAPONS_FOOD;
+
+		if (sendFood) {
+			ResourceDist resource = new ResourceDist();
+			resource.setType(ResourceType.FOOD);
+			resources.add(resource);
+		}
+
+		if (sendWeapons) {
+			ResourceDist resource = new ResourceDist();
+			resource.setType(ResourceType.WEAPONS);
+			// FIXME choose from config
+			resource.setQuality(ResourceQuality.Q7);
+			// FIXME ensure requestedFF is always a multiple of 10?
+			resource.setQuantity(request.getRequestedFF() / 10);
+			resources.add(resource);
+		}
+
+		return resources;
+	}
+
+	private List<ResourceDist> getRocketResources(Request request) {
+		List<ResourceDist> resources = new ArrayList<>();
+
+		for (ResourceQuality quality : ResourceQuality.values()) {
+			ResourceDist resource = new ResourceDist();
+			resource.setQuality(quality);
+			resource.setQuantity(request.getRocketQuality().weaponsNeeded);
+			resource.setType(ResourceType.WEAPONS);
+			resources.add(resource);
+		}
+
+		return resources;
+	}
+
+	private RequestType decideDistType(Player player, RequestType requested) {
 		if (requested == null)
 			return null;
 
-		DistType allowed = config.getConfigDistType(player);
+		RequestType allowed = config.getConfigDistType(player);
 
-		if (allowed == DistType.WEAPONS_FOOD)
+		if (allowed == RequestType.WEAPONS_FOOD)
 			return requested;
 
 		return allowed;
@@ -97,8 +148,12 @@ public class RequestsHelper {
 
 	private void addToQueue(Request request) {
 		Queue queue = QueueFactory.getQueue("erepublik-logged-in");
-		queue.add(withUrl("/admin/tasks/processRequest").param("id",
-				request.getKey().getId() + ""));
+
+		for (ResourceDist dist : request.getResources()) {
+			queue.add(withUrl("/admin/tasks/sendResource").param("id",
+					dist.getKey().getId() + ""));
+			dist.setStatus(ResourceDistStatus.REQUESTED);
+		}
 	}
 
 }

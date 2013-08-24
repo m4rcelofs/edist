@@ -4,7 +4,7 @@ import org.directwebremoting.annotations.DataTransferObject;
 import org.directwebremoting.annotations.RemoteProperty;
 
 import com.erep.dist.data.Player;
-import com.erep.dist.data.enums.DistType;
+import com.erep.dist.data.enums.RequestType;
 
 @DataTransferObject
 public class RequestAttempt {
@@ -19,7 +19,7 @@ public class RequestAttempt {
 	private Boolean		rocketAllowed;
 
 	@RemoteProperty
-	private DistType	allowedType;
+	private RequestType	allowedType;
 
 	public Player getPlayer() {
 		return player;
@@ -45,11 +45,11 @@ public class RequestAttempt {
 		this.rocketAllowed = rocketAllowed;
 	}
 
-	public DistType getAllowedType() {
+	public RequestType getAllowedType() {
 		return allowedType;
 	}
 
-	public void setAllowedType(DistType allowedType) {
+	public void setAllowedType(RequestType allowedType) {
 		this.allowedType = allowedType;
 	}
 

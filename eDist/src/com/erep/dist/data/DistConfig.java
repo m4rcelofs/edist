@@ -10,7 +10,7 @@ import javax.jdo.annotations.PrimaryKey;
 import org.directwebremoting.annotations.DataTransferObject;
 import org.directwebremoting.annotations.RemoteProperty;
 
-import com.erep.dist.data.enums.DistType;
+import com.erep.dist.data.enums.RequestType;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.datanucleus.annotations.Unowned;
 
@@ -40,7 +40,7 @@ public class DistConfig {
 	 */
 	@Persistent
 	@RemoteProperty
-	private DistType	allowedType;
+	private RequestType	allowedType;
 
 	@Unowned
 	@Persistent
@@ -89,11 +89,11 @@ public class DistConfig {
 		this.distributor = distributor;
 	}
 
-	public DistType getAllowedType() {
+	public RequestType getAllowedType() {
 		return allowedType;
 	}
 
-	public void setAllowedType(DistType allowedType) {
+	public void setAllowedType(RequestType allowedType) {
 		this.allowedType = allowedType;
 	}
 

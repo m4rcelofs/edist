@@ -7,7 +7,7 @@ import com.erep.dist.data.Licence;
 import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.ServerConfig;
 import com.erep.dist.data.enums.ConfigGranularity;
-import com.erep.dist.data.enums.DistType;
+import com.erep.dist.data.enums.RequestType;
 import com.google.appengine.api.datastore.KeyFactory;
 
 public class InstallHelper {
@@ -25,7 +25,7 @@ public class InstallHelper {
 		distConfig.setAutoSend(false);
 		distConfig.setCurrentMaxDailyFF(160);
 		distConfig.setRocketAllowed(false);
-		distConfig.setAllowedType(DistType.WEAPONS_FOOD);
+		distConfig.setAllowedType(RequestType.WEAPONS_FOOD);
 
 		Distributor distributor = new Distributor();
 		distributor.setEmail("exemplo@exemplo.com");

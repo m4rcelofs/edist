@@ -1,0 +1,75 @@
+package com.erep.dist.data;
+
+import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
+
+import org.directwebremoting.annotations.DataTransferObject;
+
+import com.erep.dist.data.enums.ResourceDistStatus;
+import com.erep.dist.data.enums.ResourceQuality;
+import com.erep.dist.data.enums.ResourceType;
+import com.google.appengine.api.datastore.Key;
+
+@DataTransferObject
+@PersistenceCapable(identityType = IdentityType.APPLICATION)
+public class ResourceDist {
+
+	@PrimaryKey
+	@Persistent
+	private Key					key;
+
+	@Persistent
+	private ResourceType		type;
+
+	@Persistent
+	private ResourceQuality		quality;
+
+	@Persistent
+	private Integer				quantity;
+
+	@Persistent
+	private ResourceDistStatus	status;
+
+	public Key getKey() {
+		return key;
+	}
+
+	public void setKey(Key key) {
+		this.key = key;
+	}
+
+	public ResourceType getType() {
+		return type;
+	}
+
+	public void setType(ResourceType type) {
+		this.type = type;
+	}
+
+	public ResourceQuality getQuality() {
+		return quality;
+	}
+
+	public void setQuality(ResourceQuality quality) {
+		this.quality = quality;
+	}
+
+	public Integer getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Integer quantity) {
+		this.quantity = quantity;
+	}
+
+	public ResourceDistStatus getStatus() {
+		return status;
+	}
+
+	public void setStatus(ResourceDistStatus status) {
+		this.status = status;
+	}
+
+}

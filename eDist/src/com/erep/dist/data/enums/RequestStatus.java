@@ -6,5 +6,5 @@ import org.directwebremoting.convert.EnumConverter;
 @DataTransferObject(converter = EnumConverter.class)
 public enum RequestStatus
 {
-	REQUESTED, ERROR, SENT
+	REQUESTED, ERROR, SENT, SENT_PARTIAL
 }

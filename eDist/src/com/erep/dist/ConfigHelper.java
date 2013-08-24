@@ -3,7 +3,7 @@ package com.erep.dist;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.ServerConfig;
 import com.erep.dist.data.enums.ConfigGranularity;
-import com.erep.dist.data.enums.DistType;
+import com.erep.dist.data.enums.RequestType;
 
 public class ConfigHelper {
 
@@ -66,8 +66,8 @@ public class ConfigHelper {
 		return maxFF;
 	}
 
-	public DistType getConfigDistType(Player player) {
-		DistType type = null;
+	public RequestType getConfigDistType(Player player) {
+		RequestType type = null;
 		ServerConfig server = dao.getServerConfig();
 
 		if (server.getGranularity() == ConfigGranularity.PLAYER)

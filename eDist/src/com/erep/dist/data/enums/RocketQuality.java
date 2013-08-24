@@ -6,5 +6,11 @@ import org.directwebremoting.convert.EnumConverter;
 @DataTransferObject(converter = EnumConverter.class)
 public enum RocketQuality
 {
-	NONE, Q1, Q2, Q3, Q4, Q5
+	NONE(0), Q1(10), Q2(20), Q3(60), Q4(120), Q5(90);
+
+	public final int	weaponsNeeded;
+
+	private RocketQuality(int weaponsNeeded) {
+		this.weaponsNeeded = weaponsNeeded;
+	}
 }

@@ -14,5 +14,5 @@
 		<schedule>every 12 hours</schedule>
 		<timezone>America/Los_Angeles</timezone>
 	</cron>
-
+	
 </cronentries>
