@@ -1,9 +1,11 @@
 package com.erep.dist;
 
+import com.erep.dist.data.Distributor;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.ServerConfig;
 import com.erep.dist.data.enums.ConfigGranularity;
 import com.erep.dist.data.enums.RequestType;
+import com.erep.dist.data.enums.ResourceQuality;
 
 public class ConfigHelper {
 
@@ -12,8 +14,8 @@ public class ConfigHelper {
 	public ConfigHelper(DataAccessObject dao) {
 		this.dao = dao;
 	}
-
-	public boolean getConfigAutoSend(Player player) {
+	
+	public boolean getAutoSend(Player player) {
 		Boolean autoSend = null;
 
 		ServerConfig server = dao.getServerConfig();
@@ -32,7 +34,7 @@ public class ConfigHelper {
 
 	}
 
-	public boolean getConfigRocketAllowed(Player player) {
+	public boolean getRocketAllowed(Player player) {
 		Boolean rocketAllowed = null;
 		ServerConfig server = dao.getServerConfig();
 
@@ -49,7 +51,7 @@ public class ConfigHelper {
 		return rocketAllowed;
 	}
 
-	public int getConfigMaxFF(Player player) {
+	public int getMaxFF(Player player) {
 		Integer maxFF = null;
 		ServerConfig server = dao.getServerConfig();
 
@@ -66,7 +68,7 @@ public class ConfigHelper {
 		return maxFF;
 	}
 
-	public RequestType getConfigDistType(Player player) {
+	public RequestType getDistType(Player player) {
 		RequestType type = null;
 		ServerConfig server = dao.getServerConfig();
 
@@ -81,5 +83,39 @@ public class ConfigHelper {
 			type = server.getMuConfig().getAllowedType();
 
 		return type;
+	}
+
+	public Distributor getDistributor(Player player) {
+		Distributor dist = null;
+		ServerConfig server = dao.getServerConfig();
+
+		if (server.getGranularity() == ConfigGranularity.PLAYER)
+			dist = player.getDistributor();
+		else
+			if (server.getGranularity() == ConfigGranularity.GROUP)
+				dist = player.getGroup().getDistributor();
+
+		// default fallback
+		if (dist == null)
+			dist = server.getMuConfig().getDistributor();
+
+		return dist;
+	}
+	
+	public ResourceQuality getAllowedWeaponQuality(Player player) {
+		ResourceQuality q = null;
+		ServerConfig server = dao.getServerConfig();
+
+		if (server.getGranularity() == ConfigGranularity.PLAYER)
+			q = player.getAllowedWeaponQuality();
+		else
+			if (server.getGranularity() == ConfigGranularity.GROUP)
+				q = player.getGroup().getAllowedWeaponQuality();
+
+		// default fallback
+		if (q == null)
+			q = server.getMuConfig().getAllowedWeaponQuality();
+
+		return q;
 	}
 }

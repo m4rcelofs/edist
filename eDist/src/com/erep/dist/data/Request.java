@@ -60,7 +60,7 @@ public class Request {
 	@RemoteProperty
 	private Date			completedAt;
 
-	@Persistent //TODO two way relation
+	@Persistent 
 	@RemoteProperty
 	private List<ResourceDist> resources;
 	

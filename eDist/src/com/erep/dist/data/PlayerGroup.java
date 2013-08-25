@@ -12,6 +12,7 @@ import org.directwebremoting.annotations.DataTransferObject;
 import org.directwebremoting.annotations.RemoteProperty;
 
 import com.erep.dist.data.enums.RequestType;
+import com.erep.dist.data.enums.ResourceQuality;
 import com.google.appengine.api.datastore.Key;
 
 @DataTransferObject
@@ -100,6 +101,13 @@ public class PlayerGroup implements HasTransitID {
 	public RequestType getAllowedType() {
 		if (config != null)
 			return config.getAllowedType();
+		// fallback to default
+		return null;
+	}
+
+	public ResourceQuality getAllowedWeaponQuality() {
+		if (config != null)
+			return config.getAllowedWeaponQuality();
 		// fallback to default
 		return null;
 	}

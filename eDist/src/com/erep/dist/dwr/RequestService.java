@@ -1,5 +1,7 @@
 package com.erep.dist.dwr;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -19,11 +21,15 @@ import com.erep.dist.dwr.dto.RequestAttempt;
 @RemoteProxy
 public class RequestService {
 
+	private static Logger	logger			= Logger.getLogger(RequestService.class
+													.getName());
+
 	private static Pattern	profilePattern	= Pattern
 													.compile("(http://|https://)?(www\\.)?erepublik\\.com/\\D{2,3}/citizen/profile/(?<id>\\d+)");
 
 	@RemoteMethod
-	public boolean sendRequest(Player player, Integer requestedFF, RequestType type) {
+	public boolean sendRequest(Player player, Integer requestedFF,
+			RequestType type) {
 
 		if (player == null || player.getId() == null || requestedFF == null
 				|| requestedFF <= 0 || type == null)
@@ -47,6 +53,8 @@ public class RequestService {
 				if (tx.isActive()) {
 					tx.rollback();
 					response = false;
+					logger.log(Level.SEVERE, "Request for player {0} failed",
+							player.getName());
 				}
 			}
 			return response;

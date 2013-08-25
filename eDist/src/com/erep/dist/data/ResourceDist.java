@@ -32,6 +32,16 @@ public class ResourceDist {
 	@Persistent
 	private ResourceDistStatus	status;
 
+	public ResourceDist() {}
+
+	public ResourceDist(ResourceType type, ResourceQuality quality,
+			Integer quantity) {
+		this.type = type;
+		this.quality = quality;
+		this.quantity = quantity;
+		this.status = ResourceDistStatus.REQUESTED;
+	}
+
 	public Key getKey() {
 		return key;
 	}

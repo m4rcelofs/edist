@@ -11,6 +11,7 @@ import org.directwebremoting.annotations.DataTransferObject;
 import org.directwebremoting.annotations.RemoteProperty;
 
 import com.erep.dist.data.enums.RequestType;
+import com.erep.dist.data.enums.ResourceQuality;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.datanucleus.annotations.Unowned;
 
@@ -21,31 +22,35 @@ public class DistConfig {
 
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private Key			key;
+	private Key				key;
 
 	@Persistent
 	@RemoteProperty
-	private Integer		currentMaxDailyFF;
+	private Integer			currentMaxDailyFF;
 
 	@Persistent
 	@RemoteProperty
-	private Boolean		rocketAllowed;
+	private Boolean			rocketAllowed;
 
 	@Persistent
 	@RemoteProperty
-	private Boolean		autoSend;
+	private Boolean			autoSend;
 
 	/**
 	 * weapon, food, or both
 	 */
 	@Persistent
 	@RemoteProperty
-	private RequestType	allowedType;
+	private RequestType		allowedType;
+
+	@Persistent
+	@RemoteProperty
+	private ResourceQuality	allowedWeaponQuality;
 
 	@Unowned
 	@Persistent
 	@RemoteProperty
-	private Distributor	distributor;
+	private Distributor		distributor;
 
 	public DistConfig() {}
 
@@ -95,6 +100,14 @@ public class DistConfig {
 
 	public void setAllowedType(RequestType allowedType) {
 		this.allowedType = allowedType;
+	}
+
+	public ResourceQuality getAllowedWeaponQuality() {
+		return allowedWeaponQuality;
+	}
+
+	public void setAllowedWeaponQuality(ResourceQuality allowedWeaponQuality) {
+		this.allowedWeaponQuality = allowedWeaponQuality;
 	}
 
 }

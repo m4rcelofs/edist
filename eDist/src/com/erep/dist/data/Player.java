@@ -14,6 +14,7 @@ import org.directwebremoting.annotations.RemoteProperty;
 
 import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.data.enums.PlayerStatus;
+import com.erep.dist.data.enums.ResourceQuality;
 import com.erep.dist.data.enums.RocketQuality;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.datanucleus.annotations.Unowned;
@@ -169,6 +170,14 @@ public class Player implements HasTransitID {
 		else
 			// fallback to group
 			return group.getAllowedType();
+	}
+
+	public ResourceQuality getAllowedWeaponQuality() {
+		if (config != null && config.getAllowedWeaponQuality() != null)
+			return config.getAllowedWeaponQuality();
+		else
+			// fallback to group
+			return group.getAllowedWeaponQuality();
 	}
 
 }

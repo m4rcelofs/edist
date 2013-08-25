@@ -41,15 +41,19 @@ public class AutoDistJob extends HttpServlet {
 			List<Player> players = dao.listAllPlayers();
 
 			for (Player player : players) {
-				if (config.getConfigAutoSend(player)) {
+				if (config.getAutoSend(player)) {
 					Transaction tx = pm.currentTransaction();
 					try {
 						tx.begin();
 						requests.createRequest(player);
 						tx.commit();
 					} finally {
-						if (tx.isActive())
+						if (tx.isActive()) {
 							tx.rollback();
+							logger.log(Level.SEVERE,
+									"AutoDist request for player {0} failed",
+									player.getName());
+						}
 					}
 					autoDist++;
 				}
