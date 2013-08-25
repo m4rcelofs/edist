@@ -22,6 +22,7 @@ import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.RegisteredUser;
 import com.erep.dist.data.Request;
 import com.erep.dist.data.ServerConfig;
+import com.erep.dist.data.enums.RequestType;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
@@ -269,10 +270,19 @@ public class DataAccessObject {
 
 	public int getDailyRequestedFF(Player player, int eRepDay) {
 		Query q = pm.newQuery(Request.class);
-		q.setFilter("eRepDay == " + eRepDay + " && player == " + player.getId());
+		q.setFilter("player == " + player.getId() + " && eRepDay == " + eRepDay);
 		q.setResult("sum(requestedFF)");
 		Long response = ((Long) q.execute());
 		return response != null ? response.intValue() : 0;
+	}
+
+	public boolean requestedRocket(Player player, int eRepDay) {
+		Query q = pm.newQuery(Request.class);
+		q.setFilter("player == " + player.getId() + " && eRepDay == " + eRepDay
+				+ " && type == '" + RequestType.ROCKET.name() + "'");
+		q.setUnique(true);
+		Request request = (Request) q.execute();
+		return request != null;
 	}
 
 	public Request getRequest(Long id) {

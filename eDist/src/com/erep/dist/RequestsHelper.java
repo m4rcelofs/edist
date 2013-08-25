@@ -29,9 +29,9 @@ public class RequestsHelper {
 
 	public boolean verifyRocketAllowed(Player player) {
 		boolean rocketAllowed = config.getRocketAllowed(player);
-		// TODO check dists of the day
-
-		return rocketAllowed;
+		boolean requestedToday = dao.requestedRocket(player,
+				eRepTimeCalculator.geteRepDay());
+		return rocketAllowed && !requestedToday;
 	}
 
 	public int verifyMaxFF(Player player) {
