@@ -7,6 +7,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.joda.time.DateTime;
+import org.json.simple.JSONObject;
+import org.json.simple.JSONValue;
 
 import com.erep.dist.DataAccessObject;
 import com.erep.dist.ServerConstants;
@@ -24,7 +26,8 @@ public class LicensingHelper {
 	 */
 	private static class LicenceCache {
 		DateTime	time;
-		String		decodedLicence;
+		Integer		validUntilDay;
+		Integer		userLimit;
 	}
 
 	private static Logger				logger	= Logger.getLogger(LicensingHelper.class
@@ -51,20 +54,38 @@ public class LicensingHelper {
 				return 0;
 			}
 		}
-		return Integer.valueOf(cache.decodedLicence);
+		return cache.validUntilDay;
+	}
+
+	public int getUserLimit() {
+		if (cache.time == null || cache.time.plusHours(12).isBeforeNow()) {
+			try {
+				refreshCache();
+			} catch (Exception e) {
+				logger.log(Level.SEVERE, "Could not validate server licence", e);
+				return 0;
+			}
+		}
+		return cache.userLimit;
 	}
 
 	private void refreshCache() throws Exception {
 		Licence licence = dao.getLicence();
 
-		cache.decodedLicence = AssymetricCipherUtils.validateLicence(licence
+		String decodedLicence = AssymetricCipherUtils.validateLicence(licence
 				.getSigned());
+		JSONObject jsObj = (JSONObject) JSONValue.parse(decodedLicence);
+
+		cache.validUntilDay = Integer.valueOf(jsObj.get("validUntilDay")
+				.toString());
+		cache.userLimit = Integer.valueOf(jsObj.get("userLimit").toString());
 		cache.time = new DateTime();
 
 	}
 
-	public void forceLicenceRefresh() {
+	public boolean forceLicenceRefresh() {
 		logger.log(Level.WARNING, "Starting licensing job");
+		boolean result = false;
 		try {
 			URL licenceServer = getLicenceServer();
 
@@ -72,11 +93,12 @@ public class LicensingHelper {
 			licence.setSigned(fetchLicence(licenceServer));
 
 			cache.time = null;
-
+			result = true;
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, "Could not download server licence", e);
 		}
 		logger.log(Level.WARNING, "Licensing refresh finished");
+		return result;
 	}
 
 	private String fetchLicence(URL licenceServer) throws IOException {

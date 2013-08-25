@@ -62,6 +62,7 @@ public class ManagementService {
 	@RemoteMethod
 	public boolean addPlayer(Player player) {
 
+		//TODO check licence
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 
 			boolean created = new DataAccessObject(pm).save(player);

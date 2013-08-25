@@ -20,12 +20,28 @@ public class LicensingJob extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
+		resp.setContentType("text/plain");
+		resp.setCharacterEncoding("UTF-8");
+
+		boolean sendEmail = req.getParameter("sendEmail") != null ? Boolean
+				.valueOf(req.getParameter("sendEmail")) : false;
+
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			DataAccessObject dao = new DataAccessObject(pm);
 			LicensingHelper licensing = new LicensingHelper(dao);
-			licensing.forceLicenceRefresh();
+
+			boolean refreshed = false;
+			do {
+				resp.getWriter().println("Starting licence refresh...");
+				refreshed = licensing.forceLicenceRefresh();
+			} while (!refreshed);
 
 			licensing.validate(); // TODO email if not valid
+
+			resp.getWriter().println("Finished licence refresh");
+			resp.getWriter().println(
+					"Your licence is valid until eRepublik day "
+							+ licensing.getLicenceExpiration());
 		}
 
 	}

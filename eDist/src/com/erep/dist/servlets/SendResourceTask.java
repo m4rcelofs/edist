@@ -30,7 +30,8 @@ public class SendResourceTask extends HttpServlet {
 			DataAccessObject dao = new DataAccessObject(pm);
 
 			// TODO
-
+			
+			//TODO check licence
 		}
 
 	}

@@ -21,6 +21,7 @@
 
 	<admin-console>
 		<page name="Setup" url="/admin/install" />
+		<page name="Refresh Licence" url="/admin/cron/licence" />
 	</admin-console>
 
 	<!-- HTTP Sessions are disabled by default. To enable HTTP sessions specify: 
