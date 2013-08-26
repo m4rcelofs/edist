@@ -181,8 +181,6 @@
 	<security-constraint>
 		<web-resource-collection>
 			<url-pattern>/management/*</url-pattern>
-			<!-- REMOVE THIS LINE FOR PUBLIC REPORTS -->
-			<url-pattern>/reports/*</url-pattern>
 		</web-resource-collection>
 		<auth-constraint>
 			<role-name>*</role-name>
@@ -201,8 +199,6 @@
 	<filter-mapping>
 		<filter-name>moderatorsFilter</filter-name>
 		<url-pattern>/management/*</url-pattern>
-		<!-- REMOVE THIS LINE FOR PUBLIC REPORTS -->
-		<url-pattern>/reports/*</url-pattern>
 	</filter-mapping>
 
 	<!-- Default File -->
