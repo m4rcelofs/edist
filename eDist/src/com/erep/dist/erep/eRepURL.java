@@ -1,5 +1,7 @@
 package com.erep.dist.erep;
 
+import com.erep.dist.data.Player;
+
 public enum eRepURL
 {
 	ARTICLE("http://www.erepublik.com/en/article/{id}/1/20"), 
@@ -8,7 +10,10 @@ public enum eRepURL
 	PARTY_MEMBERS("http://www.erepublik.com/en/main/party-members/{id}"), 
 	COUNTRY_LAWS("http://www.erepublik.com/en/country-administration/{id}/1"), 
 	LAW("http://www.erepublik.com/en/main/law/Brazil/{id}"), 
-	COUNTRY_ECONOMY("http://www.erepublik.com/en/country/economy/{id}");
+	COUNTRY_ECONOMY("http://www.erepublik.com/en/country/economy/{id}"),
+	DONATE_ITEMS("http://www.erepublik.com/en/economy/donate-items/{id}"),
+	DONATE_MONEY("http://www.erepublik.com/en/economy/donate-money/{id}")
+	;
 
 	private String	url;
 
@@ -18,5 +23,9 @@ public enum eRepURL
 
 	public String getUrl(String id) {
 		return this.url.replace("{id}", id);
+	}
+	
+	public String getUrl(Player player) {
+		return this.url.replace("{id}", player.getId().toString());
 	}
 }

@@ -1,4 +1,4 @@
-package com.erep.dist.erep;
+package com.erep.dist.erep.parser;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -8,6 +8,8 @@ import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
+
+import com.erep.dist.erep.parser.CitizenParser;
 
 public class CitizenParserTest {
 

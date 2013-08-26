@@ -1,4 +1,4 @@
-package com.erep.dist.erep;
+package com.erep.dist.erep.parser;
 
 import java.util.HashMap;
 import java.util.Map;
