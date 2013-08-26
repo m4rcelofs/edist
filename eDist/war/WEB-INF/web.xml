@@ -54,6 +54,7 @@
 				com.erep.dist.data.Player,
 				com.erep.dist.data.PlayerGroup,
 				com.erep.dist.data.Request,
+				com.erep.dist.data.ResourceDist,
 				com.erep.dist.data.ServerConfig,
 				
 				com.erep.dist.dwr.ManagementService,
@@ -64,6 +65,9 @@
 				com.erep.dist.data.enums.RequestType,
 				com.erep.dist.data.enums.PlayerStatus,
 				com.erep.dist.data.enums.RequestStatus,
+				com.erep.dist.data.enums.ResourceDistStatus,
+				com.erep.dist.data.enums.ResourceType,
+				com.erep.dist.data.enums.ResourceQuality,
 				com.erep.dist.data.enums.RocketQuality
     		</param-value>
 		</init-param>
@@ -74,7 +78,7 @@
 		<url-pattern>/management/dwr/*</url-pattern>
 	</servlet-mapping>
 
-	<!-- Private DWR (reports) -->
+	<!-- Filtered DWR (reports) -->
 	<servlet>
 		<display-name>DWR Reports Servlet</display-name>
 		<servlet-name>dwr-reports-invoker</servlet-name>
@@ -93,12 +97,16 @@
 				com.erep.dist.data.Request,
 				
 				com.erep.dist.dwr.ReportService,
+				com.erep.dist.auth.DWRReportsFilter,
 				
 				com.erep.dist.dwr.dto.ReportQuery,
 
 				com.erep.dist.data.enums.RequestType,
 				com.erep.dist.data.enums.PlayerStatus,
 				com.erep.dist.data.enums.RequestStatus,
+				com.erep.dist.data.enums.ResourceDistStatus,
+				com.erep.dist.data.enums.ResourceType,
+				com.erep.dist.data.enums.ResourceQuality,
 				com.erep.dist.data.enums.RocketQuality
     		</param-value>
 		</init-param>
