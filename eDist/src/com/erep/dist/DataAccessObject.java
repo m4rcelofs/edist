@@ -286,8 +286,14 @@ public class DataAccessObject {
 	}
 
 	public Request getRequest(Long id) {
-		Key key = KeyFactory.createKey(Request.class.getSimpleName(), id);
-		return pm.getObjectById(Request.class, key);
+		try {
+			Key key = KeyFactory.createKey(Request.class.getSimpleName(), id);
+			return pm.getObjectById(Request.class, key);
+		} catch (JDOObjectNotFoundException e) {
+			logger.log(Level.WARNING,
+					"Tried to get non-existent request with ID {0}", id);
+			return null;
+		}
 	}
 
 	public Licence getLicence() {
