@@ -37,18 +37,26 @@ public abstract class ManufacturedStrategy implements DistStrategy {
 	}
 
 	@Override
-	public boolean execute() throws Exception {
-		// TODO Auto-generated method stub
+	public void execute() throws Exception {
+		scanInventory();
+		if (!validateInventory())
+			throw new InventoryValidationException();
 
-		checkInventory();
-
-		return false;
+		sendResource();
 	}
 
-	protected void checkInventory() throws IOException {
-		String donateHtml = scrapper.scrape(eRepURL.DONATE_ITEMS
-				.getUrl(player));
+	protected void scanInventory() throws IOException {
+		String donateHtml = scrapper
+				.scrape(eRepURL.DONATE_ITEMS.getUrl(player));
 		formToken = new DonateItemsParser().parse(donateHtml, inventory);
+	}
+
+	protected abstract boolean validateInventory()
+			throws InventoryValidationException;
+
+	private void sendResource() {
+		// TODO Auto-generated method stub
+
 	}
 
 	public Table<ResourceType, ResourceQuality, Integer> getInventory() {
