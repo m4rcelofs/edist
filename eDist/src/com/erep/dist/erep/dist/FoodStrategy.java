@@ -1,7 +1,9 @@
 package com.erep.dist.erep.dist;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import com.erep.dist.data.Player;
 import com.erep.dist.data.ResourceDist;
@@ -22,25 +24,35 @@ public class FoodStrategy extends ManufacturedStrategy {
 	@Override
 	protected boolean validateInventory() throws InventoryValidationException {
 
-
 		ResourceDist resource = getResource();
 
 		Map<ResourceQuality, Integer> foodInventory = getInventory().row(
 				ResourceType.FOOD);
-		
-		for (Entry<ResourceQuality, Integer> availableFood : foodInventory
-				.entrySet()) {
-			
-			if(isFFMatch(availableFood.getKey()))
-				; 		// TODO Auto-generated method stub
-				
-		}
 
-		return false;
+		List<ResourceQuality> availableQualities = new ArrayList<>(
+				foodInventory.keySet());
+		Collections.sort(availableQualities);
+		Collections.reverse(availableQualities);
+
+		for (ResourceQuality quality : availableQualities)
+			if (hasEnough(foodInventory, quality)) {
+				resource.setQuality(quality);
+				resource.setQuantity(requestedFF / quality.healthRecovered);
+				if (isFFMatch(quality))
+					break;
+			}
+
+		return resource.getQuality() != null;
 	}
 
 	private boolean isFFMatch(ResourceQuality quality) {
 		return requestedFF % quality.healthRecovered == 0;
+	}
+
+	private boolean hasEnough(Map<ResourceQuality, Integer> foodInventory,
+			ResourceQuality quality) {
+		return foodInventory.get(quality) >= requestedFF
+				/ quality.healthRecovered;
 	}
 
 }
