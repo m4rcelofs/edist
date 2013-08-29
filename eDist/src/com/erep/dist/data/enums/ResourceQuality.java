@@ -15,4 +15,8 @@ public enum ResourceQuality
 		this.healthRecovered = healthRecovered;
 		this.hits = hits;
 	}
+
+	public String formValue() {
+		return this.name().replace("Q", "");
+	}
 }

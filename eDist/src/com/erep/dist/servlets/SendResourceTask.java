@@ -73,6 +73,8 @@ public class SendResourceTask extends HttpServlet {
 								scrapper);
 						strategy.execute();
 					} catch (Exception e) {
+						logger.log(Level.SEVERE, "Exception sending resource",
+								e);
 						resource.setStatus(ResourceDistStatus.ERROR);
 						request.setStatus(RequestStatus.SENT_PARTIAL);
 						throw e;

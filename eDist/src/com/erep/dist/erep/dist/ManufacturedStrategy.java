@@ -1,7 +1,6 @@
 package com.erep.dist.erep.dist;
 
 import java.io.IOException;
-import java.util.logging.Logger;
 
 import com.erep.dist.data.Player;
 import com.erep.dist.data.ResourceDist;
@@ -15,9 +14,6 @@ import com.google.common.collect.Table;
 import com.google.common.collect.Tables;
 
 public abstract class ManufacturedStrategy implements DistStrategy {
-
-	private static final Logger									logger	= Logger.getLogger(ManufacturedStrategy.class
-																				.getName());
 
 	private final ResourceDist									resource;
 	private final Player										player;
@@ -41,7 +37,6 @@ public abstract class ManufacturedStrategy implements DistStrategy {
 		scanInventory();
 		if (!validateInventory())
 			throw new InventoryValidationException();
-
 		sendResource();
 	}
 
@@ -54,9 +49,8 @@ public abstract class ManufacturedStrategy implements DistStrategy {
 	protected abstract boolean validateInventory()
 			throws InventoryValidationException;
 
-	private void sendResource() {
-		// TODO Auto-generated method stub
-
+	private void sendResource() throws IOException {
+		scrapper.sendItem(player, resource, formToken);
 	}
 
 	public Table<ResourceType, ResourceQuality, Integer> getInventory() {

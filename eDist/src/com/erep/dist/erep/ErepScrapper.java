@@ -27,6 +27,9 @@ import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 import org.esxx.js.protocol.GAEConnectionManager;
 
+import com.erep.dist.data.Player;
+import com.erep.dist.data.ResourceDist;
+
 public class ErepScrapper implements Closeable {
 
 	private static final Logger		log	= Logger.getLogger(ErepScrapper.class
@@ -50,6 +53,26 @@ public class ErepScrapper implements Closeable {
 		return read(response);
 	}
 
+	public void sendItem(Player player, ResourceDist resource, String formToken)
+			throws IOException {
+		HttpPost httpPost = new HttpPost(eRepURL.DONATE_ITEMS_ACTION.getUrl(""));
+		{
+			List<NameValuePair> nvps = new ArrayList<>(5);
+			nvps.add(new BasicNameValuePair("citizen_id", player.getId() + ""));
+			nvps.add(new BasicNameValuePair("amount", resource.getQuantity()
+					+ ""));
+			nvps.add(new BasicNameValuePair("industry_id",
+					resource.getType().industryId + ""));
+			nvps.add(new BasicNameValuePair("quality", resource.getQuality()
+					.formValue()));
+			nvps.add(new BasicNameValuePair("_token", formToken));
+			httpPost.setEntity(new UrlEncodedFormEntity(nvps, Consts.UTF_8));
+		}
+		HttpResponse postResponse = client.execute(httpPost);
+		printHeaders(postResponse);
+		read(postResponse);
+	}
+
 	public void login() throws IOException {
 
 		log.warning("GET response");
@@ -70,7 +93,7 @@ public class ErepScrapper implements Closeable {
 		log.warning("Post response");
 		HttpPost httpPost = new HttpPost("http://www.erepublik.com/en/email");
 
-		List<NameValuePair> nvps = new ArrayList<NameValuePair>(4);
+		List<NameValuePair> nvps = new ArrayList<>(4);
 		nvps.add(new BasicNameValuePair("_token", hiddenToken));
 		nvps.add(new BasicNameValuePair("citizen_email", email));
 		nvps.add(new BasicNameValuePair("citizen_password", password));
@@ -160,4 +183,5 @@ public class ErepScrapper implements Closeable {
 
 		return client;
 	}
+
 }
