@@ -1,0 +1,39 @@
+package com.erep.dist.dwr;
+
+import java.util.List;
+
+import org.directwebremoting.annotations.RemoteMethod;
+import org.directwebremoting.annotations.RemoteProxy;
+
+import com.erep.dist.CloseablePM;
+import com.erep.dist.DataAccessObject;
+import com.erep.dist.PMF;
+import com.erep.dist.data.Distributor;
+
+@RemoteProxy
+public class AdminService {
+
+	// TODO list/edit mods, server config
+
+	@RemoteMethod
+	public boolean saveDistributor(Distributor dist) {
+
+		if (dist == null || dist.getEmail() == null
+				|| dist.getEmail().trim().isEmpty())
+			return false;
+
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			return new DataAccessObject(pm).save(dist);
+		}
+	}
+
+	@RemoteMethod
+	public List<Distributor> listDistributors() {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			pm.getFetchPlan().addGroup("distributorListing");
+			List<Distributor> dists = new DataAccessObject(pm)
+					.listDistributors();
+			return dists;
+		}
+	}
+}

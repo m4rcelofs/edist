@@ -23,9 +23,6 @@ public class LicensingJob extends HttpServlet {
 		resp.setContentType("text/plain");
 		resp.setCharacterEncoding("UTF-8");
 
-		boolean sendEmail = req.getParameter("sendEmail") != null ? Boolean
-				.valueOf(req.getParameter("sendEmail")) : false;
-
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			DataAccessObject dao = new DataAccessObject(pm);
 			LicensingHelper licensing = new LicensingHelper(dao);
@@ -36,7 +33,7 @@ public class LicensingJob extends HttpServlet {
 				refreshed = licensing.forceLicenceRefresh();
 			} while (!refreshed);
 
-			licensing.validate(); // TODO email if not valid
+			licensing.validate();
 
 			resp.getWriter().println("Finished licence refresh");
 			resp.getWriter().println(

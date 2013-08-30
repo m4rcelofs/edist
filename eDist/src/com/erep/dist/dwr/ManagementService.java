@@ -10,7 +10,6 @@ import org.directwebremoting.annotations.RemoteProxy;
 import com.erep.dist.CloseablePM;
 import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
-import com.erep.dist.data.Distributor;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.dwr.dto.PlayerQuery;
@@ -20,28 +19,6 @@ import com.google.appengine.datanucleus.query.JDOCursorHelper;
 
 @RemoteProxy
 public class ManagementService {
-
-	@RemoteMethod
-	public boolean saveDistributor(Distributor dist) {
-
-		if (dist == null || dist.getEmail() == null
-				|| dist.getEmail().trim().isEmpty())
-			return false;
-
-		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			return new DataAccessObject(pm).save(dist);
-		}
-	}
-
-	@RemoteMethod
-	public List<Distributor> listDistributors() {
-		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			pm.getFetchPlan().addGroup("distributorListing");
-			List<Distributor> dists = new DataAccessObject(pm)
-					.listDistributors();
-			return dists;
-		}
-	}
 
 	@RemoteMethod
 	public boolean saveGroup(PlayerGroup group) {
@@ -62,7 +39,7 @@ public class ManagementService {
 	@RemoteMethod
 	public boolean addPlayer(Player player) {
 
-		//TODO check licence
+		// TODO check licence
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 
 			boolean created = new DataAccessObject(pm).save(player);

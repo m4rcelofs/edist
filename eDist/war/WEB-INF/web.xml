@@ -55,7 +55,6 @@
 				com.erep.dist.data.PlayerGroup,
 				com.erep.dist.data.Request,
 				com.erep.dist.data.ResourceDist,
-				com.erep.dist.data.ServerConfig,
 				
 				com.erep.dist.dwr.ManagementService,
 				
@@ -76,6 +75,31 @@
 	<servlet-mapping>
 		<servlet-name>dwr-management-invoker</servlet-name>
 		<url-pattern>/management/dwr/*</url-pattern>
+	</servlet-mapping>
+
+	<!-- Private DWR (admin) -->
+	<servlet>
+		<display-name>DWR Admin Servlet</display-name>
+		<servlet-name>dwr-admin-invoker</servlet-name>
+		<servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
+		<!-- <init-param> -->
+		<!-- <param-name>debug</param-name> -->
+		<!-- <param-value>true</param-value> -->
+		<!-- </init-param> -->
+		<init-param>
+			<param-name>classes</param-name>
+			<param-value>
+				com.erep.dist.data.Distributor,
+				com.erep.dist.data.ServerConfig,
+				
+				com.erep.dist.dwr.AdminService
+    		</param-value>
+		</init-param>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>dwr-admin-invoker</servlet-name>
+		<url-pattern>/admin/dwr/*</url-pattern>
 	</servlet-mapping>
 
 	<!-- Filtered DWR (reports) -->
@@ -193,6 +217,16 @@
 		<auth-constraint>
 			<role-name>*</role-name>
 		</auth-constraint>
+		<user-data-constraint>
+			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+
+	<!-- Reports only -->
+	<security-constraint>
+		<web-resource-collection>
+			<url-pattern>/reports/*</url-pattern>
+		</web-resource-collection>
 		<user-data-constraint>
 			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
 		</user-data-constraint>
