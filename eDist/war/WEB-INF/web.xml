@@ -121,7 +121,6 @@
 				com.erep.dist.data.Request,
 				
 				com.erep.dist.dwr.ReportService,
-				com.erep.dist.auth.DWRReportsFilter,
 				
 				com.erep.dist.dwr.dto.ReportQuery,
 
@@ -241,6 +240,16 @@
 	<filter-mapping>
 		<filter-name>moderatorsFilter</filter-name>
 		<url-pattern>/management/*</url-pattern>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>reportsFilter</filter-name>
+		<filter-class>com.erep.dist.auth.ReportsFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>reportsFilter</filter-name>
+		<url-pattern>/reports/*</url-pattern>
 	</filter-mapping>
 
 	<!-- Default File -->

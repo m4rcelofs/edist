@@ -1,11 +1,16 @@
 package com.erep.dist.auth;
 
-import java.lang.reflect.Method;
+import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import org.directwebremoting.AjaxFilter;
-import org.directwebremoting.AjaxFilterChain;
+import javax.servlet.Filter;
+import javax.servlet.FilterChain;
+import javax.servlet.FilterConfig;
+import javax.servlet.ServletException;
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletResponse;
 
 import com.erep.dist.CloseablePM;
 import com.erep.dist.DataAccessObject;
@@ -17,23 +22,32 @@ import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
-public class DWRReportsFilter implements AjaxFilter {
+public class ReportsFilter implements Filter {
 
-	private static Logger	log	= Logger.getLogger(DWRReportsFilter.class
+	private static Logger	log	= Logger.getLogger(ReportsFilter.class
 										.getName());
 
 	@Override
-	public Object doFilter(Object obj, Method method, Object[] params,
-			AjaxFilterChain chain) throws Exception {
+	public void init(FilterConfig filterConfig) throws ServletException {}
 
-		if (!ServerConstants.PRIVATE_REPORTS)
-			return chain.doFilter(obj, method, params);
+	@Override
+	public void destroy() {}
+
+	@Override
+	public void doFilter(ServletRequest req, ServletResponse resp,
+			FilterChain filterChain) throws IOException, ServletException {
+
+		if (!ServerConstants.PRIVATE_REPORTS) {
+			filterChain.doFilter(req, resp);
+			return;
+		}
 
 		UserService userService = UserServiceFactory.getUserService();
 
 		if (!userService.isUserLoggedIn()) {
+			((HttpServletResponse) resp).sendError(401);
 			log.log(Level.SEVERE, "User is not logged-in in filter");
-			return null;
+			return;
 		}
 
 		User gUser = userService.getCurrentUser();
@@ -44,13 +58,15 @@ public class DWRReportsFilter implements AjaxFilter {
 			RegisteredUser regUser = dao.find(gUser);
 
 			if (regUser.getRole() != Role.MODERATOR) {
+				((HttpServletResponse) resp).sendError(403);
 				log.log(Level.SEVERE,
 						"Unauthorized access attempt: " + gUser.getEmail());
-				return null;
+				return;
 			}
 		}
 
-		return chain.doFilter(obj, method, params);
+		filterChain.doFilter(req, resp);
+
 	}
 
 }

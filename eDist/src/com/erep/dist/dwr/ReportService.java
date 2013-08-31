@@ -3,14 +3,12 @@ package com.erep.dist.dwr;
 import java.util.Date;
 import java.util.List;
 
-import org.directwebremoting.annotations.Filter;
 import org.directwebremoting.annotations.RemoteMethod;
 import org.directwebremoting.annotations.RemoteProxy;
 
 import com.erep.dist.CloseablePM;
 import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
-import com.erep.dist.auth.DWRReportsFilter;
 import com.erep.dist.data.Distributor;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
@@ -20,7 +18,6 @@ import com.erep.dist.erep.eRepTimeCalculator;
 import com.google.appengine.datanucleus.query.JDOCursorHelper;
 
 @RemoteProxy
-@Filter(type = DWRReportsFilter.class)
 public class ReportService {
 
 	@RemoteMethod
