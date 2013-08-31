@@ -1,40 +1,30 @@
 package com.erep.dist.erep.dist;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.when;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 import com.erep.dist.data.Player;
 import com.erep.dist.data.ResourceDist;
 import com.erep.dist.data.enums.ResourceQuality;
 import com.erep.dist.data.enums.ResourceType;
 import com.erep.dist.erep.ErepScrapper;
+import com.erep.dist.erep.parser.DonateItemsParser;
 import com.google.common.collect.HashBasedTable;
 import com.google.common.collect.Table;
 
 public class FoodStrategyTest {
 
-	@Mock
-	Player			player;
-	@Mock
-	ErepScrapper	scrapper;
-
 	FoodStrategy	strategy;
-
-	@Before
-	public void setUp() {
-		MockitoAnnotations.initMocks(this.getClass());
-	}
 
 	@Test
 	public void testQ5InvEvenFF() throws Exception {
 
-		strategy = spy(new FoodStrategy(new ResourceDist(), player, scrapper,
-				180));
+		strategy = spy(new FoodStrategy(new ResourceDist(), null, null, 180));
 
 		when(strategy.getInventory()).thenReturn(q5Inventory());
 
@@ -42,15 +32,14 @@ public class FoodStrategyTest {
 
 		ResourceDist result = strategy.getResource();
 		assertEquals(ResourceQuality.Q5, result.getQuality());
-		assertEquals(Integer.valueOf(18), result.getQuantity());
+		assertEquals(Integer.valueOf(180), result.getQuantity());
 
 	}
 
 	@Test
 	public void testQ5InvOddFF() throws Exception {
 
-		strategy = spy(new FoodStrategy(new ResourceDist(), player, scrapper,
-				18));
+		strategy = spy(new FoodStrategy(new ResourceDist(), null, null, 182));
 
 		when(strategy.getInventory()).thenReturn(q5Inventory());
 
@@ -58,15 +47,14 @@ public class FoodStrategyTest {
 
 		ResourceDist result = strategy.getResource();
 		assertEquals(ResourceQuality.Q5, result.getQuality());
-		assertEquals(Integer.valueOf(1), result.getQuantity());
+		assertEquals(Integer.valueOf(182), result.getQuantity());
 
 	}
-	
+
 	@Test
 	public void testQ5Q7InvEnoughFood() throws Exception {
 
-		strategy = spy(new FoodStrategy(new ResourceDist(), player, scrapper,
-				100));
+		strategy = spy(new FoodStrategy(new ResourceDist(), null, null, 10));
 
 		when(strategy.getInventory()).thenReturn(q5q7Inventory());
 
@@ -77,12 +65,11 @@ public class FoodStrategyTest {
 		assertEquals(Integer.valueOf(5), result.getQuantity());
 
 	}
-	
+
 	@Test
 	public void testQ5Q7InvNotEnoughFoodEven() throws Exception {
 
-		strategy = spy(new FoodStrategy(new ResourceDist(), player, scrapper,
-				120));
+		strategy = spy(new FoodStrategy(new ResourceDist(), null, null, 120));
 
 		when(strategy.getInventory()).thenReturn(q5q7Inventory());
 
@@ -90,15 +77,14 @@ public class FoodStrategyTest {
 
 		ResourceDist result = strategy.getResource();
 		assertEquals(ResourceQuality.Q5, result.getQuality());
-		assertEquals(Integer.valueOf(12), result.getQuantity());
+		assertEquals(Integer.valueOf(120), result.getQuantity());
 
 	}
-	
+
 	@Test
 	public void testQ5Q7InvNotEnoughFoodOdd() throws Exception {
 
-		strategy = spy(new FoodStrategy(new ResourceDist(), player, scrapper,
-				122));
+		strategy = spy(new FoodStrategy(new ResourceDist(), null, null, 122));
 
 		when(strategy.getInventory()).thenReturn(q5q7Inventory());
 
@@ -106,31 +92,14 @@ public class FoodStrategyTest {
 
 		ResourceDist result = strategy.getResource();
 		assertEquals(ResourceQuality.Q5, result.getQuality());
-		assertEquals(Integer.valueOf(12), result.getQuantity());
+		assertEquals(Integer.valueOf(122), result.getQuantity());
 
 	}
-	
-	@Test
-	public void testMixedInvEvenFF() throws Exception {
 
-		strategy = spy(new FoodStrategy(new ResourceDist(), player, scrapper,
-				180));
-
-		when(strategy.getInventory()).thenReturn(mixedInventory());
-
-		strategy.validateInventory();
-
-		ResourceDist result = strategy.getResource();
-		assertEquals(ResourceQuality.Q7, result.getQuality());
-		assertEquals(Integer.valueOf(9), result.getQuantity());
-
-	}
-	
 	@Test
 	public void testMixedInvQ6() throws Exception {
 
-		strategy = spy(new FoodStrategy(new ResourceDist(), player, scrapper,
-				48));
+		strategy = spy(new FoodStrategy(new ResourceDist(), null, null, 6));
 
 		when(strategy.getInventory()).thenReturn(mixedInventory());
 
@@ -138,31 +107,14 @@ public class FoodStrategyTest {
 
 		ResourceDist result = strategy.getResource();
 		assertEquals(ResourceQuality.Q6, result.getQuality());
-		assertEquals(Integer.valueOf(4), result.getQuantity());
-
-	}
-	
-	@Test
-	public void testMixedInvQ5() throws Exception {
-
-		strategy = spy(new FoodStrategy(new ResourceDist(), player, scrapper,
-				50));
-
-		when(strategy.getInventory()).thenReturn(mixedInventory());
-
-		strategy.validateInventory();
-
-		ResourceDist result = strategy.getResource();
-		assertEquals(ResourceQuality.Q5, result.getQuality());
 		assertEquals(Integer.valueOf(5), result.getQuantity());
 
 	}
-	
+
 	@Test
 	public void testMixedInvQ4() throws Exception {
 
-		strategy = spy(new FoodStrategy(new ResourceDist(), player, scrapper,
-				32));
+		strategy = spy(new FoodStrategy(new ResourceDist(), null, null, 4));
 
 		when(strategy.getInventory()).thenReturn(mixedInventory());
 
@@ -170,15 +122,14 @@ public class FoodStrategyTest {
 
 		ResourceDist result = strategy.getResource();
 		assertEquals(ResourceQuality.Q4, result.getQuality());
-		assertEquals(Integer.valueOf(4), result.getQuantity());
+		assertEquals(Integer.valueOf(5), result.getQuantity());
 
 	}
-	
+
 	@Test
 	public void testMixedInvQ3() throws Exception {
 
-		strategy = spy(new FoodStrategy(new ResourceDist(), player, scrapper,
-				6));
+		strategy = spy(new FoodStrategy(new ResourceDist(), null, null, 3));
 
 		when(strategy.getInventory()).thenReturn(mixedInventory());
 
@@ -186,15 +137,14 @@ public class FoodStrategyTest {
 
 		ResourceDist result = strategy.getResource();
 		assertEquals(ResourceQuality.Q3, result.getQuality());
-		assertEquals(Integer.valueOf(1), result.getQuantity());
+		assertEquals(Integer.valueOf(5), result.getQuantity());
 
 	}
-	
+
 	@Test
 	public void testMixedInvQ2() throws Exception {
 
-		strategy = spy(new FoodStrategy(new ResourceDist(), player, scrapper,
-				4));
+		strategy = spy(new FoodStrategy(new ResourceDist(), null, null, 2));
 
 		when(strategy.getInventory()).thenReturn(mixedInventory());
 
@@ -202,15 +152,14 @@ public class FoodStrategyTest {
 
 		ResourceDist result = strategy.getResource();
 		assertEquals(ResourceQuality.Q2, result.getQuality());
-		assertEquals(Integer.valueOf(1), result.getQuantity());
+		assertEquals(Integer.valueOf(5), result.getQuantity());
 
 	}
-	
+
 	@Test
 	public void testMixedInvQ1() throws Exception {
 
-		strategy = spy(new FoodStrategy(new ResourceDist(), player, scrapper,
-				122));
+		strategy = spy(new FoodStrategy(new ResourceDist(), null, null, 1));
 
 		when(strategy.getInventory()).thenReturn(mixedInventory());
 
@@ -218,24 +167,54 @@ public class FoodStrategyTest {
 
 		ResourceDist result = strategy.getResource();
 		assertEquals(ResourceQuality.Q1, result.getQuality());
-		assertEquals(Integer.valueOf(61), result.getQuantity());
+		assertEquals(Integer.valueOf(5), result.getQuantity());
 
+	}
+
+	@Test
+	public void testEmptyInvValidation() throws Exception {
+
+		strategy = spy(new FoodStrategy(new ResourceDist(), null, null, 1));
+
+		when(strategy.getInventory()).thenReturn(emptyInventory());
+
+		assertFalse(strategy.validateInventory());
+	}
+
+	@Test(expected = InventoryValidationException.class)
+	public void testEmptyInvException() throws Exception {
+
+		Player player = mock(Player.class);
+		ErepScrapper scrapper = mock(ErepScrapper.class);
+		DonateItemsParser parser = mock(DonateItemsParser.class);
+
+		strategy = spy(new FoodStrategy(new ResourceDist(), player, scrapper,
+				parser, 1));
+
+		when(strategy.scanInventory()).thenReturn("");
+		when(strategy.getInventory()).thenReturn(emptyInventory());
+
+		strategy.execute();
+	}
+
+	private Table<ResourceType, ResourceQuality, Integer> emptyInventory() {
+		return HashBasedTable.create();
 	}
 
 	private Table<ResourceType, ResourceQuality, Integer> q5Inventory() {
 		Table<ResourceType, ResourceQuality, Integer> inv = HashBasedTable
 				.create();
 
-		inv.put(ResourceType.FOOD, ResourceQuality.Q5, 100);
+		inv.put(ResourceType.FOOD, ResourceQuality.Q5, 1000);
 
 		return inv;
 	}
-	
+
 	private Table<ResourceType, ResourceQuality, Integer> q5q7Inventory() {
 		Table<ResourceType, ResourceQuality, Integer> inv = HashBasedTable
 				.create();
 
-		inv.put(ResourceType.FOOD, ResourceQuality.Q5, 100);
+		inv.put(ResourceType.FOOD, ResourceQuality.Q5, 1000);
 		inv.put(ResourceType.FOOD, ResourceQuality.Q7, 5);
 
 		return inv;
@@ -245,8 +224,11 @@ public class FoodStrategyTest {
 		Table<ResourceType, ResourceQuality, Integer> inv = HashBasedTable
 				.create();
 
-		for (ResourceQuality quality : ResourceQuality.values())
-			inv.put(ResourceType.FOOD, quality, 100);
+		inv.put(ResourceType.FOOD, ResourceQuality.Q1, 100);
+		inv.put(ResourceType.FOOD, ResourceQuality.Q2, 100);
+		inv.put(ResourceType.FOOD, ResourceQuality.Q3, 100);
+		inv.put(ResourceType.FOOD, ResourceQuality.Q4, 100);
+		inv.put(ResourceType.FOOD, ResourceQuality.Q6, 100);
 
 		return inv;
 	}

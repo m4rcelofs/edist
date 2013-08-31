@@ -10,6 +10,7 @@ import com.erep.dist.data.ResourceDist;
 import com.erep.dist.data.enums.ResourceQuality;
 import com.erep.dist.data.enums.ResourceType;
 import com.erep.dist.erep.ErepScrapper;
+import com.erep.dist.erep.parser.DonateItemsParser;
 
 public class FoodStrategy extends ManufacturedStrategy {
 
@@ -18,6 +19,13 @@ public class FoodStrategy extends ManufacturedStrategy {
 	public FoodStrategy(ResourceDist resource, Player player,
 			ErepScrapper scrapper, Integer requestedFF) throws Exception {
 		super(resource, player, scrapper);
+		this.requestedFF = requestedFF;
+	}
+
+	protected FoodStrategy(ResourceDist resource, Player player,
+			ErepScrapper scrapper, DonateItemsParser parser, Integer requestedFF)
+			throws Exception {
+		super(resource, player, scrapper, parser);
 		this.requestedFF = requestedFF;
 	}
 
@@ -37,7 +45,8 @@ public class FoodStrategy extends ManufacturedStrategy {
 		for (ResourceQuality quality : availableQualities)
 			if (hasEnough(foodInventory, quality)) {
 				resource.setQuality(quality);
-				resource.setQuantity(requestedFF / quality.healthRecovered);
+				resource.setQuantity(toHealth(requestedFF)
+						/ quality.healthRecovered);
 				if (isFFMatch(quality))
 					break;
 			}
@@ -46,13 +55,17 @@ public class FoodStrategy extends ManufacturedStrategy {
 	}
 
 	private boolean isFFMatch(ResourceQuality quality) {
-		return requestedFF % quality.healthRecovered == 0;
+		return toHealth(requestedFF) % quality.healthRecovered == 0;
 	}
 
 	private boolean hasEnough(Map<ResourceQuality, Integer> foodInventory,
 			ResourceQuality quality) {
-		return foodInventory.get(quality) >= requestedFF
+		return foodInventory.get(quality) >= toHealth(requestedFF)
 				/ quality.healthRecovered;
+	}
+
+	private int toHealth(int ff) {
+		return ff * 10;
 	}
 
 }

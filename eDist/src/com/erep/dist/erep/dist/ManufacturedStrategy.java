@@ -18,18 +18,24 @@ public abstract class ManufacturedStrategy implements DistStrategy {
 	private final ResourceDist									resource;
 	private final Player										player;
 	private final ErepScrapper									scrapper;
+	private final DonateItemsParser								parser;
 
 	private final Table<ResourceType, ResourceQuality, Integer>	inventory;
 	protected String											formToken;
 
 	protected ManufacturedStrategy(ResourceDist resource, Player player,
 			ErepScrapper scrapper) throws Exception {
+		this(resource, player, scrapper, new DonateItemsParser());
+	}
+
+	protected ManufacturedStrategy(ResourceDist resource, Player player,
+			ErepScrapper scrapper, DonateItemsParser parser) throws Exception {
 		this.resource = resource;
 		this.player = player;
 		this.scrapper = scrapper;
 
 		this.inventory = HashBasedTable.create();
-
+		this.parser = parser;
 	}
 
 	@Override
@@ -40,10 +46,11 @@ public abstract class ManufacturedStrategy implements DistStrategy {
 		sendResource();
 	}
 
-	protected void scanInventory() throws IOException {
+	protected String scanInventory() throws IOException {
 		String donateHtml = scrapper
 				.scrape(eRepURL.DONATE_ITEMS.getUrl(player));
-		formToken = new DonateItemsParser().parse(donateHtml, inventory);
+		formToken = parser.parse(donateHtml, inventory);
+		return formToken;
 	}
 
 	protected abstract boolean validateInventory()
