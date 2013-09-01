@@ -357,6 +357,7 @@ public class DataAccessObject {
 	}
 
 	@Cacheable
+	//TODO clear cache
 	public RegisteredUser find(User user) {
 		try {
 			return pm.getObjectById(RegisteredUser.class, user.getUserId());

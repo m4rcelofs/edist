@@ -17,6 +17,7 @@ import com.erep.dist.RequestsHelper;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.dwr.dto.RequestAttempt;
+import com.erep.dist.erep.eRepTimeCalculator;
 
 @RemoteProxy
 public class RequestService {
@@ -24,8 +25,8 @@ public class RequestService {
 	private static Logger	logger			= Logger.getLogger(RequestService.class
 													.getName());
 
-	private static Pattern	profilePattern	= Pattern
-													.compile("(http://|https://)?(www\\.)?erepublik\\.com/\\D{2,3}/citizen/profile/(?<id>\\d+)");
+	private static Pattern	profilePattern	= Pattern 
+													.compile("(http://|https://)?(www\\.)?erepublik\\.com/\\D{2}/citizen/profile/(?<id>\\d+)");
 
 	@RemoteMethod
 	public boolean sendRequest(Player player, Integer requestedFF,
@@ -81,6 +82,7 @@ public class RequestService {
 				dto.setPlayer(dbPlayer);
 				dto.setRocketAllowed(helper.verifyRocketAllowed(dbPlayer));
 				dto.setAvailableFF(helper.verifyMaxFF(dbPlayer));
+				dto.setRechargeTime(eRepTimeCalculator.secondsToDayChange());
 			}
 
 			return dto;

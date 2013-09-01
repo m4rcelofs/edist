@@ -1,5 +1,7 @@
 package com.erep.dist.erep;
 
+import static org.joda.time.Seconds.secondsBetween;
+
 import java.util.Date;
 
 import org.joda.time.DateTime;
@@ -35,6 +37,11 @@ public class eRepTimeCalculator {
 	@Cacheable
 	private Integer daysBetween(LocalDate first, LocalDate last) {
 		return Days.daysBetween(first, last).getDays();
+	}
+
+	public static int secondsToDayChange() {
+		return secondsBetween(LocalTime.now(eRepTimeZone),
+				new LocalTime(23, 59, 59)).getSeconds();
 	}
 
 	public static int geteRepHour() {

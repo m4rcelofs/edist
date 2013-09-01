@@ -16,6 +16,9 @@ public class RequestAttempt {
 	private Integer		availableFF;
 
 	@RemoteProperty
+	private Integer		rechargeTime;
+
+	@RemoteProperty
 	private Boolean		rocketAllowed;
 
 	@RemoteProperty
@@ -51,6 +54,14 @@ public class RequestAttempt {
 
 	public void setAllowedType(RequestType allowedType) {
 		this.allowedType = allowedType;
+	}
+
+	public Integer getRechargeTime() {
+		return rechargeTime;
+	}
+
+	public void setRechargeTime(Integer rechargeTime) {
+		this.rechargeTime = rechargeTime;
 	}
 
 }

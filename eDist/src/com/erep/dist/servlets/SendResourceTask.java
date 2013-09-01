@@ -43,8 +43,6 @@ public class SendResourceTask extends HttpServlet {
 
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			DataAccessObject dao = new DataAccessObject(pm);
-			// TODO check licence
-
 			Request request = dao.getRequest(Long.valueOf(requestId));
 
 			if (request == null || request.getStatus() == RequestStatus.SENT)

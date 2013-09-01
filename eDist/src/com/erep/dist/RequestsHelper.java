@@ -62,6 +62,8 @@ public class RequestsHelper {
 	private Request newRequest(Player player, Integer requestedFF,
 			RequestType requestedType) {
 
+		//TODO check licence
+		
 		Request request = new Request();
 		request.setPlayer(player);
 		request.setGroup(player.getGroup());
