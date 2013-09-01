@@ -18,6 +18,7 @@ public class InstallHelper {
 				ServerConstants.DEFAULT_ID));
 		config.setGranularity(ConfigGranularity.PLAYER);
 		config.setMuName("  ");
+		config.setPrivateReports(true);
 
 		DistConfig distConfig = new DistConfig();
 		distConfig.setKey(KeyFactory.createKey(

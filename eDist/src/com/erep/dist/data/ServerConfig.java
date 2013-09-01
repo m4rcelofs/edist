@@ -24,6 +24,9 @@ public class ServerConfig {
 	@Persistent
 	private ConfigGranularity	granularity;
 
+	@Persistent
+	private boolean				privateReports;
+
 	public String getMuName() {
 		return muName;
 	}
@@ -54,6 +57,14 @@ public class ServerConfig {
 
 	public void setKey(Key key) {
 		this.key = key;
+	}
+
+	public boolean isPrivateReports() {
+		return privateReports;
+	}
+
+	public void setPrivateReports(boolean privateReports) {
+		this.privateReports = privateReports;
 	}
 
 }

@@ -16,7 +16,6 @@ public class ServerConstants {
 
 	// FIXME
 	public static final boolean	MOD_FILTER_ACTIVE	= false;
-	public static final boolean	PRIVATE_REPORTS	= false;
 
 	
 }
