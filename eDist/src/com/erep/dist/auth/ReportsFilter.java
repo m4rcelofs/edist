@@ -37,6 +37,7 @@ public class ReportsFilter implements Filter {
 	public void doFilter(ServletRequest req, ServletResponse resp,
 			FilterChain filterChain) throws IOException, ServletException {
 
+		//TODO move to config
 		if (!ServerConstants.PRIVATE_REPORTS) {
 			filterChain.doFilter(req, resp);
 			return;
