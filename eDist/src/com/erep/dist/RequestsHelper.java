@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.erep.dist.auth.LicensingHelper;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.Request;
 import com.erep.dist.data.ResourceDist;
@@ -21,10 +22,12 @@ public class RequestsHelper {
 
 	private final DataAccessObject	dao;
 	private final ConfigHelper		config;
+	private final LicensingHelper	licence;
 
 	public RequestsHelper(DataAccessObject dao) {
 		this.dao = dao;
 		this.config = new ConfigHelper(dao);
+		this.licence = new LicensingHelper(dao);
 	}
 
 	public boolean verifyRocketAllowed(Player player) {
@@ -62,8 +65,9 @@ public class RequestsHelper {
 	private Request newRequest(Player player, Integer requestedFF,
 			RequestType requestedType) {
 
-		//TODO check licence
-		
+		if (!licence.isValidLicence())
+			return null;
+
 		Request request = new Request();
 		request.setPlayer(player);
 		request.setGroup(player.getGroup());
@@ -114,7 +118,7 @@ public class RequestsHelper {
 			ResourceQuality quality = config.getAllowedWeaponQuality(request
 					.getPlayer());
 
-			// FIXME division by hits will always return lower end
+			// will always return lower end of division
 			ResourceDist resource = new ResourceDist(ResourceType.WEAPONS,
 					quality, request.getRequestedFF() / quality.hits);
 			resources.add(resource);

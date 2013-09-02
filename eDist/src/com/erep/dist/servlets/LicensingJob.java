@@ -33,7 +33,7 @@ public class LicensingJob extends HttpServlet {
 				refreshed = licensing.forceLicenceRefresh();
 			} while (!refreshed);
 
-			licensing.validate();
+			licensing.isValidLicence();
 
 			resp.getWriter().println("Finished licence refresh");
 			resp.getWriter().println(

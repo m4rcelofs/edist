@@ -41,7 +41,7 @@ public class LicensingHelper {
 		this.dao = dao;
 	}
 
-	public boolean validate() {
+	public boolean isValidLicence() {
 		return getLicenceExpiration() >= eRepTimeCalculator.geteRepDay();
 	}
 
