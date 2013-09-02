@@ -9,12 +9,25 @@ import com.erep.dist.CloseablePM;
 import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
 import com.erep.dist.data.Distributor;
+import com.erep.dist.data.RegisteredUser;
 import com.erep.dist.data.ServerConfig;
 
 @RemoteProxy
 public class AdminService {
 
-	// TODO list/edit mods
+	@RemoteMethod
+	public List<RegisteredUser> listRegisteredUsers() {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			return new DataAccessObject(pm).listUsers();
+		}
+	}
+
+	@RemoteMethod
+	public boolean saveRegisteredUser(RegisteredUser user) {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			return new DataAccessObject(pm).save(user);
+		}
+	}
 
 	@RemoteMethod
 	public ServerConfig getServerConfig() {

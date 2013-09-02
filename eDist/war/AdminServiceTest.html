@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>eDist 0.1 - Exército Brasileiro</title>
+
+<script type='text/javascript' src='/admin/dwr/engine.js'></script>
+<script type='text/javascript'
+	src='/admin/dwr/interface/AdminService.js'></script>
+
+<script type='text/javascript' src='js/jquery-1.10.2.min.cache.js'></script>
+
+<script type="text/javascript">
+
+	function getServerConfig() {
+		AdminService.getServerConfig({
+			callback : function(response) {
+				$('#test2').append('<br/>' + JSON.stringify(response));
+			},
+			errorHandler : errorHandlerFunction
+		});
+	}
+
+
+	function listRegisteredUsers() {
+		AdminService.listRegisteredUsers({
+			callback : function(response) {
+				response.forEach(function(item) {
+					$('#test3').append('<br/>' + JSON.stringify(item));
+				});
+			},
+			errorHandler : errorHandlerFunction
+		});
+	}
+
+	function saveDistributor(id) {
+		var dist = {
+			id : id,
+			email : 'blabla@bla.com',
+			password : '1234567890'
+		};
+		AdminService.saveDistributor(dist, {
+			callback : function(response) {
+				$('#test4').append('ok');
+			},
+			errorHandler : errorHandlerFunction
+		});
+	}
+
+	function listDistributors() {
+		AdminService.listDistributors({
+			callback : function(response) {
+				response.forEach(function(item) {
+					$('#test4').append('<br/>' + JSON.stringify(item));
+				});
+			},
+			errorHandler : errorHandlerFunction
+		});
+	}
+
+	function errorHandlerFunction(message) {
+		alert("Oops: " + message);
+	}
+</script>
+
+</head>
+
+<body onload="">
+	<h1>Hello App Engine!</h1>
+	<h6>(will only work if accessed with https)</h6>
+	<div id='install'>
+		<a href='admin/install'>Instalar</a>
+	</div>
+
+	<div id='test2'>
+		<button onclick="getServerConfig()">Configuração do Server</button>
+	</div>
+
+	<div id='test3'>
+		<button onclick="listRegisteredUsers()">Listar Usuários Registrados</button>
+	</div>
+
+	<div id='test4'>
+		<button onclick="saveDistributor()">Adicionar distribuidor</button>
+		<button onclick="listDistributors()">Listar distribuidores</button>
+	</div>
+
+</body>
+</html>

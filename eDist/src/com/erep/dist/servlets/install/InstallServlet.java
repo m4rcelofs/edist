@@ -18,6 +18,7 @@ import com.erep.dist.ServerConstants;
 import com.erep.dist.data.InstallLog;
 import com.erep.dist.data.ServerConfig;
 import com.erep.dist.erep.eRepTimeCalculator;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserServiceFactory;
 import com.google.appengine.api.utils.SystemProperty;
@@ -38,7 +39,9 @@ public class InstallServlet extends HttpServlet {
 
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			try {
-				pm.getObjectById(ServerConfig.class, ServerConstants.DEFAULT);
+				pm.getObjectById(ServerConfig.class, KeyFactory.createKey(
+						ServerConfig.class.getSimpleName(),
+						ServerConstants.DEFAULT_ID));
 				resp.getWriter().write("Already installed!");
 			} catch (JDOObjectNotFoundException e) {
 				resp.getWriter().write("Installing, please wait... <br />");

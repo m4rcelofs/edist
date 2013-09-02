@@ -223,6 +223,12 @@ public class DataAccessObject {
 	}
 
 	@SuppressWarnings("unchecked")
+	public List<RegisteredUser> listUsers() {
+		Query q = pm.newQuery(RegisteredUser.class);
+		return (List<RegisteredUser>) q.execute();
+	}
+
+	@SuppressWarnings("unchecked")
 	public List<Player> listAllPlayers() {
 		Query q = pm.newQuery(Player.class);
 		return (List<Player>) q.execute();
@@ -359,7 +365,6 @@ public class DataAccessObject {
 	}
 
 	@Cacheable
-	// TODO clear cache
 	public RegisteredUser find(User user) {
 		try {
 			return pm.getObjectById(RegisteredUser.class, user.getUserId());
@@ -422,6 +427,23 @@ public class DataAccessObject {
 
 		CacheFacade.remove("com.erep.dist.DataAccessObject.getServerConfig()");
 		return false;
+	}
+
+	public boolean save(RegisteredUser user) {
+		RegisteredUser dbUser = find(user);
+		return edit(dbUser, user);
+	}
+
+	private boolean edit(RegisteredUser dbUser, RegisteredUser user) {
+
+		if (user.getName() != null && !user.getName().trim().isEmpty())
+			dbUser.setName(user.getName());
+
+		if (user.getRole() != null)
+			dbUser.setRole(user.getRole());
+		CacheFacade.remove("com.erep.dist.DataAccessObject.find(User="
+				+ dbUser.getgEmail() + ";)");
+		return true;
 	}
 
 }

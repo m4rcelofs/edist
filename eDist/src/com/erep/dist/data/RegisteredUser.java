@@ -7,6 +7,10 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import org.directwebremoting.annotations.DataTransferObject;
+import org.directwebremoting.annotations.RemoteProperty;
+
+@DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class RegisteredUser {
 
@@ -17,18 +21,23 @@ public class RegisteredUser {
 
 	@PrimaryKey
 	@Persistent
+	@RemoteProperty
 	private String			gId;
 
 	@Persistent
+	@RemoteProperty
 	private final String	gEmail;
 
 	@Persistent
+	@RemoteProperty
 	private String			name;
 
 	@Persistent
+	@RemoteProperty
 	private final Date		registeredAt;
 
 	@Persistent
+	@RemoteProperty
 	private Role			role;
 
 	public RegisteredUser(String gId, String gEmail) {

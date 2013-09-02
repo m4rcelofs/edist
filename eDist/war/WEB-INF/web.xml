@@ -91,6 +91,10 @@
 			<param-value>
 				com.erep.dist.data.Distributor,
 				com.erep.dist.data.ServerConfig,
+				com.erep.dist.data.RegisteredUser,
+				
+				com.erep.dist.data.enums.ReportsAccessLevel,
+				com.erep.dist.data.enums.ConfigGranularity,
 				
 				com.erep.dist.dwr.AdminService
     		</param-value>
