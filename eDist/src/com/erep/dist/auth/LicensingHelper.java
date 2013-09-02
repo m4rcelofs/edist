@@ -72,7 +72,7 @@ public class LicensingHelper {
 	private void refreshCache() throws Exception {
 		Licence licence = dao.getLicence();
 
-		String decodedLicence = AssymetricCipherUtils.validateLicence(licence
+		String decodedLicence = AssymetricCipherUtils.validateSigned(licence
 				.getSigned());
 		JSONObject jsObj = (JSONObject) JSONValue.parse(decodedLicence);
 

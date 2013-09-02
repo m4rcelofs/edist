@@ -1,6 +1,7 @@
 package com.erep.dist;
 
 import static com.erep.dist.auth.SymmetricCipherUtils.encrypt;
+import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withUrl;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +28,8 @@ import com.erep.dist.data.enums.RequestType;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.taskqueue.Queue;
+import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.api.users.User;
 import com.google.appengine.datanucleus.query.JDOCursorHelper;
 
@@ -413,6 +416,15 @@ public class DataAccessObject {
 		if (newConfig.getReportsAccess() != null)
 			dbConfig.setReportsAccess(newConfig.getReportsAccess());
 
+		if (newConfig.getContactEmail() != null
+				&& !newConfig.getContactEmail().equalsIgnoreCase(
+						dbConfig.getContactEmail())) {
+
+			startEmailChangeNotificationTask(dbConfig.getContactEmail(),
+					newConfig.getContactEmail());
+			dbConfig.setContactEmail(newConfig.getContactEmail());
+		}
+
 		if (newConfig.getMuConfig() != null) {
 			dbConfig.getMuConfig().setAutoSend(
 					newConfig.getMuConfig().getAutoSend());
@@ -426,7 +438,7 @@ public class DataAccessObject {
 		}
 
 		CacheFacade.remove("com.erep.dist.DataAccessObject.getServerConfig()");
-		return false;
+		return true;
 	}
 
 	public boolean save(RegisteredUser user) {
@@ -444,6 +456,17 @@ public class DataAccessObject {
 		CacheFacade.remove("com.erep.dist.DataAccessObject.find(User="
 				+ dbUser.getgEmail() + ";)");
 		return true;
+	}
+
+	private void startEmailChangeNotificationTask(String oldEmail,
+			String newEmail) {
+		Queue queue = QueueFactory.getDefaultQueue();
+		if (oldEmail == null)
+			oldEmail = "";
+		if (newEmail == null)
+			newEmail = "";
+		queue.add(withUrl("/admin/tasks/notifyEmailChange").param("oldEmail",
+				oldEmail).param("newEmail", newEmail));
 	}
 
 }

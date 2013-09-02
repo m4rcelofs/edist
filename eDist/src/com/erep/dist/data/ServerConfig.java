@@ -36,6 +36,10 @@ public class ServerConfig {
 	@RemoteProperty
 	private ReportsAccessLevel	reportsAccess;
 
+	@Persistent
+	@RemoteProperty
+	private String				contactEmail;
+
 	public String getMuName() {
 		return muName;
 	}
@@ -74,6 +78,14 @@ public class ServerConfig {
 
 	public void setReportsAccess(ReportsAccessLevel reportsAccess) {
 		this.reportsAccess = reportsAccess;
+	}
+
+	public String getContactEmail() {
+		return contactEmail;
+	}
+
+	public void setContactEmail(String contactEmail) {
+		this.contactEmail = contactEmail;
 	}
 
 }

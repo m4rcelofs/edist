@@ -12,6 +12,17 @@
 <script type='text/javascript' src='js/jquery-1.10.2.min.cache.js'></script>
 
 <script type="text/javascript">
+	function editServerConfig() {
+		var config = {
+			contactEmail : 'blabla@bla.com'
+		};
+		AdminService.saveServerConfig(config, {
+			callback : function(response) {
+				$('#test2').append('<br/>' + JSON.stringify(response));
+			},
+			errorHandler : errorHandlerFunction
+		});
+	}
 
 	function getServerConfig() {
 		AdminService.getServerConfig({
@@ -21,7 +32,6 @@
 			errorHandler : errorHandlerFunction
 		});
 	}
-
 
 	function listRegisteredUsers() {
 		AdminService.listRegisteredUsers({
@@ -74,11 +84,15 @@
 	</div>
 
 	<div id='test2'>
-		<button onclick="getServerConfig()">Configuração do Server</button>
+		<button onclick="getServerConfig()">Exibir Configuração do
+			Server</button>
+		<button onclick="editServerConfig()">Editar Configuração do
+			Server</button>
 	</div>
 
 	<div id='test3'>
-		<button onclick="listRegisteredUsers()">Listar Usuários Registrados</button>
+		<button onclick="listRegisteredUsers()">Listar Usuários
+			Registrados</button>
 	</div>
 
 	<div id='test4'>

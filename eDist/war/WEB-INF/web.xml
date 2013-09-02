@@ -165,6 +165,16 @@
 		<url-pattern>/admin/tasks/sendResource</url-pattern>
 	</servlet-mapping>
 
+	<servlet>
+		<servlet-name>notifyEmailChangeTask</servlet-name>
+		<servlet-class>com.erep.dist.servlets.NotifyEmailChangeTask</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>notifyEmailChangeTask</servlet-name>
+		<url-pattern>/admin/tasks/notifyEmailChange</url-pattern>
+	</servlet-mapping>
+
 	<!-- Cron jobs -->
 	<servlet>
 		<servlet-name>autoDistJob</servlet-name>
