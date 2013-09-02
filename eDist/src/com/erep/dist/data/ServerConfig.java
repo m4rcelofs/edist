@@ -5,9 +5,14 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import org.directwebremoting.annotations.DataTransferObject;
+import org.directwebremoting.annotations.RemoteProperty;
+
 import com.erep.dist.data.enums.ConfigGranularity;
+import com.erep.dist.data.enums.ReportsAccessLevel;
 import com.google.appengine.api.datastore.Key;
 
+@DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class ServerConfig {
 
@@ -16,16 +21,20 @@ public class ServerConfig {
 	private Key					key;
 
 	@Persistent
+	@RemoteProperty
 	private String				muName;
 
 	@Persistent
+	@RemoteProperty
 	private DistConfig			muConfig;
 
 	@Persistent
+	@RemoteProperty
 	private ConfigGranularity	granularity;
 
 	@Persistent
-	private boolean				privateReports;
+	@RemoteProperty
+	private ReportsAccessLevel	reportsAccess;
 
 	public String getMuName() {
 		return muName;
@@ -59,12 +68,12 @@ public class ServerConfig {
 		this.key = key;
 	}
 
-	public boolean isPrivateReports() {
-		return privateReports;
+	public ReportsAccessLevel getReportsAccess() {
+		return reportsAccess;
 	}
 
-	public void setPrivateReports(boolean privateReports) {
-		this.privateReports = privateReports;
+	public void setReportsAccess(ReportsAccessLevel reportsAccess) {
+		this.reportsAccess = reportsAccess;
 	}
 
 }

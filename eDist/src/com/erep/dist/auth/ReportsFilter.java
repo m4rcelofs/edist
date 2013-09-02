@@ -41,30 +41,59 @@ public class ReportsFilter implements Filter {
 			DataAccessObject dao = new DataAccessObject(pm);
 			ServerConfig config = dao.getServerConfig();
 
-			if (config.isPrivateReports()) {
-
-				UserService userService = UserServiceFactory.getUserService();
-
-				if (!userService.isUserLoggedIn()) {
-					((HttpServletResponse) resp).sendError(401);
-					log.log(Level.SEVERE, "User is not logged-in in filter");
-					return;
-				}
-
-				User gUser = userService.getCurrentUser();
-
-				RegisteredUser regUser = dao.find(gUser);
-
-				if (regUser.getRole() != Role.MODERATOR) {
-					((HttpServletResponse) resp).sendError(403);
-					log.log(Level.SEVERE, "Unauthorized access attempt: "
-							+ gUser.getEmail());
-					return;
-				}
+			switch (config.getReportsAccess()) {
+				case ADMINS:
+					if (verifyAdmin(resp))
+						filterChain.doFilter(req, resp);
+					break;
+				case MODS:
+					if (verifyMod(dao, resp))
+						filterChain.doFilter(req, resp);
+					break;
+				case PUBLIC:
+					filterChain.doFilter(req, resp);
+					break;
+				default:
+					break;
 			}
-
-			filterChain.doFilter(req, resp);
 		}
+	}
+
+	private boolean verifyAdmin(ServletResponse resp) throws IOException {
+		UserService userService = UserServiceFactory.getUserService();
+		return verifyLoggedIn(userService, resp) && userService.isUserAdmin();
+	}
+
+	private boolean verifyMod(DataAccessObject dao, ServletResponse resp)
+			throws IOException {
+		UserService userService = UserServiceFactory.getUserService();
+
+		if (!verifyLoggedIn(userService, resp))
+			return false;
+
+		User gUser = userService.getCurrentUser();
+		RegisteredUser regUser = dao.find(gUser);
+
+		if (regUser.getRole() != Role.MODERATOR) {
+			((HttpServletResponse) resp).sendError(403);
+			log.log(Level.SEVERE,
+					"Unauthorized access attempt: " + gUser.getEmail());
+			return false;
+		}
+
+		return true;
+	}
+
+	private boolean verifyLoggedIn(UserService userService, ServletResponse resp)
+			throws IOException {
+
+		if (!userService.isUserLoggedIn()) {
+			((HttpServletResponse) resp).sendError(401);
+			log.log(Level.SEVERE, "User is not logged-in in filter");
+			return false;
+		}
+
+		return true;
 	}
 
 }

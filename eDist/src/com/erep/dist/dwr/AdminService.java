@@ -9,11 +9,26 @@ import com.erep.dist.CloseablePM;
 import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
 import com.erep.dist.data.Distributor;
+import com.erep.dist.data.ServerConfig;
 
 @RemoteProxy
 public class AdminService {
 
-	// TODO list/edit mods, server config
+	// TODO list/edit mods
+
+	@RemoteMethod
+	public ServerConfig getServerConfig() {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			return new DataAccessObject(pm).getServerConfig();
+		}
+	}
+
+	@RemoteMethod
+	public boolean saveServerConfig(ServerConfig config) {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			return new DataAccessObject(pm).save(config);
+		}
+	}
 
 	@RemoteMethod
 	public boolean saveDistributor(Distributor dist) {

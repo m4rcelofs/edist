@@ -13,6 +13,7 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import javax.jdo.Transaction;
 
+import com.erep.dist.cache.CacheFacade;
 import com.erep.dist.cache.Cacheable;
 import com.erep.dist.data.Distributor;
 import com.erep.dist.data.HasTransitID;
@@ -146,6 +147,7 @@ public class DataAccessObject {
 					newest.getConfig().getCurrentMaxDailyFF());
 			old.getConfig().setRocketAllowed(
 					newest.getConfig().getRocketAllowed());
+			// FIXME probably has to get distributor from db
 			old.getConfig().setDistributor(
 					find(newest.getConfig().getDistributor()));
 		}
@@ -357,7 +359,7 @@ public class DataAccessObject {
 	}
 
 	@Cacheable
-	//TODO clear cache
+	// TODO clear cache
 	public RegisteredUser find(User user) {
 		try {
 			return pm.getObjectById(RegisteredUser.class, user.getUserId());
@@ -389,9 +391,37 @@ public class DataAccessObject {
 	}
 
 	@Cacheable
-	// TODO clear cache
 	public ServerConfig getServerConfig() {
 		return pm.getObjectById(ServerConfig.class, ServerConstants.DEFAULT_ID);
+	}
+
+	public boolean save(ServerConfig newConfig) {
+		ServerConfig dbConfig = pm.getObjectById(ServerConfig.class,
+				ServerConstants.DEFAULT_ID);
+
+		if (newConfig.getGranularity() != null)
+			dbConfig.setGranularity(newConfig.getGranularity());
+
+		if (newConfig.getMuName() != null)
+			dbConfig.setMuName(newConfig.getMuName());
+
+		if (newConfig.getReportsAccess() != null)
+			dbConfig.setReportsAccess(newConfig.getReportsAccess());
+
+		if (newConfig.getMuConfig() != null) {
+			dbConfig.getMuConfig().setAutoSend(
+					newConfig.getMuConfig().getAutoSend());
+			dbConfig.getMuConfig().setCurrentMaxDailyFF(
+					newConfig.getMuConfig().getCurrentMaxDailyFF());
+			dbConfig.getMuConfig().setRocketAllowed(
+					newConfig.getMuConfig().getRocketAllowed());
+			// FIXME probably has to get distributor from db
+			dbConfig.getMuConfig().setDistributor(
+					find(newConfig.getMuConfig().getDistributor()));
+		}
+
+		CacheFacade.remove("com.erep.dist.DataAccessObject.getServerConfig()");
+		return false;
 	}
 
 }

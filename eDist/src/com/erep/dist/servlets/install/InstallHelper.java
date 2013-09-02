@@ -7,6 +7,7 @@ import com.erep.dist.data.Licence;
 import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.ServerConfig;
 import com.erep.dist.data.enums.ConfigGranularity;
+import com.erep.dist.data.enums.ReportsAccessLevel;
 import com.erep.dist.data.enums.RequestType;
 import com.google.appengine.api.datastore.KeyFactory;
 
@@ -18,7 +19,7 @@ public class InstallHelper {
 				ServerConstants.DEFAULT_ID));
 		config.setGranularity(ConfigGranularity.PLAYER);
 		config.setMuName("  ");
-		config.setPrivateReports(true);
+		config.setReportsAccess(ReportsAccessLevel.MODS);
 
 		DistConfig distConfig = new DistConfig();
 		distConfig.setKey(KeyFactory.createKey(
