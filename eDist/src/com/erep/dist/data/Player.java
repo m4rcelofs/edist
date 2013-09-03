@@ -20,6 +20,7 @@ import com.erep.dist.data.enums.PlayerStatus;
 import com.erep.dist.data.enums.ResourceQuality;
 import com.erep.dist.data.enums.RocketQuality;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.datanucleus.annotations.Unowned;
 
 @DataTransferObject
@@ -38,7 +39,7 @@ public class Player implements HasTransitID {
 
 	@NotPersistent
 	@RemoteProperty
-	private Long			id;
+	private String			id;
 
 	@Persistent
 	@RemoteProperty
@@ -71,13 +72,13 @@ public class Player implements HasTransitID {
 
 	public Player() {}
 
-	public Long getId() {
+	public String getId() {
 		if (key != null)
-			return key.getId();
+			return KeyFactory.keyToString(key);
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

@@ -13,6 +13,7 @@ import org.directwebremoting.annotations.DataTransferObject;
 import org.directwebremoting.annotations.RemoteProperty;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 
 @DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
@@ -25,7 +26,7 @@ public class Distributor implements HasTransitID {
 
 	@NotPersistent
 	@RemoteProperty
-	private Long	id;
+	private String	id;
 
 	@Persistent
 	@RemoteProperty
@@ -48,13 +49,13 @@ public class Distributor implements HasTransitID {
 		this.key = key;
 	}
 
-	public Long getId() {
+	public String getId() {
 		if (key != null)
-			return key.getId();
+			return KeyFactory.keyToString(key);
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

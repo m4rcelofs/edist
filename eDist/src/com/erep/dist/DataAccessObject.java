@@ -78,7 +78,7 @@ public class DataAccessObject {
 		try {
 			tx.begin();
 			Distributor old = pm.getObjectById(Distributor.class,
-					createKey(Distributor.class, dist));
+					createKey(dist));
 			result = edit(old, dist);
 			tx.commit();
 		} catch (JDOObjectNotFoundException e) {
@@ -129,7 +129,7 @@ public class DataAccessObject {
 		try {
 			tx.begin();
 			PlayerGroup old = pm.getObjectById(PlayerGroup.class,
-					createKey(PlayerGroup.class, group));
+					createKey(group));
 			result = edit(old, group);
 			tx.commit();
 		} catch (JDOObjectNotFoundException e) {
@@ -167,7 +167,7 @@ public class DataAccessObject {
 	}
 
 	public boolean save(Player player) {
-		Key playerKey = createKey(Player.class, player);
+		Key playerKey = createKey(player);
 		player.setKey(playerKey);
 		try {
 			return edit(player);
@@ -323,8 +323,7 @@ public class DataAccessObject {
 			if (player == null || player.getId() == null)
 				return null;
 
-			return pm.getObjectById(Player.class,
-					createKey(Player.class, player));
+			return pm.getObjectById(Player.class, createKey(player));
 
 		} catch (JDOObjectNotFoundException e) {
 			return null;
@@ -354,8 +353,7 @@ public class DataAccessObject {
 			if (group == null || group.getId() == null)
 				return defaultGroup();
 
-			return pm.getObjectById(PlayerGroup.class,
-					createKey(PlayerGroup.class, group));
+			return pm.getObjectById(PlayerGroup.class, createKey(group));
 		} catch (JDOObjectNotFoundException e) {
 			return defaultGroup();
 		}
@@ -366,8 +364,7 @@ public class DataAccessObject {
 			if (dist == null || dist.getId() == null)
 				return defaultDistributor();
 
-			return pm.getObjectById(Distributor.class,
-					createKey(Distributor.class, dist));
+			return pm.getObjectById(Distributor.class, createKey(dist));
 		} catch (JDOObjectNotFoundException e) {
 			return defaultDistributor();
 		}
@@ -399,9 +396,8 @@ public class DataAccessObject {
 				PlayerGroup.class.getSimpleName(), ServerConstants.DEFAULT_ID));
 	}
 
-	private Key createKey(Class<?> clazz, HasTransitID object) {
-		return KeyFactory.createKey(clazz.getSimpleName(),
-				Long.valueOf(object.getId()));
+	private Key createKey(HasTransitID object) {
+		return KeyFactory.stringToKey(object.getId());
 	}
 
 	@Cacheable

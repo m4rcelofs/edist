@@ -14,6 +14,7 @@ import org.directwebremoting.annotations.RemoteProperty;
 import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.data.enums.ResourceQuality;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 
 @DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
@@ -26,7 +27,7 @@ public class PlayerGroup implements HasTransitID {
 
 	@NotPersistent
 	@RemoteProperty
-	private Long		id;
+	private String		id;
 
 	@Persistent
 	@RemoteProperty
@@ -40,13 +41,13 @@ public class PlayerGroup implements HasTransitID {
 		return key;
 	}
 
-	public Long getId() {
+	public String getId() {
 		if (key != null)
-			return key.getId();
+			return KeyFactory.keyToString(key);
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

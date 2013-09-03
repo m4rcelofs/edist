@@ -2,9 +2,8 @@ package com.erep.dist.data;
 
 public interface HasTransitID {
 
-	public Long getId();
+	public String getId();
 
-	//TODO change to web safe string
-	public void setId(Long id);
+	public void setId(String id);
 
 }

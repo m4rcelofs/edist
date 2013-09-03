@@ -107,11 +107,11 @@ public class RequestService {
 			String idNameOrLink) {
 		Player p = new Player();
 		try {
-			p.setId(Long.valueOf(idNameOrLink));
+			p.setId(idNameOrLink);
 		} catch (NumberFormatException e) {
 			Matcher matcher = profilePattern.matcher(idNameOrLink);
 			if (matcher.matches())
-				p.setId(Long.valueOf(matcher.group("id")));
+				p.setId(matcher.group("id"));
 			else
 				p.setKey(dao.findPlayerKey(idNameOrLink));
 		}
