@@ -71,7 +71,7 @@ public class Player implements HasTransitID {
 	private List<Request>		requests;
 
 	@Persistent(mappedBy = "player")
-	private List<DailyStats>	stats;
+	private List<DailyStats>	dailyStats;
 
 	public Player() {}
 
@@ -203,18 +203,18 @@ public class Player implements HasTransitID {
 		this.getRequests().add(request);
 	}
 
-	public List<DailyStats> getStats() {
-		return stats;
+	public List<DailyStats> getDailyStats() {
+		return dailyStats;
 	}
 
-	public void setStats(List<DailyStats> stats) {
-		this.stats = stats;
+	public void setDailyStats(List<DailyStats> stats) {
+		this.dailyStats = stats;
 	}
 
-	public void addStats(DailyStats stats) {
-		if (getStats() == null)
-			setStats(new ArrayList<DailyStats>());
-		this.getStats().add(stats);
+	public void addDailyStats(DailyStats stats) {
+		if (getDailyStats() == null)
+			setDailyStats(new ArrayList<DailyStats>());
+		this.getDailyStats().add(stats);
 	}
 
 }

@@ -13,6 +13,7 @@ import com.erep.dist.PMF;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.dwr.dto.PlayerQuery;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.datanucleus.query.JDOCursorHelper;
@@ -42,12 +43,12 @@ public class ManagementService {
 		// TODO check licence
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 
-			boolean created = new DataAccessObject(pm).save(player);
+			boolean created = new DataAccessObject(pm).save(player, true);
 
 			if (created) {
 				Queue queue = QueueFactory.getQueue("api");
-				queue.add(withUrl("/admin/tasks/getUserInfo").param("id",
-						player.getId() + ""));
+				queue.add(withUrl("/admin/tasks/getUserInfo").param("key",
+						KeyFactory.keyToString(player.getKey())));
 			}
 			return created;
 		}

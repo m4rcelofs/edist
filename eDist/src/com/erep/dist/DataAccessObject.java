@@ -152,7 +152,6 @@ public class DataAccessObject {
 					newest.getConfig().getCurrentMaxDailyFF());
 			old.getConfig().setRocketAllowed(
 					newest.getConfig().getRocketAllowed());
-			// FIXME probably has to get distributor from db
 			old.getConfig().setDistributor(
 					find(newest.getConfig().getDistributor()));
 		}
@@ -167,13 +166,19 @@ public class DataAccessObject {
 	}
 
 	public boolean save(Player player) {
-		Key playerKey = createKey(player);
-		player.setKey(playerKey);
-		try {
-			return edit(player);
-		} catch (JDOObjectNotFoundException e) {
-			return add(player);
-		}
+		return save(player, false);
+	}
+
+	public boolean save(Player player, boolean create) {
+		if (!create)
+			try {
+				Key playerKey = createKey(player);
+				player.setKey(playerKey);
+				return edit(player);
+			} catch (JDOObjectNotFoundException e) {
+				return add(player);
+			}
+		return add(player);
 	}
 
 	private boolean edit(Player player) {
@@ -194,6 +199,10 @@ public class DataAccessObject {
 	}
 
 	private boolean add(Player newPlayer) {
+
+		Key key = KeyFactory.createKey(Player.class.getSimpleName(),
+				Long.valueOf(newPlayer.getId()));
+		newPlayer.setKey(key);
 
 		PlayerGroup group = find(newPlayer.getGroup());
 
@@ -222,12 +231,6 @@ public class DataAccessObject {
 		old.setGroup(newGroup);
 
 		return true;
-	}
-
-	public Player getPlayer(String id) {
-		Key playerKey = KeyFactory.createKey(Player.class.getSimpleName(),
-				Long.valueOf(id));
-		return pm.getObjectById(Player.class, playerKey);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -301,14 +304,14 @@ public class DataAccessObject {
 		return request != null;
 	}
 
-	public Request getRequest(String encodedKey) {
+	public Request find(Request request) {
 		try {
-			Key key = KeyFactory.stringToKey(encodedKey);
+			Key key = KeyFactory.stringToKey(request.getId());
 			return pm.getObjectById(Request.class, key);
 		} catch (JDOObjectNotFoundException e) {
 			logger.log(Level.WARNING,
 					"Tried to get non-existent request with key {0}",
-					encodedKey);
+					request.getId());
 			return null;
 		}
 	}
@@ -434,7 +437,6 @@ public class DataAccessObject {
 					newConfig.getMuConfig().getCurrentMaxDailyFF());
 			dbConfig.getMuConfig().setRocketAllowed(
 					newConfig.getMuConfig().getRocketAllowed());
-			// FIXME probably has to get distributor from db
 			dbConfig.getMuConfig().setDistributor(
 					find(newConfig.getMuConfig().getDistributor()));
 		}

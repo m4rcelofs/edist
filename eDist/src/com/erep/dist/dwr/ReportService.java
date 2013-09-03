@@ -13,12 +13,22 @@ import com.erep.dist.data.Distributor;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.Request;
+import com.erep.dist.data.ResourceDist;
 import com.erep.dist.dwr.dto.ReportQuery;
 import com.erep.dist.erep.eRepTimeCalculator;
 import com.google.appengine.datanucleus.query.JDOCursorHelper;
 
 @RemoteProxy
 public class ReportService {
+
+	@RemoteMethod
+	public List<ResourceDist> requestDetails(Request request) {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			DataAccessObject dao = new DataAccessObject(pm);
+			Request dbRequest = dao.find(request);
+			return dbRequest.getResources();
+		}
+	}
 
 	@RemoteMethod
 	public ReportQuery listRequests(String cursor) {

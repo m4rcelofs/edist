@@ -41,17 +41,20 @@ public class SendResourceTask extends HttpServlet {
 		if (requestKey == null || requestKey.trim().isEmpty())
 			return;
 
+		Request distReq = new Request();
+		distReq.setId(requestKey);
+
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			DataAccessObject dao = new DataAccessObject(pm);
-			Request request = dao.getRequest(requestKey);
+			Request dbRequest = dao.find(distReq);
 
-			if (request == null || request.getStatus() == RequestStatus.SENT)
+			if (dbRequest == null || dbRequest.getStatus() == RequestStatus.SENT)
 				return;
 
-			execute(request);
+			execute(dbRequest);
 
-			request.setStatus(RequestStatus.SENT);
-			request.setCompletedAt(new Date());
+			dbRequest.setStatus(RequestStatus.SENT);
+			dbRequest.setCompletedAt(new Date());
 		} catch (Exception e) {
 			// meh
 			throw new IOException(e);

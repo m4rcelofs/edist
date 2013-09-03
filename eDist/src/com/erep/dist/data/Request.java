@@ -6,6 +6,7 @@ import java.util.List;
 import javax.jdo.annotations.FetchGroup;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -17,6 +18,7 @@ import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.data.enums.RequestStatus;
 import com.erep.dist.data.enums.RocketQuality;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.datanucleus.annotations.Unowned;
 
 @DataTransferObject
@@ -24,60 +26,63 @@ import com.google.appengine.datanucleus.annotations.Unowned;
 @FetchGroup(name = "reportListing", members = {
 		@Persistent(name = "distributor"), @Persistent(name = "player"),
 		@Persistent(name = "group") })
-public class Request {
+public class Request implements HasTransitID {
 
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private Key				key;
+	private Key					key;
+
+	@NotPersistent
+	@RemoteProperty
+	private String				id;
 
 	@Persistent
 	@RemoteProperty
-	private Integer			eRepDay;
+	private Integer				eRepDay;
 
 	@Persistent
 	@RemoteProperty
-	private RequestStatus	status;
+	private RequestStatus		status;
 
 	@Persistent
 	@RemoteProperty
-	private RequestType		type;
+	private RequestType			type;
 
 	// if RequestType == rocket only
 	@Persistent
 	@RemoteProperty
-	private RocketQuality	rocketQuality;
+	private RocketQuality		rocketQuality;
 
 	// if RequestType != rocket
 	@Persistent
 	@RemoteProperty
-	private Integer			requestedFF;
+	private Integer				requestedFF;
 
 	@Persistent
 	@RemoteProperty
-	private Date			requestedAt;
+	private Date				requestedAt;
 
 	@Persistent
 	@RemoteProperty
-	private Date			completedAt;
-
-	@Persistent 
-	@RemoteProperty
-	private List<ResourceDist> resources;
-	
-	@Unowned
-	@Persistent
-	@RemoteProperty
-	private Distributor		distributor;
+	private Date				completedAt;
 
 	@Persistent
 	@RemoteProperty
-	private Player			player;
+	private List<ResourceDist>	resources;
 
 	@Unowned
 	@Persistent
 	@RemoteProperty
-	private PlayerGroup		group;
-	
+	private Distributor			distributor;
+
+	@Persistent
+	@RemoteProperty
+	private Player				player;
+
+	@Unowned
+	@Persistent
+	@RemoteProperty
+	private PlayerGroup			group;
 
 	public Key getKey() {
 		return key;
@@ -173,5 +178,17 @@ public class Request {
 
 	public void setResources(List<ResourceDist> resources) {
 		this.resources = resources;
+	}
+
+	@Override
+	public String getId() {
+		if (key != null)
+			return KeyFactory.keyToString(key);
+		return id;
+	}
+
+	@Override
+	public void setId(String id) {
+		this.id = id;
 	}
 }

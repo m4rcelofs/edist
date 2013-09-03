@@ -31,7 +31,7 @@ public class GetUserInfoTask extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		String erId = req.getParameter("id");
+		String erId = req.getParameter("key");
 
 		if (erId == null || erId.trim().isEmpty())
 			return;
@@ -39,15 +39,19 @@ public class GetUserInfoTask extends HttpServlet {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 
 			DataAccessObject dao = new DataAccessObject(pm);
-			Player player = dao.getPlayer(erId);
+
+			Player p = new Player();
+			p.setId(erId);
+
+			Player dbPlayer = dao.find(p);
 
 			URLFetchService fetchService = URLFetchServiceFactory
 					.getURLFetchService();
 			HTTPResponse response = fetchService.fetch(new URL(eRepURL.CITIZEN
-					.getUrl(player.getId() + "")));
+					.getUrl(dbPlayer.getId() + "")));
 
 			if (response.getResponseCode() == 404) {
-				player.setStatus(PlayerStatus.ERROR);
+				dbPlayer.setStatus(PlayerStatus.ERROR);
 				return;
 			}
 
@@ -59,13 +63,13 @@ public class GetUserInfoTask extends HttpServlet {
 					|| !playerInfo.containsKey("avatar"))
 				throw new IllegalStateException("Info not found! ):");
 
-			player.setName(playerInfo.get("name"));
-			player.setAvatar(playerInfo.get("avatar"));
-			player.setStatus(PlayerStatus.ENABLED);
+			dbPlayer.setName(playerInfo.get("name"));
+			dbPlayer.setAvatar(playerInfo.get("avatar"));
+			dbPlayer.setStatus(PlayerStatus.ENABLED);
 
 			CacheFacade
 					.remove("com.erep.dist.DataAccessObject.findPlayerId(String="
-							+ player.getName() + ";)");
+							+ dbPlayer.getName() + ";)");
 		}
 
 	}
