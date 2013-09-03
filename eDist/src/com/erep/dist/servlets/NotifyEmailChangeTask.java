@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.json.simple.JSONObject;
 
+import com.erep.dist.Mailer;
 import com.erep.dist.ServerConstants;
 import com.erep.dist.auth.AssymetricCipherUtils;
 import com.google.appengine.api.urlfetch.HTTPMethod;
@@ -36,8 +37,8 @@ public class NotifyEmailChangeTask extends HttpServlet {
 		String newEmail = req.getParameter("newEmail");
 
 		notifyLicenceServer(newEmail);
+		notifyOldEmail(oldEmail, newEmail);
 
-		// TODO notify old email
 	}
 
 	@SuppressWarnings("unchecked")
@@ -53,7 +54,8 @@ public class NotifyEmailChangeTask extends HttpServlet {
 
 		String encoded = "encrypted=";
 		try {
-			encoded += AssymetricCipherUtils.encryptPublic(jsObj.toJSONString());
+			encoded += AssymetricCipherUtils
+					.encryptPublic(jsObj.toJSONString());
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, "Could not encrypt email update", e);
 			throw new IOException(e);
@@ -67,4 +69,21 @@ public class NotifyEmailChangeTask extends HttpServlet {
 		if (response.getResponseCode() != 200)
 			throw new IOException("Could not update email on licence server");
 	}
+
+	private void notifyOldEmail(String oldEmail, String newEmail)
+			throws IOException {
+		StringBuilder builder = new StringBuilder(
+				"<p><b>eDist - Email Change Notification</b></p>");
+
+		builder.append("<p>App: ").append(SystemProperty.applicationId.get())
+				.append("</p>");
+		builder.append("<p>Old e-mail: ").append(oldEmail).append("</p>");
+		builder.append("<p>New e-mail: ").append(newEmail).append("</p>");
+
+		Mailer mailer = new Mailer();
+		mailer.mail("eDist - Email Change Notification", builder.toString(),
+				mailer.new MailAddress(oldEmail, oldEmail));
+
+	}
+
 }
