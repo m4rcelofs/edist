@@ -1,4 +1,4 @@
-package com.erep.dist.servlets.install;
+package com.erep.dist.servlets.frontend.install;
 
 import java.io.IOException;
 import java.text.DateFormat;

@@ -26,6 +26,13 @@ public class CitizenParserTest {
 		assertNotNull(response.get("name"));
 		assertNotNull(response.get("avatar"));
 		assertNotNull(response.get("mu"));
+		assertNotNull(response.get("xp"));
+		assertNotNull(response.get("rank"));
+		assertNotNull(response.get("strength"));
+		
+		assertNotNull(Long.valueOf(response.get("xp")));
+		assertNotNull(Long.valueOf(response.get("rank")));
+		assertNotNull(Double.valueOf(response.get("strength")));
 	}
 
 }

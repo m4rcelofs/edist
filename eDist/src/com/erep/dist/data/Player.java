@@ -35,40 +35,43 @@ public class Player implements HasTransitID {
 	 */
 	@PrimaryKey
 	@Persistent
-	private Key				key;
+	private Key					key;
 
 	@NotPersistent
 	@RemoteProperty
-	private String			id;
+	private String				id;
 
 	@Persistent
 	@RemoteProperty
-	private String			name;
+	private String				name;
 
 	@Persistent
 	@RemoteProperty
 	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
-	private String			avatar;
+	private String				avatar;
 
 	@Persistent
 	@RemoteProperty
-	private PlayerStatus	status;
+	private PlayerStatus		status;
 
 	@Unowned
 	@Persistent
 	@RemoteProperty
-	private PlayerGroup		group;
+	private PlayerGroup			group;
 
 	@Persistent
 	@RemoteProperty
-	private DistConfig		config;
+	private DistConfig			config;
 
 	@Persistent
 	@RemoteProperty
-	private RocketQuality	rocketEnabled;
+	private RocketQuality		rocketEnabled;
 
 	@Persistent(mappedBy = "player")
-	private List<Request>	requests;
+	private List<Request>		requests;
+
+	@Persistent(mappedBy = "player")
+	private List<DailyStats>	stats;
 
 	public Player() {}
 
@@ -198,6 +201,20 @@ public class Player implements HasTransitID {
 		if (getRequests() == null)
 			setRequests(new ArrayList<Request>());
 		this.getRequests().add(request);
+	}
+
+	public List<DailyStats> getStats() {
+		return stats;
+	}
+
+	public void setStats(List<DailyStats> stats) {
+		this.stats = stats;
+	}
+
+	public void addStats(DailyStats stats) {
+		if (getStats() == null)
+			setStats(new ArrayList<DailyStats>());
+		this.getStats().add(stats);
 	}
 
 }

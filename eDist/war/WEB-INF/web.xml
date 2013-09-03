@@ -147,7 +147,7 @@
 	<!-- Tasks -->
 	<servlet>
 		<servlet-name>getUserInfoTask</servlet-name>
-		<servlet-class>com.erep.dist.servlets.GetUserInfoTask</servlet-class>
+		<servlet-class>com.erep.dist.servlets.frontend.GetUserInfoTask</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
@@ -157,7 +157,7 @@
 
 	<servlet>
 		<servlet-name>sendResourceTask</servlet-name>
-		<servlet-class>com.erep.dist.servlets.SendResourceTask</servlet-class>
+		<servlet-class>com.erep.dist.servlets.frontend.SendResourceTask</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
@@ -167,7 +167,7 @@
 
 	<servlet>
 		<servlet-name>notifyEmailChangeTask</servlet-name>
-		<servlet-class>com.erep.dist.servlets.NotifyEmailChangeTask</servlet-class>
+		<servlet-class>com.erep.dist.servlets.frontend.NotifyEmailChangeTask</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
@@ -178,7 +178,7 @@
 	<!-- Cron jobs -->
 	<servlet>
 		<servlet-name>autoDistJob</servlet-name>
-		<servlet-class>com.erep.dist.servlets.AutoDistJob</servlet-class>
+		<servlet-class>com.erep.dist.servlets.frontend.AutoDistJob</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
@@ -199,7 +199,7 @@
 	<!-- Install -->
 	<servlet>
 		<servlet-name>installServlet</servlet-name>
-		<servlet-class>com.erep.dist.servlets.install.InstallServlet</servlet-class>
+		<servlet-class>com.erep.dist.servlets.frontend.install.InstallServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>

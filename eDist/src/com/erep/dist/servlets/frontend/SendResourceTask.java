@@ -1,4 +1,4 @@
-package com.erep.dist.servlets;
+package com.erep.dist.servlets.frontend;
 
 import static com.erep.dist.auth.SymmetricCipherUtils.decrypt;
 
