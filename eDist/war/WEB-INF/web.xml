@@ -188,7 +188,7 @@
 
 	<servlet>
 		<servlet-name>licensingJob</servlet-name>
-		<servlet-class>com.erep.dist.servlets.LicensingJob</servlet-class>
+		<servlet-class>com.erep.dist.servlets.backend.LicensingJob</servlet-class>
 	</servlet>
 
 	<servlet-mapping>

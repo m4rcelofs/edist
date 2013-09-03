@@ -9,10 +9,11 @@
 	</cron>
 	
 	<cron>
-		<url>/admin/cron/licence?sendEmail=true</url>
+		<url>/admin/cron/licence</url>
 		<description>Checks if this application is properly licensed</description>
 		<schedule>every 12 hours</schedule>
 		<timezone>America/Los_Angeles</timezone>
+		<target>edist-default-backend</target>
 	</cron>
 	
 </cronentries>
