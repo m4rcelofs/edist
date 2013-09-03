@@ -78,6 +78,7 @@ public class LicensingHelper {
 	private void refreshCache() throws Exception {
 		Licence licence = dao.getLicence();
 
+
 		if(licence.getSigned() == null || licence.getSigned().isEmpty()) 
 			forceLicenceRefresh();
 		
