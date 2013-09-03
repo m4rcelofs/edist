@@ -16,6 +16,11 @@ import com.erep.dist.DataAccessObject;
 import com.erep.dist.ServerConstants;
 import com.erep.dist.data.Licence;
 import com.erep.dist.erep.eRepTimeCalculator;
+import com.google.appengine.api.backends.BackendServiceFactory;
+import com.google.appengine.api.taskqueue.Queue;
+import com.google.appengine.api.taskqueue.QueueFactory;
+import com.google.appengine.api.taskqueue.TaskOptions;
+import com.google.appengine.api.taskqueue.TaskOptions.Method;
 import com.google.appengine.api.urlfetch.HTTPRequest;
 import com.google.appengine.api.urlfetch.URLFetchService;
 import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
@@ -78,10 +83,9 @@ public class LicensingHelper {
 	private void refreshCache() throws Exception {
 		Licence licence = dao.getLicence();
 
-
-		if(licence.getSigned() == null || licence.getSigned().isEmpty()) 
+		if (licence.getSigned() == null || licence.getSigned().isEmpty())
 			forceLicenceRefresh();
-		
+
 		String decodedLicence = AssymetricCipherUtils.validateSigned(licence
 				.getSigned());
 		JSONObject jsObj = (JSONObject) JSONValue.parse(decodedLicence);
@@ -125,6 +129,17 @@ public class LicensingHelper {
 		String licenceServer = ServerConstants.LICENCE_SERVER.replace(
 				"{appId}", appId);
 		return new URL(licenceServer);
+	}
+
+	public static void scheduleLicenceUpdate() {
+		Queue queue = QueueFactory.getDefaultQueue();
+		TaskOptions taskOptions = TaskOptions.Builder
+				.withUrl("/admin/cron/licence")
+				.header("Host",
+						BackendServiceFactory.getBackendService()
+								.getBackendAddress("edist-default-backend"))
+				.method(Method.GET);
+		queue.add(taskOptions);
 	}
 
 }

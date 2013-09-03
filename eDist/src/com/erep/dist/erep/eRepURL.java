@@ -27,6 +27,6 @@ public enum eRepURL
 	}
 	
 	public String getUrl(Player player) {
-		return this.url.replace("{id}", player.getId().toString());
+		return this.url.replace("{id}", player.getKey().getId()+"");
 	}
 }

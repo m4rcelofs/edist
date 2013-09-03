@@ -20,6 +20,8 @@ import com.erep.dist.data.Request;
 import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.dwr.dto.RequestAttempt;
 import com.erep.dist.erep.eRepTimeCalculator;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 
 @RemoteProxy
 public class RequestService {
@@ -107,15 +109,21 @@ public class RequestService {
 			String idNameOrLink) {
 		Player p = new Player();
 		try {
-			p.setId(idNameOrLink);
+			p.setKey(keyFromId(idNameOrLink));
 		} catch (NumberFormatException e) {
 			Matcher matcher = profilePattern.matcher(idNameOrLink);
 			if (matcher.matches())
-				p.setId(matcher.group("id"));
+				p.setKey(keyFromId(matcher.group("id")));
 			else
+				// assume name
 				p.setKey(dao.findPlayerKey(idNameOrLink));
 		}
 		return dao.find(p);
+	}
+
+	private Key keyFromId(String id) {
+		Integer keyValue = Integer.parseInt(id);
+		return KeyFactory.createKey(Player.class.getSimpleName(), keyValue);
 	}
 
 }
