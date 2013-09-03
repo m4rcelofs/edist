@@ -6,6 +6,8 @@ import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.jdo.PersistenceManager;
+
 import org.joda.time.DateTime;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
@@ -41,6 +43,10 @@ public class LicensingHelper {
 		this.dao = dao;
 	}
 
+	public LicensingHelper(PersistenceManager pm) {
+		this.dao = new DataAccessObject(pm);
+	}
+
 	public boolean isValidLicence() {
 		return getLicenceExpiration() >= eRepTimeCalculator.geteRepDay();
 	}
@@ -72,6 +78,9 @@ public class LicensingHelper {
 	private void refreshCache() throws Exception {
 		Licence licence = dao.getLicence();
 
+		if(licence.getSigned() == null || licence.getSigned().isEmpty()) 
+			forceLicenceRefresh();
+		
 		String decodedLicence = AssymetricCipherUtils.validateSigned(licence
 				.getSigned());
 		JSONObject jsObj = (JSONObject) JSONValue.parse(decodedLicence);

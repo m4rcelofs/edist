@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.erep.dist.CloseablePM;
 import com.erep.dist.PMF;
 import com.erep.dist.ServerConstants;
+import com.erep.dist.auth.LicensingHelper;
 import com.erep.dist.data.InstallLog;
 import com.erep.dist.data.ServerConfig;
 import com.erep.dist.erep.eRepTimeCalculator;
@@ -47,6 +48,7 @@ public class InstallServlet extends HttpServlet {
 				resp.getWriter().write("Installing, please wait... <br />");
 				long init = new Date().getTime();
 				install(pm);
+				new LicensingHelper(pm).forceLicenceRefresh();
 				long time = new Date().getTime() - init;
 				resp.getWriter().write(
 						"Installed successfully in " + time + "ms (:");

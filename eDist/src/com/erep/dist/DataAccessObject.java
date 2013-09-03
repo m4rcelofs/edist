@@ -3,6 +3,7 @@ package com.erep.dist;
 import static com.erep.dist.auth.SymmetricCipherUtils.encrypt;
 import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withUrl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,14 +45,15 @@ public class DataAccessObject {
 		this.pm = pm;
 	}
 
-	public void save(Request request) {
-		pm.makePersistent(request);
-	}
-
 	public boolean save(Distributor dist) {
 		if (dist.getId() != null)
 			return edit(dist);
 		return add(dist);
+	}
+
+	public boolean save(Request request) {
+		pm.makePersistent(request);
+		return true;
 	}
 
 	private boolean add(Distributor dist) {
@@ -194,7 +196,10 @@ public class DataAccessObject {
 	private boolean add(Player newPlayer) {
 
 		PlayerGroup group = find(newPlayer.getGroup());
+
 		newPlayer.setGroup(group);
+		newPlayer.setRequests(new ArrayList<Request>());
+
 		pm.makePersistent(newPlayer);
 
 		return true;
@@ -296,13 +301,14 @@ public class DataAccessObject {
 		return request != null;
 	}
 
-	public Request getRequest(Long id) {
+	public Request getRequest(String encodedKey) {
 		try {
-			Key key = KeyFactory.createKey(Request.class.getSimpleName(), id);
+			Key key = KeyFactory.stringToKey(encodedKey);
 			return pm.getObjectById(Request.class, key);
 		} catch (JDOObjectNotFoundException e) {
 			logger.log(Level.WARNING,
-					"Tried to get non-existent request with ID {0}", id);
+					"Tried to get non-existent request with key {0}",
+					encodedKey);
 			return null;
 		}
 	}

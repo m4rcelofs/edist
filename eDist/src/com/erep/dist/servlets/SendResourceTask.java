@@ -36,14 +36,14 @@ public class SendResourceTask extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
-		String requestId = req.getParameter("id");
+		String requestKey = req.getParameter("key");
 
-		if (requestId == null || requestId.trim().isEmpty())
+		if (requestKey == null || requestKey.trim().isEmpty())
 			return;
 
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			DataAccessObject dao = new DataAccessObject(pm);
-			Request request = dao.getRequest(Long.valueOf(requestId));
+			Request request = dao.getRequest(requestKey);
 
 			if (request == null || request.getStatus() == RequestStatus.SENT)
 				return;

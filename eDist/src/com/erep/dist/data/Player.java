@@ -1,5 +1,8 @@
 package com.erep.dist.data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.FetchGroup;
 import javax.jdo.annotations.FetchGroups;
@@ -22,8 +25,7 @@ import com.google.appengine.datanucleus.annotations.Unowned;
 @DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 @FetchGroups({
-		@FetchGroup(name = "playerListing", members = {
-				@Persistent(name = "group"), @Persistent(name = "config") }),
+		@FetchGroup(name = "playerListing", members = { @Persistent(name = "group") }),
 		@FetchGroup(name = "requestAttempt", members = { @Persistent(name = "group") }) })
 public class Player implements HasTransitID {
 
@@ -63,6 +65,9 @@ public class Player implements HasTransitID {
 	@Persistent
 	@RemoteProperty
 	private RocketQuality	rocketEnabled;
+
+	@Persistent(mappedBy = "player")
+	private List<Request>	requests;
 
 	public Player() {}
 
@@ -163,7 +168,7 @@ public class Player implements HasTransitID {
 			// fallback to group
 			return group.getDistributor();
 	}
-	
+
 	public RequestType getAllowedType() {
 		if (config != null && config.getAllowedType() != null)
 			return config.getAllowedType();
@@ -178,6 +183,20 @@ public class Player implements HasTransitID {
 		else
 			// fallback to group
 			return group.getAllowedWeaponQuality();
+	}
+
+	public List<Request> getRequests() {
+		return requests;
+	}
+
+	public void setRequests(List<Request> requests) {
+		this.requests = requests;
+	}
+
+	public void addRequest(Request request) {
+		if (getRequests() == null)
+			setRequests(new ArrayList<Request>());
+		this.getRequests().add(request);
 	}
 
 }

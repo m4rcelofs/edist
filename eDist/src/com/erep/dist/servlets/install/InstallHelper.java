@@ -9,6 +9,7 @@ import com.erep.dist.data.ServerConfig;
 import com.erep.dist.data.enums.ConfigGranularity;
 import com.erep.dist.data.enums.ReportsAccessLevel;
 import com.erep.dist.data.enums.RequestType;
+import com.erep.dist.data.enums.ResourceQuality;
 import com.google.appengine.api.datastore.KeyFactory;
 
 public class InstallHelper {
@@ -28,6 +29,7 @@ public class InstallHelper {
 		distConfig.setCurrentMaxDailyFF(160);
 		distConfig.setRocketAllowed(false);
 		distConfig.setAllowedType(RequestType.WEAPONS_FOOD);
+		distConfig.setAllowedWeaponQuality(ResourceQuality.Q7);
 
 		Distributor distributor = new Distributor();
 		distributor.setEmail("exemplo@exemplo.com");

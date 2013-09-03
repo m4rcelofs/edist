@@ -16,7 +16,9 @@ import com.erep.dist.ConfigHelper;
 import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
 import com.erep.dist.RequestsHelper;
+import com.erep.dist.auth.LicensingHelper;
 import com.erep.dist.data.Player;
+import com.erep.dist.data.Request;
 
 public class AutoDistJob extends HttpServlet {
 
@@ -35,6 +37,10 @@ public class AutoDistJob extends HttpServlet {
 
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			DataAccessObject dao = new DataAccessObject(pm);
+
+			if (!new LicensingHelper(dao).isValidLicence())
+				return;
+
 			ConfigHelper config = new ConfigHelper(dao);
 			RequestsHelper requests = new RequestsHelper(dao);
 
@@ -44,8 +50,11 @@ public class AutoDistJob extends HttpServlet {
 				if (config.getAutoSend(player)) {
 					Transaction tx = pm.currentTransaction();
 					try {
+						Request request = requests.createRequest(player);
 						tx.begin();
-						requests.createRequest(player);
+						player.addRequest(request);
+						dao.save(request);
+						requests.addToQueue(request);
 						tx.commit();
 					} finally {
 						if (tx.isActive()) {

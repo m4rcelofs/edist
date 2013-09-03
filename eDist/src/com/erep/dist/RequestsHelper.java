@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.erep.dist.auth.LicensingHelper;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.Request;
 import com.erep.dist.data.ResourceDist;
@@ -15,6 +14,7 @@ import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.data.enums.ResourceQuality;
 import com.erep.dist.data.enums.ResourceType;
 import com.erep.dist.erep.eRepTimeCalculator;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
 
@@ -22,12 +22,10 @@ public class RequestsHelper {
 
 	private final DataAccessObject	dao;
 	private final ConfigHelper		config;
-	private final LicensingHelper	licence;
 
 	public RequestsHelper(DataAccessObject dao) {
 		this.dao = dao;
 		this.config = new ConfigHelper(dao);
-		this.licence = new LicensingHelper(dao);
 	}
 
 	public boolean verifyRocketAllowed(Player player) {
@@ -44,29 +42,18 @@ public class RequestsHelper {
 		return (maxFF - alreadyRequested);
 	}
 
-	public boolean createRequest(Player player) {
+	public Request createRequest(Player player) {
 		return createRequest(player, Integer.MAX_VALUE,
 				RequestType.WEAPONS_FOOD);
 	}
 
-	public boolean createRequest(Player player, Integer requestedFF,
+	public Request createRequest(Player player, Integer requestedFF,
 			RequestType type) {
-
-		Request request = newRequest(player, requestedFF, type);
-
-		if (request == null)
-			return false;
-
-		dao.save(request);
-		addToQueue(request);
-		return true;
+		return newRequest(player, requestedFF, type);
 	}
 
 	private Request newRequest(Player player, Integer requestedFF,
 			RequestType requestedType) {
-
-		if (!licence.isValidLicence())
-			return null;
 
 		Request request = new Request();
 		request.setPlayer(player);
@@ -152,10 +139,11 @@ public class RequestsHelper {
 
 	}
 
-	private void addToQueue(Request request) {
+	public void addToQueue(Request request) {
 		Queue queue = QueueFactory.getQueue("erepublik-logged-in");
-		queue.add(withUrl("/admin/tasks/sendResource").param("id",
-				request.getKey().getId() + ""));
+		queue.add(withUrl("/admin/tasks/sendResource").param("key",
+				KeyFactory.keyToString(request.getKey())));
+
 	}
 
 }

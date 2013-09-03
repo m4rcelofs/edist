@@ -69,7 +69,6 @@ public class Request {
 	@RemoteProperty
 	private Distributor		distributor;
 
-	@Unowned
 	@Persistent
 	@RemoteProperty
 	private Player			player;

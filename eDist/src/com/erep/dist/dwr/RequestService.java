@@ -14,7 +14,9 @@ import com.erep.dist.CloseablePM;
 import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
 import com.erep.dist.RequestsHelper;
+import com.erep.dist.auth.LicensingHelper;
 import com.erep.dist.data.Player;
+import com.erep.dist.data.Request;
 import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.dwr.dto.RequestAttempt;
 import com.erep.dist.erep.eRepTimeCalculator;
@@ -25,7 +27,7 @@ public class RequestService {
 	private static Logger	logger			= Logger.getLogger(RequestService.class
 													.getName());
 
-	private static Pattern	profilePattern	= Pattern 
+	private static Pattern	profilePattern	= Pattern
 													.compile("(http://|https://)?(www\\.)?erepublik\\.com/\\D{2}/citizen/profile/(?<id>\\d+)");
 
 	@RemoteMethod
@@ -38,18 +40,30 @@ public class RequestService {
 
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			boolean response = true;
+
+			DataAccessObject dao = new DataAccessObject(pm);
+
+			if (!new LicensingHelper(dao).isValidLicence())
+				return false;
+
 			Transaction tx = pm.currentTransaction();
 			try {
-				tx.begin();
-				DataAccessObject dao = new DataAccessObject(pm);
+
 				RequestsHelper helper = new RequestsHelper(dao);
 
 				Player dbPlayer = dao.find(player);
 				if (dbPlayer == null)
 					return false;
 
-				response = helper.createRequest(dbPlayer, requestedFF, type);
+				Request request = helper.createRequest(dbPlayer, requestedFF,
+						type);
+
+				tx.begin();
+				player.addRequest(request);
+				dao.save(request);
+				helper.addToQueue(request);
 				tx.commit();
+
 			} finally {
 				if (tx.isActive()) {
 					tx.rollback();
