@@ -31,6 +31,9 @@ public class DailyStats {
 
 	@Persistent
 	private Long	rank;
+	
+	@Persistent
+	private Integer maxHit; 
 
 	public Key getKey() {
 		return key;
@@ -78,6 +81,14 @@ public class DailyStats {
 
 	public void setRank(Long rank) {
 		this.rank = rank;
+	}
+
+	public Integer getMaxHit() {
+		return maxHit;
+	}
+
+	public void setMaxHit(Integer maxHit) {
+		this.maxHit = maxHit;
 	}
 
 }

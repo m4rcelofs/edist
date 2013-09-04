@@ -20,6 +20,8 @@ import com.erep.dist.PMF;
 import com.erep.dist.data.DailyStats;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.enums.PlayerStatus;
+import com.erep.dist.data.enums.ResourceQuality;
+import com.erep.dist.erep.HitCalculator;
 import com.erep.dist.erep.eRepURL;
 import com.erep.dist.erep.parser.CitizenParser;
 import com.google.appengine.api.datastore.KeyFactory;
@@ -56,6 +58,7 @@ public class PlayerStatsTask extends HttpServlet {
 
 			Integer day = Integer.parseInt(dayParam.trim());
 			DailyStats stats = parseResponse(response);
+			calculateHit(stats);
 
 			stats.setDay(day);
 			stats.setKey(KeyFactory.createKey(dbPlayer.getKey(),
@@ -67,6 +70,10 @@ public class PlayerStatsTask extends HttpServlet {
 			throw new IOException(e);
 		}
 
+	}
+
+	private void calculateHit(DailyStats stats) {
+		stats.setMaxHit(new HitCalculator().calculateHit(stats, ResourceQuality.Q7));
 	}
 
 	private boolean validateParams(String... params)
@@ -100,7 +107,7 @@ public class PlayerStatsTask extends HttpServlet {
 		stats.setRank(Long.valueOf(playerInfo.get("rank").toString()));
 		stats.setStrength(Double.valueOf(playerInfo.get("strength").toString()));
 		stats.setXp(Long.valueOf(playerInfo.get("xp").toString()));
-
+	
 		return stats;
 	}
 }

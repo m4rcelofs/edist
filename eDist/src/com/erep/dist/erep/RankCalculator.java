@@ -100,7 +100,7 @@ public class RankCalculator {
 		rankMultiplierMap = builder.build();
 	}
 	
-	public Integer rankMultiplier(Long rankValue) {
+	public  Integer rankMultiplier(Long rankValue) {
 		return rankMultiplierMap.get(rankValue);
 	}
 	

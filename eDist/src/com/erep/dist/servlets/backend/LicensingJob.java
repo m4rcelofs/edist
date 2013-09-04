@@ -40,7 +40,8 @@ public class LicensingJob extends HttpServlet {
 			resp.getWriter().println("Finished licence refresh");
 			resp.getWriter().println(
 					"Your licence is valid until eRepublik day "
-							+ licensing.getLicenceExpiration());
+							+ licensing.getLicenceExpiration() + " for "
+							+ licensing.getUserLimit() + " users.");
 		}
 
 	}
