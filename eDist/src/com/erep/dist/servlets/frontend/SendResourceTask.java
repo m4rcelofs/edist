@@ -18,6 +18,7 @@ import com.erep.dist.PMF;
 import com.erep.dist.data.Distributor;
 import com.erep.dist.data.Request;
 import com.erep.dist.data.ResourceDist;
+import com.erep.dist.data.enums.PlayerStatus;
 import com.erep.dist.data.enums.RequestStatus;
 import com.erep.dist.data.enums.ResourceDistStatus;
 import com.erep.dist.erep.ErepScrapper;
@@ -48,8 +49,15 @@ public class SendResourceTask extends HttpServlet {
 			DataAccessObject dao = new DataAccessObject(pm);
 			Request dbRequest = dao.find(distReq);
 
-			if (dbRequest == null || dbRequest.getStatus() == RequestStatus.SENT)
+			if (dbRequest == null
+					|| dbRequest.getStatus() == RequestStatus.SENT)
 				return;
+
+			if (dbRequest.getPlayer().getStatus() != PlayerStatus.ENABLED) {
+				dbRequest.setStatus(RequestStatus.ERROR);
+				return;
+			}
+				
 
 			execute(dbRequest);
 

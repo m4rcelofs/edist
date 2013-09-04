@@ -9,6 +9,7 @@ import java.util.List;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.Request;
 import com.erep.dist.data.ResourceDist;
+import com.erep.dist.data.enums.PlayerStatus;
 import com.erep.dist.data.enums.RequestStatus;
 import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.data.enums.ResourceQuality;
@@ -36,6 +37,8 @@ public class RequestsHelper {
 	}
 
 	public int verifyMaxFF(Player player) {
+		if (player.getStatus() != PlayerStatus.ENABLED)
+			return 0;
 		int maxFF = config.getMaxFF(player);
 		int alreadyRequested = dao.getDailyRequestedFF(player,
 				eRepTimeCalculator.geteRepDay());
