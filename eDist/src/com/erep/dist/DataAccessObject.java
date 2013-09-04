@@ -3,7 +3,6 @@ package com.erep.dist;
 import static com.erep.dist.auth.SymmetricCipherUtils.encrypt;
 import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withUrl;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,6 +16,8 @@ import javax.jdo.Transaction;
 
 import com.erep.dist.cache.CacheFacade;
 import com.erep.dist.cache.Cacheable;
+import com.erep.dist.data.DailyFights;
+import com.erep.dist.data.DailyStats;
 import com.erep.dist.data.Distributor;
 import com.erep.dist.data.HasTransitID;
 import com.erep.dist.data.Licence;
@@ -207,7 +208,6 @@ public class DataAccessObject {
 		PlayerGroup group = find(newPlayer.getGroup());
 
 		newPlayer.setGroup(group);
-		newPlayer.setRequests(new ArrayList<Request>());
 
 		pm.makePersistent(newPlayer);
 
@@ -326,11 +326,20 @@ public class DataAccessObject {
 			if (player == null || player.getId() == null)
 				return null;
 
-			return pm.getObjectById(Player.class, createKey(player));
+			Key key = player.getKey() != null ? player.getKey()
+					: createKey(player);
+
+			return pm.getObjectById(Player.class, key);
 
 		} catch (JDOObjectNotFoundException e) {
 			return null;
 		}
+	}
+
+	public DailyStats getStats(Player player, Integer day) {
+		Key key = KeyFactory.createKey(player.getKey(),
+				DailyStats.class.getSimpleName(), day);
+		return pm.getObjectById(DailyStats.class, key);
 	}
 
 	private void setCursor(Query query, String encodedCursor) {

@@ -25,10 +25,11 @@ public class HitCalculator {
 	 */
 	public Integer calculateHit(Double strength, Integer rankMultiplier,
 			Integer firepower) {
-//		 return (int) (10 * (1 + strength / 400) * (1 + rankMultiplier / 5) *
-//		 (1 + firepower / 100));
+		// return (int) (10 * (1 + strength / 400) * (1 + rankMultiplier / 5) *
+		// (1 + firepower / 100));
 		double hit = (10 + rankMultiplier * strength / 200 + 2 * rankMultiplier + strength / 40)
 				* (1 + firepower / 100);
+		System.out.println(hit);
 		return (int) hit;
 	}
 }

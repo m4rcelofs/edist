@@ -24,7 +24,11 @@ import com.erep.dist.data.enums.ResourceQuality;
 import com.erep.dist.erep.HitCalculator;
 import com.erep.dist.erep.eRepURL;
 import com.erep.dist.erep.parser.CitizenParser;
+import com.google.appengine.api.backends.BackendServiceFactory;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.taskqueue.Queue;
+import com.google.appengine.api.taskqueue.QueueFactory;
+import com.google.appengine.api.taskqueue.TaskOptions;
 import com.google.appengine.api.urlfetch.HTTPResponse;
 import com.google.appengine.api.urlfetch.URLFetchService;
 import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
@@ -65,6 +69,7 @@ public class PlayerStatsTask extends HttpServlet {
 					DailyStats.class.getSimpleName(), day));
 
 			dbPlayer.addDailyStats(stats);
+			startFightCalculationTask(day, dbPlayer);
 
 		} catch (InterruptedException | ExecutionException e) {
 			throw new IOException(e);
@@ -73,7 +78,8 @@ public class PlayerStatsTask extends HttpServlet {
 	}
 
 	private void calculateHit(DailyStats stats) {
-		stats.setMaxHit(new HitCalculator().calculateHit(stats, ResourceQuality.Q7));
+		stats.setMaxHit(new HitCalculator().calculateHit(stats,
+				ResourceQuality.maxQuality()));
 	}
 
 	private boolean validateParams(String... params)
@@ -107,7 +113,20 @@ public class PlayerStatsTask extends HttpServlet {
 		stats.setRank(Long.valueOf(playerInfo.get("rank").toString()));
 		stats.setStrength(Double.valueOf(playerInfo.get("strength").toString()));
 		stats.setXp(Long.valueOf(playerInfo.get("xp").toString()));
-	
+
 		return stats;
+	}
+
+	private void startFightCalculationTask(Integer day, Player dbPlayer) {
+		Queue queue = QueueFactory.getQueue("erepublik-not-logged-in");
+
+		TaskOptions taskOptions = TaskOptions.Builder
+				.withUrl("/admin/tasks/dailyFights")
+				.header("Host",
+						BackendServiceFactory.getBackendService()
+								.getBackendAddress("edist-default-backend"))
+				.param("day", day.toString())
+				.param("playerKey", KeyFactory.keyToString(dbPlayer.getKey()));
+		queue.add(taskOptions);
 	}
 }

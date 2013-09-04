@@ -186,6 +186,16 @@
 		<url-pattern>/admin/tasks/playerStats</url-pattern>
 	</servlet-mapping>
 
+	<servlet>
+		<servlet-name>calculateDailyFightsTask</servlet-name>
+		<servlet-class>com.erep.dist.servlets.backend.CalculateDailyFightsTask</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>calculateDailyFightsTask</servlet-name>
+		<url-pattern>/admin/tasks/dailyFights</url-pattern>
+	</servlet-mapping>
+
 	<!-- Cron jobs -->
 	<servlet>
 		<servlet-name>autoDistJob</servlet-name>
