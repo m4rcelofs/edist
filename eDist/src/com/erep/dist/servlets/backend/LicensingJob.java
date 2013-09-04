@@ -28,10 +28,12 @@ public class LicensingJob extends HttpServlet {
 			LicensingHelper licensing = new LicensingHelper(dao);
 
 			boolean refreshed = false;
+			int attempts = 0;
 			do {
 				resp.getWriter().println("Starting licence refresh...");
 				refreshed = licensing.forceLicenceRefresh();
-			} while (!refreshed);
+				attempts++;
+			} while (!refreshed && attempts < 10);
 
 			licensing.isValidLicence();
 

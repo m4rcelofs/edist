@@ -7,7 +7,7 @@
 		<schedule>every day 00:02</schedule>
 		<timezone>America/Los_Angeles</timezone>
 	</cron>
-	
+
 	<cron>
 		<url>/admin/cron/licence</url>
 		<description>Checks if this application is properly licensed</description>
@@ -15,5 +15,5 @@
 		<timezone>America/Los_Angeles</timezone>
 		<target>edist-default-backend</target>
 	</cron>
-	
+
 </cronentries>
