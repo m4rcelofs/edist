@@ -16,7 +16,6 @@ import javax.jdo.Transaction;
 
 import com.erep.dist.cache.CacheFacade;
 import com.erep.dist.cache.Cacheable;
-import com.erep.dist.data.DailyFights;
 import com.erep.dist.data.DailyStats;
 import com.erep.dist.data.Distributor;
 import com.erep.dist.data.HasTransitID;

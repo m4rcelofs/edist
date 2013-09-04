@@ -26,7 +26,7 @@ public class HitCalculatorTest {
 	public void testGuilpas() {
 		HitCalculator calc = new HitCalculator();
 		int hit = calc.calculateHit(53703.35, 342413464l, ResourceQuality.Q7);
-		assertEquals(55995, hit);
+		assertEquals(55996, hit);
 	}
 
 	@Test
