@@ -1,7 +1,9 @@
 package com.erep.dist.data;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.FetchGroup;
@@ -35,43 +37,43 @@ public class Player implements HasTransitID {
 	 */
 	@PrimaryKey
 	@Persistent
-	private Key					key;
+	private Key				key;
 
 	@NotPersistent
 	@RemoteProperty
-	private String				id;
+	private String			id;
 
 	@Persistent
 	@RemoteProperty
-	private String				name;
+	private String			name;
 
 	@Persistent
 	@RemoteProperty
 	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
-	private String				avatar;
+	private String			avatar;
 
 	@Persistent
 	@RemoteProperty
-	private PlayerStatus		status;
+	private PlayerStatus	status;
 
 	@Unowned
 	@Persistent
 	@RemoteProperty
-	private PlayerGroup			group;
+	private PlayerGroup		group;
 
 	@Persistent
 	@RemoteProperty
-	private DistConfig			config;
+	private DistConfig		config;
 
 	@Persistent
 	@RemoteProperty
-	private RocketQuality		rocketEnabled;
+	private RocketQuality	rocketEnabled;
 
 	@Persistent(mappedBy = "player")
-	private List<Request>		requests;
+	private List<Request>	requests;
 
 	@Persistent(mappedBy = "player")
-	private List<DailyStats>	dailyStats;
+	private Set<DailyStats>	dailyStats;
 
 	public Player() {}
 
@@ -203,18 +205,17 @@ public class Player implements HasTransitID {
 		this.getRequests().add(request);
 	}
 
-	public List<DailyStats> getDailyStats() {
+	public Set<DailyStats> getDailyStats() {
 		return dailyStats;
 	}
 
-	public void setDailyStats(List<DailyStats> stats) {
+	public void setDailyStats(Set<DailyStats> stats) {
 		this.dailyStats = stats;
 	}
 
 	public void addDailyStats(DailyStats stats) {
 		if (getDailyStats() == null)
-			setDailyStats(new ArrayList<DailyStats>());
+			setDailyStats(new HashSet<DailyStats>());
 		this.getDailyStats().add(stats);
 	}
-
 }

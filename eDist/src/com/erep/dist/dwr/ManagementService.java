@@ -46,7 +46,7 @@ public class ManagementService {
 			boolean created = new DataAccessObject(pm).save(player, true);
 
 			if (created) {
-				Queue queue = QueueFactory.getQueue("api");
+				Queue queue = QueueFactory.getQueue("erepublik-not-logged-in");
 				queue.add(withUrl("/admin/tasks/getUserInfo").param("key",
 						KeyFactory.keyToString(player.getKey())));
 			}

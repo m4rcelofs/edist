@@ -4,12 +4,12 @@
 		<rate>5/s</rate>
 	</queue>
 	<queue>
-		<name>api</name>
-		<rate>1/s</rate>
-		<max-concurrent-requests>1</max-concurrent-requests>
-		<bucket-size>1</bucket-size>
+		<name>erepublik-not-logged-in</name>
+		<rate>2/s</rate>
+		<max-concurrent-requests>2</max-concurrent-requests>
+		<bucket-size>2</bucket-size>
 		<retry-parameters>
-			<min-backoff-seconds>30</min-backoff-seconds>
+			<min-backoff-seconds>5</min-backoff-seconds>
 		</retry-parameters>
 	</queue>
 	<queue>

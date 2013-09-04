@@ -9,10 +9,10 @@
 		<display-name>DWR Servlet</display-name>
 		<servlet-name>dwr-invoker</servlet-name>
 		<servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
-		<!-- <init-param> -->
-		<!-- <param-name>debug</param-name> -->
-		<!-- <param-value>true</param-value> -->
-		<!-- </init-param> -->
+		<init-param>
+			<param-name>debug</param-name>
+			<param-value>true</param-value>
+		</init-param>
 		<init-param>
 			<param-name>classes</param-name>
 			<param-value>
@@ -42,10 +42,10 @@
 		<display-name>DWR Management Servlet</display-name>
 		<servlet-name>dwr-management-invoker</servlet-name>
 		<servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
-		<!-- <init-param> -->
-		<!-- <param-name>debug</param-name> -->
-		<!-- <param-value>true</param-value> -->
-		<!-- </init-param> -->
+		<init-param>
+			<param-name>debug</param-name>
+			<param-value>true</param-value>
+		</init-param>
 		<init-param>
 			<param-name>classes</param-name>
 			<param-value>
@@ -82,10 +82,10 @@
 		<display-name>DWR Admin Servlet</display-name>
 		<servlet-name>dwr-admin-invoker</servlet-name>
 		<servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
-		<!-- <init-param> -->
-		<!-- <param-name>debug</param-name> -->
-		<!-- <param-value>true</param-value> -->
-		<!-- </init-param> -->
+		<init-param>
+			<param-name>debug</param-name>
+			<param-value>true</param-value>
+		</init-param>
 		<init-param>
 			<param-name>classes</param-name>
 			<param-value>
@@ -111,10 +111,10 @@
 		<display-name>DWR Reports Servlet</display-name>
 		<servlet-name>dwr-reports-invoker</servlet-name>
 		<servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
-		<!-- <init-param> -->
-		<!-- <param-name>debug</param-name> -->
-		<!-- <param-value>true</param-value> -->
-		<!-- </init-param> -->
+		<init-param>
+			<param-name>debug</param-name>
+			<param-value>true</param-value>
+		</init-param>
 		<init-param>
 			<param-name>classes</param-name>
 			<param-value>
@@ -176,6 +176,16 @@
 		<url-pattern>/admin/tasks/notifyEmailChange</url-pattern>
 	</servlet-mapping>
 
+	<servlet>
+		<servlet-name>playerStatsTask</servlet-name>
+		<servlet-class>com.erep.dist.servlets.backend.PlayerStatsTask</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>playerStatsTask</servlet-name>
+		<url-pattern>/admin/tasks/playerStats</url-pattern>
+	</servlet-mapping>
+
 	<!-- Cron jobs -->
 	<servlet>
 		<servlet-name>autoDistJob</servlet-name>
@@ -197,6 +207,17 @@
 		<url-pattern>/admin/cron/licence</url-pattern>
 	</servlet-mapping>
 
+	<servlet>
+		<servlet-name>playerStatsStarterJob</servlet-name>
+		<servlet-class>com.erep.dist.servlets.backend.PlayerStatsStarterJob</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>playerStatsStarterJob</servlet-name>
+		<url-pattern>/admin/cron/playerStatsStarter</url-pattern>
+	</servlet-mapping>
+
+
 	<!-- Install -->
 	<servlet>
 		<servlet-name>installServlet</servlet-name>
@@ -211,61 +232,62 @@
 	<!-- Security -->
 
 	<!-- Admin only (including app tasks) -->
-	<security-constraint>
-		<web-resource-collection>
-			<url-pattern>/admin/*</url-pattern>
-		</web-resource-collection>
-		<auth-constraint>
-			<role-name>admin</role-name>
-		</auth-constraint>
-		<user-data-constraint>
-			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
-		</user-data-constraint>
-	</security-constraint>
+	<!-- <security-constraint> -->
+	<!-- <web-resource-collection> -->
+	<!-- <url-pattern>/admin/*</url-pattern> -->
+	<!-- </web-resource-collection> -->
+	<!-- <auth-constraint> -->
+	<!-- <role-name>admin</role-name> -->
+	<!-- </auth-constraint> -->
+	<!-- <user-data-constraint> -->
+	<!-- <transport-guarantee>CONFIDENTIAL</transport-guarantee> -->
+	<!-- </user-data-constraint> -->
+	<!-- </security-constraint> -->
 
 	<!-- Management only -->
-	<security-constraint>
-		<web-resource-collection>
-			<url-pattern>/management/*</url-pattern>
-		</web-resource-collection>
-		<auth-constraint>
-			<role-name>*</role-name>
-		</auth-constraint>
-		<user-data-constraint>
-			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
-		</user-data-constraint>
-	</security-constraint>
+	<!-- <security-constraint> -->
+	<!-- <web-resource-collection> -->
+	<!-- <url-pattern>/management/*</url-pattern> -->
+	<!-- </web-resource-collection> -->
+	<!-- <auth-constraint> -->
+	<!-- <role-name>*</role-name> -->
+	<!-- </auth-constraint> -->
+	<!-- <user-data-constraint> -->
+	<!-- <transport-guarantee>CONFIDENTIAL</transport-guarantee> -->
+	<!-- </user-data-constraint> -->
+	<!-- </security-constraint> -->
 
 	<!-- Reports only -->
-	<security-constraint>
-		<web-resource-collection>
-			<url-pattern>/reports/*</url-pattern>
-		</web-resource-collection>
-		<user-data-constraint>
-			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
-		</user-data-constraint>
-	</security-constraint>
+	<!-- <security-constraint> -->
+	<!-- <web-resource-collection> -->
+	<!-- <url-pattern>/reports/*</url-pattern> -->
+	<!-- </web-resource-collection> -->
+	<!-- <user-data-constraint> -->
+	<!-- <transport-guarantee>CONFIDENTIAL</transport-guarantee> -->
+	<!-- </user-data-constraint> -->
+	<!-- </security-constraint> -->
 
+	<!-- TODO enable -->
 	<!-- Filters -->
-	<filter>
-		<filter-name>moderatorsFilter</filter-name>
-		<filter-class>com.erep.dist.auth.ModeratorsFilter</filter-class>
-	</filter>
+	<!-- <filter> -->
+	<!-- <filter-name>moderatorsFilter</filter-name> -->
+	<!-- <filter-class>com.erep.dist.auth.ModeratorsFilter</filter-class> -->
+	<!-- </filter> -->
 
-	<filter-mapping>
-		<filter-name>moderatorsFilter</filter-name>
-		<url-pattern>/management/*</url-pattern>
-	</filter-mapping>
+	<!-- <filter-mapping> -->
+	<!-- <filter-name>moderatorsFilter</filter-name> -->
+	<!-- <url-pattern>/management/*</url-pattern> -->
+	<!-- </filter-mapping> -->
 
-	<filter>
-		<filter-name>reportsFilter</filter-name>
-		<filter-class>com.erep.dist.auth.ReportsFilter</filter-class>
-	</filter>
+	<!-- <filter> -->
+	<!-- <filter-name>reportsFilter</filter-name> -->
+	<!-- <filter-class>com.erep.dist.auth.ReportsFilter</filter-class> -->
+	<!-- </filter> -->
 
-	<filter-mapping>
-		<filter-name>reportsFilter</filter-name>
-		<url-pattern>/reports/*</url-pattern>
-	</filter-mapping>
+	<!-- <filter-mapping> -->
+	<!-- <filter-name>reportsFilter</filter-name> -->
+	<!-- <url-pattern>/reports/*</url-pattern> -->
+	<!-- </filter-mapping> -->
 
 	<!-- Default File -->
 	<welcome-file-list>
