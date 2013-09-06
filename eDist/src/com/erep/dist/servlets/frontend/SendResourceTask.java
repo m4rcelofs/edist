@@ -7,6 +7,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.jdo.Transaction;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -53,20 +54,42 @@ public class SendResourceTask extends HttpServlet {
 					|| dbRequest.getStatus() == RequestStatus.SENT)
 				return;
 
+			Transaction tx = pm.currentTransaction();
+			tx.begin();
+			checkDistributorAccess(dbRequest.getDistributor());
+			tx.commit();
+
+			new Date().getTime();
+
 			if (dbRequest.getPlayer().getStatus() != PlayerStatus.ENABLED) {
 				dbRequest.setStatus(RequestStatus.ERROR);
 				return;
 			}
-				
 
 			execute(dbRequest);
 
 			dbRequest.setStatus(RequestStatus.SENT);
 			dbRequest.setCompletedAt(new Date());
+
+			tx = pm.currentTransaction();
+			tx.begin();
+			dbRequest.getDistributor().setLastAccessTimestamp(
+					new Date().getTime());
+			tx.commit();
+
 		} catch (Exception e) {
 			// meh
 			throw new IOException(e);
 		}
+	}
+
+	private void checkDistributorAccess(Distributor distributor) {
+		Long lastAccess = distributor.getLastAccessTimestamp();
+		Long now = new Date().getTime();
+
+		if (now < (lastAccess + 10000))
+			throw new IllegalStateException(distributor.getEmail()
+					+ " cooldown period, will retry later");
 	}
 
 	private void execute(Request request) throws Exception {

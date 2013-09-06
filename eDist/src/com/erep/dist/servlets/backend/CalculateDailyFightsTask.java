@@ -48,6 +48,7 @@ public class CalculateDailyFightsTask extends HttpServlet {
 
 			DailyFights fights = calculateFights(today, dbPlayer,
 					previousDayStats, todayStats, quality);
+			fights.setGroup(dbPlayer.getGroup());
 
 			dbPlayer.addDailyFights(fights);
 

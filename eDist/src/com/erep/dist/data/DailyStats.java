@@ -31,9 +31,9 @@ public class DailyStats {
 
 	@Persistent
 	private Long	rank;
-	
+
 	@Persistent
-	private Integer maxHit; 
+	private Integer	maxHit;
 
 	public Key getKey() {
 		return key;

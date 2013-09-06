@@ -35,6 +35,9 @@ public class Distributor implements HasTransitID {
 	@Persistent(defaultFetchGroup = "false")
 	@RemoteProperty
 	private String	email;
+	
+	@Persistent
+	private long lastAccessTimestamp;
 
 	@Persistent(defaultFetchGroup = "false")
 	@RemoteProperty
@@ -81,6 +84,14 @@ public class Distributor implements HasTransitID {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public long getLastAccessTimestamp() {
+		return lastAccessTimestamp;
+	}
+
+	public void setLastAccessTimestamp(long lastAccessTimestamp) {
+		this.lastAccessTimestamp = lastAccessTimestamp;
 	}
 
 }

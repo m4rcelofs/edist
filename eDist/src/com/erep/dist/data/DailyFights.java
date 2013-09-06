@@ -7,6 +7,7 @@ import javax.jdo.annotations.PrimaryKey;
 
 import com.erep.dist.data.enums.ResourceQuality;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.datanucleus.annotations.Unowned;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class DailyFights {
@@ -20,6 +21,10 @@ public class DailyFights {
 
 	@Persistent
 	private Player			player;
+
+	@Unowned
+	@Persistent
+	private PlayerGroup		group;
 
 	@Persistent
 	private Integer			day;
@@ -75,5 +80,13 @@ public class DailyFights {
 	public void setCalculatedWithWeaponQuality(
 			ResourceQuality calculatedWithWeaponQuality) {
 		this.calculatedWithWeaponQuality = calculatedWithWeaponQuality;
+	}
+
+	public PlayerGroup getGroup() {
+		return group;
+	}
+
+	public void setGroup(PlayerGroup group) {
+		this.group = group;
 	}
 }
