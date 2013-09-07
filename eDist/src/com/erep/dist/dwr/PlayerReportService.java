@@ -8,11 +8,11 @@ import org.directwebremoting.annotations.RemoteProxy;
 import com.erep.dist.CloseablePM;
 import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
+import com.erep.dist.data.DailyFights;
+import com.erep.dist.data.DailyStats;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
-import com.erep.dist.data.Request;
 import com.erep.dist.dwr.dto.FightsQuery;
-import com.erep.dist.dwr.dto.ReportQuery;
 import com.erep.dist.dwr.dto.StatsQuery;
 import com.google.appengine.datanucleus.query.JDOCursorHelper;
 
@@ -22,34 +22,29 @@ public class PlayerReportService {
 	@RemoteMethod
 	public StatsQuery statsByPlayer(Player player, String encodedCursor) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			// TODO
-
 			StatsQuery queryResults = new StatsQuery();
 
-			// List<Request> requests = new DataAccessObject(pm).listRequests(
-			// eRepDay, cursor);
+			List<DailyStats> requests = new DataAccessObject(pm).listStats(
+					player, encodedCursor);
 
-			// queryResults.setResults(requests);
-			// queryResults.setEncodedCursor(JDOCursorHelper.getCursor(requests)
-			// .toWebSafeString());
+			queryResults.setResults(requests);
+			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(requests)
+					.toWebSafeString());
 			return queryResults;
 		}
-
 	}
 
 	@RemoteMethod
 	public StatsQuery statsByDay(Integer day, String encodedCursor) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			// TODO
-
 			StatsQuery queryResults = new StatsQuery();
 
-			// List<Request> requests = new DataAccessObject(pm).listRequests(
-			// eRepDay, cursor);
+			List<DailyStats> requests = new DataAccessObject(pm).listStats(day,
+					encodedCursor);
 
-			// queryResults.setResults(requests);
-			// queryResults.setEncodedCursor(JDOCursorHelper.getCursor(requests)
-			// .toWebSafeString());
+			queryResults.setResults(requests);
+			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(requests)
+					.toWebSafeString());
 			return queryResults;
 		}
 	}
@@ -57,18 +52,16 @@ public class PlayerReportService {
 	@RemoteMethod
 	public FightsQuery fightsByPlayer(Player player, String encodedCursor) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			// TODO
-
 			pm.getFetchPlan().addGroup("fightsByPlayer");
 
 			FightsQuery queryResults = new FightsQuery();
 
-			// List<Request> requests = new DataAccessObject(pm).listRequests(
-			// eRepDay, cursor);
+			List<DailyFights> requests = new DataAccessObject(pm).listFights(
+					player, encodedCursor);
 
-			// queryResults.setResults(requests);
-			// queryResults.setEncodedCursor(JDOCursorHelper.getCursor(requests)
-			// .toWebSafeString());
+			queryResults.setResults(requests);
+			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(requests)
+					.toWebSafeString());
 			return queryResults;
 		}
 	}
@@ -76,18 +69,16 @@ public class PlayerReportService {
 	@RemoteMethod
 	public FightsQuery fightsByDay(Integer day, String encodedCursor) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			// TODO
-
 			pm.getFetchPlan().addGroup("fightsByDay");
 
 			FightsQuery queryResults = new FightsQuery();
 
-			// List<Request> requests = new DataAccessObject(pm).listRequests(
-			// eRepDay, cursor);
+			List<DailyFights> requests = new DataAccessObject(pm).listFights(
+					day, encodedCursor);
 
-			// queryResults.setResults(requests);
-			// queryResults.setEncodedCursor(JDOCursorHelper.getCursor(requests)
-			// .toWebSafeString());
+			queryResults.setResults(requests);
+			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(requests)
+					.toWebSafeString());
 			return queryResults;
 		}
 	}
@@ -95,18 +86,16 @@ public class PlayerReportService {
 	@RemoteMethod
 	public FightsQuery fightsByGroup(PlayerGroup group, String encodedCursor) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			// TODO
-
 			pm.getFetchPlan().addGroup("fightsByGroup");
 
 			FightsQuery queryResults = new FightsQuery();
 
-			// List<Request> requests = new DataAccessObject(pm).listRequests(
-			// eRepDay, cursor);
+			List<DailyFights> requests = new DataAccessObject(pm).listFights(
+					group, encodedCursor);
 
-			// queryResults.setResults(requests);
-			// queryResults.setEncodedCursor(JDOCursorHelper.getCursor(requests)
-			// .toWebSafeString());
+			queryResults.setResults(requests);
+			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(requests)
+					.toWebSafeString());
 			return queryResults;
 		}
 	}

@@ -16,6 +16,7 @@ import javax.jdo.Transaction;
 
 import com.erep.dist.cache.CacheFacade;
 import com.erep.dist.cache.Cacheable;
+import com.erep.dist.data.DailyFights;
 import com.erep.dist.data.DailyStats;
 import com.erep.dist.data.Distributor;
 import com.erep.dist.data.HasTransitID;
@@ -244,51 +245,74 @@ public class DataAccessObject {
 		return (List<Player>) q.execute();
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<Player> listPlayers(String encodedCursor) {
-		Query q = pm.newQuery(Player.class);
-		setCursor(q, encodedCursor);
-		q.setRange(0, ServerConstants.QUERY_PAGE_LIMIT);
-		return (List<Player>) q.execute();
+		return queryWithCursor(Player.class, null, encodedCursor);
 	}
 
 	public List<Request> listRequests(String encodedCursor) {
-		return listRequests("", encodedCursor);
+		return queryWithCursor(Request.class, "", encodedCursor);
 	}
 
 	public List<Request> listRequests(Integer eRepDay, String encodedCursor) {
 		String filter = "eRepDay == " + eRepDay;
-		return listRequests(filter, encodedCursor);
+		return queryWithCursor(Request.class, filter, encodedCursor);
 	}
 
 	public List<Request> listRequests(Distributor dist, String encodedCursor) {
-		String filter = "distributor == " + dist.getId();
-		return listRequests(filter, encodedCursor);
+		String filter = "distributor == " + dist.getKey();
+		return queryWithCursor(Request.class, filter, encodedCursor);
 	}
 
 	public List<Request> listRequests(Player player, String encodedCursor) {
-		String filter = "player == " + player.getId();
-		return listRequests(filter, encodedCursor);
+		String filter = "player == " + player.getKey();
+		return queryWithCursor(Request.class, filter, encodedCursor);
 	}
 
 	public List<Request> listRequests(PlayerGroup group, String encodedCursor) {
-		String filter = "group == " + group.getId();
-		return listRequests(filter, encodedCursor);
+		String filter = "group == " + group.getKey();
+		return queryWithCursor(Request.class, filter, encodedCursor);
+	}
+
+	public List<DailyStats> listStats(Player player, String encodedCursor) {
+		String filter = "player == " + player.getKey();
+		return queryWithCursor(DailyStats.class, filter, encodedCursor);
+	}
+
+	public List<DailyStats> listStats(Integer day, String encodedCursor) {
+		String filter = "day == " + day;
+		return queryWithCursor(DailyStats.class, filter, encodedCursor);
+	}
+
+	public List<DailyFights> listFights(Player player, String encodedCursor) {
+		String filter = "player == " + player.getKey();
+		return queryWithCursor(DailyFights.class, filter, encodedCursor);
+	}
+
+	public List<DailyFights> listFights(Integer day, String encodedCursor) {
+		String filter = "day == " + day;
+		return queryWithCursor(DailyFights.class, filter, encodedCursor);
+	}
+
+	public List<DailyFights> listFights(PlayerGroup group, String encodedCursor) {
+		String filter = "group == " + group.getKey();
+		return queryWithCursor(DailyFights.class, filter, encodedCursor);
 	}
 
 	@SuppressWarnings("unchecked")
-	private List<Request> listRequests(String filter, String encodedCursor) {
-		Query q = pm.newQuery(Request.class);
+	private <T> List<T> queryWithCursor(Class<T> clazz, String filter,
+			String encodedCursor) {
+		Query q = pm.newQuery(clazz);
 		if (filter != null && !filter.trim().isEmpty())
 			q.setFilter(filter);
 		setCursor(q, encodedCursor);
 		q.setRange(0, ServerConstants.QUERY_PAGE_LIMIT);
-		return (List<Request>) q.execute();
+		return (List<T>) q.execute();
 	}
 
 	public int getDailyRequestedFF(Player player, int eRepDay) {
 		Query q = pm.newQuery(Request.class);
-		q.setFilter("player == " + player.getId() + " && eRepDay == " + eRepDay);
+		q.setFilter("player == " + player.getKey() + " && eRepDay == "
+				+ eRepDay);
 		q.setResult("sum(requestedFF)");
 		Long response = ((Long) q.execute());
 		return response != null ? response.intValue() : 0;
@@ -296,8 +320,8 @@ public class DataAccessObject {
 
 	public boolean requestedRocket(Player player, int eRepDay) {
 		Query q = pm.newQuery(Request.class);
-		q.setFilter("player == " + player.getId() + " && eRepDay == " + eRepDay
-				+ " && type == '" + RequestType.ROCKET.name() + "'");
+		q.setFilter("player == " + player.getKey() + " && eRepDay == "
+				+ eRepDay + " && type == '" + RequestType.ROCKET.name() + "'");
 		q.setUnique(true);
 		Request request = (Request) q.execute();
 		return request != null;
