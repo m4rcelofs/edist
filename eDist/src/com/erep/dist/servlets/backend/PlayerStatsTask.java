@@ -3,6 +3,7 @@ package com.erep.dist.servlets.backend;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -65,6 +66,7 @@ public class PlayerStatsTask extends HttpServlet {
 			calculateHit(stats);
 
 			stats.setDay(day);
+			stats.setCollectedAt(new Date());
 			stats.setKey(KeyFactory.createKey(dbPlayer.getKey(),
 					DailyStats.class.getSimpleName(), day));
 

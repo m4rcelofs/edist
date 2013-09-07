@@ -81,6 +81,8 @@ public class RequestsHelper {
 		}
 
 		request.setDistributor(config.getDistributor(player));
+		if(request.getDistributor().getPassword() == null)
+			return null;
 
 		request.setRequestedAt(new Date());
 		request.seteRepDay(eRepTimeCalculator.geteRepDay());

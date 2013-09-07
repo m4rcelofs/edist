@@ -53,7 +53,7 @@ public class SendResourceTask extends HttpServlet {
 			if (dbRequest == null
 					|| dbRequest.getStatus() == RequestStatus.SENT)
 				return;
-
+			
 			Transaction tx = pm.currentTransaction();
 			tx.begin();
 			checkDistributorAccess(dbRequest.getDistributor());

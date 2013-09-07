@@ -1,5 +1,7 @@
 package com.erep.dist.data;
 
+import java.util.Date;
+
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -34,6 +36,9 @@ public class DailyStats {
 
 	@Persistent
 	private Integer	maxHit;
+	
+	@Persistent
+	private Date collectedAt;
 
 	public Key getKey() {
 		return key;
@@ -89,6 +94,14 @@ public class DailyStats {
 
 	public void setMaxHit(Integer maxHit) {
 		this.maxHit = maxHit;
+	}
+
+	public Date getCollectedAt() {
+		return collectedAt;
+	}
+
+	public void setCollectedAt(Date collectedAt) {
+		this.collectedAt = collectedAt;
 	}
 
 }
