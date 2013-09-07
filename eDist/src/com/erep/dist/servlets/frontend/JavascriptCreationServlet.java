@@ -28,7 +28,6 @@ public class JavascriptCreationServlet extends HttpServlet {
 		
 		switch (req.getPathInfo()) {
 			case "/user.js":
-			case "/user.nocache.js":
 				writeUserJS(resp);
 				break;
 			default:
