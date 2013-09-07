@@ -7,8 +7,12 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import org.directwebremoting.annotations.DataTransferObject;
+import org.directwebremoting.annotations.RemoteProperty;
+
 import com.google.appengine.api.datastore.Key;
 
+@DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class DailyStats {
 
@@ -23,21 +27,27 @@ public class DailyStats {
 	private Player	player;
 
 	@Persistent
+	@RemoteProperty
 	private Integer	day;
 
 	@Persistent
+	@RemoteProperty
 	private Long	xp;
 
 	@Persistent
+	@RemoteProperty
 	private Double	strength;
 
 	@Persistent
+	@RemoteProperty
 	private Long	rank;
 
 	@Persistent
+	@RemoteProperty
 	private Integer	maxHit;
 	
 	@Persistent
+	@RemoteProperty
 	private Date collectedAt;
 
 	public Key getKey() {

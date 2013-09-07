@@ -1,15 +1,26 @@
 package com.erep.dist.data;
 
+import javax.jdo.annotations.FetchGroup;
+import javax.jdo.annotations.FetchGroups;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import org.directwebremoting.annotations.DataTransferObject;
+import org.directwebremoting.annotations.RemoteProperty;
+
 import com.erep.dist.data.enums.ResourceQuality;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.datanucleus.annotations.Unowned;
 
+@DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
+@FetchGroups({
+		@FetchGroup(name = "fightsByPlayer", members = { @Persistent(name = "group") }),
+		@FetchGroup(name = "fightsByDay", members = {
+				@Persistent(name = "group"), @Persistent(name = "player") }),
+		@FetchGroup(name = "fightsByGroup", members = { @Persistent(name = "player") }) })
 public class DailyFights {
 
 	/**
@@ -20,19 +31,24 @@ public class DailyFights {
 	private Key				key;
 
 	@Persistent
+	@RemoteProperty
 	private Player			player;
 
 	@Unowned
 	@Persistent
+	@RemoteProperty
 	private PlayerGroup		group;
 
 	@Persistent
+	@RemoteProperty
 	private Integer			day;
 
 	@Persistent
+	@RemoteProperty
 	private Integer			calculatedFfFights;
 
 	@Persistent
+	@RemoteProperty
 	private ResourceQuality	calculatedWithWeaponQuality;
 
 	public DailyFights() {}
