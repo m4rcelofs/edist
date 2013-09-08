@@ -15,7 +15,7 @@ import com.erep.dist.data.RegisteredUser.Role;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
-public class JavascriptCreationServlet extends HttpServlet {
+public class JavascriptGenerationServlet extends HttpServlet {
 
 	private static final long	serialVersionUID	= 1L;
 
@@ -28,6 +28,7 @@ public class JavascriptCreationServlet extends HttpServlet {
 		
 		switch (req.getPathInfo()) {
 			case "/user.js":
+			case "/user.nocache.js":
 				writeUserJS(resp);
 				break;
 			default:
