@@ -53,7 +53,7 @@ public class SendResourceTask extends HttpServlet {
 			if (dbRequest == null
 					|| dbRequest.getStatus() == RequestStatus.SENT)
 				return;
-			
+
 			Transaction tx = pm.currentTransaction();
 			tx.begin();
 			checkDistributorAccess(dbRequest.getDistributor());
@@ -61,7 +61,9 @@ public class SendResourceTask extends HttpServlet {
 
 			new Date().getTime();
 
-			if (dbRequest.getPlayer().getStatus() != PlayerStatus.ENABLED) {
+			PlayerStatus dbStatus = dbRequest.getPlayer().getDbStatus();
+			if (dbStatus == PlayerStatus.ERROR
+					|| dbStatus == PlayerStatus.DISABLED) {
 				dbRequest.setStatus(RequestStatus.ERROR);
 				return;
 			}

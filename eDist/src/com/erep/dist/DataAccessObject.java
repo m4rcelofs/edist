@@ -224,7 +224,7 @@ public class DataAccessObject {
 		}
 
 		old.setRocketEnabled(newest.getRocketEnabled());
-		old.setStatus(newest.getStatus());
+		old.setDbStatus(newest.getDbStatus());
 
 		PlayerGroup newGroup = find(newest.getGroup());
 

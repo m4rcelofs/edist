@@ -57,7 +57,7 @@ public class PlayerStatsTask extends HttpServlet {
 
 			HTTPResponse response = futureResponse.get();
 			if (response.getResponseCode() == 404) {
-				dbPlayer.setStatus(PlayerStatus.ERROR);
+				dbPlayer.setDbStatus(PlayerStatus.ERROR);
 				return;
 			}
 

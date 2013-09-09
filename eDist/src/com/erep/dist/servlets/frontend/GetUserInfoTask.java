@@ -51,7 +51,7 @@ public class GetUserInfoTask extends HttpServlet {
 					.getUrl(dbPlayer)));
 
 			if (response.getResponseCode() == 404) {
-				dbPlayer.setStatus(PlayerStatus.ERROR);
+				dbPlayer.setDbStatus(PlayerStatus.ERROR);
 				return;
 			}
 
@@ -65,7 +65,7 @@ public class GetUserInfoTask extends HttpServlet {
 
 			dbPlayer.setName(playerInfo.get("name"));
 			dbPlayer.setAvatar(playerInfo.get("avatar"));
-			dbPlayer.setStatus(PlayerStatus.ENABLED);
+			dbPlayer.setDbStatus(PlayerStatus.ENABLED);
 
 			CacheFacade
 					.remove("com.erep.dist.DataAccessObject.findPlayerId(String="

@@ -15,6 +15,7 @@ import javax.jdo.annotations.PrimaryKey;
 import org.directwebremoting.annotations.DataTransferObject;
 import org.directwebremoting.annotations.RemoteProperty;
 
+import com.erep.dist.data.enums.PlayerDistStatus;
 import com.erep.dist.data.enums.PlayerStatus;
 import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.data.enums.ResourceQuality;
@@ -52,7 +53,11 @@ public class Player implements HasTransitID {
 
 	@Persistent
 	@RemoteProperty
-	private PlayerStatus		status;
+	private PlayerStatus		dbStatus;
+
+	@Persistent
+	@RemoteProperty
+	private PlayerDistStatus	distStatus;
 
 	@Unowned
 	@Persistent
@@ -108,12 +113,12 @@ public class Player implements HasTransitID {
 		this.avatar = avatar;
 	}
 
-	public PlayerStatus getStatus() {
-		return status;
+	public PlayerStatus getDbStatus() {
+		return dbStatus;
 	}
 
-	public void setStatus(PlayerStatus status) {
-		this.status = status;
+	public void setDbStatus(PlayerStatus dbStatus) {
+		this.dbStatus = dbStatus;
 	}
 
 	public RocketQuality getRocketEnabled() {
@@ -236,5 +241,13 @@ public class Player implements HasTransitID {
 		if (getDailyFights() == null)
 			setDailyFights(new HashSet<DailyFights>());
 		this.getDailyFights().add(fights);
+	}
+
+	public PlayerDistStatus getDistStatus() {
+		return distStatus;
+	}
+
+	public void setDistStatus(PlayerDistStatus distStatus) {
+		this.distStatus = distStatus;
 	}
 }
