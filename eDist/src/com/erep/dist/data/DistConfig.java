@@ -1,5 +1,6 @@
 package com.erep.dist.data;
 
+import javax.jdo.annotations.Embedded;
 import javax.jdo.annotations.FetchGroup;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -17,40 +18,46 @@ import com.google.appengine.datanucleus.annotations.Unowned;
 
 @DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-@FetchGroup(name = "groupListing", members = { @Persistent(name = "distributor") })
+@FetchGroup(name = "groupListing", members = {
+		@Persistent(name = "distributor"),
+		@Persistent(name = "fightVerification") })
 public class DistConfig {
 
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private Key				key;
+	private Key					key;
 
 	@Persistent
 	@RemoteProperty
-	private Integer			currentMaxDailyFF;
+	private Integer				currentMaxDailyFF;
 
 	@Persistent
 	@RemoteProperty
-	private Boolean			rocketAllowed;
+	private Boolean				rocketAllowed;
 
 	@Persistent
 	@RemoteProperty
-	private Boolean			autoSend;
+	private Boolean				autoSend;
 
 	/**
 	 * weapon, food, or both
 	 */
 	@Persistent
 	@RemoteProperty
-	private RequestType		allowedType;
+	private RequestType			allowedType;
 
 	@Persistent
 	@RemoteProperty
-	private ResourceQuality	allowedWeaponQuality;
+	private ResourceQuality		allowedWeaponQuality;
 
 	@Unowned
 	@Persistent
 	@RemoteProperty
-	private Distributor		distributor;
+	private Distributor			distributor;
+
+	@Embedded
+	@Persistent
+	private FightVerification	fightVerification;
 
 	public DistConfig() {}
 
@@ -108,6 +115,14 @@ public class DistConfig {
 
 	public void setAllowedWeaponQuality(ResourceQuality allowedWeaponQuality) {
 		this.allowedWeaponQuality = allowedWeaponQuality;
+	}
+
+	public FightVerification getFightVerification() {
+		return fightVerification;
+	}
+
+	public void setFightVerification(FightVerification fightVerification) {
+		this.fightVerification = fightVerification;
 	}
 
 }
