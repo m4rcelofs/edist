@@ -1,12 +1,8 @@
-package com.erep.dist.servlets.backend;
+package com.erep.dist.servlets.backend.tasks;
 
-import java.io.IOException;
+import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withPayload;
 
 import javax.jdo.JDOObjectNotFoundException;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import com.erep.dist.CloseablePM;
 import com.erep.dist.ConfigHelper;
@@ -19,30 +15,31 @@ import com.erep.dist.data.enums.ResourceQuality;
 import com.erep.dist.erep.HitCalculator;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.taskqueue.DeferredTask;
+import com.google.appengine.api.taskqueue.Queue;
+import com.google.appengine.api.taskqueue.QueueFactory;
 
-public class CalculateDailyFightsTask extends HttpServlet {
+public class CalculateDailyFightsTask implements DeferredTask {
 
 	private static final long	serialVersionUID	= 1L;
 
+	private final Integer		today;
+	private final Key			playerKey;
+
+	public CalculateDailyFightsTask(Integer today, Key playerKey) {
+		this.today = today;
+		this.playerKey = playerKey;
+	}
+
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-
-		String dayParam = req.getParameter("day");
-		String playerKeyParam = req.getParameter("playerKey");
-
-		validateParams(dayParam, playerKeyParam);
-
-		Integer today = Integer.valueOf(dayParam);
-		Player p = new Player(KeyFactory.stringToKey(playerKeyParam));
-
+	public void run() {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			DataAccessObject dao = new DataAccessObject(pm);
 			ConfigHelper config = new ConfigHelper(dao);
 
-			DailyStats previousDayStats = dao.getStats(p, today - 1);
-			DailyStats todayStats = dao.getStats(p, today);
-			Player dbPlayer = dao.find(p);
+			Player dbPlayer = dao.find(new Player(playerKey));
+			DailyStats previousDayStats = dao.getStats(dbPlayer, today - 1);
+			DailyStats todayStats = dao.getStats(dbPlayer, today);
 
 			ResourceQuality quality = config.getAllowedWeaponQuality(dbPlayer);
 
@@ -52,10 +49,11 @@ public class CalculateDailyFightsTask extends HttpServlet {
 
 			dbPlayer.addDailyFights(fights);
 
-		} catch (JDOObjectNotFoundException e) {
-			// first scrapping day, ignore
-		}
+			createFightVerificationTask(dbPlayer);
 
+		} catch (JDOObjectNotFoundException e) {
+			// first scrapping today, ignore
+		}
 	}
 
 	private DailyFights calculateFights(Integer today, Player dbPlayer,
@@ -88,17 +86,14 @@ public class CalculateDailyFightsTask extends HttpServlet {
 		return (int) (dailyInfluence / hit);
 	}
 
-	private Key createKey(Player dbPlayer, Integer today) {
+	private void createFightVerificationTask(Player dbPlayer) {
+		DeferredTask task = new FightsVerificationTask(dbPlayer.getKey());
+		Queue queue = QueueFactory.getQueue("erepublik-not-logged-in");
+		queue.add(withPayload(task));
+	}
+
+	private Key createKey(Player dbPlayer, Integer day) {
 		return KeyFactory.createKey(dbPlayer.getKey(),
-				DailyFights.class.getSimpleName(), today);
+				DailyFights.class.getSimpleName(), day);
 	}
-
-	private boolean validateParams(String... params)
-			throws IllegalArgumentException {
-		for (String param : params)
-			if (param == null || param.trim().isEmpty())
-				throw new IllegalArgumentException("Paramater is null or empty");
-		return true;
-	}
-
 }
