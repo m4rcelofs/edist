@@ -1,13 +1,7 @@
-package com.erep.dist.instances.frontend;
+package com.erep.dist.instances.frontend.tasks;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
-
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
 
@@ -19,31 +13,30 @@ import com.erep.dist.data.Player;
 import com.erep.dist.data.enums.PlayerStatus;
 import com.erep.dist.erep.eRepURL;
 import com.erep.dist.erep.parser.CitizenParser;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.taskqueue.DeferredTask;
 import com.google.appengine.api.urlfetch.HTTPResponse;
 import com.google.appengine.api.urlfetch.URLFetchService;
 import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 
-public class GetUserInfoTask extends HttpServlet {
+public class GetUserInfoTask implements DeferredTask {
 
 	private static final long	serialVersionUID	= 1L;
 
+	private final Key			playerKey;
+
+	public GetUserInfoTask(Key key) {
+		this.playerKey = key;
+	}
+
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-
-		String erId = req.getParameter("key");
-
-		if (erId == null || erId.trim().isEmpty())
-			return;
+	public void run() {
 
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 
 			DataAccessObject dao = new DataAccessObject(pm);
 
-			Player p = new Player();
-			p.setId(erId);
-
-			Player dbPlayer = dao.find(p);
+			Player dbPlayer = dao.find(new Player(playerKey));
 
 			URLFetchService fetchService = URLFetchServiceFactory
 					.getURLFetchService();
@@ -70,7 +63,8 @@ public class GetUserInfoTask extends HttpServlet {
 			CacheFacade
 					.remove("com.erep.dist.DataAccessObject.findPlayerId(String="
 							+ dbPlayer.getName() + ";)");
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
-
 	}
 }

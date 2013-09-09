@@ -1,7 +1,7 @@
 package com.erep.dist;
 
 import static com.erep.dist.auth.SymmetricCipherUtils.encrypt;
-import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withUrl;
+import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withPayload;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,9 +27,11 @@ import com.erep.dist.data.RegisteredUser;
 import com.erep.dist.data.Request;
 import com.erep.dist.data.ServerConfig;
 import com.erep.dist.data.enums.RequestType;
+import com.erep.dist.instances.frontend.tasks.NotifyEmailChangeTask;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.api.taskqueue.DeferredTask;
 import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.api.users.User;
@@ -496,13 +498,9 @@ public class DataAccessObject {
 
 	private void startEmailChangeNotificationTask(String oldEmail,
 			String newEmail) {
+		DeferredTask task = new NotifyEmailChangeTask(oldEmail, newEmail);
 		Queue queue = QueueFactory.getDefaultQueue();
-		if (oldEmail == null)
-			oldEmail = "";
-		if (newEmail == null)
-			newEmail = "";
-		queue.add(withUrl("/admin/tasks/notifyEmailChange").param("oldEmail",
-				oldEmail).param("newEmail", newEmail));
+		queue.add(withPayload(task));
 	}
 
 }

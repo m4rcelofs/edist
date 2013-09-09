@@ -84,6 +84,12 @@ public class Request implements HasTransitID {
 	@RemoteProperty
 	private PlayerGroup			group;
 
+	public Request() {}
+
+	public Request(Key key) {
+		this.key = key;
+	}
+
 	public Key getKey() {
 		return key;
 	}

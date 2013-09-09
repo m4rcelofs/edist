@@ -1,6 +1,6 @@
 package com.erep.dist.dwr;
 
-import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withUrl;
+import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withPayload;
 
 import java.util.List;
 
@@ -13,7 +13,8 @@ import com.erep.dist.PMF;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.dwr.dto.PlayerQuery;
-import com.google.appengine.api.datastore.KeyFactory;
+import com.erep.dist.instances.frontend.tasks.GetUserInfoTask;
+import com.google.appengine.api.taskqueue.DeferredTask;
 import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.datanucleus.query.JDOCursorHelper;
@@ -46,9 +47,9 @@ public class ManagementService {
 			boolean created = new DataAccessObject(pm).save(player, true);
 
 			if (created) {
+				DeferredTask task = new GetUserInfoTask(player.getKey());
 				Queue queue = QueueFactory.getQueue("erepublik-not-logged-in");
-				queue.add(withUrl("/admin/tasks/getUserInfo").param("key",
-						KeyFactory.keyToString(player.getKey())));
+				queue.add(withPayload(task));
 			}
 			return created;
 		}

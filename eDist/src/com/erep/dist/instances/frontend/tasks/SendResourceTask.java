@@ -1,17 +1,12 @@
-package com.erep.dist.instances.frontend;
+package com.erep.dist.instances.frontend.tasks;
 
 import static com.erep.dist.auth.SymmetricCipherUtils.decrypt;
 
-import java.io.IOException;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.jdo.Transaction;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import com.erep.dist.CloseablePM;
 import com.erep.dist.DataAccessObject;
@@ -26,29 +21,27 @@ import com.erep.dist.erep.ErepScrapper;
 import com.erep.dist.erep.dist.DistStrategy;
 import com.erep.dist.erep.dist.FoodStrategy;
 import com.erep.dist.erep.dist.WeaponStrategy;
+import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.taskqueue.DeferredTask;
 
-public class SendResourceTask extends HttpServlet {
+public class SendResourceTask implements DeferredTask {
 
 	private static final long	serialVersionUID	= 1L;
 
 	private static final Logger	logger				= Logger.getLogger(SendResourceTask.class
 															.getName());
 
+	private final Key			requestKey;
+
+	public SendResourceTask(Key requestKey) {
+		this.requestKey = requestKey;
+	}
+
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-
-		String requestKey = req.getParameter("key");
-
-		if (requestKey == null || requestKey.trim().isEmpty())
-			return;
-
-		Request distReq = new Request();
-		distReq.setId(requestKey);
-
+	public void run() {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			DataAccessObject dao = new DataAccessObject(pm);
-			Request dbRequest = dao.find(distReq);
+			Request dbRequest = dao.find(new Request(requestKey));
 
 			if (dbRequest == null
 					|| dbRequest.getStatus() == RequestStatus.SENT)
@@ -81,7 +74,7 @@ public class SendResourceTask extends HttpServlet {
 
 		} catch (Exception e) {
 			// meh
-			throw new IOException(e);
+			throw new RuntimeException(e);
 		}
 	}
 

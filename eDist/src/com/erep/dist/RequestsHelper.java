@@ -1,6 +1,6 @@
 package com.erep.dist;
 
-import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withUrl;
+import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withPayload;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -16,7 +16,8 @@ import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.data.enums.ResourceQuality;
 import com.erep.dist.data.enums.ResourceType;
 import com.erep.dist.erep.eRepTimeCalculator;
-import com.google.appengine.api.datastore.KeyFactory;
+import com.erep.dist.instances.frontend.tasks.SendResourceTask;
+import com.google.appengine.api.taskqueue.DeferredTask;
 import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
 
@@ -147,10 +148,9 @@ public class RequestsHelper {
 	}
 
 	public void addToQueue(Request request) {
+		DeferredTask task = new SendResourceTask(request.getKey());
 		Queue queue = QueueFactory.getQueue("erepublik-logged-in");
-		queue.add(withUrl("/admin/tasks/sendResource").param("key",
-				KeyFactory.keyToString(request.getKey())));
-
+		queue.add(withPayload(task));
 	}
 
 }

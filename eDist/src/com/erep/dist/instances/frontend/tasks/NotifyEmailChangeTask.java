@@ -1,20 +1,16 @@
-package com.erep.dist.instances.frontend;
+package com.erep.dist.instances.frontend.tasks;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.json.simple.JSONObject;
 
 import com.erep.dist.Mailer;
 import com.erep.dist.ServerConstants;
 import com.erep.dist.auth.AssymetricCipherUtils;
+import com.google.appengine.api.taskqueue.DeferredTask;
 import com.google.appengine.api.urlfetch.HTTPMethod;
 import com.google.appengine.api.urlfetch.HTTPRequest;
 import com.google.appengine.api.urlfetch.HTTPResponse;
@@ -22,27 +18,37 @@ import com.google.appengine.api.urlfetch.URLFetchService;
 import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
 import com.google.appengine.api.utils.SystemProperty;
 
-public class NotifyEmailChangeTask extends HttpServlet {
+public class NotifyEmailChangeTask implements DeferredTask {
 
 	private static final long	serialVersionUID	= 1L;
 
 	private static Logger		logger				= Logger.getLogger(NotifyEmailChangeTask.class
 															.getName());
 
+	private final String		oldEmail;
+	private final String		newEmail;
+
+	public NotifyEmailChangeTask(String oldEmail, String newEmail) {
+		this.oldEmail = oldEmail;
+		this.newEmail = newEmail;
+	}
+
 	@Override
-	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-
-		String oldEmail = req.getParameter("oldEmail");
-		String newEmail = req.getParameter("newEmail");
-
-		notifyLicenceServer(newEmail);
-		notifyOldEmail(oldEmail, newEmail);
-
+	public void run() {
+		try {
+			notifyLicenceServer(newEmail);
+			notifyOldEmail(oldEmail, newEmail);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	@SuppressWarnings("unchecked")
 	private void notifyLicenceServer(String newEmail) throws IOException {
+
+		if (newEmail == null || newEmail.isEmpty())
+			return;
+
 		URL server = new URL(ServerConstants.LICENCE_SERVER_EMAIL_UPDATE);
 
 		HTTPRequest request = new HTTPRequest(server, HTTPMethod.POST);
@@ -72,6 +78,10 @@ public class NotifyEmailChangeTask extends HttpServlet {
 
 	private void notifyOldEmail(String oldEmail, String newEmail)
 			throws IOException {
+
+		if (oldEmail == null || oldEmail.isEmpty())
+			return;
+
 		StringBuilder builder = new StringBuilder(
 				"<p><b>eDist - Email Change Notification</b></p>");
 

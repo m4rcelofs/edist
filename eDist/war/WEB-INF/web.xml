@@ -145,38 +145,6 @@
 		<url-pattern>/reports/dwr/*</url-pattern>
 	</servlet-mapping>
 
-	<!-- Tasks -->
-	<servlet>
-		<servlet-name>getUserInfoTask</servlet-name>
-		<servlet-class>com.erep.dist.instances.frontend.GetUserInfoTask</servlet-class>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>getUserInfoTask</servlet-name>
-		<url-pattern>/admin/tasks/getUserInfo</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>sendResourceTask</servlet-name>
-		<servlet-class>com.erep.dist.instances.frontend.SendResourceTask</servlet-class>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>sendResourceTask</servlet-name>
-		<url-pattern>/admin/tasks/sendResource</url-pattern>
-	</servlet-mapping>
-
-	<servlet>
-		<servlet-name>notifyEmailChangeTask</servlet-name>
-		<servlet-class>com.erep.dist.instances.frontend.NotifyEmailChangeTask</servlet-class>
-	</servlet>
-
-	<servlet-mapping>
-		<servlet-name>notifyEmailChangeTask</servlet-name>
-		<url-pattern>/admin/tasks/notifyEmailChange</url-pattern>
-	</servlet-mapping>
-
-
 	<!-- Cron jobs -->
 	<servlet>
 		<servlet-name>autoDistJob</servlet-name>
@@ -219,10 +187,10 @@
 		<servlet-name>installServlet</servlet-name>
 		<url-pattern>/admin/install</url-pattern>
 	</servlet-mapping>
-	
-	
-	<!--  Dynamic javascript generation -->
-		<servlet>
+
+
+	<!-- Dynamic javascript generation -->
+	<servlet>
 		<servlet-name>dynamicJavascript</servlet-name>
 		<servlet-class>com.erep.dist.instances.frontend.JavascriptGenerationServlet</servlet-class>
 	</servlet>
