@@ -1,4 +1,4 @@
-package com.erep.dist.servlets.frontend;
+package com.erep.dist.instances.frontend;
 
 import java.io.IOException;
 import java.util.List;

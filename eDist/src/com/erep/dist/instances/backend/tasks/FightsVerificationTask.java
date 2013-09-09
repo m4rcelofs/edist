@@ -1,4 +1,4 @@
-package com.erep.dist.servlets.backend.tasks;
+package com.erep.dist.instances.backend.tasks;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.taskqueue.DeferredTask;

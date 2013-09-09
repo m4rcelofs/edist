@@ -148,7 +148,7 @@
 	<!-- Tasks -->
 	<servlet>
 		<servlet-name>getUserInfoTask</servlet-name>
-		<servlet-class>com.erep.dist.servlets.frontend.GetUserInfoTask</servlet-class>
+		<servlet-class>com.erep.dist.instances.frontend.GetUserInfoTask</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
@@ -158,7 +158,7 @@
 
 	<servlet>
 		<servlet-name>sendResourceTask</servlet-name>
-		<servlet-class>com.erep.dist.servlets.frontend.SendResourceTask</servlet-class>
+		<servlet-class>com.erep.dist.instances.frontend.SendResourceTask</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
@@ -168,7 +168,7 @@
 
 	<servlet>
 		<servlet-name>notifyEmailChangeTask</servlet-name>
-		<servlet-class>com.erep.dist.servlets.frontend.NotifyEmailChangeTask</servlet-class>
+		<servlet-class>com.erep.dist.instances.frontend.NotifyEmailChangeTask</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
@@ -180,7 +180,7 @@
 	<!-- Cron jobs -->
 	<servlet>
 		<servlet-name>autoDistJob</servlet-name>
-		<servlet-class>com.erep.dist.servlets.frontend.AutoDistJob</servlet-class>
+		<servlet-class>com.erep.dist.instances.frontend.AutoDistJob</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
@@ -190,7 +190,7 @@
 
 	<servlet>
 		<servlet-name>licensingJob</servlet-name>
-		<servlet-class>com.erep.dist.servlets.backend.LicensingJob</servlet-class>
+		<servlet-class>com.erep.dist.instances.backend.LicensingJob</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
@@ -200,7 +200,7 @@
 
 	<servlet>
 		<servlet-name>playerStatsStarterJob</servlet-name>
-		<servlet-class>com.erep.dist.servlets.backend.PlayerStatsStarterJob</servlet-class>
+		<servlet-class>com.erep.dist.instances.backend.PlayerStatsStarterJob</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
@@ -212,7 +212,7 @@
 	<!-- Install -->
 	<servlet>
 		<servlet-name>installServlet</servlet-name>
-		<servlet-class>com.erep.dist.servlets.frontend.install.InstallServlet</servlet-class>
+		<servlet-class>com.erep.dist.instances.frontend.install.InstallServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
@@ -224,7 +224,7 @@
 	<!--  Dynamic javascript generation -->
 		<servlet>
 		<servlet-name>dynamicJavascript</servlet-name>
-		<servlet-class>com.erep.dist.servlets.frontend.JavascriptGenerationServlet</servlet-class>
+		<servlet-class>com.erep.dist.instances.frontend.JavascriptGenerationServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>

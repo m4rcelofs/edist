@@ -1,4 +1,4 @@
-package com.erep.dist.servlets.frontend.install;
+package com.erep.dist.instances.frontend.install;
 
 import static com.erep.dist.auth.LicensingHelper.scheduleLicenceUpdate;
 

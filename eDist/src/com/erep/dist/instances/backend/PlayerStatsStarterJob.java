@@ -1,4 +1,4 @@
-package com.erep.dist.servlets.backend;
+package com.erep.dist.instances.backend;
 
 import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withPayload;
 
@@ -15,7 +15,7 @@ import com.erep.dist.PMF;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.enums.PlayerStatus;
 import com.erep.dist.erep.eRepTimeCalculator;
-import com.erep.dist.servlets.backend.tasks.PlayerStatsTask;
+import com.erep.dist.instances.backend.tasks.PlayerStatsTask;
 import com.google.appengine.api.backends.BackendServiceFactory;
 import com.google.appengine.api.taskqueue.DeferredTask;
 import com.google.appengine.api.taskqueue.Queue;

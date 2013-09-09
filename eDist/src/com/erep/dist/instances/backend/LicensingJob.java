@@ -1,4 +1,4 @@
-package com.erep.dist.servlets.backend;
+package com.erep.dist.instances.backend;
 
 import java.io.IOException;
 
