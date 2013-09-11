@@ -145,16 +145,36 @@
 		<url-pattern>/reports/dwr/*</url-pattern>
 	</servlet-mapping>
 
-	<!-- Empty backend starter to avoid 404 error -->
+
+	<!-- Filtered DWR (player reports) -->
 	<servlet>
-		<servlet-name>emptyServlet</servlet-name>
-		<servlet-class>com.erep.dist.instances.backend.EmptyServlet</servlet-class>
+		<display-name>DWR Reports Servlet</display-name>
+		<servlet-name>dwr-players-invoker</servlet-name>
+		<servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
+		<init-param>
+			<param-name>debug</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<init-param>
+			<param-name>classes</param-name>
+			<param-value>
+				com.erep.dist.dwr.dto.StatsQuery,
+				com.erep.dist.dwr.dto.FightsQuery,
+				
+				com.erep.dist.data.DailyFights,
+				com.erep.dist.data.DailyStats,
+				com.erep.dist.data.Player,
+				com.erep.dist.data.PlayerGroup
+    		</param-value>
+		</init-param>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>emptyServlet</servlet-name>
-		<url-pattern>/_ah/start</url-pattern>
+		<servlet-name>dwr-players-invoker</servlet-name>
+		<url-pattern>/players/dwr/*</url-pattern>
 	</servlet-mapping>
+
+
 
 	<!-- Cron jobs -->
 	<servlet>
@@ -211,65 +231,85 @@
 		<url-pattern>/js/dynamic/*</url-pattern>
 	</servlet-mapping>
 
+	<!-- Façade to receive work info from employers -->
+	<servlet>
+		<servlet-name>employersFacadeServlet</servlet-name>
+		<servlet-class>com.erep.dist.instances.frontend.EmployerFacadeServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>employersFacadeServlet</servlet-name>
+		<url-pattern>/employer</url-pattern>
+	</servlet-mapping>
+
 	<!-- Security -->
 
 	<!-- Admin only (including app tasks) -->
-	<!-- <security-constraint> -->
-	<!-- <web-resource-collection> -->
-	<!-- <url-pattern>/admin/*</url-pattern> -->
-	<!-- </web-resource-collection> -->
-	<!-- <auth-constraint> -->
-	<!-- <role-name>admin</role-name> -->
-	<!-- </auth-constraint> -->
-	<!-- <user-data-constraint> -->
-	<!-- <transport-guarantee>CONFIDENTIAL</transport-guarantee> -->
-	<!-- </user-data-constraint> -->
-	<!-- </security-constraint> -->
+	<security-constraint>
+		<web-resource-collection>
+			<url-pattern>/admin/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>admin</role-name>
+		</auth-constraint>
+		<user-data-constraint>
+			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
 
 	<!-- Management only -->
-	<!-- <security-constraint> -->
-	<!-- <web-resource-collection> -->
-	<!-- <url-pattern>/management/*</url-pattern> -->
-	<!-- </web-resource-collection> -->
-	<!-- <auth-constraint> -->
-	<!-- <role-name>*</role-name> -->
-	<!-- </auth-constraint> -->
-	<!-- <user-data-constraint> -->
-	<!-- <transport-guarantee>CONFIDENTIAL</transport-guarantee> -->
-	<!-- </user-data-constraint> -->
-	<!-- </security-constraint> -->
+	<security-constraint>
+		<web-resource-collection>
+			<url-pattern>/management/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>*</role-name>
+		</auth-constraint>
+		<user-data-constraint>
+			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
 
 	<!-- Reports only -->
-	<!-- <security-constraint> -->
-	<!-- <web-resource-collection> -->
-	<!-- <url-pattern>/reports/*</url-pattern> -->
-	<!-- </web-resource-collection> -->
-	<!-- <user-data-constraint> -->
-	<!-- <transport-guarantee>CONFIDENTIAL</transport-guarantee> -->
-	<!-- </user-data-constraint> -->
-	<!-- </security-constraint> -->
+	<security-constraint>
+		<web-resource-collection>
+			<url-pattern>/reports/*</url-pattern>
+		</web-resource-collection>
+		<user-data-constraint>
+			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
 
-	<!-- TODO enable -->
 	<!-- Filters -->
-	<!-- <filter> -->
-	<!-- <filter-name>moderatorsFilter</filter-name> -->
-	<!-- <filter-class>com.erep.dist.auth.ModeratorsFilter</filter-class> -->
-	<!-- </filter> -->
+	<filter>
+		<filter-name>moderatorsFilter</filter-name>
+		<filter-class>com.erep.dist.auth.ModeratorsFilter</filter-class>
+	</filter>
 
-	<!-- <filter-mapping> -->
-	<!-- <filter-name>moderatorsFilter</filter-name> -->
-	<!-- <url-pattern>/management/*</url-pattern> -->
-	<!-- </filter-mapping> -->
+	<filter-mapping>
+		<filter-name>moderatorsFilter</filter-name>
+		<url-pattern>/management/*</url-pattern>
+	</filter-mapping>
 
-	<!-- <filter> -->
-	<!-- <filter-name>reportsFilter</filter-name> -->
-	<!-- <filter-class>com.erep.dist.auth.ReportsFilter</filter-class> -->
-	<!-- </filter> -->
+	<filter>
+		<filter-name>reportsFilter</filter-name>
+		<filter-class>com.erep.dist.auth.ReportsFilter</filter-class>
+	</filter>
 
-	<!-- <filter-mapping> -->
-	<!-- <filter-name>reportsFilter</filter-name> -->
-	<!-- <url-pattern>/reports/*</url-pattern> -->
-	<!-- </filter-mapping> -->
+	<filter-mapping>
+		<filter-name>reportsFilter</filter-name>
+		<url-pattern>/reports/*</url-pattern>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>playerReportsFilter</filter-name>
+		<filter-class>com.erep.dist.auth.PlayerReportsFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>playerReportsFilter</filter-name>
+		<url-pattern>/players/*</url-pattern>
+	</filter-mapping>
 
 	<!-- Default File -->
 	<welcome-file-list>
@@ -277,6 +317,17 @@
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
 
+
+	<!-- Empty backend starter to avoid 404 error -->
+	<servlet>
+		<servlet-name>emptyServlet</servlet-name>
+		<servlet-class>com.erep.dist.instances.backend.EmptyServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>emptyServlet</servlet-name>
+		<url-pattern>/_ah/start</url-pattern>
+	</servlet-mapping>
 
 	<!-- Google Stuff -->
 	<servlet>

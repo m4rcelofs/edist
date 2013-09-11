@@ -89,6 +89,9 @@ public class Player implements HasEncodedKey {
 	@Persistent(mappedBy = "player")
 	private Set<DailyFights>	dailyFights;
 
+	@Persistent(mappedBy = "player")
+	private Set<DailyWork>		dailyWork;
+
 	public Player() {}
 
 	public Player(Key key) {
@@ -285,6 +288,20 @@ public class Player implements HasEncodedKey {
 
 	public void setErId(String erId) {
 		this.erId = erId;
+	}
+
+	public Set<DailyWork> getDailyWork() {
+		return dailyWork;
+	}
+
+	public void setDailyWork(Set<DailyWork> dailyWork) {
+		this.dailyWork = dailyWork;
+	}
+
+	public void addDailyWork(DailyWork work) {
+		if (getDailyWork() == null)
+			setDailyWork(new HashSet<DailyWork>());
+		this.getDailyWork().add(work);
 	}
 
 }
