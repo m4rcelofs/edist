@@ -18,7 +18,7 @@ import com.google.appengine.api.datastore.KeyFactory;
 @DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 @FetchGroup(name = "distributorListing", members = { @Persistent(name = "email") })
-public class Distributor implements HasTransitID {
+public class Distributor implements HasEncodedKey {
 
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -26,7 +26,7 @@ public class Distributor implements HasTransitID {
 
 	@NotPersistent
 	@RemoteProperty
-	private String	id;
+	private String	encodedKey;
 
 	@Persistent
 	@RemoteProperty
@@ -35,9 +35,9 @@ public class Distributor implements HasTransitID {
 	@Persistent(defaultFetchGroup = "false")
 	@RemoteProperty
 	private String	email;
-	
+
 	@Persistent
-	private long lastAccessTimestamp;
+	private long	lastAccessTimestamp;
 
 	@Persistent(defaultFetchGroup = "false")
 	@RemoteProperty
@@ -52,14 +52,16 @@ public class Distributor implements HasTransitID {
 		this.key = key;
 	}
 
-	public String getId() {
+	public String getEncodedKey() {
 		if (key != null)
 			return KeyFactory.keyToString(key);
-		return id;
+		return encodedKey;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setEncodedKey(String id) {
+		if (id != null)
+			this.key = KeyFactory.stringToKey(id);
+		this.encodedKey = id;
 	}
 
 	public String getEmail() {

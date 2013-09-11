@@ -19,7 +19,6 @@ import com.erep.dist.cache.Cacheable;
 import com.erep.dist.data.DailyFights;
 import com.erep.dist.data.DailyStats;
 import com.erep.dist.data.Distributor;
-import com.erep.dist.data.HasTransitID;
 import com.erep.dist.data.Licence;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
@@ -49,7 +48,7 @@ public class DataAccessObject {
 	}
 
 	public boolean save(Distributor dist) {
-		if (dist.getId() != null)
+		if (dist.getEncodedKey() != null)
 			return edit(dist);
 		return add(dist);
 	}
@@ -80,8 +79,8 @@ public class DataAccessObject {
 		Transaction tx = pm.currentTransaction();
 		try {
 			tx.begin();
-			Distributor old = pm.getObjectById(Distributor.class,
-					createKey(dist));
+			Distributor old = pm
+					.getObjectById(Distributor.class, dist.getKey());
 			result = edit(old, dist);
 			tx.commit();
 		} catch (JDOObjectNotFoundException e) {
@@ -115,7 +114,7 @@ public class DataAccessObject {
 	}
 
 	public boolean save(PlayerGroup group) {
-		if (group.getId() != null)
+		if (group.getEncodedKey() != null)
 			return edit(group);
 		else
 			return add(group);
@@ -132,7 +131,7 @@ public class DataAccessObject {
 		try {
 			tx.begin();
 			PlayerGroup old = pm.getObjectById(PlayerGroup.class,
-					createKey(group));
+					group.getKey());
 			result = edit(old, group);
 			tx.commit();
 		} catch (JDOObjectNotFoundException e) {
@@ -175,8 +174,6 @@ public class DataAccessObject {
 	public boolean save(Player player, boolean create) {
 		if (!create)
 			try {
-				Key playerKey = createKey(player);
-				player.setKey(playerKey);
 				return edit(player);
 			} catch (JDOObjectNotFoundException e) {
 				return add(player);
@@ -204,7 +201,7 @@ public class DataAccessObject {
 	private boolean add(Player newPlayer) {
 
 		Key key = KeyFactory.createKey(Player.class.getSimpleName(),
-				Long.valueOf(newPlayer.getId()));
+				Long.valueOf(newPlayer.getErId()));
 		newPlayer.setKey(key);
 
 		PlayerGroup group = find(newPlayer.getGroup());
@@ -348,12 +345,8 @@ public class DataAccessObject {
 
 	public Request find(Request request) {
 		try {
-			Key key = KeyFactory.stringToKey(request.getId());
-			return pm.getObjectById(Request.class, key);
+			return pm.getObjectById(Request.class, request.getKey());
 		} catch (JDOObjectNotFoundException e) {
-			logger.log(Level.WARNING,
-					"Tried to get non-existent request with key {0}",
-					request.getId());
 			return null;
 		}
 	}
@@ -365,15 +358,7 @@ public class DataAccessObject {
 
 	public Player find(Player player) {
 		try {
-			if (player == null || (player.getId() == null)
-					&& player.getKey() == null)
-				return null;
-
-			Key key = player.getKey() != null ? player.getKey()
-					: createKey(player);
-
-			return pm.getObjectById(Player.class, key);
-
+			return pm.getObjectById(Player.class, player.getKey());
 		} catch (JDOObjectNotFoundException e) {
 			return null;
 		}
@@ -417,10 +402,10 @@ public class DataAccessObject {
 
 	public PlayerGroup find(PlayerGroup group) {
 		try {
-			if (group == null || group.getId() == null)
+			if (group == null || group.getKey() == null)
 				return defaultGroup();
 
-			return pm.getObjectById(PlayerGroup.class, createKey(group));
+			return pm.getObjectById(PlayerGroup.class, group.getKey());
 		} catch (JDOObjectNotFoundException e) {
 			return defaultGroup();
 		}
@@ -428,10 +413,10 @@ public class DataAccessObject {
 
 	public Distributor find(Distributor dist) {
 		try {
-			if (dist == null || dist.getId() == null)
+			if (dist == null || dist.getKey() == null)
 				return defaultDistributor();
 
-			return pm.getObjectById(Distributor.class, createKey(dist));
+			return pm.getObjectById(Distributor.class, dist.getKey());
 		} catch (JDOObjectNotFoundException e) {
 			return defaultDistributor();
 		}
@@ -461,10 +446,6 @@ public class DataAccessObject {
 	private PlayerGroup defaultGroup() {
 		return pm.getObjectById(PlayerGroup.class, KeyFactory.createKey(
 				PlayerGroup.class.getSimpleName(), ServerConstants.DEFAULT_ID));
-	}
-
-	private Key createKey(HasTransitID object) {
-		return KeyFactory.stringToKey(object.getId());
 	}
 
 	@Cacheable

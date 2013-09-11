@@ -36,7 +36,7 @@ public class RequestService {
 	public boolean sendRequest(Player player, Integer requestedFF,
 			RequestType type) {
 
-		if (player == null || player.getId() == null || requestedFF == null
+		if (player == null || player.getKey() == null || requestedFF == null
 				|| requestedFF <= 0 || type == null)
 			return false;
 

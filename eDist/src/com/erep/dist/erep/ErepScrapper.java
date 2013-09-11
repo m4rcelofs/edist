@@ -58,7 +58,7 @@ public class ErepScrapper implements Closeable {
 		HttpPost httpPost = new HttpPost(eRepURL.DONATE_ITEMS_ACTION.getUrl(""));
 		{
 			List<NameValuePair> nvps = new ArrayList<>(5);
-			nvps.add(new BasicNameValuePair("citizen_id", player.getId() + ""));
+			nvps.add(new BasicNameValuePair("citizen_id", player.getErId()));
 			nvps.add(new BasicNameValuePair("amount", resource.getQuantity()
 					+ ""));
 			nvps.add(new BasicNameValuePair("industry_id",

@@ -29,7 +29,7 @@ import com.google.appengine.datanucleus.annotations.Unowned;
 @FetchGroups({
 		@FetchGroup(name = "playerListing", members = { @Persistent(name = "group") }),
 		@FetchGroup(name = "requestAttempt", members = { @Persistent(name = "group") }) })
-public class Player implements HasTransitID {
+public class Player implements HasEncodedKey {
 
 	/**
 	 * Player ID on eRepublik
@@ -40,7 +40,11 @@ public class Player implements HasTransitID {
 
 	@NotPersistent
 	@RemoteProperty
-	private String				id;
+	private String				erId;
+
+	@NotPersistent
+	@RemoteProperty
+	private String				encodedKey;
 
 	@Persistent
 	@RemoteProperty
@@ -91,14 +95,16 @@ public class Player implements HasTransitID {
 		this.key = key;
 	}
 
-	public String getId() {
+	public String getEncodedKey() {
 		if (key != null)
 			return KeyFactory.keyToString(key);
-		return id;
+		return encodedKey;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setEncodedKey(String id) {
+		if (id != null)
+			this.key = KeyFactory.stringToKey(id);
+		this.encodedKey = id;
 	}
 
 	public String getName() {
@@ -269,6 +275,16 @@ public class Player implements HasTransitID {
 
 	public void setWorkStatus(PlayerDistStatus workStatus) {
 		this.workStatus = workStatus;
+	}
+
+	public String getErId() {
+		if (key != null)
+			return key.getId() + "";
+		return erId;
+	}
+
+	public void setErId(String erId) {
+		this.erId = erId;
 	}
 
 }

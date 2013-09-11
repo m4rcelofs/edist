@@ -19,7 +19,7 @@ import com.google.appengine.api.datastore.KeyFactory;
 @DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 @FetchGroup(name = "groupListing", members = { @Persistent(name = "config") })
-public class PlayerGroup implements HasTransitID {
+public class PlayerGroup implements HasEncodedKey {
 
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -27,7 +27,7 @@ public class PlayerGroup implements HasTransitID {
 
 	@NotPersistent
 	@RemoteProperty
-	private String		id;
+	private String		encodedKey;
 
 	@Persistent
 	@RemoteProperty
@@ -41,14 +41,16 @@ public class PlayerGroup implements HasTransitID {
 		return key;
 	}
 
-	public String getId() {
+	public String getEncodedKey() {
 		if (key != null)
 			return KeyFactory.keyToString(key);
-		return id;
+		return encodedKey;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setEncodedKey(String id) {
+		if (id != null)
+			this.key = KeyFactory.stringToKey(id);
+		this.encodedKey = id;
 	}
 
 	public void setKey(Key key) {

@@ -26,7 +26,7 @@ import com.google.appengine.datanucleus.annotations.Unowned;
 @FetchGroup(name = "reportListing", members = {
 		@Persistent(name = "distributor"), @Persistent(name = "player"),
 		@Persistent(name = "group") })
-public class Request implements HasTransitID {
+public class Request implements HasEncodedKey {
 
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
@@ -34,7 +34,7 @@ public class Request implements HasTransitID {
 
 	@NotPersistent
 	@RemoteProperty
-	private String				id;
+	private String				encodedKey;
 
 	@Persistent
 	@RemoteProperty
@@ -187,14 +187,16 @@ public class Request implements HasTransitID {
 	}
 
 	@Override
-	public String getId() {
+	public String getEncodedKey() {
 		if (key != null)
 			return KeyFactory.keyToString(key);
-		return id;
+		return encodedKey;
 	}
 
 	@Override
-	public void setId(String id) {
-		this.id = id;
+	public void setEncodedKey(String id) {
+		if (id != null)
+			this.key = KeyFactory.stringToKey(id);
+		this.encodedKey = id;
 	}
 }
