@@ -47,7 +47,7 @@ public class ManagementService {
 			boolean created = new DataAccessObject(pm).save(player, true);
 
 			if (created) {
-				DeferredTask task = new GetUserInfoTask(player.getKey());
+				DeferredTask task = new GetUserInfoTask(player);
 				Queue queue = QueueFactory.getQueue("erepublik-not-logged-in");
 				queue.add(withPayload(task));
 			}

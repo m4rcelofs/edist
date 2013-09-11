@@ -57,7 +57,11 @@ public class Player implements HasTransitID {
 
 	@Persistent
 	@RemoteProperty
-	private PlayerDistStatus	distStatus;
+	private PlayerDistStatus	fightStatus;
+
+	@Persistent
+	@RemoteProperty
+	private PlayerDistStatus	workStatus;
 
 	@Unowned
 	@Persistent
@@ -201,6 +205,14 @@ public class Player implements HasTransitID {
 			return group.getAllowedWeaponQuality();
 	}
 
+	public FightVerification getFightVerification() {
+		if (config != null && config.getFightVerification() != null)
+			return config.getFightVerification();
+		else
+			// fallback to group
+			return group.getFightVerification();
+	}
+
 	public Set<Request> getRequests() {
 		return requests;
 	}
@@ -243,11 +255,20 @@ public class Player implements HasTransitID {
 		this.getDailyFights().add(fights);
 	}
 
-	public PlayerDistStatus getDistStatus() {
-		return distStatus;
+	public PlayerDistStatus getFightStatus() {
+		return fightStatus;
 	}
 
-	public void setDistStatus(PlayerDistStatus distStatus) {
-		this.distStatus = distStatus;
+	public void setFightStatus(PlayerDistStatus fightStatus) {
+		this.fightStatus = fightStatus;
 	}
+
+	public PlayerDistStatus getWorkStatus() {
+		return workStatus;
+	}
+
+	public void setWorkStatus(PlayerDistStatus workStatus) {
+		this.workStatus = workStatus;
+	}
+
 }

@@ -33,8 +33,8 @@ public class SendResourceTask implements DeferredTask {
 
 	private final Key			requestKey;
 
-	public SendResourceTask(Key requestKey) {
-		this.requestKey = requestKey;
+	public SendResourceTask(Request request) {
+		this.requestKey = request.getKey();
 	}
 
 	@Override

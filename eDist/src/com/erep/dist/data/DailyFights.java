@@ -10,6 +10,7 @@ import javax.jdo.annotations.PrimaryKey;
 import org.directwebremoting.annotations.DataTransferObject;
 import org.directwebremoting.annotations.RemoteProperty;
 
+import com.erep.dist.data.enums.PlayerDistStatus;
 import com.erep.dist.data.enums.ResourceQuality;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.datanucleus.annotations.Unowned;
@@ -50,6 +51,9 @@ public class DailyFights {
 	@Persistent
 	@RemoteProperty
 	private ResourceQuality	calculatedWithWeaponQuality;
+	
+	@Persistent
+	private PlayerDistStatus verificationStatus;
 
 	public DailyFights() {}
 
@@ -104,5 +108,13 @@ public class DailyFights {
 
 	public void setGroup(PlayerGroup group) {
 		this.group = group;
+	}
+
+	public PlayerDistStatus getVerificationStatus() {
+		return verificationStatus;
+	}
+
+	public void setVerificationStatus(PlayerDistStatus verificationStatus) {
+		this.verificationStatus = verificationStatus;
 	}
 }

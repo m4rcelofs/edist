@@ -145,6 +145,17 @@
 		<url-pattern>/reports/dwr/*</url-pattern>
 	</servlet-mapping>
 
+	<!-- Empty backend starter to avoid 404 error -->
+	<servlet>
+		<servlet-name>emptyServlet</servlet-name>
+		<servlet-class>com.erep.dist.instances.backend.EmptyServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>emptyServlet</servlet-name>
+		<url-pattern>/_ah/start</url-pattern>
+	</servlet-mapping>
+
 	<!-- Cron jobs -->
 	<servlet>
 		<servlet-name>autoDistJob</servlet-name>

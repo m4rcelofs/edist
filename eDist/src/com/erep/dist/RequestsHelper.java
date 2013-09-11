@@ -40,7 +40,8 @@ public class RequestsHelper {
 
 	public int verifyMaxFF(Player player) {
 		if (player.getDbStatus() != PlayerStatus.ENABLED
-				|| player.getDistStatus() == PlayerDistStatus.TEMP_BANNED)
+				|| player.getFightStatus() == PlayerDistStatus.TEMP_BANNED
+				|| player.getWorkStatus() == PlayerDistStatus.TEMP_BANNED)
 			return 0;
 		int maxFF = config.getMaxFF(player);
 		int alreadyRequested = dao.getDailyRequestedFF(player,
@@ -148,7 +149,7 @@ public class RequestsHelper {
 	}
 
 	public void addToQueue(Request request) {
-		DeferredTask task = new SendResourceTask(request.getKey());
+		DeferredTask task = new SendResourceTask(request);
 		Queue queue = QueueFactory.getQueue("erepublik-logged-in");
 		queue.add(withPayload(task));
 	}

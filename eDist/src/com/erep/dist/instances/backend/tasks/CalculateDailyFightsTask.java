@@ -26,9 +26,9 @@ public class CalculateDailyFightsTask implements DeferredTask {
 	private final Integer		today;
 	private final Key			playerKey;
 
-	public CalculateDailyFightsTask(Integer today, Key playerKey) {
+	public CalculateDailyFightsTask(Integer today, Player player) {
 		this.today = today;
-		this.playerKey = playerKey;
+		this.playerKey = player.getKey();
 	}
 
 	@Override
@@ -49,7 +49,7 @@ public class CalculateDailyFightsTask implements DeferredTask {
 
 			dbPlayer.addDailyFights(fights);
 
-			createFightVerificationTask(dbPlayer);
+			createFightVerificationTask(today, dbPlayer, fights);
 
 		} catch (JDOObjectNotFoundException e) {
 			// first scrapping today, ignore
@@ -86,8 +86,9 @@ public class CalculateDailyFightsTask implements DeferredTask {
 		return (int) (dailyInfluence / hit);
 	}
 
-	private void createFightVerificationTask(Player dbPlayer) {
-		DeferredTask task = new FightsVerificationTask(dbPlayer.getKey());
+	private void createFightVerificationTask(Integer today, Player dbPlayer,
+			DailyFights fights) {
+		DeferredTask task = new FightsVerificationTask(today, dbPlayer, fights);
 		Queue queue = QueueFactory.getQueue("erepublik-not-logged-in");
 		queue.add(withPayload(task));
 	}

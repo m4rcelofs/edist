@@ -6,5 +6,5 @@ import org.directwebremoting.convert.EnumConverter;
 @DataTransferObject(converter = EnumConverter.class)
 public enum PlayerDistStatus
 {
-	OK, WARNING_FIGHTS, WARNING_WORK, TEMP_BANNED
+	OK, WARNING, TEMP_BANNED
 }

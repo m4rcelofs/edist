@@ -1,6 +1,7 @@
 package com.erep.dist;
 
 import com.erep.dist.data.Distributor;
+import com.erep.dist.data.FightVerification;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.ServerConfig;
 import com.erep.dist.data.enums.ConfigGranularity;
@@ -14,7 +15,7 @@ public class ConfigHelper {
 	public ConfigHelper(DataAccessObject dao) {
 		this.dao = dao;
 	}
-	
+
 	public boolean getAutoSend(Player player) {
 		Boolean autoSend = null;
 
@@ -101,7 +102,7 @@ public class ConfigHelper {
 
 		return dist;
 	}
-	
+
 	public ResourceQuality getAllowedWeaponQuality(Player player) {
 		ResourceQuality q = null;
 		ServerConfig server = dao.getServerConfig();
@@ -115,6 +116,23 @@ public class ConfigHelper {
 		// default fallback
 		if (q == null)
 			q = server.getMuConfig().getAllowedWeaponQuality();
+
+		return q;
+	}
+
+	public FightVerification getFightVerification(Player player) {
+		FightVerification q = null;
+		ServerConfig server = dao.getServerConfig();
+
+		if (server.getGranularity() == ConfigGranularity.PLAYER)
+			q = player.getFightVerification();
+		else
+			if (server.getGranularity() == ConfigGranularity.GROUP)
+				q = player.getGroup().getFightVerification();
+
+		// default fallback
+		if (q == null)
+			q = server.getMuConfig().getFightVerification();
 
 		return q;
 	}

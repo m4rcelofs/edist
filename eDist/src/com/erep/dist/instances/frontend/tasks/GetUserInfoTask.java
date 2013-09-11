@@ -25,8 +25,8 @@ public class GetUserInfoTask implements DeferredTask {
 
 	private final Key			playerKey;
 
-	public GetUserInfoTask(Key key) {
-		this.playerKey = key;
+	public GetUserInfoTask(Player player) {
+		this.playerKey = player.getKey();
 	}
 
 	@Override

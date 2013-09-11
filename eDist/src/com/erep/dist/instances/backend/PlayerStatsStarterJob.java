@@ -3,6 +3,8 @@ package com.erep.dist.instances.backend;
 import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withPayload;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -25,6 +27,8 @@ import com.google.appengine.api.taskqueue.TaskOptions;
 public class PlayerStatsStarterJob extends HttpServlet {
 
 	private static final long	serialVersionUID	= 1L;
+	private static Logger		logger				= Logger.getLogger(PlayerStatsStarterJob.class
+															.getName());
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -33,15 +37,20 @@ public class PlayerStatsStarterJob extends HttpServlet {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			DataAccessObject dao = new DataAccessObject(pm);
 			Integer day = eRepTimeCalculator.geteRepDay();
+			int count = 0;
 			for (Player dbPlayer : dao.listAllPlayers())
-				if (dbPlayer.getDbStatus() == PlayerStatus.ENABLED)
+				if (dbPlayer.getDbStatus() == PlayerStatus.ENABLED) {
 					startUpdateTask(day, dbPlayer);
+					count++;
+				}
+			logger.log(Level.WARNING, "Starting stats refresh for {0} players",
+					count);
 		}
 	}
 
 	private void startUpdateTask(Integer day, Player dbPlayer) {
 		Queue queue = QueueFactory.getQueue("erepublik-not-logged-in");
-		DeferredTask task = new PlayerStatsTask(day, dbPlayer.getKey());
+		DeferredTask task = new PlayerStatsTask(day, dbPlayer);
 
 		TaskOptions taskOptions = withPayload(task).header(
 				"Host",

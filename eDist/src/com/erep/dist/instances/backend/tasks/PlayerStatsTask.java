@@ -37,9 +37,9 @@ public class PlayerStatsTask implements DeferredTask {
 	private final Integer		day;
 	private final Key			playerKey;
 
-	public PlayerStatsTask(Integer day, Key playerKey) {
+	public PlayerStatsTask(Integer day, Player player) {
 		this.day = day;
-		this.playerKey = playerKey;
+		this.playerKey = player.getKey();
 	}
 
 	@Override
@@ -100,7 +100,7 @@ public class PlayerStatsTask implements DeferredTask {
 	}
 
 	private void startFightCalculationTask(Integer day, Player dbPlayer) {
-		DeferredTask task = new CalculateDailyFightsTask(day, dbPlayer.getKey());
+		DeferredTask task = new CalculateDailyFightsTask(day, dbPlayer);
 		Queue queue = QueueFactory.getQueue("erepublik-not-logged-in");
 		queue.add(withPayload(task));
 	}

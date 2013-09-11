@@ -112,4 +112,11 @@ public class PlayerGroup implements HasTransitID {
 		// fallback to default
 		return null;
 	}
+
+	public FightVerification getFightVerification() {
+		if (config != null)
+			return config.getFightVerification();
+		// fallback to default
+		return null;
+	}
 }

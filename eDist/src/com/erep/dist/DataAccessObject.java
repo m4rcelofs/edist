@@ -320,6 +320,23 @@ public class DataAccessObject {
 		return response != null ? response.intValue() : 0;
 	}
 
+	public int getRequestedFFSum(Player player, int fromDay) {
+		Query q = pm.newQuery(Request.class);
+		q.setFilter("player == " + player.getKey() + " && eRepDay >= "
+				+ fromDay);
+		q.setResult("sum(requestedFF)");
+		Long response = ((Long) q.execute());
+		return response != null ? response.intValue() : 0;
+	}
+
+	public int getFightsFFSum(Player player, int fromDay) {
+		Query q = pm.newQuery(DailyFights.class);
+		q.setFilter("player == " + player.getKey() + " && day >= " + fromDay);
+		q.setResult("sum(calculatedFfFights)");
+		Long response = ((Long) q.execute());
+		return response != null ? response.intValue() : 0;
+	}
+
 	public boolean requestedRocket(Player player, int eRepDay) {
 		Query q = pm.newQuery(Request.class);
 		q.setFilter("player == " + player.getKey() + " && eRepDay == "
@@ -348,13 +365,26 @@ public class DataAccessObject {
 
 	public Player find(Player player) {
 		try {
-			if (player == null || player.getId() == null)
+			if (player == null || (player.getId() == null)
+					&& player.getKey() == null)
 				return null;
 
 			Key key = player.getKey() != null ? player.getKey()
 					: createKey(player);
 
 			return pm.getObjectById(Player.class, key);
+
+		} catch (JDOObjectNotFoundException e) {
+			return null;
+		}
+	}
+
+	public DailyFights find(DailyFights fights) {
+		try {
+			if (fights == null || fights.getKey() == null)
+				return null;
+
+			return pm.getObjectById(DailyFights.class, fights.getKey());
 
 		} catch (JDOObjectNotFoundException e) {
 			return null;
