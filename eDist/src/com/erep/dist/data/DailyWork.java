@@ -8,6 +8,7 @@ import javax.jdo.annotations.PrimaryKey;
 import org.directwebremoting.annotations.DataTransferObject;
 import org.directwebremoting.annotations.RemoteProperty;
 
+import com.erep.dist.data.enums.PlayerDistStatus;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.datanucleus.annotations.Unowned;
 
@@ -20,30 +21,39 @@ public class DailyWork {
 	 */
 	@PrimaryKey
 	@Persistent
-	private Key			key;
+	private Key					key;
 
 	@Persistent
 	@RemoteProperty
-	private Player		player;
+	private Player				player;
+
+	@Unowned
+	@Persistent
+	private PlayerGroup			group;
 
 	@Unowned
 	@Persistent
 	@RemoteProperty
-	private PlayerGroup	group;
-
-	@Unowned
-	@Persistent
-	private Employer	employer;
+	private Employer			employer;
 
 	@Persistent
 	@RemoteProperty
-	private Integer		day;
+	private Integer				day;
 
 	/**
 	 * true, false or unknown
 	 */
 	@Persistent
-	private Boolean		worked;
+	private Boolean				worked;
+
+	@Persistent
+	private PlayerDistStatus	verificationStatus;
+
+	public DailyWork() {}
+
+	public DailyWork(Key key) {
+		this.setKey(key);
+	}
 
 	public Key getKey() {
 		return key;
@@ -91,6 +101,14 @@ public class DailyWork {
 
 	public void setWorked(Boolean worked) {
 		this.worked = worked;
+	}
+
+	public PlayerDistStatus getVerificationStatus() {
+		return verificationStatus;
+	}
+
+	public void setVerificationStatus(PlayerDistStatus verificationStatus) {
+		this.verificationStatus = verificationStatus;
 	}
 
 }

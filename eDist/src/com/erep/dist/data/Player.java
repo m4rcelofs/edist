@@ -222,6 +222,14 @@ public class Player implements HasEncodedKey {
 			return group.getFightVerification();
 	}
 
+	public WorkVerification getWorkVerification() {
+		if (config != null && config.getWorkVerification() != null)
+			return config.getWorkVerification();
+		else
+			// fallback to group
+			return group.getWorkVerification();
+	}
+
 	public Set<Request> getRequests() {
 		return requests;
 	}

@@ -5,16 +5,16 @@ import java.util.List;
 import org.directwebremoting.annotations.DataTransferObject;
 import org.directwebremoting.annotations.RemoteProperty;
 
-import com.erep.dist.data.Request;
+import com.erep.dist.data.DailyWork;
 
 @DataTransferObject
-public class ReportQuery {
+public class WorkQuery {
 
 	@RemoteProperty
 	private String			encodedCursor;
 
 	@RemoteProperty
-	private List<Request>	results;
+	private List<DailyWork>	results;
 
 	public String getEncodedCursor() {
 		return encodedCursor;
@@ -24,12 +24,11 @@ public class ReportQuery {
 		this.encodedCursor = encodedCursor;
 	}
 
-	public List<Request> getResults() {
+	public List<DailyWork> getResults() {
 		return results;
 	}
 
-	public void setResults(List<Request> results) {
+	public void setResults(List<DailyWork> results) {
 		this.results = results;
 	}
-
 }

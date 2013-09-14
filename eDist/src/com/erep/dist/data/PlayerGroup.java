@@ -121,4 +121,11 @@ public class PlayerGroup implements HasEncodedKey {
 		// fallback to default
 		return null;
 	}
+
+	public WorkVerification getWorkVerification() {
+		if (config != null)
+			return config.getWorkVerification();
+		// fallback to default
+		return null;
+	}
 }

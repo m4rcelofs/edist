@@ -18,7 +18,9 @@ import com.erep.dist.cache.CacheFacade;
 import com.erep.dist.cache.Cacheable;
 import com.erep.dist.data.DailyFights;
 import com.erep.dist.data.DailyStats;
+import com.erep.dist.data.DailyWork;
 import com.erep.dist.data.Distributor;
+import com.erep.dist.data.Employer;
 import com.erep.dist.data.Licence;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
@@ -55,6 +57,11 @@ public class DataAccessObject {
 
 	public boolean save(Request request) {
 		pm.makePersistent(request);
+		return true;
+	}
+
+	public boolean save(DailyWork work) {
+		pm.makePersistent(work);
 		return true;
 	}
 
@@ -200,8 +207,7 @@ public class DataAccessObject {
 
 	private boolean add(Player newPlayer) {
 
-		Key key = KeyFactory.createKey(Player.class.getSimpleName(),
-				Long.valueOf(newPlayer.getErId()));
+		Key key = createPlayerKey(newPlayer.getErId());
 		newPlayer.setKey(key);
 
 		PlayerGroup group = find(newPlayer.getGroup());
@@ -211,6 +217,16 @@ public class DataAccessObject {
 		pm.makePersistent(newPlayer);
 
 		return true;
+	}
+
+	public Key createPlayerKey(String erId) {
+		return KeyFactory.createKey(Player.class.getSimpleName(),
+				Long.valueOf(erId));
+	}
+
+	public Key createDailyWorkKey(Player player, Integer day) {
+		return KeyFactory.createKey(player.getKey(),
+				DailyWork.class.getSimpleName(), day);
 	}
 
 	private boolean edit(Player old, Player newest) {
@@ -277,6 +293,26 @@ public class DataAccessObject {
 		return queryWithCursor(DailyStats.class, filter, encodedCursor);
 	}
 
+	public List<DailyWork> listWork(Player player, String encodedCursor) {
+		String filter = "player == " + player.getKey();
+		return queryWithCursor(DailyWork.class, filter, encodedCursor);
+	}
+
+	public List<DailyWork> listWork(PlayerGroup group, String encodedCursor) {
+		String filter = "group == " + group.getKey();
+		return queryWithCursor(DailyWork.class, filter, encodedCursor);
+	}
+
+	public List<DailyWork> listWork(Employer employer, String encodedCursor) {
+		String filter = "employer == " + employer.getKey();
+		return queryWithCursor(DailyWork.class, filter, encodedCursor);
+	}
+
+	public List<DailyWork> listWork(Integer day, String encodedCursor) {
+		String filter = "day == " + day;
+		return queryWithCursor(DailyWork.class, filter, encodedCursor);
+	}
+
 	public List<DailyStats> listStats(Integer day, String encodedCursor) {
 		String filter = "day == " + day;
 		return queryWithCursor(DailyStats.class, filter, encodedCursor);
@@ -334,6 +370,13 @@ public class DataAccessObject {
 		return response != null ? response.intValue() : 0;
 	}
 
+	@SuppressWarnings("unchecked")
+	public List<DailyWork> getWork(Player dbPlayer, int fromDay) {
+		Query q = pm.newQuery(DailyWork.class);
+		q.setFilter("player == " + dbPlayer.getKey() + " && day >= " + fromDay);
+		return (List<DailyWork>) q.execute();
+	}
+
 	public boolean requestedRocket(Player player, int eRepDay) {
 		Query q = pm.newQuery(Request.class);
 		q.setFilter("player == " + player.getKey() + " && eRepDay == "
@@ -349,6 +392,10 @@ public class DataAccessObject {
 		} catch (JDOObjectNotFoundException e) {
 			return null;
 		}
+	}
+
+	public Employer find(Employer employer) {
+		return pm.getObjectById(Employer.class, employer.getKey());
 	}
 
 	public Licence getLicence() {
@@ -374,6 +421,10 @@ public class DataAccessObject {
 		} catch (JDOObjectNotFoundException e) {
 			return null;
 		}
+	}
+
+	public DailyWork find(DailyWork work) {
+		return pm.getObjectById(DailyWork.class, work.getKey());
 	}
 
 	public DailyStats getStats(Player player, Integer day) {

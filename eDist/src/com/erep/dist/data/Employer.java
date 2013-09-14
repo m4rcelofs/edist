@@ -26,7 +26,21 @@ public class Employer implements HasEncodedKey {
 
 	@Persistent
 	@RemoteProperty
+	private String	erId;
+
+	@Persistent
+	@RemoteProperty
 	private String	name;
+
+	public Employer() {}
+
+	public Employer(Key key) {
+		setKey(key);
+	}
+
+	public Employer(String encodedKey) {
+		setEncodedKey(encodedKey);
+	}
 
 	public Key getKey() {
 		return key;
@@ -42,10 +56,10 @@ public class Employer implements HasEncodedKey {
 		return encodedKey;
 	}
 
-	public void setEncodedKey(String id) {
-		if (id != null)
-			this.key = KeyFactory.stringToKey(id);
-		this.encodedKey = id;
+	public void setEncodedKey(String encodedKey) {
+		if (encodedKey != null)
+			this.key = KeyFactory.stringToKey(encodedKey);
+		this.encodedKey = encodedKey;
 	}
 
 	public String getName() {
@@ -54,6 +68,14 @@ public class Employer implements HasEncodedKey {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getErId() {
+		return erId;
+	}
+
+	public void setErId(String erId) {
+		this.erId = erId;
 	}
 
 }

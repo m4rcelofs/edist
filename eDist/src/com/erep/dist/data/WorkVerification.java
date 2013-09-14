@@ -17,7 +17,7 @@ public class WorkVerification {
 	private int					workVerifDays;
 
 	@Persistent
-	private double				minWorkedDays;
+	private double				minWorkedDaysPct;
 
 	@Persistent
 	private VerificationAction	workVerifAction;
@@ -30,12 +30,12 @@ public class WorkVerification {
 		this.workVerifDays = workVerifDays;
 	}
 
-	public double getMinWorkedDays() {
-		return minWorkedDays;
+	public double getMinWorkedDaysPct() {
+		return minWorkedDaysPct;
 	}
 
-	public void setMinWorkedDays(double minWorkedDays) {
-		this.minWorkedDays = minWorkedDays;
+	public void setMinWorkedDaysPct(double minWorkedDaysPct) {
+		this.minWorkedDaysPct = minWorkedDaysPct;
 	}
 
 	public VerificationAction getWorkVerifAction() {

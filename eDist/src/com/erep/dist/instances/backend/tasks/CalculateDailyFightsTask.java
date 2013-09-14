@@ -89,7 +89,7 @@ public class CalculateDailyFightsTask implements DeferredTask {
 	private void createFightVerificationTask(Integer today, Player dbPlayer,
 			DailyFights fights) {
 		DeferredTask task = new FightsVerificationTask(today, dbPlayer, fights);
-		Queue queue = QueueFactory.getQueue("erepublik-not-logged-in");
+		Queue queue = QueueFactory.getDefaultQueue();
 		queue.add(withPayload(task));
 	}
 

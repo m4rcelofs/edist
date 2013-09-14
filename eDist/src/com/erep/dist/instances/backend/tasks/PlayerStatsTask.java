@@ -101,7 +101,7 @@ public class PlayerStatsTask implements DeferredTask {
 
 	private void startFightCalculationTask(Integer day, Player dbPlayer) {
 		DeferredTask task = new CalculateDailyFightsTask(day, dbPlayer);
-		Queue queue = QueueFactory.getQueue("erepublik-not-logged-in");
+		Queue queue = QueueFactory.getDefaultQueue();
 		queue.add(withPayload(task));
 	}
 

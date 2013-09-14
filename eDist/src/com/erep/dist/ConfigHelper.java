@@ -4,6 +4,7 @@ import com.erep.dist.data.Distributor;
 import com.erep.dist.data.FightVerification;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.ServerConfig;
+import com.erep.dist.data.WorkVerification;
 import com.erep.dist.data.enums.ConfigGranularity;
 import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.data.enums.ResourceQuality;
@@ -133,6 +134,23 @@ public class ConfigHelper {
 		// default fallback
 		if (q == null)
 			q = server.getMuConfig().getFightVerification();
+
+		return q;
+	}
+
+	public WorkVerification getWorkVerification(Player player) {
+		WorkVerification q = null;
+		ServerConfig server = dao.getServerConfig();
+
+		if (server.getGranularity() == ConfigGranularity.PLAYER)
+			q = player.getWorkVerification();
+		else
+			if (server.getGranularity() == ConfigGranularity.GROUP)
+				q = player.getGroup().getWorkVerification();
+
+		// default fallback
+		if (q == null)
+			q = server.getMuConfig().getWorkVerification();
 
 		return q;
 	}
