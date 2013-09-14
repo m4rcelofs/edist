@@ -1,0 +1,223 @@
+// ==UserScript==
+// @name        Controle de Funcionarios - Gestores MUs
+// @namespace   http://edist-licence.appspot.com
+// @description	Plugin para o controle de funcionários das dists por script
+// @include		http://www.erepublik.com/*
+// @version     0.1
+// @downloadURL	https://{host}/js/dynamic/employer.user.js
+// @updateURL	https://{host}/js/dynamic/employer.user.js
+// @grant		GM_getValue
+// @grant		GM_setValue
+// @grant		GM_log
+// @grant		GM_info
+// @grant		GM_xmlhttpRequest
+// ==/UserScript==
+
+function GM_wait() {
+
+	//jQuery is already defined by eRep, waits for it to load
+	if (typeof unsafeWindow.jQuery == 'undefined') {
+		window.setTimeout(GM_wait, 100);
+	}
+	else {
+		$ = unsafeWindow.jQuery;
+		start();
+	}
+}
+
+function start() {
+
+    if(!GM_getValue('employerKey') || !GM_getValue('employerKey').trim()) {
+        var key = prompt('Por favor insira sua chave de autenticação no eDist:');
+        GM_setValue('employerKey', key);
+    }
+    
+	if($('#citizen_feed').length) {
+		onMainPage = true;
+		onEmployeesPage = false;
+		GM_log('Running employees script from main page');
+	} else if($('.manager_dashboard').length) {
+        onMainPage = false;
+        onEmployeesPage = true;
+		GM_log('Running employees script from employees page');
+	}
+    
+	refresh();
+}
+
+function refresh() {
+    if(onEmployeesPage) {
+		addEmployeesStats();
+	}
+    
+    if(onMainPage) {
+		addMainStats();
+    }
+    
+    //forces update every 6h
+    var hasToUpdate = GM_getValue('lastUpdatedAt', 0) < (new Date().getTime() - 21600000);
+	if(hasToUpdate) {
+		forceUpdate();
+	}
+}
+
+
+
+function addMainStats() {
+	
+    $('#updatedAtDiv').remove();
+
+    var div = document.createElement('div');
+    $(div).attr('id', 'updatedAtDiv');
+    $(div).attr('class', 'user_finances');
+    $(div).append('<img src="http://s3.www.erepublik.net/images/icons/industry/12/default.png" width=20 height=20 style="margin: 0px 7px 0px 2px;">');
+	$(div).append(getUpdateLink());
+    
+    var loc = $('#large_sidebar > .sidebar > .sidebar_container');
+    loc.append(div);
+}
+
+function addEmployeesStats() {
+	
+    $('#updatedAtLink').remove();
+	$('#help_manage').remove();
+	
+	var newLink = getUpdateLink();
+   	$(newLink).attr('class', 'helper');
+	
+	var loc = $('.manager_dashboard > .list > .area > h4');
+	loc.append(newLink);
+}
+
+function getUpdateLink() {
+    var newLink = document.createElement('a');
+	newLink.addEventListener('click', forceUpdate, false);
+
+    $(newLink).attr('id', 'updatedAtLink');
+	$(newLink).attr('href', 'javascript:return false;');
+	$(newLink).attr('title', 'Forçar atualização');
+    
+    if(GM_getValue('lastUpdatedAt', 0) !== 0){
+		var lastUpdate = new Date(GM_getValue('lastUpdatedAt'));
+    } else {
+        var lastUpdate = '---';
+    }
+    
+	$(newLink).text('Última atualização dos funcionários: ' + lastUpdate.toLocaleString());
+	return newLink;
+}
+
+function forceUpdate(){
+    if(onEmployeesPage) {
+		//avoids sending MouseClick event to the function
+		update();    
+    }
+	if(onMainPage) {
+        updateFromMainPage();
+    }
+}
+
+function updateFromMainPage() {
+	GM_xmlhttpRequest ( {
+		method: 'GET',
+		url:    'http://www.erepublik.com/en/economy/manage-employees/1',
+        onerror: onErrorFct,
+		onload: function (response) {
+			var respDoc     = $(response.responseText);
+			update(respDoc);
+		}
+	});
+}
+
+function update(doc) {
+    var data = {
+        id : getEmployer(),
+        key : GM_getValue('employerKey'),
+        employees : getEmployees(doc)
+    };
+    
+    var jsonData = JSON.stringify(data);
+    
+    GM_log('The following data will be uploaded: ' + jsonData);
+    
+    GM_xmlhttpRequest({
+        method: 'PUT',
+        url : getServer() + '/employer',
+        data : 'json='+jsonData,
+        headers: {
+			"Content-Type": "application/x-www-form-urlencoded"
+		},
+        onerror : onErrorFct,
+        onload : function(response) {
+            if(response.status != 200) {
+				onErrorFct(response);
+            } else {
+				GM_setValue('lastUpdatedAt', new Date().getTime());
+                refresh();
+            }
+        }
+    });
+}
+
+function onErrorFct(response) {
+	alert('Something went wrong, data could not be uploaded to dist server! Check your logs for more info.');
+    GM_log('Something went wrong, data could not be uploaded to dist server!');
+    GM_log(JSON.stringify(response));   
+}
+
+function getEmployer() {
+	var id = $('div.user_identity > a.user_name').attr('href').replace(/\/[a-z]*\/citizen\/profile\//, '');   
+    GM_log('You are citizen ' + id);
+    return id;
+}
+
+function getEmployees(doc) {
+	var today = getDay();
+	var employees = [];
+
+	$('.listing', doc).each(function(index) {
+		var id = $(this).find('.employee_entry').attr('href').replace(/http:\/\/www\.erepublik\.com\/[a-z]*\/citizen\/profile\//, '');
+		
+        var employee = {
+            id: id,
+            work : []
+        };
+        
+        for(var i = 1; i<=7; i++) {
+            var relTo = today - (7-i);
+            employee.work.push( {
+				day : relTo,
+				worked: findWorked(this, i) 
+            });
+        }
+        employees.push(employee);
+	});
+    return employees;
+}
+
+function getServer() {
+    var server = GM_info.script.downloadURL.match(/https:\/\/[^\/]*/);
+    GM_log('You are uploading to server ' + server);
+    return server;
+}
+
+function getDay() {
+	var today = $('div.erpk_time > span.eday > strong').text().replace(',', '').replace('.', '');
+    GM_log('Today is day ' + today);
+    return today;
+}
+
+function findWorked(listing, day) {
+	var worked = $(listing).find('.day'+day).attr('class');
+	
+	if (worked.indexOf('nan') >= 0) {
+		return null;
+	} 
+	if (worked.indexOf('worked') >= 0) {
+		return true;
+	}
+	return false;	
+}
+
+
+GM_wait();

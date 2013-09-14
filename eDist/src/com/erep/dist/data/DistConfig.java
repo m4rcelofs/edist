@@ -59,6 +59,10 @@ public class DistConfig {
 	@Persistent
 	private FightVerification	fightVerification;
 
+	@Embedded
+	@Persistent
+	private WorkVerification	workVerification;
+
 	public DistConfig() {}
 
 	public Key getKey() {
@@ -123,6 +127,14 @@ public class DistConfig {
 
 	public void setFightVerification(FightVerification fightVerification) {
 		this.fightVerification = fightVerification;
+	}
+
+	public WorkVerification getWorkVerification() {
+		return workVerification;
+	}
+
+	public void setWorkVerification(WorkVerification workVerification) {
+		this.workVerification = workVerification;
 	}
 
 }
