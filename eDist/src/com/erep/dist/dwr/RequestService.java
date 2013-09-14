@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.Transaction;
 
 import org.directwebremoting.annotations.RemoteMethod;
@@ -54,8 +55,6 @@ public class RequestService {
 				RequestsHelper helper = new RequestsHelper(dao);
 
 				Player dbPlayer = dao.find(player);
-				if (dbPlayer == null)
-					return false;
 
 				Request request = helper.createRequest(dbPlayer, requestedFF,
 						type);
@@ -66,6 +65,8 @@ public class RequestService {
 				helper.addToQueue(request);
 				tx.commit();
 
+			} catch (JDOObjectNotFoundException e) {
+				return false;
 			} finally {
 				if (tx.isActive()) {
 					tx.rollback();

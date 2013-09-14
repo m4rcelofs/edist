@@ -83,11 +83,15 @@ public class EmployerFacadeServlet extends HttpServlet {
 		for (Object employeeObj : employees) {
 			JSONObject employee = (JSONObject) employeeObj;
 			String playerId = employee.get("id").toString();
-			Player dbPlayer = dao
-					.find(new Player(dao.createPlayerKey(playerId)));
-			JSONArray works = (JSONArray) employee.get("work");
+			try {
+				Player dbPlayer = dao.find(new Player(dao
+						.createPlayerKey(playerId)));
+				JSONArray works = (JSONArray) employee.get("work");
 
-			createWorks(dao, employer, dbPlayer, works);
+				createWorks(dao, employer, dbPlayer, works);
+			} catch (JDOObjectNotFoundException e) {
+				// some other player that works for the employer, just ignore
+			}
 		}
 	}
 

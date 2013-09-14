@@ -404,11 +404,7 @@ public class DataAccessObject {
 	}
 
 	public Player find(Player player) {
-		try {
-			return pm.getObjectById(Player.class, player.getKey());
-		} catch (JDOObjectNotFoundException e) {
-			return null;
-		}
+		return pm.getObjectById(Player.class, player.getKey());
 	}
 
 	public DailyFights find(DailyFights fights) {
