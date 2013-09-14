@@ -56,8 +56,9 @@ public abstract class ManufacturedStrategy implements DistStrategy {
 	protected abstract boolean validateInventory()
 			throws InventoryValidationException;
 
-	private void sendResource() throws IOException {
-		scrapper.sendItem(player, resource, formToken);
+	private boolean sendResource() throws IOException,
+			ResourcesSendingException {
+		return scrapper.sendItem(player, resource, formToken);
 	}
 
 	public Table<ResourceType, ResourceQuality, Integer> getInventory() {

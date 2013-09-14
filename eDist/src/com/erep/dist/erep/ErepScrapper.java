@@ -26,9 +26,12 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 import org.esxx.js.protocol.GAEConnectionManager;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import com.erep.dist.data.Player;
 import com.erep.dist.data.ResourceDist;
+import com.erep.dist.erep.dist.ResourcesSendingException;
 
 public class ErepScrapper implements Closeable {
 
@@ -53,8 +56,8 @@ public class ErepScrapper implements Closeable {
 		return read(response);
 	}
 
-	public void sendItem(Player player, ResourceDist resource, String formToken)
-			throws IOException {
+	public boolean sendItem(Player player, ResourceDist resource,
+			String formToken) throws IOException, ResourcesSendingException {
 		HttpPost httpPost = new HttpPost(eRepURL.DONATE_ITEMS_ACTION.getUrl(""));
 		{
 			List<NameValuePair> nvps = new ArrayList<>(5);
@@ -70,7 +73,17 @@ public class ErepScrapper implements Closeable {
 		}
 		HttpResponse postResponse = client.execute(httpPost);
 		printHeaders(postResponse);
-		read(postResponse);
+
+		String htmlResponse = read(postResponse);
+
+		if (htmlResponse.contains("Successfully transferred"))
+			return true;
+		else {
+			Document doc = Jsoup.parse(htmlResponse);
+			String errorMessage = doc.select(
+					"table.info_message > tbody > tr > td").text();
+			throw new ResourcesSendingException(errorMessage);
+		}
 	}
 
 	public void login() throws IOException {
