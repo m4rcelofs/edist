@@ -153,9 +153,21 @@ function update(doc) {
 				onErrorFct(response);
             } else {
 				GM_setValue('lastUpdatedAt', new Date().getTime());
+                cache(data);
                 refresh();
             }
         }
+    });
+}
+
+function cache(data) {
+    data.employees.forEach(function(employee){
+        employee.work.forEach(function(work){
+            if(work.worked != null) {
+            	var key = employee.id + '.' + work.day;
+                GM_setValue(key, true);
+            }
+        });
     });
 }
 
@@ -185,10 +197,13 @@ function getEmployees(doc) {
         
         for(var i = 1; i<=7; i++) {
             var relTo = today - (7-i);
-            employee.work.push( {
-				day : relTo,
-				worked: findWorked(this, i) 
-            });
+            var key = employee.id + '.' + relTo;
+            if(GM_getValue(key, false) == false) {
+            	employee.work.push( {
+					day : relTo,
+					worked: findWorked(this, i) 
+            	});
+            }
         }
         employees.push(employee);
 	});

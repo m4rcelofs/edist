@@ -60,11 +60,12 @@ public class EmployerFacadeServlet extends HttpServlet {
 			Employer dbEmployer = verifyEmployer(dao, encodedKey, id);
 			createWorks(dao, dbEmployer, employees);
 
-		} catch (NullPointerException | IllegalArgumentException
-				| ParseException e) {
+		} catch (NullPointerException | ParseException e) {
+			logger.log(Level.WARNING, "Something wrong on EmployerFacade", e);
 			resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
 			return;
-		} catch (JDOObjectNotFoundException e) {
+		} catch (JDOObjectNotFoundException | IllegalArgumentException e) {
+			logger.log(Level.WARNING, "Something wrong on EmployerFacade", e);
 			resp.sendError(HttpServletResponse.SC_NOT_FOUND);
 			return;
 		}
