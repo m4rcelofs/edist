@@ -9,6 +9,8 @@ import static javax.mail.Transport.send;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
+import com.google.appengine.api.utils.SystemProperty;
+
 public class Mailer {
 
 	public class MailAddress {
@@ -16,6 +18,10 @@ public class Mailer {
 		public String	address;
 
 		public MailAddress() {}
+
+		public MailAddress(String address) {
+			this.address = address;
+		}
 
 		public MailAddress(String name, String address) {
 			this.name = name;
@@ -35,11 +41,18 @@ public class Mailer {
 			Session session = Session.getDefaultInstance(props, null);
 
 			Message msg = new MimeMessage(session);
-			msg.setFrom(new InternetAddress("RoBoT.erep@gmail.com"));
+
+			String from = "notifications@" + SystemProperty.applicationId.get()
+					+ ".appspotmail.com";
+			msg.setFrom(new InternetAddress(from, "eDist"));
 
 			for (MailAddress email : emails)
-				msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
-						email.address, email.name));
+				if (email.name == null || email.name.isEmpty())
+					msg.addRecipient(Message.RecipientType.TO,
+							new InternetAddress(email.address));
+				else
+					msg.addRecipient(Message.RecipientType.TO,
+							new InternetAddress(email.address, email.name));
 
 			msg.setSubject(subject);
 			msg.setContent(message, "text/html");

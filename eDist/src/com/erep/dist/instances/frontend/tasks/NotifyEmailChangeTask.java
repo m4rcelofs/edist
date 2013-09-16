@@ -92,7 +92,7 @@ public class NotifyEmailChangeTask implements DeferredTask {
 
 		Mailer mailer = new Mailer();
 		mailer.mail("eDist - Email Change Notification", builder.toString(),
-				mailer.new MailAddress(oldEmail, oldEmail));
+				mailer.new MailAddress(oldEmail, oldEmail), mailer.new MailAddress("admins"));
 
 	}
 
