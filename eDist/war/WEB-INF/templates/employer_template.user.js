@@ -40,6 +40,9 @@ function start() {
         onMainPage = false;
         onEmployeesPage = true;
 		GM_log('Running employees script from employees page');
+	} else {
+		onMainPage = false;
+        onEmployeesPage = false;
 	}
     
 	refresh();
