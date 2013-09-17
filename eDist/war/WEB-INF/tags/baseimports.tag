@@ -14,3 +14,6 @@
 <script type="text/javascript" src="../js/prettify.js"></script>
 <script type="text/javascript" src="../js/jquery.validate.js"></script>
 <script type="text/javascript" src="../js/scriptform.js"></script>
+
+<script type="text/javascript" src="../js/dynamic/user.nocache.js"></script>
+<script type="text/javascript" src="../js/menu.cache.js"></script>

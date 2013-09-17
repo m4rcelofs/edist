@@ -15,9 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import com.erep.dist.CloseablePM;
 import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
-import com.erep.dist.data.RegisteredUser;
-import com.erep.dist.data.RegisteredUser.Role;
-import com.erep.dist.data.ServerConfig;
 import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
@@ -37,63 +34,20 @@ public class PlayerReportsFilter implements Filter {
 	public void doFilter(ServletRequest req, ServletResponse resp,
 			FilterChain filterChain) throws IOException, ServletException {
 
-		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			DataAccessObject dao = new DataAccessObject(pm);
-			ServerConfig config = dao.getServerConfig();
+		UserService userService = UserServiceFactory.getUserService();
+		User gUser = userService.getCurrentUser();
 
-			switch (config.getPlayerReportsAccess()) {
-				case ADMINS:
-					if (verifyAdmin(resp))
-						filterChain.doFilter(req, resp);
-					break;
-				case MODS:
-					if (verifyMod(dao, resp))
-						filterChain.doFilter(req, resp);
-					break;
-				case PUBLIC:
-					filterChain.doFilter(req, resp);
-					break;
-				default:
-					break;
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			AuthHelper auth = new AuthHelper(new DataAccessObject(pm),
+					userService);
+
+			if (auth.hasPlayerReportsAccess())
+				filterChain.doFilter(req, resp);
+			else {
+				((HttpServletResponse) resp).sendError(403);
+				log.log(Level.SEVERE,
+						"Unauthorized access attempt: " + gUser.getEmail());
 			}
 		}
 	}
-
-	private boolean verifyAdmin(ServletResponse resp) throws IOException {
-		UserService userService = UserServiceFactory.getUserService();
-		return verifyLoggedIn(userService, resp) && userService.isUserAdmin();
-	}
-
-	private boolean verifyMod(DataAccessObject dao, ServletResponse resp)
-			throws IOException {
-		UserService userService = UserServiceFactory.getUserService();
-
-		if (!verifyLoggedIn(userService, resp))
-			return false;
-
-		User gUser = userService.getCurrentUser();
-		RegisteredUser regUser = dao.find(gUser);
-
-		if (regUser.getRole() != Role.MODERATOR) {
-			((HttpServletResponse) resp).sendError(403);
-			log.log(Level.SEVERE,
-					"Unauthorized access attempt: " + gUser.getEmail());
-			return false;
-		}
-
-		return true;
-	}
-
-	private boolean verifyLoggedIn(UserService userService, ServletResponse resp)
-			throws IOException {
-
-		if (!userService.isUserLoggedIn()) {
-			((HttpServletResponse) resp).sendError(401);
-			log.log(Level.SEVERE, "User is not logged-in in filter");
-			return false;
-		}
-
-		return true;
-	}
-
 }

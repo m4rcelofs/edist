@@ -21,6 +21,7 @@ public class InstallHelper {
 		config.setGranularity(ConfigGranularity.PLAYER);
 		config.setMuName("  ");
 		config.setReportsAccess(ReportsAccessLevel.MODS);
+		config.setPlayerReportsAccess(ReportsAccessLevel.MODS);
 
 		DistConfig distConfig = new DistConfig();
 		distConfig.setKey(KeyFactory.createKey(

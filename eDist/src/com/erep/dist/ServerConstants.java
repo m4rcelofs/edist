@@ -15,7 +15,4 @@ public class ServerConstants {
 	public static final String	LICENCE_SERVER				= "https://edist-licence.appspot.com/getlicence?appId={appId}";
 	public static final String	LICENCE_SERVER_EMAIL_UPDATE	= "https://edist-licence.appspot.com/updateEmail";
 
-	// FIXME
-	public static final boolean	MOD_FILTER_ACTIVE			= false;
-
 }

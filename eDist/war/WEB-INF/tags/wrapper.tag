@@ -3,9 +3,6 @@
 
 <%@tag import="com.google.appengine.api.utils.SystemProperty"%>
 <%@tag import="com.erep.dist.erep.eRepTimeCalculator"%>
-<%@tag import="com.google.appengine.api.users.User"%>
-<%@tag import="com.google.appengine.api.users.UserService"%>
-<%@tag import="com.google.appengine.api.users.UserServiceFactory"%>
 
 <%@attribute name="imports" fragment="true"%>
 
@@ -18,10 +15,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="">
 <meta name="author" content="">
-<link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
-<link rel="icon" href="/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
+<link rel="icon" href="../favicon.ico" type="image/x-icon">
 
-<title>eDist <%=SystemProperty.applicationVersion.get()%></title>
+<title>eDist</title>
 
 <%@ include file="baseimports.tag"%>
 <jsp:invoke fragment="imports" />
@@ -33,9 +30,8 @@
 
 		<%@ include file="header.tag"%>
 
-		
 		<jsp:doBody />
-		
+
 		<%@ include file="footer.tag"%>
 	</div>
 </body>

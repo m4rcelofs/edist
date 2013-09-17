@@ -13,8 +13,8 @@ import org.apache.commons.io.IOUtils;
 import com.erep.dist.CloseablePM;
 import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
+import com.erep.dist.auth.AuthHelper;
 import com.erep.dist.data.RegisteredUser;
-import com.erep.dist.data.RegisteredUser.Role;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
@@ -32,7 +32,7 @@ public class JavascriptGenerationServlet extends HttpServlet {
 		switch (req.getPathInfo()) {
 			case "/user.js":
 			case "/user.nocache.js":
-				writeUserJS(resp);
+				writeUserJS(req, resp);
 				break;
 			case "/employer.user.js":
 				writeEmployerGreasemonkeyJS(req, resp);
@@ -53,7 +53,7 @@ public class JavascriptGenerationServlet extends HttpServlet {
 		}
 	}
 
-	private void writeUserJS(HttpServletResponse resp) throws IOException {
+	private void writeUserJS(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		UserService users = UserServiceFactory.getUserService();
 
 		boolean loggedIn = users.isUserLoggedIn();
@@ -62,25 +62,24 @@ public class JavascriptGenerationServlet extends HttpServlet {
 				"window.edist = { user : { loggedIn: ")
 				.append(loggedIn)
 				.append(", loginURL : ")
-				.append(loggedIn ? null : "'" + users.createLoginURL("") + "'")
+				.append(loggedIn ? null : "'" + users.createLoginURL(req.getHeader("referer")) + "'")
 				.append(", logoutURL : ")
-				.append(loggedIn ? "'" + users.createLogoutURL("") + "'" : null);
+				.append(loggedIn ? "'" + users.createLogoutURL("/") + "'" : null);
 
 		if (loggedIn) {
-			boolean isModerator = false;
-			String name = "";
 			try (CloseablePM pm = new CloseablePM(
 					PMF.getNewPersistenceManager())) {
 				DataAccessObject dao = new DataAccessObject(pm);
+				AuthHelper auth = new AuthHelper(dao, users);
 				RegisteredUser user = dao.find(users.getCurrentUser());
-				isModerator = user.getRole() == Role.MODERATOR;
-				name = user.getName();
-			}
-
-			builder.append(", name : '").append(name).append("', email : '")
+				
+				builder.append(", name : '").append(user.getName()).append("', email : '")
 					.append(users.getCurrentUser().getEmail())
-					.append("', isAdmin : ").append(users.isUserAdmin())
-					.append(", isModerator : ").append(isModerator);
+					.append("', hasReportsAccess : ").append(auth.hasReportsAccess())
+					.append(", hasPlayerReportsAccess : ").append(auth.hasPlayerReportsAccess())
+					.append(", hasManagementAccess: ").append(auth.hasManagementAccess())
+					.append(", hasAdminAccess : ").append(auth.hasAdminAccess());
+			}
 		}
 
 		builder.append(" } };");

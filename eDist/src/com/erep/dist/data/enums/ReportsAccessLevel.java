@@ -6,5 +6,5 @@ import org.directwebremoting.convert.EnumConverter;
 @DataTransferObject(converter = EnumConverter.class)
 public enum ReportsAccessLevel
 {
-	PUBLIC, MODS, ADMINS
+	PUBLIC, VIEWER, MODS, ADMINS
 }

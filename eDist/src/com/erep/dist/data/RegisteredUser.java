@@ -16,7 +16,7 @@ public class RegisteredUser {
 
 	public enum Role
 	{
-		NONE, MODERATOR
+		NONE, VIEWER, MODERATOR
 	}
 
 	@PrimaryKey

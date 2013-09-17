@@ -33,11 +33,11 @@
 						<div class="input-group">
 							<select class="selectpicker" disabled data-style="btn-inverse"
 									name="type" id="type">
-								<option value="weps">Armas</option>
-								<option value="food">Comida</option>
-								<option value="both">Ambos</option>
+								<option value="WEAPONS">Armas</option>
+								<option value="FOOD">Comida</option>
+								<option value="WEAPONS_FOOD">Armas + Comida</option>
 								<option data-divider="true"></option>
-								<option value="rocket">Rocket</option>
+								<option value="ROCKET">Rocket</option>
 							</select>
 						</div>
 						</div>
