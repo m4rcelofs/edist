@@ -160,6 +160,8 @@
 				com.erep.dist.dwr.dto.StatsQuery,
 				com.erep.dist.dwr.dto.FightsQuery,
 				
+				com.erep.dist.dwr.PlayerReportService,
+				
 				com.erep.dist.data.DailyFights,
 				com.erep.dist.data.DailyStats,
 				com.erep.dist.data.Player,
