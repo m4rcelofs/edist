@@ -445,7 +445,10 @@ public class DataAccessObject {
 		q.setFilter("name == '" + playerName + "'");
 		q.setResult("key");
 		q.setUnique(true);
-		return (Key) q.execute();
+		Object key = q.execute();
+		if (key == null)
+			throw new JDOObjectNotFoundException();
+		return (Key) key;
 	}
 
 	public PlayerGroup find(PlayerGroup group) {
