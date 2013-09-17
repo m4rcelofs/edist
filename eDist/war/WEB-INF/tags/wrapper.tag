@@ -33,10 +33,9 @@
 
 		<%@ include file="header.tag"%>
 
-		<div class="row new">
-			<jsp:doBody />
-		</div>
-
+		
+		<jsp:doBody />
+		
 		<%@ include file="footer.tag"%>
 	</div>
 </body>

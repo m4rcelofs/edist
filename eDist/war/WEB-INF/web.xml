@@ -33,7 +33,7 @@
 
 	<servlet-mapping>
 		<servlet-name>dwr-invoker</servlet-name>
-		<url-pattern>/dwr/*</url-pattern>
+		<url-pattern>/form/dwr/*</url-pattern>
 	</servlet-mapping>
 
 	<!-- Private DWR (management) -->
