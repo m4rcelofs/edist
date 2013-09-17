@@ -247,6 +247,7 @@
 	<!-- Admin only (including app tasks) -->
 	<security-constraint>
 		<web-resource-collection>
+		    <web-resource-name>Admin</web-resource-name>
 			<url-pattern>/admin/*</url-pattern>
 		</web-resource-collection>
 		<auth-constraint>
@@ -260,6 +261,7 @@
 	<!-- Management only -->
 	<security-constraint>
 		<web-resource-collection>
+		    <web-resource-name>Manager</web-resource-name>
 			<url-pattern>/management/*</url-pattern>
 		</web-resource-collection>
 		<auth-constraint>
@@ -273,6 +275,7 @@
 	<!-- Reports only -->
 	<security-constraint>
 		<web-resource-collection>
+		    <web-resource-name>Report</web-resource-name>
 			<url-pattern>/reports/*</url-pattern>
 		</web-resource-collection>
 		<user-data-constraint>

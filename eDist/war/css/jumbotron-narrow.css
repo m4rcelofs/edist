@@ -34,7 +34,13 @@ body {
   .new {
     padding: 30px 20px;
     border-radius: 6px;
-    height:400px;
+    height:300px;
+  }
+  
+  .supimage{
+ display:block;
+  margin:0 auto;
+  padding: 20px;
   }
   
   .citizen_avatar{
@@ -44,10 +50,15 @@ body {
   text-align: center;
   left:50%;
   margin-left:-79px;
-  position: absolute;
+  position: relative;
   background-color: transparent;
   background-position: 50% 50%;
   background-repeat: no-repeat;
+  }
+  
+  .second{
+  padding-top:10px;
+  margin-bottom:0px;
   }
   
   [class*="col-4"] {
