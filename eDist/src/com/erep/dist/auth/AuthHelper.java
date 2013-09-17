@@ -28,9 +28,9 @@ public class AuthHelper {
 			case ADMINS:
 				return hasAdminAccess();
 			case MODS:
-				return isModerator();
+				return isModerator() || hasAdminAccess();
 			case VIEWER:
-				return isViewer();
+				return isViewer() || isModerator() || hasAdminAccess();
 			case PUBLIC:
 				return true;
 			default:
@@ -45,9 +45,9 @@ public class AuthHelper {
 			case ADMINS:
 				return hasAdminAccess();
 			case MODS:
-				return isModerator();
+				return isModerator() || hasAdminAccess();
 			case VIEWER:
-				return isViewer();
+				return isViewer() || isModerator() || hasAdminAccess();
 			case PUBLIC:
 				return true;
 			default:
