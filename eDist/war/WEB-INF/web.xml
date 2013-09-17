@@ -21,7 +21,6 @@
 				com.erep.dist.data.enums.RequestType,
 				com.erep.dist.data.enums.PlayerStatus,
 				com.erep.dist.data.enums.RocketQuality,
-				com.erep.dist.data.DistConfig,
 				
 				com.erep.dist.data.Player,
 				com.erep.dist.data.PlayerGroup,

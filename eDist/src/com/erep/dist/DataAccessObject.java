@@ -274,37 +274,37 @@ public class DataAccessObject {
 	}
 
 	public List<Request> listRequests(Distributor dist, String encodedCursor) {
-		String filter = "distributor == " + dist.getKey();
+		String filter = "distributor == '" + dist.getKey() + "'";
 		return queryWithCursor(Request.class, filter, encodedCursor);
 	}
 
 	public List<Request> listRequests(Player player, String encodedCursor) {
-		String filter = "player == " + player.getKey();
+		String filter = "player == '" + player.getKey() + "'";
 		return queryWithCursor(Request.class, filter, encodedCursor);
 	}
 
 	public List<Request> listRequests(PlayerGroup group, String encodedCursor) {
-		String filter = "group == " + group.getKey();
+		String filter = "group == '" + group.getKey() + "'";
 		return queryWithCursor(Request.class, filter, encodedCursor);
 	}
 
 	public List<DailyStats> listStats(Player player, String encodedCursor) {
-		String filter = "player == " + player.getKey();
+		String filter = "player == '" + player.getKey() + "'";
 		return queryWithCursor(DailyStats.class, filter, encodedCursor);
 	}
 
 	public List<DailyWork> listWork(Player player, String encodedCursor) {
-		String filter = "player == " + player.getKey();
+		String filter = "player == '" + player.getKey() + "'";
 		return queryWithCursor(DailyWork.class, filter, encodedCursor);
 	}
 
 	public List<DailyWork> listWork(PlayerGroup group, String encodedCursor) {
-		String filter = "group == " + group.getKey();
+		String filter = "group == '" + group.getKey() + "'";
 		return queryWithCursor(DailyWork.class, filter, encodedCursor);
 	}
 
 	public List<DailyWork> listWork(Employer employer, String encodedCursor) {
-		String filter = "employer == " + employer.getKey();
+		String filter = "employer == '" + employer.getKey() + "'";
 		return queryWithCursor(DailyWork.class, filter, encodedCursor);
 	}
 
@@ -319,7 +319,7 @@ public class DataAccessObject {
 	}
 
 	public List<DailyFights> listFights(Player player, String encodedCursor) {
-		String filter = "player == " + player.getKey();
+		String filter = "player == '" + player.getKey() + "'";
 		return queryWithCursor(DailyFights.class, filter, encodedCursor);
 	}
 
@@ -329,7 +329,7 @@ public class DataAccessObject {
 	}
 
 	public List<DailyFights> listFights(PlayerGroup group, String encodedCursor) {
-		String filter = "group == " + group.getKey();
+		String filter = "group == '" + group.getKey() + "'";
 		return queryWithCursor(DailyFights.class, filter, encodedCursor);
 	}
 
@@ -346,7 +346,7 @@ public class DataAccessObject {
 
 	public int getDailyRequestedFF(Player player, int eRepDay) {
 		Query q = pm.newQuery(Request.class);
-		q.setFilter("player == " + player.getKey() + " && eRepDay == "
+		q.setFilter("player == '" + player.getKey() + "' && eRepDay == "
 				+ eRepDay);
 		q.setResult("sum(requestedFF)");
 		Long response = ((Long) q.execute());
@@ -355,7 +355,7 @@ public class DataAccessObject {
 
 	public int getRequestedFFSum(Player player, int fromDay) {
 		Query q = pm.newQuery(Request.class);
-		q.setFilter("player == " + player.getKey() + " && eRepDay >= "
+		q.setFilter("player == '" + player.getKey() + "' && eRepDay >= "
 				+ fromDay);
 		q.setResult("sum(requestedFF)");
 		Long response = ((Long) q.execute());
@@ -364,7 +364,7 @@ public class DataAccessObject {
 
 	public int getFightsFFSum(Player player, int fromDay) {
 		Query q = pm.newQuery(DailyFights.class);
-		q.setFilter("player == " + player.getKey() + " && day >= " + fromDay);
+		q.setFilter("player == '" + player.getKey() + "' && day >= " + fromDay);
 		q.setResult("sum(calculatedFfFights)");
 		Long response = ((Long) q.execute());
 		return response != null ? response.intValue() : 0;
@@ -373,13 +373,14 @@ public class DataAccessObject {
 	@SuppressWarnings("unchecked")
 	public List<DailyWork> getWork(Player dbPlayer, int fromDay) {
 		Query q = pm.newQuery(DailyWork.class);
-		q.setFilter("player == " + dbPlayer.getKey() + " && day >= " + fromDay);
+		q.setFilter("player == '" + dbPlayer.getKey() + "' && day >= "
+				+ fromDay);
 		return (List<DailyWork>) q.execute();
 	}
 
 	public boolean requestedRocket(Player player, int eRepDay) {
 		Query q = pm.newQuery(Request.class);
-		q.setFilter("player == " + player.getKey() + " && eRepDay == "
+		q.setFilter("player == '" + player.getKey() + "' && eRepDay == "
 				+ eRepDay + " && type == '" + RequestType.ROCKET.name() + "'");
 		q.setUnique(true);
 		Request request = (Request) q.execute();

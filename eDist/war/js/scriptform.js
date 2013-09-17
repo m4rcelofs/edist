@@ -7,10 +7,11 @@
 //
 var imagedefault = 'http://www.erepublik.com/images/default_avatars/Citizens/default_male_142x142.gif';
 		
-function setPlayer(player){
-	if (player.registered){
-		$('.citizen_avatar').css("background-image", "url("+player.image+")"); 
-		if(!player.rocket){
+function setPlayer(dto){
+	console.log(JSON.stringify(dto)); //FIXME remove
+	if (dto.player){
+		$('.citizen_avatar').css("background-image", "url("+dto.player.avatar+")"); 
+		if(!dto.rocketAllowed){
 			$('.selectpicker option:last-child').attr('disabled', 'disabled');
 		}
 		else{
@@ -19,8 +20,8 @@ function setPlayer(player){
 		$('.selectpicker').prop('disabled', false);
 		$('#quant').prop('disabled', false);
 		$('.selectpicker').selectpicker('refresh');
-		$('.list-group a:first-child').text(player.name);
-		$('.list-group a:last-child').text(player.availableFF);
+		$('.list-group a:first-child').text(dto.player.name);
+		$('.list-group a:last-child').text(dto.availableFF);
 	}
 	else{
 		$('.citizen_avatar').css("background-image", "url("+imagedefault+")"); 
@@ -33,15 +34,15 @@ function setPlayer(player){
 }
 
 function check(value, element){
-	var player = null;
+	var dto = null;
 	RequestService.getCurrentStatus(value,{
 		  callback:function(data) {
-			  player = data;
+			  dto = data;
 		  },
 		  async:false
 		});
-	setPlayer(player);
-	return player.registered;
+	setPlayer(dto);
+	return dto.player;
 }
 
 

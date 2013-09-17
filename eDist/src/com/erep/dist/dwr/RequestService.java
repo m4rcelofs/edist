@@ -12,6 +12,7 @@ import org.directwebremoting.annotations.RemoteMethod;
 import org.directwebremoting.annotations.RemoteProxy;
 
 import com.erep.dist.CloseablePM;
+import com.erep.dist.ConfigHelper;
 import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
 import com.erep.dist.RequestsHelper;
@@ -91,15 +92,19 @@ public class RequestService {
 			pm.getFetchPlan().addGroup("requestAttempt");
 
 			DataAccessObject dao = new DataAccessObject(pm);
-			RequestsHelper helper = new RequestsHelper(dao);
+			RequestsHelper requests = new RequestsHelper(dao);
+			ConfigHelper config = new ConfigHelper(dao);
 
-			Player dbPlayer = identifyRequestString(dao, idNameOrLink.trim());
-
-			if (dbPlayer != null) {
-				dto.setPlayer(dbPlayer);
-				dto.setRocketAllowed(helper.verifyRocketAllowed(dbPlayer));
-				dto.setAvailableFF(helper.verifyMaxFF(dbPlayer));
+			try {
+				Player dbPlayer = identifyRequestString(dao,
+						idNameOrLink.trim());
+				dto.setAllowedType(config.getDistType(dbPlayer));
+				dto.setRocketAllowed(requests.verifyRocketAllowed(dbPlayer));
+				dto.setAvailableFF(requests.verifyMaxFF(dbPlayer));
 				dto.setRechargeTime(eRepTimeCalculator.secondsToDayChange());
+				dto.setPlayer(dbPlayer);
+			} catch (JDOObjectNotFoundException e) {
+				// no player, ignore
 			}
 
 			return dto;
