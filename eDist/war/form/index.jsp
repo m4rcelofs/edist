@@ -56,7 +56,9 @@
 					<div class="list-group second">
 					<a class="list-group-item active">  </a> 
 					<a class="list-group-item"> </a> 
+					<a class="list-group-item"><DIV class="counter" id="counter"></DIV> </a> 
 				</div>
+				
 			</div>
 	</div>
 	</jsp:body>
