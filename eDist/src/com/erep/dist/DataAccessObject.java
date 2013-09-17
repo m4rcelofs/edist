@@ -517,6 +517,9 @@ public class DataAccessObject {
 		if (newConfig.getReportsAccess() != null)
 			dbConfig.setReportsAccess(newConfig.getReportsAccess());
 
+		if (newConfig.getPlayerReportsAccess() != null)
+			dbConfig.setPlayerReportsAccess(newConfig.getPlayerReportsAccess());
+
 		if (newConfig.getContactEmail() != null
 				&& !newConfig.getContactEmail().equalsIgnoreCase(
 						dbConfig.getContactEmail())) {
