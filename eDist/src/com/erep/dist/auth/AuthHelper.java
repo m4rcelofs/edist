@@ -56,11 +56,11 @@ public class AuthHelper {
 	}
 
 	public boolean hasManagementAccess() {
-		return isModerator();
+		return isModerator() || isAdmin();
 	}
 
 	public boolean hasAdminAccess() {
-		return userService.isUserLoggedIn() && userService.isUserAdmin();
+		return isAdmin();
 	}
 
 	private boolean isViewer() {
@@ -77,6 +77,10 @@ public class AuthHelper {
 			return regUser.getRole() == RegisteredUserRole.MODERATOR;
 		}
 		return false;
+	}
+	
+	private boolean isAdmin() {
+		return userService.isUserLoggedIn() && userService.isUserAdmin();
 	}
 
 }
