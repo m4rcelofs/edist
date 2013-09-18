@@ -23,6 +23,12 @@
 <%@ include file="baseimports.tag"%>
 <jsp:invoke fragment="imports" />
 
+<style type="text/css">
+body {
+	font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; 
+}
+</style>
+
 </head>
 <body>
 

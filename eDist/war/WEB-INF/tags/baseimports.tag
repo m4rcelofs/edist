@@ -1,9 +1,9 @@
 <%@ tag language="java" pageEncoding="UTF-8"%>
 
-<!-- Bootstrap core CSS -->
-<link href="../css/bootstrap.css" rel="stylesheet">
 
-<!-- Custom styles for this template -->
+<link href='//fonts.googleapis.com/css?family=Source+Sans+Pro' rel='stylesheet' type='text/css'>
+
+<link href="../css/bootstrap.css" rel="stylesheet">
 <link href="../css/jumbotron-narrow.css" rel="stylesheet">
 <link href="../css/styleform.css" rel="stylesheet">
 <link href="../css/bootstrap-select.css" rel="stylesheet">
