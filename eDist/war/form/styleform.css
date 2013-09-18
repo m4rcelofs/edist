@@ -11,6 +11,18 @@
 
 /* New styles below */
 
+.input-group{
+	padding-bottom:10px;
+	text-align: center;
+	width:100%;
+}
+
+div.form-actions{
+
+	text-align: center;
+	margin-top:20px;
+	position:relative;
+}
 		.form-control.valid {
 			background: #ffffff url(/img/valid.png) no-repeat center right; 
 			color: #468847;

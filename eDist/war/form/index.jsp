@@ -22,14 +22,14 @@
 							<input type="text" class="form-control input-large" name="id"
 								id="id" placeholder="Nick, id ou profile">
 						</div>
-						<div class="col-5">
+						
 						<div class="input-group">
 						<span class="input-group-addon">FF:</span> 
 							<input type="number" disabled class="form-control" name="quant"
 									id="quant" min="10" max="100" value="10" step="10">
 						</div>
-						</div>
-						<div class="col-7">
+						
+						
 						<div class="input-group">
 							<select class="selectpicker" disabled data-style="btn-inverse"
 									name="type" id="type">
@@ -40,12 +40,12 @@
 								<option value="ROCKET">Rocket</option>
 							</select>
 						</div>
-						</div>
+						
 						
 						
 						<div class="form-actions">
-							<button type="submit" class="btn btn-primary btn-large">Submit</button>
-							<button type="reset" class="btn">Cancel</button>
+							<button type="submit" class="btn btn-primary btn-large">Enviar</button>
+							<button type="reset" class="btn btn-default">Cancelar</button>
 						</div>
 					</fieldset>
 				</form>

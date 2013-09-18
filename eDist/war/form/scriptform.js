@@ -45,7 +45,7 @@ function setPlayer(dto){
 		$('#quant').prop('disabled', false);
 		$('.selectpicker').selectpicker('refresh');
 		$('.list-group a:first-child').text(dto.player.name);
-		$('.list-group a:nth-child(2)').text(dto.availableFF);
+		$('.list-group a:nth-child(2)').text("Disponível: "+dto.availableFF+" FF");
 	}
 	else{
 		$('.citizen_avatar').css("background-image", "url("+imagedefault+")"); 
@@ -60,14 +60,7 @@ function setPlayer(dto){
 }
 
 function check(value, element){
-	var dto = null;
-	RequestService.getCurrentStatus(value,{
-		  callback:function(data) {
-			  dto = data;
-		  },
-		  async:false
-		});
-	setPlayer(dto);
+	RequestService.getCurrentStatus(value,setPlayer);
 	return dto.player;
 }
 
