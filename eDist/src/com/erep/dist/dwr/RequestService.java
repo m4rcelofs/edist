@@ -99,10 +99,13 @@ public class RequestService {
 				Player dbPlayer = identifyRequestString(dao,
 						idNameOrLink.trim());
 				dto.setAllowedType(config.getDistType(dbPlayer));
+				dto.setAllowedQuality(config.getAllowedWeaponQuality(dbPlayer));
 				dto.setRocketAllowed(requests.verifyRocketAllowed(dbPlayer));
 				dto.setAvailableFF(requests.verifyMaxFF(dbPlayer));
 				dto.setRechargeTime(eRepTimeCalculator.secondsToDayChange());
 				dto.setPlayer(dbPlayer);
+				
+				
 			} catch (JDOObjectNotFoundException e) {
 				// no player, ignore
 			}

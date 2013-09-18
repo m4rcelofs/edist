@@ -21,6 +21,7 @@
 				com.erep.dist.data.enums.RequestType,
 				com.erep.dist.data.enums.PlayerStatus,
 				com.erep.dist.data.enums.RocketQuality,
+				com.erep.dist.data.enums.ResourceQuality,
 				
 				com.erep.dist.data.Player,
 				com.erep.dist.data.PlayerGroup,
@@ -92,7 +93,10 @@
 				com.erep.dist.data.ServerConfig,
 				com.erep.dist.data.RegisteredUser,
 				
+				com.erep.dist.dwr.dto.RegisteredUserQuery,
+				
 				com.erep.dist.data.enums.ReportsAccessLevel,
+				com.erep.dist.data.enums.RegisteredUserRole,
 				com.erep.dist.data.enums.ConfigGranularity,
 				
 				com.erep.dist.dwr.AdminService

@@ -5,6 +5,7 @@ import org.directwebremoting.annotations.RemoteProperty;
 
 import com.erep.dist.data.Player;
 import com.erep.dist.data.enums.RequestType;
+import com.erep.dist.data.enums.ResourceQuality;
 
 @DataTransferObject
 public class RequestAttempt {
@@ -23,6 +24,9 @@ public class RequestAttempt {
 
 	@RemoteProperty
 	private RequestType	allowedType;
+	
+	@RemoteProperty
+	private ResourceQuality allowedQuality;
 
 	public Player getPlayer() {
 		return player;
@@ -62,6 +66,14 @@ public class RequestAttempt {
 
 	public void setRechargeTime(Integer rechargeTime) {
 		this.rechargeTime = rechargeTime;
+	}
+
+	public ResourceQuality getAllowedQuality() {
+		return allowedQuality;
+	}
+
+	public void setAllowedQuality(ResourceQuality allowedQuality) {
+		this.allowedQuality = allowedQuality;
 	}
 
 }
