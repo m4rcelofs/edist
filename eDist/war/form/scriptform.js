@@ -7,8 +7,10 @@
 //
 var imagedefault = 'http://www.erepublik.com/images/default_avatars/Citizens/default_male_142x142.gif';
 var counter;	
+var player;
+var dt;
 function setPlayer(dto){
-	console.log(JSON.stringify(dto)); //FIXME remove
+	dt = dto;
 	if (dto.player){
 		$('.citizen_avatar').css("background-image", "url("+dto.player.avatar+")"); 
 		if(!dto.rocketAllowed){
@@ -46,6 +48,9 @@ function setPlayer(dto){
 		$('.selectpicker').selectpicker('refresh');
 		$('.list-group a:first-child').text(dto.player.name);
 		$('.list-group a:nth-child(2)').text("Disponível: "+dto.availableFF+" FF");
+		player = dto.player;
+		$('input.input-large').removeClass('error').addClass('valid');
+		$('input.input-large').closest('.input-group').removeClass('has-error').addClass('has-success');
 	}
 	else{
 		$('.citizen_avatar').css("background-image", "url("+imagedefault+")"); 
@@ -55,13 +60,23 @@ function setPlayer(dto){
 		$('.list-group a:first-child').empty();
 		$('.list-group a:nth-child(2)').empty();
 		$('.counter').hide();
+		player = "";
+		$('input.input-large').removeClass('valid').addClass('error');
+		$('input.input-large').closest('.input-group').removeClass('has-success').addClass('has-error');
 	}
 	
 }
 
+function request(){
+	var values = {};
+	$.each($('#infoform').serializeArray(), function(i, field) {
+	    values[field.name] = field.value;
+	});
+	RequestService.sendRequest( {encodedKey : player.encodedKey},values['quant'],values['type']);
+}
 function check(value, element){
 	RequestService.getCurrentStatus(value,setPlayer);
-	return dto.player;
+	return true;
 }
 
 
@@ -73,10 +88,10 @@ $(document).ready(function(){
 	$.validator.addMethod(
 	        "registered",check );
 	
-	$('#contact-form').validate({
+	$('#infoform').validate({
 	    rules: {
 	      id: {
-	        minlength: 2,
+	        minlength: 4,
 	        required: true,
 	        registered: true
 	      },
@@ -90,12 +105,9 @@ $(document).ready(function(){
 	    },
 	    errorPlacement: function(error, element) {},
 	    highlight: function(element) {
-	    	$(element).removeClass('valid').addClass('error');
-	    	$(element).closest('.input-group').removeClass('has-success').addClass('has-error');
+	    	
 		},
 		unhighlight: function(element) {
-			$(element).removeClass('error').addClass('valid');
-			$(element).closest('.input-group').removeClass('has-error').addClass('has-success');
 			}
 	  });
 

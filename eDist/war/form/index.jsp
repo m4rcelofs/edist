@@ -15,7 +15,7 @@
 	<div class="row new">
 		<div class="col-8">
 				<img class="supimage" src="../img/formtitle.cache.png"></img>
-				<form action="" id="contact-form" class="form-horizontal">
+				<form onsubmit="return false;" id="infoform" class="form-horizontal">
 					<fieldset>
 						<div class="input-group">
 							<span class="input-group-addon input-large">Id:</span> 
@@ -44,7 +44,7 @@
 						
 						
 						<div class="form-actions">
-							<button type="submit" class="btn btn-primary btn-large">Enviar</button>
+							<button type="submit" onclick="request();" class="btn btn-primary btn-large">Enviar</button>
 							<button type="reset" class="btn btn-default">Cancelar</button>
 						</div>
 					</fieldset>
