@@ -248,10 +248,8 @@ public class DataAccessObject {
 		return true;
 	}
 
-	@SuppressWarnings("unchecked")
-	public List<RegisteredUser> listUsers() {
-		Query q = pm.newQuery(RegisteredUser.class);
-		return (List<RegisteredUser>) q.execute();
+	public List<RegisteredUser> listUsers(String encodedCursor) {
+		return queryWithCursor(RegisteredUser.class, null, encodedCursor);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -478,8 +476,7 @@ public class DataAccessObject {
 		try {
 			return pm.getObjectById(RegisteredUser.class, user.getUserId());
 		} catch (JDOObjectNotFoundException e) {
-			RegisteredUser regUser = new RegisteredUser(user.getUserId(),
-					user.getEmail());
+			RegisteredUser regUser = new RegisteredUser(user);
 			pm.makePersistent(regUser);
 			return regUser;
 		}
@@ -565,7 +562,7 @@ public class DataAccessObject {
 			String newEmail) {
 		DeferredTask task = new NotifyEmailChangeTask(oldEmail, newEmail);
 		Queue queue = QueueFactory.getDefaultQueue();
-		queue.add(withPayload(task));
+		queue.add(withPayload(task).taskName("NotifyEmailChangeTask"));
 	}
 
 }

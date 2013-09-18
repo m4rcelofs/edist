@@ -90,6 +90,11 @@ public class SendResourceTask implements DeferredTask {
 	private void execute(Request request) throws Exception {
 		Distributor dist = request.getDistributor();
 		String passwordPlain = decryptPassword(dist);
+
+		if (dist.getEmail() == null || dist.getEmail().isEmpty()
+				|| passwordPlain == null || passwordPlain.isEmpty())
+			throw new IllegalStateException("Distributor is not configured");
+
 		try (ErepScrapper scrapper = new ErepScrapper(dist.getEmail(),
 				passwordPlain)) {
 			scrapper.login();

@@ -102,7 +102,10 @@ public class PlayerStatsTask implements DeferredTask {
 	private void startFightCalculationTask(Integer day, Player dbPlayer) {
 		DeferredTask task = new CalculateDailyFightsTask(day, dbPlayer);
 		Queue queue = QueueFactory.getDefaultQueue();
-		queue.add(withPayload(task));
+		queue.add(withPayload(task).taskName(
+				"CalculateDailyFightsTask_"
+						+ dbPlayer.getKey().toString().replace('(', '_')
+								.replace(')', '_') + "_" + day));
 	}
 
 }
