@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.jdo.Transaction;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -47,12 +48,22 @@ public class AutoDistJob extends HttpServlet {
 
 			for (Player player : players) {
 				if (config.getAutoSend(player)) {
-
-					Request request = requests.createRequest(player);
-					player.addRequest(request);
-					requests.addToQueue(request);
-
-					autoDist++;
+					Transaction tx = pm.currentTransaction();
+					try {
+						tx.begin();
+						Request request = requests.createRequest(player);
+						player.addRequest(request);
+						dao.save(request);
+						requests.addToQueue(request);
+						tx.commit();
+						autoDist++;
+					} finally {
+						if (tx.isActive()) {
+							tx.rollback();
+							logger.log(Level.SEVERE, "Request for player {0} failed",
+									player.getName());
+						}
+					}
 				}
 			}
 

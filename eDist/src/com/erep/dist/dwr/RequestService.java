@@ -43,7 +43,7 @@ public class RequestService {
 			return false;
 
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			boolean response = true;
+			boolean response = false;
 
 			DataAccessObject dao = new DataAccessObject(pm);
 
@@ -57,13 +57,16 @@ public class RequestService {
 
 				Player dbPlayer = dao.find(player);
 
+				tx.begin();
 				Request request = helper.createRequest(dbPlayer, requestedFF,
 						type);
 
-				tx.begin();
-				player.addRequest(request);
-				dao.save(request);
-				helper.addToQueue(request);
+				if (request != null) {
+					dbPlayer.addRequest(request);
+					dao.save(request);
+					helper.addToQueue(request);
+					response = true;
+				}
 				tx.commit();
 
 			} catch (JDOObjectNotFoundException e) {
@@ -95,19 +98,29 @@ public class RequestService {
 			RequestsHelper requests = new RequestsHelper(dao);
 			ConfigHelper config = new ConfigHelper(dao);
 
+			Transaction tx = pm.currentTransaction();
 			try {
 				Player dbPlayer = identifyRequestString(dao,
 						idNameOrLink.trim());
 				dto.setAllowedType(config.getDistType(dbPlayer));
 				dto.setAllowedQuality(config.getAllowedWeaponQuality(dbPlayer));
+
+				tx.begin();
 				dto.setRocketAllowed(requests.verifyRocketAllowed(dbPlayer));
 				dto.setAvailableFF(requests.verifyMaxFF(dbPlayer));
+				tx.commit();
+
 				dto.setRechargeTime(eRepTimeCalculator.secondsToDayChange());
 				dto.setPlayer(dbPlayer);
-				
-				
+
 			} catch (JDOObjectNotFoundException e) {
 				// no player, ignore
+			} finally {
+				if (tx.isActive()) {
+					tx.rollback();
+					logger.log(Level.SEVERE, "getStatus for player {0} failed",
+							idNameOrLink);
+				}
 			}
 
 			return dto;
