@@ -11,14 +11,22 @@ import com.erep.dist.PMF;
 import com.erep.dist.data.Distributor;
 import com.erep.dist.data.RegisteredUser;
 import com.erep.dist.data.ServerConfig;
+import com.erep.dist.dwr.dto.RegisteredUserQuery;
+import com.google.appengine.datanucleus.query.JDOCursorHelper;
 
 @RemoteProxy
 public class AdminService {
 
 	@RemoteMethod
-	public List<RegisteredUser> listRegisteredUsers() {
+	public RegisteredUserQuery listRegisteredUsers(String encodedCursor) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			return new DataAccessObject(pm).listUsers();
+			RegisteredUserQuery dto = new RegisteredUserQuery();
+			
+			List<RegisteredUser> registered = new DataAccessObject(pm).listUsers(encodedCursor);
+			dto.setResults(registered);
+			dto.setEncodedCursor(JDOCursorHelper.getCursor(registered).toWebSafeString());
+			
+			return dto;
 		}
 	}
 

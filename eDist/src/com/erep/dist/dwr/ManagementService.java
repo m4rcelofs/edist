@@ -49,7 +49,7 @@ public class ManagementService {
 			if (created) {
 				DeferredTask task = new GetUserInfoTask(player);
 				Queue queue = QueueFactory.getQueue("erepublik-not-logged-in");
-				queue.add(withPayload(task));
+				queue.add(withPayload(task).taskName("GetUserInfoTask " + player.getKey().toString()));
 			}
 			return created;
 		}

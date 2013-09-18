@@ -3,7 +3,7 @@ package com.erep.dist.auth;
 import com.erep.dist.DataAccessObject;
 import com.erep.dist.data.RegisteredUser;
 import com.erep.dist.data.ServerConfig;
-import com.erep.dist.data.RegisteredUser.Role;
+import com.erep.dist.data.enums.RegisteredUserRole;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
@@ -66,7 +66,7 @@ public class AuthHelper {
 	private boolean isViewer() {
 		if (userService.isUserLoggedIn()) {
 			RegisteredUser regUser = dao.find(userService.getCurrentUser());
-			return regUser.getRole() == Role.VIEWER;
+			return regUser.getRole() == RegisteredUserRole.VIEWER;
 		}
 		return false;
 	}
@@ -74,7 +74,7 @@ public class AuthHelper {
 	private boolean isModerator() {
 		if (userService.isUserLoggedIn()) {
 			RegisteredUser regUser = dao.find(userService.getCurrentUser());
-			return regUser.getRole() == Role.MODERATOR;
+			return regUser.getRole() == RegisteredUserRole.MODERATOR;
 		}
 		return false;
 	}

@@ -10,40 +10,39 @@ import javax.jdo.annotations.PrimaryKey;
 import org.directwebremoting.annotations.DataTransferObject;
 import org.directwebremoting.annotations.RemoteProperty;
 
+import com.erep.dist.data.enums.RegisteredUserRole;
+import com.google.appengine.api.users.User;
+
 @DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class RegisteredUser {
 
-	public enum Role
-	{
-		NONE, VIEWER, MODERATOR
-	}
-
 	@PrimaryKey
 	@Persistent
 	@RemoteProperty
-	private String			gId;
+	private String				gId;
 
 	@Persistent
 	@RemoteProperty
-	private final String	gEmail;
+	private String				gEmail;
 
 	@Persistent
 	@RemoteProperty
-	private String			name;
+	private String				name;
 
 	@Persistent
 	@RemoteProperty
-	private final Date		registeredAt;
+	private Date				registeredAt;
 
 	@Persistent
 	@RemoteProperty
-	private Role			role;
+	private RegisteredUserRole	role;
 
-	public RegisteredUser(String gId, String gEmail) {
-		this.gId = gId;
-		this.gEmail = getgEmail();
-		this.role = Role.NONE;
+	public RegisteredUser(User user) {
+		this.gId = user.getUserId();
+		this.gEmail = user.getEmail();
+		this.name = user.getNickname();
+		this.role = RegisteredUserRole.NONE;
 		this.registeredAt = new Date();
 	}
 
@@ -67,11 +66,11 @@ public class RegisteredUser {
 		return registeredAt;
 	}
 
-	public Role getRole() {
+	public RegisteredUserRole getRole() {
 		return role;
 	}
 
-	public void setRole(Role role) {
+	public void setRole(RegisteredUserRole role) {
 		this.role = role;
 	}
 
