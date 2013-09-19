@@ -3,12 +3,19 @@
 <%@tag import="com.google.appengine.api.utils.SystemProperty"%>
 
 <div class="footer">
+	<div class="pull-right">
+		<img
+			src="//developers.google.com/appengine/images/appengine-noborder-120x30.gif"
+			alt="Powered by Google App Engine" />
+	</div>
 	<p>
 		No eRepublik, hoje é dia
 		<%=eRepTimeCalculator.geteRepDay()%></p>
 	<p>
-		eDist <%=SystemProperty.applicationVersion.get()%> - &copy; 2013, 
-		<a href="http://www.erepublik.com/en/citizen/profile/3885795">Guilpas</a> e
-		<a href="http://www.erepublik.com/en/citizen/profile/5313713">nW0lf</a>
+		eDist
+		<%=SystemProperty.applicationVersion.get()%>
+		- &copy; 2013, <a
+			href="http://www.erepublik.com/en/citizen/profile/3885795">Guilpas</a>
+		e <a href="http://www.erepublik.com/en/citizen/profile/5313713">nW0lf</a>
 	</p>
 </div>
