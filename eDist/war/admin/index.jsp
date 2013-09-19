@@ -7,24 +7,46 @@
 	<jsp:attribute name="imports">
 		<script type='text/javascript' src='dwr/engine.js'></script>
 		<script type='text/javascript' src='dwr/interface/AdminService.js'></script>
-		<script type='text/javascript' src='admin.js'></script>
-		<link href="../css/bootstrap-glyphicons.css" rel="stylesheet">
+		<script type='text/javascript' src='admin.cache.js'></script>
+		<link href="../css/bootstrap-glyphicons.css" rel="stylesheet"> 
     </jsp:attribute>
 
 	<jsp:body>
 			<ul class="nav nav-tabs">
-				<li class=""><a href="#moderators" data-toggle="tab"
-				id="moderatorsTab">Moderadores</a></li>
+				<li class="active"><a href="#moderators" data-toggle="tab"
+				id="moderatorsTab"><span class="glyphicon glyphicon-user"></span> Usuários Registrados</a></li>
 				<li><a href="#distributors" data-toggle="tab"
-				id="distributorsTab">Distribuidores</a></li>
-				<li class="active"><a href="#config" data-toggle="tab"
-				id="configTab">Configurações</a></li>
+				id="distributorsTab"><span class="glyphicon glyphicon-lock"></span> Distribuidores</a></li>
+				<li><a href="#config" data-toggle="tab" id="configTab"><span
+					class="glyphicon glyphicon-cog"></span> Configurações</a></li>
 			</ul>
 			
 			<div class="tab-content">
-				<div class="tab-pane" id="moderators">mods</div>
+				<!-- MODS -->
+				<div class="tab-pane active" id="moderators">
+					<div class="text-center">
+						<img id="mods-loader" src="../img/loader.cache.gif" />
+					</div>
+					<table class="table table-striped table-hover"
+					style="display: none;" id="mods-table">
+						<thead>
+							<tr>
+								<th style="display:none;">ID</th>
+								<th>Nome</th>
+								<th>E-mail</th>
+								<th>Cargo</th>
+								<th>Registro</th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody></tbody> 
+					</table>
+				</div>
+				<!-- DISTRIBUTORS -->
 				<div class="tab-pane" id="distributors">dists</div>
-				<div class="tab-pane active" id="config">
+				
+				<!-- CONFIG -->
+				<div class="tab-pane" id="config">
 					<div class="text-center">
 						<img id="config-loader" src="../img/loader.cache.gif" />
 					</div>
@@ -101,7 +123,8 @@
 						</div>
 						<div class="form-group">
 							<div class="col-lg-offset-6 col-lg-2">
-								<button type="submit" class="btn btn-primary" onclick="saveConfig()">
+								<button type="submit" class="btn btn-primary"
+								onclick="saveConfig()">
 									<span class="glyphicon glyphicon-floppy-disk"></span>
 									 Salvar
 								</button>

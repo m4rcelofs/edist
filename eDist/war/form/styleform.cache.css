@@ -1,0 +1,56 @@
+@import url('/css/bootstrap-responsive.min.cache.css');
+
+/* New styles below */
+.input-group {
+	padding-bottom: 10px;
+	text-align: center;
+	width: 100%;
+}
+
+div.form-actions {
+	text-align: center;
+	margin-top: 20px;
+	position: relative;
+}
+
+.form-control.valid {
+	background: #ffffff url(/img/valid.cache.png) no-repeat center right;
+	color: #468847;
+}
+
+.form-control.error {
+	background: #ffffff url(/img/error.cache.png) no-repeat center right;
+	color: #b94a48;
+}
+
+#quant:focus {
+	background: #3a3c3c;
+}
+
+#quant:disabled {
+	opacity: 0.6499999761581421;
+}
+
+#quant {
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	text-align: center;
+	background: #474949;
+	color: #ffffff;
+}
+
+@media screen and (min-width: 768px) {
+	.citizen_avatar {
+		border: 5px solid rgba(0, 0, 0, 1);
+		width: 163px;
+		height: 163px;
+		text-align: center;
+		left: 50%;
+		margin-left: -79px;
+		position: relative;
+		background-color: transparent;
+		background-position: 50% 50%;
+		background-repeat: no-repeat;
+	}
+}

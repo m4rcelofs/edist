@@ -7,8 +7,8 @@
 	<jsp:attribute name="imports">
 		<script type='text/javascript' src='dwr/engine.js'></script>
 		<script type='text/javascript' src='dwr/interface/RequestService.js'></script>
-		<script type='text/javascript' src="scriptform.js"></script>
-		<link href="styleform.css" rel="stylesheet">
+		<script type='text/javascript' src="scriptform.cache.js"></script>
+		<link href="styleform.cache.css" rel="stylesheet">
     </jsp:attribute>
 
 	<jsp:body>
@@ -52,7 +52,7 @@
 			</div>
 			<div class="col-4">
 				<img class="citizen_avatar"
-					src="http://s1.www.erepublik.net/images/modules/citizenprofile/profile_avatar.png"></img>
+					src="../img/profile_avatar.cache.png"></img>
 					<div class="list-group second">
 					<a class="list-group-item active">  </a> 
 					<a class="list-group-item"> </a> 
