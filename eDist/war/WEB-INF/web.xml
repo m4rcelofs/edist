@@ -277,17 +277,6 @@
 		</user-data-constraint>
 	</security-constraint>
 
-	<!-- Reports only -->
-	<security-constraint>
-		<web-resource-collection>
-		    <web-resource-name>Report</web-resource-name>
-			<url-pattern>/reports/*</url-pattern>
-		</web-resource-collection>
-		<user-data-constraint>
-			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
-		</user-data-constraint>
-	</security-constraint>
-
 	<!-- Filters -->
 	<filter>
 		<filter-name>moderatorsFilter</filter-name>
