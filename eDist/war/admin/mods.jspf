@@ -1,4 +1,12 @@
 <div class="tab-pane active" id="moderators">
+	<div class="form-group"></div>
+	<div class="alert alert-info text-center">
+		<p>
+			<span class="glyphicon glyphicon-info-sign"></span> Adicione outros
+			administradores no <a id="mods-control-panel-link" href=""
+				class="alert-link">Painel de Controle</a>
+		</p>
+	</div>
 	<div class="text-center">
 		<img id="mods-loader" src="../img/loader.cache.gif" />
 	</div>
@@ -16,8 +24,10 @@
 		<tbody></tbody>
 	</table>
 	<ul class="pager">
-		<li id="previousMods" class="previous disabled"><a href="#moderators" onclick="previousPage();">&larr; Anteriores</a></li>
-		<li id="nextMods" class="next"><a href="#moderators" onclick="nextPage();">Próximos &rarr;</a></li>
+		<li id="previousMods" class="previous disabled"><a
+			href="#moderators" onclick="previousPage();">&larr; Anteriores</a></li>
+		<li id="nextMods" class="next"><a href="#moderators"
+			onclick="nextPage();">Próximos &rarr;</a></li>
 	</ul>
 </div>
 

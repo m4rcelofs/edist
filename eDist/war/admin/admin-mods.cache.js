@@ -7,6 +7,13 @@ function onModeratorsShow() {
 			}
 		}
 	}
+	
+	var loc = 'https://appengine.google.com';
+	if (edist.server.appId) {
+		loc += '/permissions?&app_id=s~' + edist.server.appId;
+	}
+	$('#mods-control-panel-link').attr('href', loc);
+	
 	loadModeratorsTable();
 }
 
