@@ -7,5 +7,7 @@ window.edist.header = {
 };
 
 $(document).ready(function() {
-	$('#muName').text('- ' + edist.header.muName);
+	if(edist.header.muName) {
+		$('#muNameHeader').text('- ' + edist.header.muName);
+	}
 });

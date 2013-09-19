@@ -21,11 +21,13 @@ public class AdminService {
 	public RegisteredUserQuery listRegisteredUsers(String encodedCursor) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			RegisteredUserQuery dto = new RegisteredUserQuery();
-			
-			List<RegisteredUser> registered = new DataAccessObject(pm).listUsers(encodedCursor);
+
+			List<RegisteredUser> registered = new DataAccessObject(pm)
+					.listUsers(encodedCursor);
 			dto.setResults(registered);
-			dto.setEncodedCursor(JDOCursorHelper.getCursor(registered).toWebSafeString());
-			
+			dto.setEncodedCursor(JDOCursorHelper.getCursor(registered)
+					.toWebSafeString());
+
 			return dto;
 		}
 	}
@@ -34,6 +36,15 @@ public class AdminService {
 	public boolean saveRegisteredUser(RegisteredUser user) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			return new DataAccessObject(pm).save(user);
+		}
+	}
+
+	@RemoteMethod
+	public boolean removeRegisteredUser(RegisteredUser user) {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			RegisteredUser dbUser = new DataAccessObject(pm).find(user);
+			pm.deletePersistent(dbUser);
+			return true;
 		}
 	}
 

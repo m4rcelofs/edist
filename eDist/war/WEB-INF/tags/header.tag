@@ -11,5 +11,5 @@
 		<li id="login" style="display: none;"><a href="#">Login</a></li>
 		<li id="logout" style="display: none;"><a href="#">Logout</a></li>
 	</ul>
-	<h3 class="text-muted">eDist <span id="muName"></span></h3>
+	<h3 class="text-muted">eDist <span id="muNameHeader"></span></h3>
 </div>

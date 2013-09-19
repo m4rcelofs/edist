@@ -5,138 +5,33 @@
 <t:wrapper>
 
 	<jsp:attribute name="imports">
+		<link href="../css/bootstrap-glyphicons.css" rel="stylesheet">
+	
 		<script type='text/javascript' src='dwr/engine.js'></script>
 		<script type='text/javascript' src='dwr/interface/AdminService.js'></script>
+		
+		<script type='text/javascript' src='admin-mods.cache.js'></script>
+		<script type='text/javascript' src='admin-dists.cache.js'></script>
+		<script type='text/javascript' src='admin-config.cache.js'></script>
 		<script type='text/javascript' src='admin.cache.js'></script>
-		<link href="../css/bootstrap-glyphicons.css" rel="stylesheet"> 
-    </jsp:attribute>
+	</jsp:attribute>
 
 	<jsp:body>
+			<div id="error-alert" class="alert alert-danger alert-dismissable"
+			style="display: none;">
+				<button type="button" class="close" aria-hidden="true"
+				onclick="$('#error-alert').fadeOut();">&times;</button>
+				<strong>Erro!</strong> Algo deu errado, por favor tente novamente.
+			</div>
+	
 			<ul class="nav nav-tabs">
-				<li class="active"><a href="#moderators" data-toggle="tab"
-				id="moderatorsTab"><span class="glyphicon glyphicon-user"></span> Usuários Registrados</a></li>
-				<li><a href="#distributors" data-toggle="tab"
-				id="distributorsTab"><span class="glyphicon glyphicon-lock"></span> Distribuidores</a></li>
-				<li><a href="#config" data-toggle="tab" id="configTab"><span
-					class="glyphicon glyphicon-cog"></span> Configurações</a></li>
-				<li><a
-				href="#controlPanel"
-				data-toggle="tab" id="controlPanelTab"><span
-					class="glyphicon glyphicon-list-alt"></span> Painel de Controle</a></li>
+				<%@ include file="tabs.jspf"%>
 			</ul>
-			
+
 			<div class="tab-content">
-				<!-- MODS -->
-				<div class="tab-pane active" id="moderators">
-					<div class="text-center">
-						<img id="mods-loader" src="../img/loader.cache.gif" />
-					</div>
-					<table class="table table-striped table-hover"
-					style="display: none;" id="mods-table">
-						<thead>
-							<tr>
-								<th style="display: none;">ID</th>
-								<th>Nome</th>
-								<th>E-mail</th>
-								<th>Cargo</th>
-								<th>Registro</th>
-								<th></th>
-							</tr>
-						</thead>
-						<tbody></tbody> 
-					</table>
-				</div>
-				<!-- DISTRIBUTORS -->
-				<div class="tab-pane" id="distributors">dists</div>
-				
-				<!-- CONFIG -->
-				<div class="tab-pane" id="config">
-					<div class="text-center">
-						<img id="config-loader" src="../img/loader.cache.gif" />
-					</div>
-					<form id="config-form" class="form-horizontal" role="form"
-					style="display: none;" onsubmit="return false;">
-						<div class="form-group"></div>
-						<div class="form-group">
-							<label class="control-label col-lg-6" for="muName">Nome da Unidade Militar</label>
-							<div class="col-lg-5">
-								<input type="text" class="form-control" id="muName"
-								placeholder="nome da mu" required>
-							</div>
-						</div> 
-						<!-- TODO config default -->
-						<div class="form-group">
-							<label class="col-lg-6 control-label" for="granularity">Granularidade da Configuração de Distribuição</label>
-							<div class="col-lg-5">
-								<select class="form-control" data-style="btn-inverse"
-								name="granularity" id="granularity">
-									<option value="MU">Unidade Militar</option>
-									<option value="GROUP">Grupo</option>
-									<option value="PLAYER">Jogador</option>
-								</select>
-							</div>
-							<a href="#" class="help" data-toggle="popover" title
-							data-content="Define qual o nível máximo de configuração das distribuições - você pode definir até uma configuração diferente para cada jogador! Caso essa configuração não exista, o nível superior será utilizado."
-							data-original-title="Granularidade">
-								<span class="glyphicon glyphicon-question-sign"></span>
-							</a>
-						</div> 
-						<div class="form-group">
-							<label class="col-lg-6 control-label" for="reportsAccess">Acesso aos Relatórios de Distribuição</label>
-							<div class="col-lg-5">
-								<select class="form-control" data-style="btn-inverse"
-								name="reportsAccess" id="reportsAccess">
-									<option value="ADMINS">Administradores</option>
-									<option value="MODS">Moderadores</option>
-									<option value="VIEWER">Visitantes Registrados</option>
-									<option value="PUBLIC">Público</option>
-								</select>
-							</div>
-							<a href="#" class="help" data-toggle="popover" title
-							data-content="Quem poderá acessar os relatórios de distribuição (FFs, itens enviados, etc)"
-							data-original-title="Nível de Acesso">
-								<span class="glyphicon glyphicon-question-sign"></span>
-							</a>
-						</div>
-						<div class="form-group">
-							<label class="control-label col-lg-6" for="playerReportsAccess">Acesso aos Relatórios de Jogadores</label>
-							<div class="col-lg-5">
-								<select class="form-control" data-style="btn-inverse"
-								name="playerReportsAccess" id="playerReportsAccess">
-									<option value="ADMINS">Administradores</option>
-									<option value="MODS">Moderadores</option>
-									<option value="VIEWER">Visitantes Registrados</option>
-									<option value="PUBLIC">Público</option>
-								</select>
-							</div>
-							<a href="#" class="help" data-toggle="popover" title
-							data-content="Quem poderá acessar os relatórios de jogadores (lutas, força, etc)"
-							data-original-title="Nível de Acesso">
-								<span class="glyphicon glyphicon-question-sign"></span>
-							</a>
-						</div>
-						<div class="form-group">
-							<label class="control-label col-lg-6" for="email">E-mail do Responsável</label>
-							<div class="input-group col-lg-5">
-								<input type="email" class="form-control" id="contactEmail"
-								placeholder="email@exemplo.com" required>
-								<span class="input-group-addon">
-									<span class="glyphicon glyphicon-envelope"></span>
-								</span>
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="col-lg-offset-6 col-lg-2">
-								<button type="submit" class="btn btn-primary"
-								onclick="saveConfig()">
-									<span class="glyphicon glyphicon-floppy-disk"></span>
-									 Salvar
-								</button>
-							</div>
-						</div>
-					</form>
-				</div>
+				<%@ include file="mods.jspf"%>
+				<%@ include file="dists.jspf"%>
+				<%@ include file="config.jspf"%>
 			</div>
 	</jsp:body>
 </t:wrapper>
-
