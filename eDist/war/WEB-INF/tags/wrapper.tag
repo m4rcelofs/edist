@@ -1,10 +1,14 @@
 <%@tag language="java" description="Default Wrapper"
 	pageEncoding="UTF-8"%>
 
-<%@tag import="com.google.appengine.api.utils.SystemProperty"%>
-<%@tag import="com.erep.dist.erep.eRepTimeCalculator"%>
+<%@tag import="java.util.Date"%>
 
 <%@attribute name="imports" fragment="true"%>
+
+<%
+	// 1 week
+	response.setDateHeader("Expires", new Date().getTime() + 604800000L);
+%>
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="pt-BR">

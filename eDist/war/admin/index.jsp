@@ -19,6 +19,10 @@
 				id="distributorsTab"><span class="glyphicon glyphicon-lock"></span> Distribuidores</a></li>
 				<li><a href="#config" data-toggle="tab" id="configTab"><span
 					class="glyphicon glyphicon-cog"></span> Configurações</a></li>
+				<li><a
+				href="#controlPanel"
+				data-toggle="tab" id="controlPanelTab"><span
+					class="glyphicon glyphicon-list-alt"></span> Painel de Controle</a></li>
 			</ul>
 			
 			<div class="tab-content">
@@ -31,7 +35,7 @@
 					style="display: none;" id="mods-table">
 						<thead>
 							<tr>
-								<th style="display:none;">ID</th>
+								<th style="display: none;">ID</th>
 								<th>Nome</th>
 								<th>E-mail</th>
 								<th>Cargo</th>

@@ -52,5 +52,7 @@ public class FightsVerificationTask implements DeferredTask {
 			}
 		}
 	}
+	
+	//FIXME figure out what's wrong
 
 }

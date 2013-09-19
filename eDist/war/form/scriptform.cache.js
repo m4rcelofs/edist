@@ -1,11 +1,4 @@
-//
-//	jQuery Validate example script
-//
-//	Prepared by David Cochran
-//
-//	Free for your use -- No warranties, no guarantees!
-//
-var imagedefault = 'http://www.erepublik.com/images/default_avatars/Citizens/default_male_142x142.gif';
+var imagedefault = '../img/default_male.cache.gif';
 var counter;	
 var player;
 var dt;

@@ -344,9 +344,10 @@ public class DataAccessObject {
 
 	public int getDailyRequestedFF(Player player, int eRepDay) {
 		Query q = pm.newQuery(Request.class);
-		
+
 		q.setFilter("player == playerParam && eRepDay == eRepDayParam");
-		q.declareParameters(Key.class.getName()+ " playerParam, " + Integer.class.getName() + " eRepDayParam");
+		q.declareParameters(Key.class.getName() + " playerParam, "
+				+ Integer.class.getName() + " eRepDayParam");
 		q.setResult("sum(requestedFF)");
 
 		Long response = ((Long) q.execute(player.getKey(), eRepDay));
@@ -475,6 +476,8 @@ public class DataAccessObject {
 
 	@Cacheable
 	public RegisteredUser find(User user) {
+		if (user == null)
+			return null;
 		try {
 			return pm.getObjectById(RegisteredUser.class, user.getUserId());
 		} catch (JDOObjectNotFoundException e) {

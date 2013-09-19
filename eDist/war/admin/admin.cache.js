@@ -4,6 +4,7 @@ $(document).ready(function() {
 	$('#moderatorsTab').on('show.bs.tab', onModeratorsShow);
 	$('#distributorsTab').on('show.bs.tab', onDistributorsShow);
 	$('#configTab').on('show.bs.tab', onConfigShow);
+	$('#controlPanelTab').on('show.bs.tab', onControlPanelShow);
 
 	onModeratorsShow();
 });
@@ -58,7 +59,7 @@ function addCustomUserRow(item) {
 }
 
 function onDistributorsShow() {
-
+	//TODO
 }
 
 function onConfigShow() {
@@ -95,4 +96,8 @@ function saveConfig() {
 			$('#config-form').removeAttr("disabled");
 		}
 	});
+}
+
+function onControlPanelShow() {
+	window.location.href = 'https://appengine.google.com/dashboard?&app_id=s~' + edist.server.appId;
 }

@@ -15,4 +15,7 @@
 <script type="text/javascript" src="../js/bootstrap-select.cache.js"></script>
 
 <script type="text/javascript" src="../js/menu.cache.js"></script>
+
 <script type="text/javascript" src="../js/dynamic/user.nocache.js"></script>
+<script type="text/javascript" src="../js/dynamic/header.nocache.js"></script>
+<script type="text/javascript" src="../js/dynamic/footer.nocache.js"></script>

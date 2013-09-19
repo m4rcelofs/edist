@@ -11,7 +11,6 @@
 		<property name="java.util.logging.config.file" value="WEB-INF/logging.properties" />
 	</system-properties>
 
-	<!-- Configure serving/caching of GWT files -->
 	<static-files>
 		<include path="**" />
 		<include path="**.nocache.*" expiration="0s" />
