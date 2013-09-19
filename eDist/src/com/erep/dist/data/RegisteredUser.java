@@ -38,6 +38,8 @@ public class RegisteredUser {
 	@RemoteProperty
 	private RegisteredUserRole	role;
 
+	public RegisteredUser() {}
+
 	public RegisteredUser(User user) {
 		this.gId = user.getUserId();
 		this.gEmail = user.getEmail();
@@ -72,6 +74,18 @@ public class RegisteredUser {
 
 	public void setRole(RegisteredUserRole role) {
 		this.role = role;
+	}
+
+	public void setgId(String gId) {
+		this.gId = gId;
+	}
+
+	public void setgEmail(String gEmail) {
+		this.gEmail = gEmail;
+	}
+
+	public void setRegisteredAt(Date registeredAt) {
+		this.registeredAt = registeredAt;
 	}
 
 }

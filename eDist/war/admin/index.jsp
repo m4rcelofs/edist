@@ -21,7 +21,7 @@
 			style="display: none;">
 				<button type="button" class="close" aria-hidden="true"
 				onclick="$('#error-alert').fadeOut();">&times;</button>
-				<strong>Erro!</strong> Algo deu errado, por favor tente novamente.
+				<strong>Ops!</strong> Algo deu errado, por favor tente novamente. <strong>):</strong>
 			</div>
 	
 			<ul class="nav nav-tabs">

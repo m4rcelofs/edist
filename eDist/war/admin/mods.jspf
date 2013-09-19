@@ -6,7 +6,6 @@
 		id="mods-table">
 		<thead>
 			<tr>
-				<th style="display: none;">ID</th>
 				<th>Nome</th>
 				<th>E-mail</th>
 				<th>Cargo</th>
@@ -16,6 +15,10 @@
 		</thead>
 		<tbody></tbody>
 	</table>
+	<ul class="pager">
+		<li id="previousMods" class="previous disabled"><a href="#moderators" onclick="previousPage();">&larr; Anteriores</a></li>
+		<li id="nextMods" class="next"><a href="#moderators" onclick="nextPage();">Próximos &rarr;</a></li>
+	</ul>
 </div>
 
 <div class="modal fade" id="removeUserConfirmation" tabindex="-1"

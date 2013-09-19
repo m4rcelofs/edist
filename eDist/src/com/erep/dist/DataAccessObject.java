@@ -558,6 +558,7 @@ public class DataAccessObject {
 
 		if (user.getRole() != null)
 			dbUser.setRole(user.getRole());
+		
 		CacheFacade.remove("com.erep.dist.DataAccessObject.find(User="
 				+ dbUser.getgEmail() + ";)");
 		return true;

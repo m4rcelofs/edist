@@ -21,6 +21,9 @@ function defaultSuccess() {
 	$('#error-alert').fadeOut();
 }
 
-function defaultError() {
+function defaultError(message) {
+	if (console.log) {
+		console.log(message);
+	}
 	$('#error-alert').fadeIn();
 }
