@@ -5,7 +5,8 @@ if (!window.edist) {
 window.edist.server = {
 	appId : '{appId}',
 	version : '{version}',
-	eRepDay : {eRepDay}
+	eRepDay : {eRepDay},
+	pageSize : {pageSize}
 };
 
 $(document).ready(function() {

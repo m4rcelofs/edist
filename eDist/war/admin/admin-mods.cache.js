@@ -43,7 +43,8 @@ function loadModeratorsTable(encodedCursor) {
 }
 
 function toggleNavigation(results) {
-	if (results.length < 20) {
+	$('#mods-current-page').text(edist.registeredUsersList.currentPage);
+	if (results.length < window.edist.server.pageSize) { 
 		$('#nextMods').addClass('disabled');
 	} else {
 		$('#nextMods').removeClass('disabled');
@@ -141,9 +142,11 @@ function createRemoveIcon(item) {
 }
 
 function confirmUserRemoval() {
-	AdminService.removeRegisteredUser({
-		gId : edist.registeredUsersList.selectedUserId
-	}, {
+	AdminService.removeRegisteredUser(
+		{
+			gId : edist.registeredUsersList.selectedUserId
+		},
+		{
 		callback : function(response) {
 			if (response) {
 				loadModeratorsTable();

@@ -50,9 +50,6 @@ public class FightsVerificationTask implements DeferredTask {
 				fights.setVerificationStatus(OK);
 				dbPlayer.setFightStatus(OK);
 			}
-		}
+		} 
 	}
-	
-	//FIXME figure out what's wrong
-
 }

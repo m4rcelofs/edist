@@ -26,6 +26,7 @@
 	<ul class="pager">
 		<li id="previousMods" class="previous disabled"><a
 			href="#moderators" onclick="previousPage();">&larr; Anteriores</a></li>
+		<li id="mods-current-page" class="text-center"></li>
 		<li id="nextMods" class="next"><a href="#moderators"
 			onclick="nextPage();">Próximos &rarr;</a></li>
 	</ul>

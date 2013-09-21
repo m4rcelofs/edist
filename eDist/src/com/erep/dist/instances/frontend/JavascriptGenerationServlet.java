@@ -15,6 +15,7 @@ import org.apache.commons.io.IOUtils;
 import com.erep.dist.CloseablePM;
 import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
+import com.erep.dist.ServerConstants;
 import com.erep.dist.auth.AuthHelper;
 import com.erep.dist.cache.Cacheable;
 import com.erep.dist.data.RegisteredUser;
@@ -112,6 +113,7 @@ public class JavascriptGenerationServlet extends HttpServlet {
 		template = replace(template, "{appId}", SystemProperty.applicationId.get());
 		template = replace(template, "{version}", SystemProperty.applicationVersion.get());
 		template = replace(template, "{eRepDay}", "" + eRepTimeCalculator.geteRepDay());
+		template = replace(template, "{pageSize}", "" + ServerConstants.QUERY_PAGE_LIMIT);
 		resp.getWriter().write(template);
 	}
 

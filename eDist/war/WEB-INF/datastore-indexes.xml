@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<datastore-indexes autoGenerate="true">
+
+	<datastore-index kind="Request" ancestor="true" source="manual">
+		<property name="eRepDay" direction="asc" />
+	</datastore-index>
+
+	<datastore-index kind="DailyFights" ancestor="true" source="manual">
+		<property name="day" direction="asc" />
+	</datastore-index>
+
+</datastore-indexes>
