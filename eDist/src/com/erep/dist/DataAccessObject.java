@@ -22,6 +22,7 @@ import com.erep.dist.data.DailyWork;
 import com.erep.dist.data.Distributor;
 import com.erep.dist.data.DistributorRoot;
 import com.erep.dist.data.Employer;
+import com.erep.dist.data.EmployerRoot;
 import com.erep.dist.data.Licence;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
@@ -514,6 +515,15 @@ public class DataAccessObject {
 		return pm.getObjectById(Distributor.class, KeyFactory.createKey(
 				distributorRootKey(), Distributor.class.getSimpleName(),
 				ServerConstants.DEFAULT_ID));
+	}
+
+	private EmployerRoot employerRoot() {
+		return pm.getObjectById(EmployerRoot.class, employerRootKey());
+	}
+
+	private static Key employerRootKey() {
+		return KeyFactory.createKey(EmployerRoot.class.getSimpleName(),
+				ServerConstants.DEFAULT_ID);
 	}
 
 	private PlayerGroupRoot groupRoot() {

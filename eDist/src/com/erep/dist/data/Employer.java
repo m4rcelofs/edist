@@ -18,19 +18,22 @@ public class Employer implements HasEncodedKey {
 
 	@PrimaryKey
 	@Persistent
-	private Key		key;
+	private Key				key;
 
 	@NotPersistent
 	@RemoteProperty
-	private String	encodedKey;
+	private String			encodedKey;
 
 	@Persistent
 	@RemoteProperty
-	private String	erId;
+	private String			erId;
 
 	@Persistent
 	@RemoteProperty
-	private String	name;
+	private String			name;
+
+	@Persistent
+	private EmployerRoot	root;
 
 	public Employer() {}
 
@@ -76,6 +79,14 @@ public class Employer implements HasEncodedKey {
 
 	public void setErId(String erId) {
 		this.erId = erId;
+	}
+
+	public EmployerRoot getRoot() {
+		return root;
+	}
+
+	public void setRoot(EmployerRoot root) {
+		this.root = root;
 	}
 
 }

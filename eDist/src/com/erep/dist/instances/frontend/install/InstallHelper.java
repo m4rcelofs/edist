@@ -4,6 +4,7 @@ import com.erep.dist.ServerConstants;
 import com.erep.dist.data.DistConfig;
 import com.erep.dist.data.Distributor;
 import com.erep.dist.data.DistributorRoot;
+import com.erep.dist.data.EmployerRoot;
 import com.erep.dist.data.Licence;
 import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.PlayerGroupRoot;
@@ -57,6 +58,17 @@ public class InstallHelper {
 
 	private static Key distributorRootKey() {
 		return KeyFactory.createKey(DistributorRoot.class.getSimpleName(),
+				ServerConstants.DEFAULT_ID);
+	}
+
+	public static EmployerRoot newEmployerRoot() {
+		EmployerRoot root = new EmployerRoot();
+		root.setKey(employerRootKey());
+		return root;
+	}
+
+	private static Key employerRootKey() {
+		return KeyFactory.createKey(EmployerRoot.class.getSimpleName(),
 				ServerConstants.DEFAULT_ID);
 	}
 
