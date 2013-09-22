@@ -80,9 +80,9 @@ function addCustomUserRow(item) {
 	var name = '<input type="text" id="name' + item.gId
 			+ '" placeholder="nome/nick">';
 
-	var select = createRoleSelect(item);
-	var saveIcon = createSaveIcon(item);
-	var removeIcon = createRemoveIcon(item);
+	var select = createUserRoleSelect(item);
+	var saveIcon = createUserSaveIcon(item);
+	var removeIcon = createUserRemoveIcon(item);
 
 	var row = '<tr id="' + item.gId + '"><td>' + name
 			+ '</td><td>' + item.gEmail + '</td><td>' + select + '</td><td>'
@@ -94,7 +94,7 @@ function addCustomUserRow(item) {
 	$('#role' + item.gId).val(item.role);
 }
 
-function createRoleSelect(item) {
+function createUserRoleSelect(item) {
 	var select = '<select class="form-control" data-style="btn-inverse"	name="role" id="role'
 			+ item.gId
 			+ '"><option value="NONE">Nenhum</option><option value="VIEWER">Visitante</option>'
@@ -102,7 +102,7 @@ function createRoleSelect(item) {
 	return select;
 }
 
-function createSaveIcon(item) {
+function createUserSaveIcon(item) {
 	var save = '<a href="javascript:void(0);" role="button" '
 		+ 'onclick="saveUser(\''
 		+ item.gId
@@ -133,7 +133,7 @@ function saveUser(userId) {
 	
 }
 
-function createRemoveIcon(item) {
+function createUserRemoveIcon(item) {
 	var remove = '<a href="#removeUserConfirmation" role="button" data-toggle="modal"'
 			+ 'onclick="edist.registeredUsersList.selectedUserId=\''
 			+ item.gId

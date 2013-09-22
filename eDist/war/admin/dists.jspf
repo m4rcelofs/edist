@@ -1,2 +1,57 @@
-<div class="tab-pane" id="distributors">dists</div>
-<!-- TODO -->
+<div class="tab-pane" id="distributors">
+	<div class="text-center">
+		<img id="dists-loader" src="../img/loader.cache.gif" />
+	</div>
+
+	<table class="table table-striped table-hover" style="display: none;"
+		id="dists-table">
+		<thead>
+			<tr>
+				<th>Nome</th>
+				<th>E-mail</th>
+				<th>Senha</th>
+				<th>Último Acesso</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
+
+	<div class="panel-group" id="add-distributor-accordion">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<a class="accordion-toggle" data-toggle="collapse"
+					data-parent="#add-distributor-accordion" href="#collapseOne"><span
+					class="glyphicon glyphicon-plus-sign"></span> Adicionar
+					Distribuidor </a>
+			</div>
+			<div id="collapseOne" class="panel-collapse collapse">
+				<div class="panel-body">
+					<form id="add-dist-form" class="form-inline" role="form"
+						onsubmit="return false;">
+						<div class="form-group">
+							<label class="sr-only" for="new-dist-name">Nome</label> <input
+								type="text" class="form-control" id="new-dist-name"
+								placeholder="Nome">
+						</div>
+						<div class="form-group">
+							<label class="sr-only" for="new-dist-email">Email</label> <input
+								type="email" class="form-control" id="new-dist-email"
+								placeholder="Email">
+						</div>
+						<div class="form-group">
+							<label class="sr-only" for="new-dist-password">Senha</label> <input
+								type="password" class="form-control" id="new-dist-password"
+								placeholder="Senha">
+						</div>
+						<button id="save-new-dist" type="submit" class="btn btn-primary"
+							onclick="addDistributor()" data-loading-text="Salvando..."
+							autocomplete="off">
+							<span class="glyphicon glyphicon-floppy-disk"></span> Salvar
+						</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

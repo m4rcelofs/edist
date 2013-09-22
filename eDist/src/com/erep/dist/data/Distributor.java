@@ -37,6 +37,7 @@ public class Distributor implements HasEncodedKey {
 	private String	email;
 
 	@Persistent
+	@RemoteProperty
 	private long	lastAccessTimestamp;
 
 	@Persistent(defaultFetchGroup = "false")
