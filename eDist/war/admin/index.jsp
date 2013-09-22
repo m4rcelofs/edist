@@ -5,10 +5,10 @@
 <t:wrapper>
 
 	<jsp:attribute name="imports">
-		<link href="../css/bootstrap-glyphicons.css" rel="stylesheet">
-	
-		<script type='text/javascript' src='dwr/engine.js'></script>
-		<script type='text/javascript' src='dwr/interface/AdminService.js'></script>
+<!-- 		<script type='text/javascript' src='dwr/engine.js'></script> -->
+<!-- 		<script type='text/javascript' src='dwr/interface/AdminService.js'></script> -->
+		<script type='text/javascript' src='admin-engine-20130921.cache.js'></script>
+		<script type='text/javascript' src='admin-interface-20130921.cache.js'></script>
 		
 		<script type='text/javascript' src='admin-mods.cache.js'></script>
 		<script type='text/javascript' src='admin-dists.cache.js'></script>

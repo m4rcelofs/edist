@@ -37,12 +37,12 @@
 						<div class="form-group">
 							<label class="sr-only" for="new-dist-email">Email</label> <input
 								type="email" class="form-control" id="new-dist-email"
-								placeholder="Email">
+								placeholder="Email" required>
 						</div>
 						<div class="form-group">
 							<label class="sr-only" for="new-dist-password">Senha</label> <input
 								type="password" class="form-control" id="new-dist-password"
-								placeholder="Senha">
+								placeholder="Senha" required>
 						</div>
 						<button id="save-new-dist" type="submit" class="btn btn-primary"
 							onclick="addDistributor()" data-loading-text="Salvando..."
