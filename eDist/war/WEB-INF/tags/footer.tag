@@ -4,8 +4,7 @@
 
 <div class="footer">
 	<div class="pull-right">
-		<img
-			src="../img/appengine-noborder-120x30.cache.gif"
+		<img src="../img/appengine-noborder-120x30.cache.gif"
 			alt="Powered by Google App Engine" />
 	</div>
 	<p>
@@ -16,4 +15,10 @@
 			href="http://www.erepublik.com/en/citizen/profile/3885795">Guilpas</a>
 		e <a href="http://www.erepublik.com/en/citizen/profile/5313713">nW0lf</a>
 	</p>
+	<p>
+		<a
+			href="https://bitbucket.org/marcelofs/edist/issues?status=new&status=open">Bugs
+			e Sugestões</a> | <a href="https://edist-licence.appspot.com/">Homepage</a>
+	</p>
+	
 </div>

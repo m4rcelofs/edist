@@ -2,7 +2,6 @@
 
 <div class="header">
 	<ul class="nav nav-pills pull-right">
-		<li id="contact"><a href="../contact/">Contato</a></li>
 		<li id="form"><a href="../form/">Formulário</a></li>
 		<li id="admin" style="display: none;"><a href="../admin/">Administração</a></li>
 		<li id="management" style="display: none;"><a href="../management/">Moderação</a></li>
