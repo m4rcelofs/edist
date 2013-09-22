@@ -20,6 +20,7 @@ import com.erep.dist.data.DailyFights;
 import com.erep.dist.data.DailyStats;
 import com.erep.dist.data.DailyWork;
 import com.erep.dist.data.Distributor;
+import com.erep.dist.data.DistributorRoot;
 import com.erep.dist.data.Employer;
 import com.erep.dist.data.Licence;
 import com.erep.dist.data.Player;
@@ -72,7 +73,10 @@ public class DataAccessObject {
 			return false;
 		try {
 			dist.setPassword(encrypt(dist.getPassword()));
+
+			distributorRoot().addDistributor(dist);
 			pm.makePersistent(dist);
+
 			return true;
 		} catch (Exception e) {
 			logger.log(Level.SEVERE,
@@ -117,7 +121,9 @@ public class DataAccessObject {
 	@SuppressWarnings("unchecked")
 	public List<Distributor> listDistributors() {
 		Query q = pm.newQuery(Distributor.class);
-		return (List<Distributor>) q.execute();
+		q.setFilter("root == rootParam");
+		q.declareParameters(Key.class.getName() + " rootParam");
+		return (List<Distributor>) q.execute(distributorRootKey());
 	}
 
 	public boolean save(PlayerGroup group) {
@@ -491,9 +497,19 @@ public class DataAccessObject {
 		return pm.getObjectById(RegisteredUser.class, user.getgId());
 	}
 
+	private DistributorRoot distributorRoot() {
+		return pm.getObjectById(DistributorRoot.class, distributorRootKey());
+	}
+
+	private Key distributorRootKey() {
+		return KeyFactory.createKey(DistributorRoot.class.getSimpleName(),
+				ServerConstants.DEFAULT_ID);
+	}
+
 	private Distributor defaultDistributor() {
 		return pm.getObjectById(Distributor.class, KeyFactory.createKey(
-				Distributor.class.getSimpleName(), ServerConstants.DEFAULT_ID));
+				distributorRootKey(), Distributor.class.getSimpleName(),
+				ServerConstants.DEFAULT_ID));
 	}
 
 	private PlayerGroup defaultGroup() {
@@ -558,7 +574,7 @@ public class DataAccessObject {
 
 		if (user.getRole() != null)
 			dbUser.setRole(user.getRole());
-		
+
 		CacheFacade.remove("com.erep.dist.DataAccessObject.find(User="
 				+ dbUser.getgEmail() + ";)");
 		return true;

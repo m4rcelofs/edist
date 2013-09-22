@@ -22,28 +22,31 @@ public class Distributor implements HasEncodedKey {
 
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private Key		key;
+	private Key				key;
+
+	@Persistent
+	private DistributorRoot	root;
 
 	@NotPersistent
 	@RemoteProperty
-	private String	encodedKey;
+	private String			encodedKey;
 
 	@Persistent
 	@RemoteProperty
-	private String	name;
+	private String			name;
 
 	@Persistent(defaultFetchGroup = "false")
 	@RemoteProperty
-	private String	email;
+	private String			email;
 
 	@Persistent
 	@RemoteProperty
-	private long	lastAccessTimestamp;
+	private long			lastAccessTimestamp;
 
 	@Persistent(defaultFetchGroup = "false")
 	@RemoteProperty
 	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
-	private String	password;
+	private String			password;
 
 	public Key getKey() {
 		return key;
@@ -95,6 +98,14 @@ public class Distributor implements HasEncodedKey {
 
 	public void setLastAccessTimestamp(long lastAccessTimestamp) {
 		this.lastAccessTimestamp = lastAccessTimestamp;
+	}
+
+	public DistributorRoot getRoot() {
+		return root;
+	}
+
+	public void setRoot(DistributorRoot root) {
+		this.root = root;
 	}
 
 }

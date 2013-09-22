@@ -3,6 +3,7 @@ package com.erep.dist.instances.frontend.install;
 import com.erep.dist.ServerConstants;
 import com.erep.dist.data.DistConfig;
 import com.erep.dist.data.Distributor;
+import com.erep.dist.data.DistributorRoot;
 import com.erep.dist.data.Licence;
 import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.ServerConfig;
@@ -10,6 +11,7 @@ import com.erep.dist.data.enums.ConfigGranularity;
 import com.erep.dist.data.enums.ReportsAccessLevel;
 import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.data.enums.ResourceQuality;
+import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 
 public class InstallHelper {
@@ -31,17 +33,30 @@ public class InstallHelper {
 		distConfig.setRocketAllowed(false);
 		distConfig.setAllowedType(RequestType.WEAPONS_FOOD);
 		distConfig.setAllowedWeaponQuality(ResourceQuality.Q7);
-
-		Distributor distributor = new Distributor();
-		distributor.setEmail("exemplo@exemplo.com");
-		distributor.setPassword("");
-		distributor.setKey(KeyFactory.createKey(
-				Distributor.class.getSimpleName(), ServerConstants.DEFAULT_ID));
-
-		distConfig.setDistributor(distributor);
+		distConfig.setDistributor(defaultDistributor());
 		config.setMuConfig(distConfig);
 
 		return config;
+	}
+
+	private static Distributor defaultDistributor() {
+		Distributor distributor = new Distributor();
+		distributor.setEmail("exemplo@exemplo.com");
+		distributor.setPassword("");
+		distributor.setKey(KeyFactory.createKey(distributorRootKey(),
+				Distributor.class.getSimpleName(), ServerConstants.DEFAULT_ID));
+		return distributor;
+	}
+	
+	public static DistributorRoot newDistributorRoot() {
+		DistributorRoot root =  new DistributorRoot();
+		root.setKey(distributorRootKey());
+		return root;
+	}
+
+	private static Key distributorRootKey() {
+		return KeyFactory.createKey(DistributorRoot.class.getSimpleName(),
+				ServerConstants.DEFAULT_ID);
 	}
 
 	public static PlayerGroup newDefaultGroup() {

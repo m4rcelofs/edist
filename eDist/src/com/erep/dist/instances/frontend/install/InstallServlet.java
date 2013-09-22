@@ -89,6 +89,7 @@ public class InstallServlet extends HttpServlet {
 	}
 
 	private void install(PersistenceManager pm) {
+		pm.makePersistent(InstallHelper.newDistributorRoot());
 		pm.makePersistent(InstallHelper.newDefaultGroup());
 		pm.makePersistent(InstallHelper.newDefaultConfig());
 		pm.makePersistent(InstallHelper.newDefaultLicence());

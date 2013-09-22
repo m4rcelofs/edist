@@ -8,9 +8,9 @@ function loadDistributorsTable() {
 	$('#dists-table > tbody > tr').remove();
 	AdminService.listDistributors({
 		callback : function(response) {
-			
+
 			console.log(JSON.stringify(response));
-			
+
 			response.forEach(function(item) {
 				addCustomDistributorRow(item);
 			});
@@ -32,7 +32,7 @@ function addCustomDistributorRow(item) {
 
 	var password = '<input type="password" id="password' + item.encodedKey
 			+ '" placeholder="senha">';
-	
+
 	var date = 'Não acessado';
 	if (item.lastAccessTimestamp) {
 		date = new Date(item.lastAccessTimestamp).toLocaleString();
@@ -41,8 +41,8 @@ function addCustomDistributorRow(item) {
 	var saveIcon = createDistSaveIcon(item);
 
 	var row = '<tr id="' + item.encodedKey + '"><td>' + name + '</td><td>'
-			+ email + '</td><td>' + password + '</td><td>' + date
-			+ '</td><td>' + saveIcon + '</td></tr>';
+			+ email + '</td><td>' + password + '</td><td>' + date + '</td><td>'
+			+ saveIcon + '</td></tr>';
 
 	$('#dists-table > tbody').append(row);
 
@@ -52,53 +52,50 @@ function addCustomDistributorRow(item) {
 
 function createDistSaveIcon(item) {
 	var save = '<a href="javascript:void(0);" role="button" '
-		+ 'onclick="saveDistributor(\''
-		+ item.encodedKey
-		+ '\');"><span class="glyphicon glyphicon-floppy-disk"></span></a>';
+			+ 'onclick="saveDistributor(\'' + item.encodedKey
+			+ '\');"><span class="glyphicon glyphicon-floppy-disk"></span></a>';
 	return save;
 }
 
 function saveDistributor(encodedKey) {
 	var distributor = {
-			encodedKey : encodedKey,
-			name : $('#name' + encodedKey).val(),
-			email : $('#email' + encodedKey).val(),
-			password : $('#password' + encodedKey).val()
+		encodedKey : encodedKey,
+		name : $('#name' + encodedKey).val(),
+		email : $('#email' + encodedKey).val(),
+		password : $('#password' + encodedKey).val()
 	}
 	AdminService.saveDistributor(distributor, {
 		callback : function(response) {
-			if(response) {
+			if (response) {
 				$('#' + encodedKey).addClass('success');
-				setTimeout(function(){
-					$('#' + encodedKey).removeClass('success');	
+				setTimeout(function() {
+					$('#' + encodedKey).removeClass('success');
 				}, 3000);
 			} else {
 				defaultError();
 			}
-		}, 
-		onError: defaultError
+		},
+		onError : defaultError
 	});
 }
 
 function addDistributor() {
 	var distributor = {
-			name : $('#new-dist-name').val(),
-			email : $('#new-dist-email').val(),
-			password : $('#new-dist-password').val()
+		name : $('#new-dist-name').val(),
+		email : $('#new-dist-email').val(),
+		password : $('#new-dist-password').val()
 	}
 	$('#add-dist-form').attr("disabled", "disabled");
 	AdminService.saveDistributor(distributor, {
 		callback : function(response) {
-			if(response) {
-				setTimeout(function(){
-					$('#add-dist-form').trigger('reset');
-					$('#add-dist-form').removeAttr("disabled");
-					loadDistributorsTable();
-				}, 1000); //this is bad
+			if (response) {
+				$('#add-dist-form').trigger('reset');
+				$('#add-dist-form').removeAttr("disabled");
+				loadDistributorsTable();
 			} else {
 				defaultError();
 			}
-		}, 
-		onError: defaultError
+		},
+		onError : defaultError
 	});
 }
