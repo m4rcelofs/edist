@@ -1,0 +1,51 @@
+package com.erep.dist.data;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
+
+import com.google.appengine.api.datastore.Key;
+
+/**
+ * Vanilla entity to force strong consistency on PlayerGroup <br />
+ * All PlayerGroups should have this entity as ancestor
+ * 
+ * @author Marcelo
+ */
+@PersistenceCapable(identityType = IdentityType.APPLICATION)
+public class PlayerGroupRoot {
+
+	@PrimaryKey
+	@Persistent
+	private Key					key;
+
+	@Persistent(mappedBy = "root")
+	public List<PlayerGroup>	groups;
+
+	public Key getKey() {
+		return key;
+	}
+
+	public void setKey(Key key) {
+		this.key = key;
+	}
+
+	public List<PlayerGroup> getGroups() {
+		return groups;
+	}
+
+	public void setGroups(List<PlayerGroup> groups) {
+		this.groups = groups;
+	}
+
+	public void addGroup(PlayerGroup group) {
+		if (getGroups() == null)
+			setGroups(new ArrayList<PlayerGroup>());
+		getGroups().add(group);
+	}
+
+}

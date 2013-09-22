@@ -23,19 +23,22 @@ public class PlayerGroup implements HasEncodedKey {
 
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private Key			key;
+	private Key				key;
 
 	@NotPersistent
 	@RemoteProperty
-	private String		encodedKey;
+	private String			encodedKey;
 
 	@Persistent
 	@RemoteProperty
-	private String		groupName;
+	private String			groupName;
 
 	@Persistent
 	@RemoteProperty
-	private DistConfig	config;
+	private DistConfig		config;
+
+	@Persistent
+	private PlayerGroupRoot	root;
 
 	public Key getKey() {
 		return key;
@@ -127,5 +130,13 @@ public class PlayerGroup implements HasEncodedKey {
 			return config.getWorkVerification();
 		// fallback to default
 		return null;
+	}
+
+	public PlayerGroupRoot getRoot() {
+		return root;
+	}
+
+	public void setRoot(PlayerGroupRoot root) {
+		this.root = root;
 	}
 }

@@ -6,6 +6,7 @@ import com.erep.dist.data.Distributor;
 import com.erep.dist.data.DistributorRoot;
 import com.erep.dist.data.Licence;
 import com.erep.dist.data.PlayerGroup;
+import com.erep.dist.data.PlayerGroupRoot;
 import com.erep.dist.data.ServerConfig;
 import com.erep.dist.data.enums.ConfigGranularity;
 import com.erep.dist.data.enums.ReportsAccessLevel;
@@ -47,9 +48,9 @@ public class InstallHelper {
 				Distributor.class.getSimpleName(), ServerConstants.DEFAULT_ID));
 		return distributor;
 	}
-	
+
 	public static DistributorRoot newDistributorRoot() {
-		DistributorRoot root =  new DistributorRoot();
+		DistributorRoot root = new DistributorRoot();
 		root.setKey(distributorRootKey());
 		return root;
 	}
@@ -59,12 +60,23 @@ public class InstallHelper {
 				ServerConstants.DEFAULT_ID);
 	}
 
+	public static PlayerGroupRoot newPlayerGroupRoot() {
+		PlayerGroupRoot root = new PlayerGroupRoot();
+		root.setKey(groupRootKey());
+		return root;
+	}
+
+	private static Key groupRootKey() {
+		return KeyFactory.createKey(PlayerGroupRoot.class.getSimpleName(),
+				ServerConstants.DEFAULT_ID);
+	}
+
 	public static PlayerGroup newDefaultGroup() {
 		PlayerGroup group = new PlayerGroup();
 
 		group.setGroupName("Default");
-		group.setKey(KeyFactory.createKey(PlayerGroup.class.getSimpleName(),
-				ServerConstants.DEFAULT_ID));
+		group.setKey(KeyFactory.createKey(groupRootKey(),
+				PlayerGroup.class.getSimpleName(), ServerConstants.DEFAULT_ID));
 
 		return group;
 	}

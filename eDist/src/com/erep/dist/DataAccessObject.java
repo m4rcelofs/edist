@@ -25,6 +25,7 @@ import com.erep.dist.data.Employer;
 import com.erep.dist.data.Licence;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
+import com.erep.dist.data.PlayerGroupRoot;
 import com.erep.dist.data.RegisteredUser;
 import com.erep.dist.data.Request;
 import com.erep.dist.data.ServerConfig;
@@ -134,6 +135,7 @@ public class DataAccessObject {
 	}
 
 	private boolean add(PlayerGroup group) {
+		groupRoot().addGroup(group);
 		pm.makePersistent(group);
 		return true;
 	}
@@ -177,7 +179,9 @@ public class DataAccessObject {
 	@SuppressWarnings("unchecked")
 	public List<PlayerGroup> listGroups() {
 		Query q = pm.newQuery(PlayerGroup.class);
-		return (List<PlayerGroup>) q.execute();
+		q.setFilter("root == rootParam");
+		q.declareParameters(Key.class.getName() + " rootParam");
+		return (List<PlayerGroup>) q.execute(groupRootKey());
 	}
 
 	public boolean save(Player player) {
@@ -512,9 +516,19 @@ public class DataAccessObject {
 				ServerConstants.DEFAULT_ID));
 	}
 
+	private PlayerGroupRoot groupRoot() {
+		return pm.getObjectById(PlayerGroupRoot.class, groupRootKey());
+	}
+
+	private Key groupRootKey() {
+		return KeyFactory.createKey(PlayerGroupRoot.class.getSimpleName(),
+				ServerConstants.DEFAULT_ID);
+	}
+
 	private PlayerGroup defaultGroup() {
 		return pm.getObjectById(PlayerGroup.class, KeyFactory.createKey(
-				PlayerGroup.class.getSimpleName(), ServerConstants.DEFAULT_ID));
+				groupRootKey(), PlayerGroup.class.getSimpleName(),
+				ServerConstants.DEFAULT_ID));
 	}
 
 	@Cacheable
