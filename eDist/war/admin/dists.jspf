@@ -27,6 +27,10 @@
 			</div>
 			<div id="collapseOne" class="panel-collapse collapse">
 				<div class="panel-body">
+					<div class="alert alert-info">
+						<strong>Atenção!</strong> Utilize somente contas de jogadores
+						Bronze+, pois captchas não são suportados.
+					</div>
 					<form id="add-dist-form" class="form-inline" role="form"
 						onsubmit="return false;">
 						<div class="form-group">
