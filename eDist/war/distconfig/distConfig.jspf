@@ -1,0 +1,218 @@
+<div class="modal fade" id="distConfigDialog" tabindex="-10"
+	role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3>Configuração da Distribuição</h3>
+			</div>
+			<div class="modal-body">
+				<form id="dist-config-form" class="form-horizontal" role="form"
+					onsubmit="return false;">
+					<div class="panel-group" id="verification-accordion">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title">
+									<span class="glyphicon glyphicon-cog"></span> <a
+										class="accordion-toggle" data-toggle="collapse"
+										data-parent="#verification-accordion"
+										href="#basic-distconfig-panel"> Configuração Base</a>
+								</h4>
+							</div>
+							<div id="basic-distconfig-panel"
+								class="panel-collapse collapse in">
+								<div class="panel-body">
+									<div class="form-group">
+										<label class="control-label col-lg-6" for="maxFF">Máximo
+											de FFs</label>
+										<div class="col-lg-5">
+											<input type="number" class="form-control" id="maxFF"
+												placeholder="FF" required min="1">
+										</div>
+										<a href="#" class="help" data-toggle="popover" title
+											data-content="Uma Food Fight (FF) é igual a 10 de energia"
+											data-original-title="Food Fight"> <span
+											class="glyphicon glyphicon-question-sign"></span>
+										</a>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-lg-6" for="rocketAllowed">Distribuição
+											de foguetes ativada</label>
+										<div class="col-lg-5">
+											<input type="checkbox" class="form-control"
+												id="rocketAllowed">
+										</div>
+										<a href="#" class="help" data-toggle="popover" title
+											data-content="Envia armas de todas as qualidades. O nível do foguete é definido no cadastro do jogador."
+											data-original-title="Foguetes"> <span
+											class="glyphicon glyphicon-question-sign"></span>
+										</a>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-lg-6" for="autoDist">Distribuição
+											automática ativada</label>
+										<div class="col-lg-5">
+											<input type="checkbox" class="form-control" id="autoDist">
+										</div>
+										<a href="#" class="help" data-toggle="popover" title
+											data-content="Ativa a distribuição automática de FFs na virada do dia (foguetes não são enviados)"
+											data-original-title="Distribuição automática"> <span
+											class="glyphicon glyphicon-question-sign"></span>
+										</a>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-lg-6" for="distType">Tipo
+											da Distribuição</label>
+										<div class="col-lg-5">
+											<select class="form-control" data-style="btn-inverse"
+												name="distType" id="distType">
+												<option value="WEAPONS_FOOD">Armas + Alimentos</option>
+												<option value="WEAPONS">Somente Armas</option>
+												<option value="FOOD">Somente Alimentos</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-lg-6" for="distWeaponQuality">Qualidade
+											das Armas</label>
+										<div class="col-lg-5">
+											<select class="form-control" data-style="btn-inverse"
+												name="distWeaponQuality" id="distWeaponQuality">
+												<option value="Q7">Q7</option>
+												<option value="Q6">Q6</option>
+												<option value="Q5">Q5</option>
+												<option value="Q4">Q4</option>
+												<option value="Q3">Q3</option>
+												<option value="Q2">Q2</option>
+												<option value="Q1">Q1</option>
+											</select>
+										</div>
+										<a href="#" class="help" data-toggle="popover" title
+											data-content="A qualidade dos alimentos é escolhida com base no disponível"
+											data-original-title="Qualidade"> <span
+											class="glyphicon glyphicon-question-sign"></span>
+										</a>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-lg-6"
+											for="dist-config-distributor">Distribuidor</label>
+										<div class="col-lg-5">
+											<select class="form-control" data-style="btn-inverse"
+												name="dist-config-distributor" id="dist-config-distributor">
+												<!-- TODO -->
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title">
+									<span class="glyphicon glyphicon-screenshot"></span> <a
+										class="accordion-toggle" data-toggle="collapse"
+										data-parent="#verification-accordion"
+										href="#fight-verification-panel"> Verificação de Lutas </a>
+								</h4>
+							</div>
+							<div id="fight-verification-panel"
+								class="panel-collapse collapse">
+								<div class="panel-body">
+									<div class="form-group">
+										<label class="control-label col-lg-6 sr-only"
+											for="fight-verification-action">Ação</label>
+										<div class="col-lg-5">
+											<select class="form-control" data-style="btn-inverse"
+												name="fight-verification-action"
+												id="fight-verification-action">
+												<option value="NONE">Não fazer nada...</option>
+												<option value="WARN">Avisar...</option>
+												<option value="TEMP_BAN">Bloquear distribuição...</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-lg-6"
+											for="fight-verification-pct">... caso o jogador não
+											lute ao menos ...</label>
+										<div class="col-lg-5">
+											<div class="input-group">
+												<input type="number" class="form-control"
+													id="fight-verification-pct" required min="0"> <span
+													class="input-group-addon"> %</span>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-lg-6"
+											for="fight-verification-days">... das FFs
+											requisitadas nos últimos ...</label>
+										<div class="col-lg-5">
+											<div class="input-group">
+												<input type="number" class="form-control"
+													id="fight-verification-days" required><span
+													class="input-group-addon" min="0"> dias</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h4 class="panel-title">
+									<span class="glyphicon glyphicon-wrench"></span> <a
+										class="accordion-toggle" data-toggle="collapse"
+										data-parent="#verification-accordion"
+										href="#work-verification-panel">Verificação de Trabalho</a>
+								</h4>
+							</div>
+							<div id="work-verification-panel" class="panel-collapse collapse">
+								<div class="panel-body">
+									<div class="form-group">
+										<label class="control-label col-lg-6 sr-only"
+											for="work-verification-action">Ação</label>
+										<div class="col-lg-5">
+											<select class="form-control" data-style="btn-inverse"
+												name="work-verification-action"
+												id="work-verification-action">
+												<option value="NONE">Não fazer nada...</option>
+												<option value="WARN">Avisar...</option>
+												<option value="TEMP_BAN">Bloquear distribuição...</option>
+											</select>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-lg-6"
+											for="work-verification-pct">... caso o jogador não
+											trabalhe ao menos ...</label>
+										<div class="col-lg-5">
+											<div class="input-group">
+												<input type="number" class="form-control"
+													id="work-verification-pct" required min="0"> <span
+													class="input-group-addon"> %</span>
+											</div>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-lg-6"
+											for="work-verification-days">... dos últimos ...</label>
+										<div class="col-lg-5">
+											<div class="input-group">
+												<input type="number" class="form-control"
+													id="work-verification-days" required><span
+													class="input-group-addon" min="0"> dias</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-primary" data-dismiss="modal" onclick="">OK</button>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,4 +1,5 @@
 <div class="tab-pane" id="config">
+
 	<div class="text-center">
 		<img id="config-loader" src="../img/loader.cache.gif" />
 	</div>
@@ -13,7 +14,6 @@
 					placeholder="nome da mu" required>
 			</div>
 		</div>
-		<!-- TODO config default -->
 		<div class="form-group">
 			<label class="col-lg-6 control-label" for="granularity">Granularidade
 				da Configuração de Distribuição</label>
@@ -29,6 +29,15 @@
 				data-content="Define qual o nível máximo de configuração das distribuições - você pode definir até uma configuração diferente para cada jogador! Caso essa configuração não exista, o nível superior será utilizado."
 				data-original-title="Granularidade"> <span
 				class="glyphicon glyphicon-question-sign"></span>
+			</a>
+		</div>
+		<div class="form-group 	text-center">
+			<a href="#distConfigDialog" role="button" data-toggle="modal">Configuração
+				Padrão da Distribuição</a> <a href="#" class="help"
+				data-toggle="popover" title
+				data-content="Utilizada caso você defina a granularidade como 'Unidade Militar' ou não configure os níveis abaixo"
+				data-original-title="Distribuição padrão"> <span
+				class="glyphicon glyphicon-question-sign">  </span>
 			</a>
 		</div>
 		<div class="form-group">
@@ -89,3 +98,5 @@
 		</div>
 	</form>
 </div>
+
+<%@ include file="../distconfig/distConfig.jspf"%>

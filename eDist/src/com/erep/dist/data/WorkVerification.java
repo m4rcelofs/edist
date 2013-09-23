@@ -7,7 +7,7 @@ import javax.jdo.annotations.Persistent;
 import com.erep.dist.data.enums.VerificationAction;
 
 /**
- * Must work at least X days from the last Y days
+ * Must work at least X % from the last Y days
  */
 @EmbeddedOnly
 @PersistenceCapable

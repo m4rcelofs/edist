@@ -23,7 +23,7 @@ public class InstallHelper {
 		config.setKey(KeyFactory.createKey(ServerConfig.class.getSimpleName(),
 				ServerConstants.DEFAULT_ID));
 		config.setGranularity(ConfigGranularity.GROUP);
-		config.setMuName("  ");
+		config.setMuName("");
 		config.setReportsAccess(ReportsAccessLevel.MODS);
 		config.setPlayerReportsAccess(ReportsAccessLevel.MODS);
 
