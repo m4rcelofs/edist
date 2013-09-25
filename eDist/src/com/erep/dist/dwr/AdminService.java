@@ -51,6 +51,7 @@ public class AdminService {
 	@RemoteMethod
 	public ServerConfig getServerConfig() {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			pm.getFetchPlan().addGroup("configListing");
 			return new DataAccessObject(pm).getServerConfig();
 		}
 	}

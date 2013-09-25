@@ -18,9 +18,10 @@ import com.google.appengine.datanucleus.annotations.Unowned;
 
 @DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-@FetchGroup(name = "groupListing", members = {
+@FetchGroup(name = "configListing", members = {
 		@Persistent(name = "distributor"),
-		@Persistent(name = "fightVerification") })
+		@Persistent(name = "fightVerification"),
+		@Persistent(name = "workVerification") })
 public class DistConfig {
 
 	@PrimaryKey
@@ -57,10 +58,12 @@ public class DistConfig {
 
 	@Embedded
 	@Persistent
+	@RemoteProperty
 	private FightVerification	fightVerification;
 
 	@Embedded
 	@Persistent
+	@RemoteProperty
 	private WorkVerification	workVerification;
 
 	public DistConfig() {}

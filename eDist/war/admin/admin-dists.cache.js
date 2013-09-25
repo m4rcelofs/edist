@@ -9,8 +9,6 @@ function loadDistributorsTable() {
 	AdminService.listDistributors({
 		callback : function(response) {
 
-			console.log(JSON.stringify(response));
-
 			response.forEach(function(item) {
 				addCustomDistributorRow(item);
 			});

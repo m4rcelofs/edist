@@ -72,7 +72,7 @@ public class Player implements HasEncodedKey {
 	@RemoteProperty
 	private PlayerGroup			group;
 
-	@Persistent
+	@Persistent(dependent = "true")
 	@RemoteProperty
 	private DistConfig			config;
 

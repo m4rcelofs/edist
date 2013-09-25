@@ -165,13 +165,9 @@ public class DataAccessObject {
 
 		old.setGroupName(newest.getGroupName());
 		if (newest.getConfig() != null) {
-			old.getConfig().setAutoSend(newest.getConfig().getAutoSend());
-			old.getConfig().setCurrentMaxDailyFF(
-					newest.getConfig().getCurrentMaxDailyFF());
-			old.getConfig().setRocketAllowed(
-					newest.getConfig().getRocketAllowed());
-			old.getConfig().setDistributor(
+			newest.getConfig().setDistributor(
 					find(newest.getConfig().getDistributor()));
+			old.setConfig(newest.getConfig());
 		}
 
 		return true;
@@ -241,12 +237,10 @@ public class DataAccessObject {
 	}
 
 	private boolean edit(Player old, Player newest) {
-		if (old.getConfig() == null)
+		if (newest.getConfig() != null) {
+			newest.getConfig().setDistributor(
+					find(newest.getConfig().getDistributor()));
 			old.setConfig(newest.getConfig());
-		else {
-			old.getConfig().setAutoSend(newest.getConfig().getAutoSend());
-			old.getConfig().setCurrentMaxDailyFF(
-					newest.getConfig().getCurrentMaxDailyFF());
 		}
 
 		old.setRocketEnabled(newest.getRocketEnabled());
@@ -572,14 +566,9 @@ public class DataAccessObject {
 		}
 
 		if (newConfig.getMuConfig() != null) {
-			dbConfig.getMuConfig().setAutoSend(
-					newConfig.getMuConfig().getAutoSend());
-			dbConfig.getMuConfig().setCurrentMaxDailyFF(
-					newConfig.getMuConfig().getCurrentMaxDailyFF());
-			dbConfig.getMuConfig().setRocketAllowed(
-					newConfig.getMuConfig().getRocketAllowed());
-			dbConfig.getMuConfig().setDistributor(
+			newConfig.getMuConfig().setDistributor(
 					find(newConfig.getMuConfig().getDistributor()));
+			dbConfig.setMuConfig(newConfig.getMuConfig());
 		}
 
 		CacheFacade.remove("com.erep.dist.DataAccessObject.getServerConfig()");

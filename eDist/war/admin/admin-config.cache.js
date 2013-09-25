@@ -1,6 +1,9 @@
 function onConfigShow() {
 	AdminService.getServerConfig({
 		callback : function(response) {
+			
+			edist.config = response;
+			
 			$('#muName').val(response.muName);
 			$('#granularity').val(response.granularity);
 			$('#reportsAccess').val(response.reportsAccess);
@@ -14,17 +17,23 @@ function onConfigShow() {
 	});
 }
 
+function setServerDistConfig() {
+	setDistConfig('server-config', edist.config.muConfig);
+}
+
 function saveConfig() {
 	$('#save-config').button('loading');
-	// TODO default dist config
 	var config = {
 		muName : $('#muName').val(),
 		granularity : $('#granularity').val(),
 		reportsAccess : $('#reportsAccess').val(),
 		playerReportsAccess : $('#playerReportsAccess').val(),
-		contactEmail : $('#contactEmail').val()
+		contactEmail : $('#contactEmail').val(),
+		muConfig : getDistConfig('server-config')
 	};
 
+	console.log(JSON.stringify(config)); // TODO remove
+	
 	$('#config-form').attr("disabled", "disabled");
 
 	AdminService.saveServerConfig(config, {

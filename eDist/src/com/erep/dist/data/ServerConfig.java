@@ -1,5 +1,6 @@
 package com.erep.dist.data;
 
+import javax.jdo.annotations.FetchGroup;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -13,6 +14,7 @@ import com.erep.dist.data.enums.ReportsAccessLevel;
 import com.google.appengine.api.datastore.Key;
 
 @DataTransferObject
+@FetchGroup(name = "configListing", members = { @Persistent(name = "muConfig") })
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class ServerConfig {
 
@@ -24,7 +26,7 @@ public class ServerConfig {
 	@RemoteProperty
 	private String				muName;
 
-	@Persistent
+	@Persistent(dependent = "true")
 	@RemoteProperty
 	private DistConfig			muConfig;
 

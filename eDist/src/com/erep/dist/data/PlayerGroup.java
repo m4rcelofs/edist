@@ -33,7 +33,7 @@ public class PlayerGroup implements HasEncodedKey {
 	@RemoteProperty
 	private String			groupName;
 
-	@Persistent
+	@Persistent(dependent = "true")
 	@RemoteProperty
 	private DistConfig		config;
 

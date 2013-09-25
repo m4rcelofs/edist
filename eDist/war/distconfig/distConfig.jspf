@@ -8,6 +8,18 @@
 			<div class="modal-body">
 				<form id="dist-config-form" class="form-horizontal" role="form"
 					onsubmit="return false;">
+					<div class="form-group">
+						<label class="control-label col-lg-6" for="#dist-config-enabled">Habilitar</label>
+						<div class="col-lg-5">
+							<input type="checkbox" class="form-control"
+								id="dist-config-enabled">
+						</div>
+						<a href="#" class="help" data-toggle="popover" title
+							data-content="Caso seja desabilitada, o nível superior será utilizado: Jogador > Grupo > Unidade Militar"
+							data-original-title="Habilitar Configuração"> <span
+							class="glyphicon glyphicon-question-sign"></span>
+						</a>
+					</div>
 					<div class="panel-group" id="verification-accordion">
 						<div class="panel panel-default">
 							<div class="panel-heading">
@@ -18,8 +30,7 @@
 										href="#basic-distconfig-panel"> Configuração Base</a>
 								</h4>
 							</div>
-							<div id="basic-distconfig-panel"
-								class="panel-collapse collapse in">
+							<div id="basic-distconfig-panel" class="panel-collapse collapse">
 								<div class="panel-body">
 									<div class="form-group">
 										<label class="control-label col-lg-6" for="maxFF">Máximo
@@ -118,12 +129,21 @@
 								class="panel-collapse collapse">
 								<div class="panel-body">
 									<div class="form-group">
+										<label class="control-label col-lg-6"
+											for="fight-verification-enabled">Habilitar</label>
+										<div class="col-lg-5">
+											<input type="checkbox" class="form-control"
+												id="fight-verification-enabled"
+												onclick="enableFightVerification()">
+										</div>
+									</div>
+									<div class="form-group">
 										<label class="control-label col-lg-6 sr-only"
 											for="fight-verification-action">Ação</label>
 										<div class="col-lg-5">
-											<select class="form-control" data-style="btn-inverse"
-												name="fight-verification-action"
-												id="fight-verification-action">
+											<select class="form-control fight-verification-group"
+												data-style="btn-inverse" name="fight-verification-action"
+												disabled="disabled" id="fight-verification-action">
 												<option value="NONE">Não fazer nada...</option>
 												<option value="WARN">Avisar...</option>
 												<option value="TEMP_BAN">Bloquear distribuição...</option>
@@ -136,9 +156,10 @@
 											lute ao menos ...</label>
 										<div class="col-lg-5">
 											<div class="input-group">
-												<input type="number" class="form-control"
-													id="fight-verification-pct" required min="0"> <span
-													class="input-group-addon"> %</span>
+												<input type="number"
+													class="form-control fight-verification-group"
+													disabled="disabled" id="fight-verification-pct" required
+													min="0"> <span class="input-group-addon"> %</span>
 											</div>
 										</div>
 									</div>
@@ -148,8 +169,9 @@
 											requisitadas nos últimos ...</label>
 										<div class="col-lg-5">
 											<div class="input-group">
-												<input type="number" class="form-control"
-													id="fight-verification-days" required><span
+												<input type="number"
+													class="form-control fight-verification-group"
+													disabled="disabled" id="fight-verification-days" required><span
 													class="input-group-addon" min="0"> dias</span>
 											</div>
 										</div>
@@ -169,10 +191,20 @@
 							<div id="work-verification-panel" class="panel-collapse collapse">
 								<div class="panel-body">
 									<div class="form-group">
+										<label class="control-label col-lg-6"
+											for="work-verification-enabled">Habilitar</label>
+										<div class="col-lg-5">
+											<input type="checkbox" class="form-control"
+												id="work-verification-enabled"
+												onclick="enableWorkVerification()">
+										</div>
+									</div>
+									<div class="form-group">
 										<label class="control-label col-lg-6 sr-only"
 											for="work-verification-action">Ação</label>
 										<div class="col-lg-5">
-											<select class="form-control" data-style="btn-inverse"
+											<select class="form-control work-verification-group"
+												disabled="disabled" data-style="btn-inverse"
 												name="work-verification-action"
 												id="work-verification-action">
 												<option value="NONE">Não fazer nada...</option>
@@ -187,9 +219,10 @@
 											trabalhe ao menos ...</label>
 										<div class="col-lg-5">
 											<div class="input-group">
-												<input type="number" class="form-control"
-													id="work-verification-pct" required min="0"> <span
-													class="input-group-addon"> %</span>
+												<input type="number"
+													class="form-control work-verification-group"
+													disabled="disabled" id="work-verification-pct" required
+													min="0"> <span class="input-group-addon">%</span>
 											</div>
 										</div>
 									</div>
@@ -198,9 +231,10 @@
 											for="work-verification-days">... dos últimos ...</label>
 										<div class="col-lg-5">
 											<div class="input-group">
-												<input type="number" class="form-control"
-													id="work-verification-days" required><span
-													class="input-group-addon" min="0"> dias</span>
+												<input type="number"
+													class="form-control work-verification-group"
+													disabled="disabled" id="work-verification-days" required><span
+													class="input-group-addon" min="0">dias</span>
 											</div>
 										</div>
 									</div>
