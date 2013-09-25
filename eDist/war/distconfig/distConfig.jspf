@@ -108,7 +108,8 @@
 											for="dist-config-distributor">Distribuidor</label>
 										<div class="col-lg-5">
 											<select class="form-control" data-style="btn-inverse"
-												name="dist-config-distributor" id="dist-config-distributor">
+												name="dist-config-distributor" id="dist-config-distributor"
+												disabled="disabled">
 												<!-- TODO -->
 											</select>
 										</div>

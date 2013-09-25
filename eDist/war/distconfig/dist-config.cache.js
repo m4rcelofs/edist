@@ -1,5 +1,6 @@
 function setDistConfig(key, distConfig) {
 	$('#dist-config-form').attr('entity-key', key);
+	fillDistConfigDistributors(distConfig);
 
 	if (key === 'server-config') {
 		$('#fight-verification-enabled').attr('disabled', 'disabled');
@@ -11,7 +12,34 @@ function setDistConfig(key, distConfig) {
 	console.log(key);
 	console.log(JSON.stringify(distConfig));
 	// TODO remove
+}
 
+function fillDistConfigDistributors(distConfig) {
+	var loadingFct;
+	if (AdminService) {
+		loadingFct = AdminService.listDistributors;
+	} else {
+		loadingFct = ManagementService.listDistributors;
+	}
+
+	loadingFct({
+		callback : function(response) {
+			$('#dist-config-distributor').empty();
+			response.forEach(function(item) {
+				var text = item.name ? item.name : item.email ? item.email
+						: item.encodedKey;
+				var row = '<option value="' + item.encodedKey + '">' + text
+						+ '</option>';
+				$('#dist-config-distributor').append(row);
+			});
+			$('#dist-config-distributor').removeAttr('disabled');
+			setDistConfigInfo(distConfig);
+		}
+	});
+
+}
+
+function setDistConfigInfo(distConfig) {
 	$('#maxFF').val(distConfig.currentMaxDailyFF);
 	$('#rocketAllowed').prop('checked', distConfig.rocketAllowed);
 	$('#autoDist').prop('checked', distConfig.autoSend);
@@ -44,7 +72,6 @@ function setDistConfig(key, distConfig) {
 		$('#work-verification-days').val(
 				distConfig.workVerification.workVerifDays);
 	}
-
 }
 
 // saving 'null' makes no changes

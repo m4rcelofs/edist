@@ -10,6 +10,7 @@ import org.directwebremoting.annotations.RemoteProxy;
 import com.erep.dist.CloseablePM;
 import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
+import com.erep.dist.data.Distributor;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.dwr.dto.PlayerQuery;
@@ -49,7 +50,8 @@ public class ManagementService {
 			if (created) {
 				DeferredTask task = new GetUserInfoTask(player);
 				Queue queue = QueueFactory.getQueue("erepublik-not-logged-in");
-				queue.add(withPayload(task).taskName("GetUserInfoTask " + player.getKey().toString()));
+				queue.add(withPayload(task).taskName(
+						"GetUserInfoTask " + player.getKey().toString()));
 			}
 			return created;
 		}
@@ -76,6 +78,16 @@ public class ManagementService {
 			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(players)
 					.toWebSafeString());
 			return queryResults;
+		}
+	}
+
+	@RemoteMethod
+	public List<Distributor> listDistributors() {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			pm.getFetchPlan().addGroup("distributorListing");
+			List<Distributor> dists = new DataAccessObject(pm)
+					.listDistributors();
+			return dists;
 		}
 	}
 

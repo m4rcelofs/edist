@@ -597,7 +597,7 @@ public class DataAccessObject {
 			String newEmail) {
 		DeferredTask task = new NotifyEmailChangeTask(oldEmail, newEmail);
 		Queue queue = QueueFactory.getDefaultQueue();
-		queue.add(withPayload(task).taskName("NotifyEmailChangeTask"));
+		queue.add(withPayload(task));
 	}
 
 }

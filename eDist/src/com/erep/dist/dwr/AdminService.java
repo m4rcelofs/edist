@@ -2,6 +2,8 @@ package com.erep.dist.dwr;
 
 import java.util.List;
 
+import javax.jdo.Transaction;
+
 import org.directwebremoting.annotations.RemoteMethod;
 import org.directwebremoting.annotations.RemoteProxy;
 
@@ -51,15 +53,25 @@ public class AdminService {
 	@RemoteMethod
 	public ServerConfig getServerConfig() {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			pm.getFetchPlan().setMaxFetchDepth(-1);
 			pm.getFetchPlan().addGroup("configListing");
-			return new DataAccessObject(pm).getServerConfig();
+			ServerConfig config = new DataAccessObject(pm).getServerConfig();
+			return pm.detachCopy(config);
 		}
 	}
 
 	@RemoteMethod
 	public boolean saveServerConfig(ServerConfig config) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			return new DataAccessObject(pm).save(config);
+			Transaction tx = pm.currentTransaction();
+			tx.begin();
+			boolean response = new DataAccessObject(pm).save(config);
+			tx.commit();
+			if (!response || tx.isActive()) {
+				tx.rollback();
+				response = false;
+			}
+			return response;
 		}
 	}
 
