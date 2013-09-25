@@ -110,7 +110,6 @@
 											<select class="form-control" data-style="btn-inverse"
 												name="dist-config-distributor" id="dist-config-distributor"
 												disabled="disabled">
-												<!-- TODO -->
 											</select>
 										</div>
 									</div>

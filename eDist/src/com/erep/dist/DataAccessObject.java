@@ -448,10 +448,11 @@ public class DataAccessObject {
 	@Cacheable
 	public Key findPlayerKey(String playerName) {
 		Query q = pm.newQuery(Player.class);
-		q.setFilter("name == '" + playerName + "'");
+		q.setFilter("name == nameParam");
+		q.declareParameters(String.class.getName() + " nameParam");
 		q.setResult("key");
 		q.setUnique(true);
-		Object key = q.execute();
+		Object key = q.execute(playerName);
 		if (key == null)
 			throw new JDOObjectNotFoundException();
 		return (Key) key;
