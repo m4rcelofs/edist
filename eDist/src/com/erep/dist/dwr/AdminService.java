@@ -11,6 +11,7 @@ import com.erep.dist.CloseablePM;
 import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
 import com.erep.dist.data.Distributor;
+import com.erep.dist.data.Employer;
 import com.erep.dist.data.RegisteredUser;
 import com.erep.dist.data.ServerConfig;
 import com.erep.dist.dwr.dto.RegisteredUserQuery;
@@ -94,6 +95,27 @@ public class AdminService {
 			List<Distributor> dists = new DataAccessObject(pm)
 					.listDistributors();
 			return dists;
+		}
+	}
+
+	@RemoteMethod
+	public boolean saveEmployer(Employer employer) {
+
+		if (employer == null || employer.getErId() == null
+				|| employer.getErId().trim().isEmpty()
+				|| employer.getName() == null
+				|| employer.getName().trim().isEmpty())
+			return false;
+
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			return new DataAccessObject(pm).save(employer);
+		}
+	}
+
+	@RemoteMethod
+	public List<Employer> listEmployers() {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			return new DataAccessObject(pm).listEmployers();
 		}
 	}
 }

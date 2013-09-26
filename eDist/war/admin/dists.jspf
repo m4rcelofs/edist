@@ -21,11 +21,11 @@
 		<div class="panel panel-default">
 			<div class="panel-heading">
 				<a class="accordion-toggle" data-toggle="collapse"
-					data-parent="#add-distributor-accordion" href="#collapseOne"><span
+					data-parent="#add-distributor-accordion" href="#dist-collapse-one"><span
 					class="glyphicon glyphicon-plus-sign"></span> Adicionar
 					Distribuidor </a>
 			</div>
-			<div id="collapseOne" class="panel-collapse collapse">
+			<div id="dist-collapse-one" class="panel-collapse collapse">
 				<div class="panel-body">
 					<div class="alert alert-info">
 						<strong>Atenção!</strong> Utilize somente contas de jogadores

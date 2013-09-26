@@ -3,6 +3,7 @@ package com.erep.dist.instances.frontend;
 import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withPayload;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -59,6 +60,7 @@ public class EmployerFacadeServlet extends HttpServlet {
 
 			Employer dbEmployer = verifyEmployer(dao, encodedKey, id);
 			createWorks(dao, dbEmployer, employees);
+			dbEmployer.setLastUpdatedAt(new Date());
 
 		} catch (NullPointerException | ParseException e) {
 			logger.log(Level.WARNING, "Something wrong on EmployerFacade", e);

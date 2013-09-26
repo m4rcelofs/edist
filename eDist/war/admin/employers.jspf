@@ -1,0 +1,136 @@
+<div class="tab-pane" id="employers">
+
+	<div class="form-group"></div>
+	<div class="alert alert-info text-center">
+		<a data-toggle="modal" href="#employerScriptInstructionsModal"> <span
+			class="glyphicon glyphicon-info-sign"></span> Instruções de Uso do
+			Script de Gestores
+		</a>
+	</div>
+
+	<div class="text-center">
+		<img id="employers-loader" src="../img/loader.cache.gif" />
+	</div>
+
+	<table class="table table-striped table-hover" style="display: none;"
+		id="employers-table">
+		<thead>
+			<tr>
+				<th>Nome</th>
+				<th>Último Acesso</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody></tbody>
+	</table>
+
+	<div class="panel-group" id="add-employer-accordion">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<a class="accordion-toggle" data-toggle="collapse"
+					data-parent="#add-employer-accordion" href="#employer-collapse-one"><span
+					class="glyphicon glyphicon-plus-sign"></span> Adicionar Gestor</a>
+			</div>
+			<div id="employer-collapse-one" class="panel-collapse collapse">
+				<div class="panel-body">
+					<form id="add-employer-form" class="form-inline" role="form"
+						onsubmit="return false;">
+						<div class="form-group">
+							<label class="sr-only" for="new-employer-name">Nome</label> <input
+								type="text" class="form-control" id="new-employer-name"
+								placeholder="Nome">
+						</div>
+						<div class="form-group">
+							<label class="sr-only" for="new-employer-id">ID</label> <input
+								type="number" class="form-control" id="new-employer-id"
+								placeholder="ID no eRepublik" required>
+						</div>
+						<button id="save-new-dist" class="btn btn-primary"
+							onclick="addEmployer();">
+							<span class="glyphicon glyphicon-floppy-disk"></span> Salvar
+						</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="form-group"></div>
+</div>
+
+<div class="modal fade" id="employerKeyModal" tabindex="-3"
+	role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">×</button>
+				<h3>Chave de Autenticação do Gestor</h3>
+			</div>
+			<div class="modal-body">
+				<p>Atenção!</p>
+				<p>
+					A chave do gestor é necessária para autenticação do script. <strong>Nunca
+						torne a chave do gestor pública!</strong>
+				</p>
+				<form class="form-horizontal" role="form" onsubmit="return false;">
+					<div class="form-group">
+						<label for="employer-modal-name" class="col-lg-2 control-label">Gestor:</label>
+						<div class="col-lg-10">
+							<input type="text" class="form-control " id="employer-modal-name"
+								placeholder="Gestor" readonly="readonly">
+						</div>
+					</div>
+					<div class="form-group">
+						<label for="employer-modal-key" class="col-lg-2 control-label">Chave:</label>
+						<div class="col-lg-10">
+							<input type="text" class="form-control " id="employer-modal-key"
+								placeholder="Chave">
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-primary" data-dismiss="modal">Fechar</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="employerScriptInstructionsModal"
+	tabindex="-4" role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">×</button>
+				<h3>Instruções do Script de Gestores</h3>
+			</div>
+			<div class="modal-body">
+				<p>O Script de Gestores permite o acompanhamento do trabalho
+					diário dos jogadores cadastrados, integrando-se com a validação de
+					trabalho para a distribuição.</p>
+				<p>Instruções para o Gestor:</p>
+				<ul>
+					<li>O gestor deve ter instalado o <a
+						href="https://addons.mozilla.org/firefox/addon/greasemonkey/">Greasemonkey</a>
+						(Firefox) ou <a
+						href="https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo">Tampermonkey</a>
+						(Chrome)
+					</li>
+					<li>O gestor deve instalar o Script <a
+						href="../js/dynamic/employers.user.js">por esse link</a></li>
+				</ul>
+				<p>Instruções para o Administrador:</p>
+				<ul>
+					<li>Cadastre o gestor no eDist</li>
+					<li>Forneça ao gestor a Chave de Autenticação</li>
+					<li>Configure a verificação de trabalho nas Configurações de
+						Distribuição</li>
+				</ul>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-primary" data-dismiss="modal">Fechar</button>
+			</div>
+		</div>
+	</div>
+</div>

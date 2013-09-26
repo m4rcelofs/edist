@@ -52,6 +52,13 @@ public class DataAccessObject {
 		this.pm = pm;
 	}
 
+	public boolean save(Employer employer) {
+		employer.setKey(KeyFactory.createKey(employerRootKey(),
+				Employer.class.getSimpleName(), employer.getErId()));
+		employerRoot().addEmployers(employer);
+		return true;
+	}
+
 	public boolean save(Distributor dist) {
 		if (dist.getEncodedKey() != null)
 			return edit(dist);
@@ -118,6 +125,14 @@ public class DataAccessObject {
 		} catch (Exception e) {
 			return false;
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<Employer> listEmployers() {
+		Query q = pm.newQuery(Employer.class);
+		q.setFilter("root == rootParam");
+		q.declareParameters(Key.class.getName() + " rootParam");
+		return (List<Employer>) q.execute(employerRootKey());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -516,7 +531,7 @@ public class DataAccessObject {
 		return pm.getObjectById(EmployerRoot.class, employerRootKey());
 	}
 
-	private static Key employerRootKey() {
+	private Key employerRootKey() {
 		return KeyFactory.createKey(EmployerRoot.class.getSimpleName(),
 				ServerConstants.DEFAULT_ID);
 	}

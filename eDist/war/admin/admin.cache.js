@@ -3,6 +3,7 @@ $(document).ready(function() {
 
 	$('#moderatorsTab').on('show.bs.tab', onModeratorsShow);
 	$('#distributorsTab').on('show.bs.tab', onDistributorsShow);
+	$('#employersTab').on('show.bs.tab', onEmployersShow);
 	$('#configTab').on('show.bs.tab', onConfigShow);
 	$('#controlPanelTab').on('show.bs.tab', onControlPanelShow);
 

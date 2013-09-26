@@ -12,6 +12,7 @@
 		
 		<script type='text/javascript' src='admin-mods.cache.js'></script>
 		<script type='text/javascript' src='admin-dists.cache.js'></script>
+		<script type='text/javascript' src='admin-employers.cache.js'></script>
 		<script type='text/javascript' src='admin-config.cache.js'></script>
 		<script type='text/javascript' src='admin.cache.js'></script>
 		<script type='text/javascript' src='../distconfig/dist-config.cache.js'></script>
@@ -32,6 +33,7 @@
 			<div class="tab-content">
 				<%@ include file="mods.jspf"%>
 				<%@ include file="dists.jspf"%>
+				<%@ include file="employers.jspf"%>
 				<%@ include file="config.jspf"%>
 			</div>
 	</jsp:body>

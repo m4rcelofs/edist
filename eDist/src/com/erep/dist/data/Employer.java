@@ -1,5 +1,7 @@
 package com.erep.dist.data;
 
+import java.util.Date;
+
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
@@ -31,6 +33,10 @@ public class Employer implements HasEncodedKey {
 	@Persistent
 	@RemoteProperty
 	private String			name;
+
+	@Persistent
+	@RemoteProperty
+	private Date			lastUpdatedAt;
 
 	@Persistent
 	private EmployerRoot	root;
@@ -87,6 +93,14 @@ public class Employer implements HasEncodedKey {
 
 	public void setRoot(EmployerRoot root) {
 		this.root = root;
+	}
+
+	public Date getLastUpdatedAt() {
+		return lastUpdatedAt;
+	}
+
+	public void setLastUpdatedAt(Date lastUpdatedAt) {
+		this.lastUpdatedAt = lastUpdatedAt;
 	}
 
 }
