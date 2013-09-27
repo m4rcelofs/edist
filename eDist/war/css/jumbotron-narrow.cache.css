@@ -2,6 +2,7 @@
 body {
 	padding-top: 20px;
 	padding-bottom: 20px;
+	font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif; 
 }
 
 /* Everything but the jumbotron gets side spacing for mobile-first views */
@@ -20,13 +21,6 @@ body {
 	margin-bottom: 0;
 	line-height: 40px;
 	padding-bottom: 19px;
-}
-
-.new {
-	background-color: #f4f4f4;
-	padding: 30px;
-	margin-bottom: 30px;
-	color: inherit;
 }
 
 @media screen and (min-width: 768px) {

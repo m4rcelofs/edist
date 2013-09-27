@@ -89,13 +89,12 @@ function addCustomUserRow(item) {
 			+ date + '</td><td>' + saveIcon + '  ' + removeIcon + '</td></tr>';
 
 	$('#mods-table > tbody').append(row);
-
 	$('#name' + item.gId).val(item.name);
 	$('#role' + item.gId).val(item.role);
 }
 
 function createUserRoleSelect(item) {
-	var select = '<select class="form-control" data-style="btn-inverse"	name="role" id="role'
+	var select = '<select class="form-control" name="role" id="role'
 			+ item.gId
 			+ '"><option value="NONE">Nenhum</option><option value="VIEWER">Visitante</option>'
 			+ '<option value="MODERATOR">Moderador</option></select>';

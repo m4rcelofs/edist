@@ -12,55 +12,64 @@
     </jsp:attribute>
 
 	<jsp:body>
-	<div class="row new">
-		<div class="col-8">
-				<img class="supimage" src="../img/formtitle.cache.png"></img>
-				<form onsubmit="return false;" id="infoform" class="form-horizontal">
-					<fieldset>
-						<div class="input-group">
-							<span class="input-group-addon input-large">Id:</span> 
-							<input type="text" class="form-control input-large" name="id"
-								id="id" placeholder="Nick, id ou profile">
-						</div>
-						
-						<div class="input-group">
-						<span class="input-group-addon">FF:</span> 
-							<input type="number" disabled class="form-control" name="quant"
+		<div class="jumbotron">
+			<div class="container">
+				<div class="col-lg-8">
+					<img class="img-responsive" src="../img/formtitle.cache.png"></img>
+					<div class="form-group"></div>
+					<form onsubmit="return false;" id="infoform"
+						class="form-horizontal" role="form">
+							<div class="form-group">
+								<div class="input-group">
+									<span class="input-group-addon input-large">Id:</span> 
+									<input type="text" class="form-control input-large" name="id"
+									id="id" placeholder="Nick, id ou profile">
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="input-group">
+									<span class="input-group-addon">FF:</span> 
+									<input type="number" disabled class="form-control" name="quant"
 									id="quant" min="10" max="100" value="10" step="10">
-						</div>
-						
-						
-						<div class="input-group">
-							<select class="selectpicker" disabled data-style="btn-inverse"
-									name="type" id="type">
-								<option value="WEAPONS">Armas</option>
-								<option value="FOOD">Comida</option>
-								<option value="WEAPONS_FOOD">Armas + Comida</option>
-								<option data-divider="true"></option>
-								<option value="ROCKET">Rocket</option>
-							</select>
-						</div>
-						
-						
-						
-						<div class="form-actions">
-							<button type="submit" onclick="request();" class="btn btn-primary btn-large">Enviar</button>
-							<button type="reset" class="btn btn-default">Cancelar</button>
-						</div>
-					</fieldset>
-				</form>
-			</div>
-			<div class="col-4">
-				<img class="citizen_avatar"
-					src="../img/profile_avatar.cache.png"></img>
-					<div class="list-group second">
-					<a class="list-group-item active">  </a> 
-					<a class="list-group-item"> </a> 
-					<a class="list-group-item"><DIV class="counter" id="counter"></DIV> </a> 
+								</div>
+							</div>
+							<div class="form-group">
+								<div class="row">
+									<div class="col-lg-offset-2">
+										<div class="col-lg-8">
+											<select class="selectpicker" name="type" id="type"
+											disabled="disabled">
+												<option value="WEAPONS">Armas</option>
+												<option value="FOOD">Comida</option>
+												<option value="WEAPONS_FOOD">Armas + Comida</option>
+												<option data-divider="true"></option>
+												<option value="ROCKET">Rocket</option>
+											</select>
+										</div>
+									</div>
+								</div>
+							</div>
+					</form>
 				</div>
-				
+				<div class="col-lg-4">
+					<img id="citizen-avatar" class="img-thumbnail img-responsive"
+						src="../img/profile_avatar.cache.png"></img>
+					<div class="form-group"></div>
+					<ul class="list-group" id="user-info" style="display: none;">
+						<li class="list-group-item active">  </li> 
+						<li class="list-group-item"> </li> 
+						<li class="list-group-item">
+							<div class="counter" id="counter"></div>
+						</li> 
+					</ul>
+				</div>
+				<div class="col-lg-4 col-lg-offset-4">
+					<button type="submit" onclick="request();"
+						class="btn btn-primary btn-large">Enviar</button>
+					<button type="reset" class="btn btn-default">Cancelar</button>
+				</div>
 			</div>
-	</div>
+		</div>
 	</jsp:body>
 </t:wrapper>
 
