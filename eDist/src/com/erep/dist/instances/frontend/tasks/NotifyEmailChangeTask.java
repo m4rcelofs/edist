@@ -2,6 +2,7 @@ package com.erep.dist.instances.frontend.tasks;
 
 import java.io.IOException;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -11,6 +12,7 @@ import com.erep.dist.Mailer;
 import com.erep.dist.ServerConstants;
 import com.erep.dist.auth.AssymetricCipherUtils;
 import com.google.appengine.api.taskqueue.DeferredTask;
+import com.google.appengine.api.urlfetch.HTTPHeader;
 import com.google.appengine.api.urlfetch.HTTPMethod;
 import com.google.appengine.api.urlfetch.HTTPRequest;
 import com.google.appengine.api.urlfetch.HTTPResponse;
@@ -60,13 +62,16 @@ public class NotifyEmailChangeTask implements DeferredTask {
 
 		String encoded = "encrypted=";
 		try {
-			encoded += AssymetricCipherUtils
-					.encryptPublic(jsObj.toJSONString());
+			encoded += URLEncoder.encode(
+					AssymetricCipherUtils.encryptPublic(jsObj.toJSONString()),
+					"UTF-8");
 		} catch (Exception e) {
 			logger.log(Level.SEVERE, "Could not encrypt email update", e);
 			throw new IOException(e);
 		}
 		request.setPayload(encoded.getBytes("UTF-8"));
+		request.addHeader(new HTTPHeader("Content-Type",
+				"application/x-www-form-urlencoded"));
 
 		URLFetchService fetchService = URLFetchServiceFactory
 				.getURLFetchService();
@@ -92,7 +97,8 @@ public class NotifyEmailChangeTask implements DeferredTask {
 
 		Mailer mailer = new Mailer();
 		mailer.mail("eDist - Email Change Notification", builder.toString(),
-				mailer.new MailAddress(oldEmail, oldEmail), mailer.new MailAddress("admins"));
+				mailer.new MailAddress(oldEmail, oldEmail),
+				mailer.new MailAddress("admins"));
 
 	}
 
