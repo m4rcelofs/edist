@@ -66,7 +66,7 @@ public class NotifyEmailChangeTask implements DeferredTask {
 			logger.log(Level.SEVERE, "Could not encrypt email update", e);
 			throw new IOException(e);
 		}
-		request.setPayload(encoded.getBytes());
+		request.setPayload(encoded.getBytes("UTF-8"));
 
 		URLFetchService fetchService = URLFetchServiceFactory
 				.getURLFetchService();
