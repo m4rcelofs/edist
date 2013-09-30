@@ -5,11 +5,11 @@
 <t:wrapper>
 
 	<jsp:attribute name="imports">
-		<script type='text/javascript' src='dwr/engine.js'></script>
-		<script type='text/javascript' src='dwr/interface/ManagementService.js'></script>
+		<script type='text/javascript' src='${baseUrl}/management/dwr/engine.js'></script>
+		<script type='text/javascript' src='${baseUrl}/management/dwr/interface/ManagementService.js'></script>
 		
-		<script type='text/javascript' src='management.all.closure.js'></script>
-		<script type='text/javascript' src='../distconfig/dist-config.cache.js'></script>
+		<script type='text/javascript' src='${baseUrl}/management/management.all.closure.js'></script>
+		<script type='text/javascript' src='${baseUrl}/distconfig/dist-config.cache.js'></script>
     </jsp:attribute>
 
 	<jsp:body>

@@ -5,6 +5,64 @@
 /*
  * START OF FILE - /edist/eDist/war/management/groups.js
  */
+var GroupsViewModel = new function() {
+	var self = this;
+
+	self.groups = ko.observableArray([]);
+
+	self.onGroupsShow = function() {
+		loadGroupsTable();
+	};
+
+	self.saveGroup = function(group) {
+		ManagementService.saveGroup(group, {
+			callback : function(response) {
+				if (response) {
+					$('#' + group.encodedKey).removeClass('danger');
+					$('#' + group.encodedKey).addClass('success');
+
+					setTimeout(function() {
+						$('#' + group.encodedKey).removeClass('success');
+					}, 3000);
+				} else {
+					$('#' + group.encodedKey).removeClass('success');
+					$('#' + group.encodedKey).addClass('danger');
+					Management.defaultError();
+				}
+			},
+			onError : Management.defaultError
+		});
+	}
+
+	self.addGroup = function() {
+		var group = {
+			groupName : $('#new-group-name').val()
+		};
+		
+		ManagementService.saveGroup(group, {
+			callback : function(response) {
+				if(response) {
+					loadGroupsTable();
+				} else {
+					Management.defaultError();
+				}
+			}, 
+			onError: Management.defaultError
+		});
+	}
+	
+	self.editConfig = function(group) {
+		// TODO
+	}
+
+	function loadGroupsTable() {
+		ManagementService.listGroups({
+			callback : function(response) {
+				self.groups(response);
+			}
+		});
+	}
+};
 
 /*
  * END OF FILE - /edist/eDist/war/management/groups.js
@@ -16,25 +74,40 @@
 $(document).ready(function() {
 	$('.help').popover();
 
-//	$('#moderatorsTab').on('show.bs.tab', onModeratorsShow);
-//	$('#distributorsTab').on('show.bs.tab', onDistributorsShow);
-//	$('#employersTab').on('show.bs.tab', onEmployersShow);
-//	$('#configTab').on('show.bs.tab', onConfigShow);
-//	$('#controlPanelTab').on('show.bs.tab', onControlPanelShow);
+	ko.applyBindings(GroupsViewModel);
+	$('#groupsListTab').on('show.bs.tab', GroupsViewModel.onGroupsShow);
 
-//	onModeratorsShow();
+	// ko.applyBindings(PlayersViewModel);
+	$('#playersListTab').on('show.bs.tab', PlayersController.onPlayersShow);
+
+	crossroads.addRoute('management/{tab}', Management.selectTab);
+	Navigation.configureRoutes();
+
+	if (Navigation.getCurrenLocation() === '/management/') {
+		Navigation.setCurrentLocation('groupsList');
+	}
 });
 
-function defaultSuccess() {
-	$('#error-alert').fadeOut();
-}
+var Management = new function() {
 
-function defaultError(message) {
-	if (console.log) {
-		console.log(message);
+	var mgm = this;
+
+	mgm.selectTab = function(tab) {
+		$('#' + tab + 'Tab').tab('show');
 	}
-	$('#error-alert').fadeIn();
-}
+
+	mgm.defaultSuccess = function() {
+		$('#error-alert').fadeOut();
+	}
+
+	mgm.defaultError = function(message) {
+		if (console.log) {
+			console.log(message);
+		}
+		$('#error-alert').fadeIn();
+	}
+
+};
 /*
  * END OF FILE - /edist/eDist/war/management/management.js
  */
@@ -42,7 +115,14 @@ function defaultError(message) {
 /*
  * START OF FILE - /edist/eDist/war/management/players.js
  */
-
+var PlayersController = new function() {
+	var self = this;
+	
+	self.onPlayersShow = function() {
+		console.log('onPlayersShow');
+	};
+	
+};
 /*
  * END OF FILE - /edist/eDist/war/management/players.js
  */

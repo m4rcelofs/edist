@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<rockstarapps>
+    
+
+
+
+
+
+
+
+
+
+
+<file name="eDist/war/js/navigation.js">
+        <min>false</min>
+        <comp>false</comp>
+        <closureCompiler>true</closureCompiler>
+        <gZip>false</gZip>
+        <resolveImports>false</resolveImports>
+        <urlRewriting>false</urlRewriting>
+        <autoBuild>true</autoBuild>
+        <lineLength>-1</lineLength>
+        <autoTimestamps>false</autoTimestamps>
+        <removeLogs>true</removeLogs>
+        <oldFileNames>false</oldFileNames>
+        <dependencies>
+            <file>eDist/war/js/navigation.js</file>
+        </dependencies>
+        <properties/>
+    </file>
+
+
+<file name="eDist/war/admin/admin.all.js">
+        <min>false</min>
+        <comp>false</comp>
+        <closureCompiler>true</closureCompiler>
+        <gZip>false</gZip>
+        <resolveImports>false</resolveImports>
+        <urlRewriting>false</urlRewriting>
+        <autoBuild>true</autoBuild>
+        <lineLength>-1</lineLength>
+        <autoTimestamps>false</autoTimestamps>
+        <removeLogs>true</removeLogs>
+        <oldFileNames>false</oldFileNames>
+        <dependencies>
+            <file>eDist/war/admin/admin.js</file>
+            <file>eDist/war/admin/config.js</file>
+            <file>eDist/war/admin/dists.js</file>
+            <file>eDist/war/admin/dwr-engine-20130921.js</file>
+            <file>eDist/war/admin/dwr-interface-20130921.js</file>
+            <file>eDist/war/admin/employers.js</file>
+            <file>eDist/war/admin/mods.js</file>
+        </dependencies>
+        <properties/>
+    </file>
+
+
+<file name="eDist/war/management/management.all.js">
+        <min>false</min>
+        <comp>false</comp>
+        <closureCompiler>true</closureCompiler>
+        <gZip>false</gZip>
+        <resolveImports>false</resolveImports>
+        <urlRewriting>false</urlRewriting>
+        <autoBuild>true</autoBuild>
+        <lineLength>-1</lineLength>
+        <autoTimestamps>false</autoTimestamps>
+        <removeLogs>true</removeLogs>
+        <oldFileNames>false</oldFileNames>
+        <dependencies>
+            <file>eDist/war/management/groups.js</file>
+            <file>eDist/war/management/management.js</file>
+            <file>eDist/war/management/players.js</file>
+        </dependencies>
+        <properties/>
+    </file>
+</rockstarapps>

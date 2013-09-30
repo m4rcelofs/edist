@@ -1,4 +1,56 @@
-<div class="tab-pane" id="groups">
+<div class="tab-pane" id="groupsList">
+	<div class="text-center" data-bind="visible: groups().length == 0">
+		<img id="mods-loader" src="../img/loader.cache.gif" />
+	</div>
+	<table class="table table-striped table-hover" id="groups-table"
+		data-bind="visible: groups().length > 0">
+		<thead>
+			<tr>
+				<th>Nome</th>
+				<th></th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody data-bind="foreach: groups">
+			<tr data-bind="attr: { id: encodedKey}">
+				<td><input data-bind="value: groupName" /></td>
+				<td><a href="javascript:void(0);" role="button"
+					data-bind="click: $root.editConfig" title="Editar Configuração">
+						<span class="glyphicon glyphicon-new-window"></span> Configuração
+						da Distribuição
+				</a></td>
+				<td><a href="javascript:void(0);" role="button"
+					data-bind="click: $root.saveGroup" title="Salvar"> <span
+						class="glyphicon glyphicon-floppy-disk"></span> Salvar
+				</a></td>
+			</tr>
+		</tbody>
+	</table>
 
-
+	<div class="panel-group" id="add-group-accordion">
+		<div class="panel panel-default">
+			<div class="panel-heading">
+				<a class="accordion-toggle" data-toggle="collapse"
+					data-parent="#add-group-accordion" href="#group-collapse-one"><span
+					class="glyphicon glyphicon-plus-sign"></span> Adicionar Grupo</a>
+			</div>
+			<div id="group-collapse-one" class="panel-collapse collapse">
+				<div class="panel-body">
+					<form id="add-group-form" class="form-inline" role="form"
+						onsubmit="return false;">
+						<div class="form-group">
+							<label class="sr-only" for="new-group-name">Nome</label> <input
+								type="text" class="form-control" id="new-group-name"
+								placeholder="Nome">
+						</div>
+						<button id="save-new-group" class="btn btn-primary"
+							onclick="GroupsViewModel.addGroup();">
+							<span class="glyphicon glyphicon-floppy-disk"></span> Salvar
+						</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="form-group"></div>
 </div>

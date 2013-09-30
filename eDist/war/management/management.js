@@ -1,22 +1,37 @@
 $(document).ready(function() {
 	$('.help').popover();
 
-//	$('#moderatorsTab').on('show.bs.tab', onModeratorsShow);
-//	$('#distributorsTab').on('show.bs.tab', onDistributorsShow);
-//	$('#employersTab').on('show.bs.tab', onEmployersShow);
-//	$('#configTab').on('show.bs.tab', onConfigShow);
-//	$('#controlPanelTab').on('show.bs.tab', onControlPanelShow);
+	ko.applyBindings(GroupsViewModel);
+	$('#groupsListTab').on('show.bs.tab', GroupsViewModel.onGroupsShow);
 
-//	onModeratorsShow();
+	// ko.applyBindings(PlayersViewModel);
+	$('#playersListTab').on('show.bs.tab', PlayersController.onPlayersShow);
+
+	crossroads.addRoute('management/{tab}', Management.selectTab);
+	Navigation.configureRoutes();
+
+	if (Navigation.getCurrenLocation() === '/management/') {
+		Navigation.setCurrentLocation('groupsList');
+	}
 });
 
-function defaultSuccess() {
-	$('#error-alert').fadeOut();
-}
+var Management = new function() {
 
-function defaultError(message) {
-	if (console.log) {
-		console.log(message);
+	var mgm = this;
+
+	mgm.selectTab = function(tab) {
+		$('#' + tab + 'Tab').tab('show');
 	}
-	$('#error-alert').fadeIn();
-}
+
+	mgm.defaultSuccess = function() {
+		$('#error-alert').fadeOut();
+	}
+
+	mgm.defaultError = function(message) {
+		if (console.log) {
+			console.log(message);
+		}
+		$('#error-alert').fadeIn();
+	}
+
+};
