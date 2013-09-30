@@ -4,6 +4,32 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" version="2.5"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
 
+
+	<!-- Entry Points -->
+
+	<!-- admin ep -->
+	<servlet>
+		<servlet-name>adminEP</servlet-name>
+		<jsp-file>/admin/index.jsp</jsp-file>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>adminEP</servlet-name>
+		<url-pattern>/admin/*</url-pattern>
+	</servlet-mapping>
+
+	<!-- management ep -->
+	<servlet>
+		<servlet-name>managementEP</servlet-name>
+		<jsp-file>/management/index.jsp</jsp-file>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>managementEP</servlet-name>
+		<url-pattern>/management/*</url-pattern>
+	</servlet-mapping>
+
+
 	<!-- Public DWR (requests) -->
 	<servlet>
 		<display-name>DWR Servlet</display-name>
@@ -259,7 +285,7 @@
 	<!-- Admin only (including app tasks) -->
 	<security-constraint>
 		<web-resource-collection>
-		    <web-resource-name>Admin</web-resource-name>
+			<web-resource-name>Admin</web-resource-name>
 			<url-pattern>/admin/*</url-pattern>
 		</web-resource-collection>
 		<auth-constraint>
@@ -273,7 +299,7 @@
 	<!-- Management only -->
 	<security-constraint>
 		<web-resource-collection>
-		    <web-resource-name>Manager</web-resource-name>
+			<web-resource-name>Manager</web-resource-name>
 			<url-pattern>/management/*</url-pattern>
 		</web-resource-collection>
 		<auth-constraint>

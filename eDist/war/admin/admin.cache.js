@@ -7,13 +7,16 @@ $(document).ready(function() {
 	$('#configTab').on('show.bs.tab', onConfigShow);
 	$('#controlPanelTab').on('show.bs.tab', onControlPanelShow);
 
-	loadRoutes();
-	if (!hasher.getHash()) {
-		hasher.setHash('users');
-		onModeratorsShow();
-	}
+	configureRoutes('/admin/');
 
+	if (History.getState().hash === '/admin/') {
+		History.pushState(null, '', 'users');
+	}
 });
+
+function doRouting(tab) {
+	$('#' + tab + 'Tab').tab('show');
+}
 
 function onControlPanelShow() {
 	var loc = 'https://appengine.google.com';

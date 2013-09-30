@@ -1,4 +1,4 @@
-<li class="active"><a href="#users" id="usersTab"><span
+<li><a href="#users" id="usersTab"><span
 		class="glyphicon glyphicon-user"></span> Usuários</a></li>
 <li><a href="#distributors" id="distributorsTab"><span
 		class="glyphicon glyphicon-lock"></span> Distribuidores</a></li>

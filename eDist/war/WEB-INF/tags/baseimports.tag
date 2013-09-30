@@ -12,9 +12,7 @@
 
 <script type="text/javascript" src="../js/jquery.validate.min.cache.js"></script>
 <script type="text/javascript" src="../js/bootstrap-select.min.cache.js"></script>
-<script type="text/javascript" src="../js/signals.min.cache.js"></script>
-<script type="text/javascript" src="../js/hasher.min.cache.js"></script>
-<script type="text/javascript" src="../js/crossroads.min.cache.js"></script>
+<script type="text/javascript" src="../js/jquery.history.cache.js"></script>
 
 <script type="text/javascript" src="../js/menu.cache.js"></script>
 

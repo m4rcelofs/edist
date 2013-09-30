@@ -27,26 +27,15 @@ $(document).ready(function() {
 	$('#' + currentLoc).addClass('active');
 });
 
-function loadRoutes() {
-	$('.nav-tabs a').click(function(e) {
-		e.preventDefault();
-		hasher.setHash(this.hash);
+function configureRoutes(section) {
+	$('.nav-tabs a').click(function(event) {
+		event.preventDefault();
+		History.pushState(null, '', this.hash.replace('#', ''));
 	});
-	
-	crossroads.addRoute('{tab}/:query:', loadTab);
 
-	hasher.initialized.add(parseHash);
-	hasher.changed.add(parseHash);
-	hasher.init();
-}
+	History.Adapter.bind(window, 'statechange', function() {
+		doRouting(History.getState().hash.replace(section, ''));
+	});
 
-function loadTab(tab, query) {
-	if (console.log) {
-		console.log('Tab: ' + tab + ' - ' + 'Query: ' + query);
-	}
-	$('#' + tab + 'Tab').tab('show');
-}
-
-function parseHash(newHash, oldHash) {
-	crossroads.parse(newHash);
+	doRouting(History.getState().hash.replace(section, ''));
 }
