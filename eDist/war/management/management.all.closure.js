@@ -1,0 +1,1 @@
+$(document).ready(function(){$(".help").popover()});function defaultSuccess(){$("#error-alert").fadeOut()}function defaultError(a){console.log&&console.log(a);$("#error-alert").fadeIn()};

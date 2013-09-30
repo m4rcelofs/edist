@@ -8,7 +8,7 @@
 		<script type='text/javascript' src='dwr/engine.js'></script>
 		<script type='text/javascript' src='dwr/interface/ManagementService.js'></script>
 		
-		<script type='text/javascript' src='management.cache.js'></script>
+		<script type='text/javascript' src='management.all.closure.js'></script>
 		<script type='text/javascript' src='../distconfig/dist-config.cache.js'></script>
     </jsp:attribute>
 
