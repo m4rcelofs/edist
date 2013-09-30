@@ -9,14 +9,15 @@
 
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script type="text/javascript" src="//netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/knockout/knockout-2.2.1.js"></script>
+<script type="text/javascript" src="//ajax.aspnetcdn.com/ajax/jquery.validate/1.11.1/jquery.validate.min.js"></script>
 
-<script type="text/javascript" src="${baseUrl}/js/jquery.validate.min.cache.js"></script>
 <script type="text/javascript" src="${baseUrl}/js/bootstrap-select.min.cache.js"></script>
 <script type="text/javascript" src="${baseUrl}/js/jquery.history.min.cache.js"></script>
 <script type="text/javascript" src="${baseUrl}/js/signals.min.cache.js"></script>
 <script type="text/javascript" src="${baseUrl}/js/crossroads.min.cache.js"></script>
 
-<script type="text/javascript" src="${baseUrl}/js/menu.cache.js"></script>
+<script type="text/javascript" src="${baseUrl}/js/navigation.closure.js"></script>
 
 <script type="text/javascript" src="${baseUrl}/js/dynamic/user.nocache.js"></script>
 <script type="text/javascript" src="${baseUrl}/js/dynamic/header.nocache.js"></script>

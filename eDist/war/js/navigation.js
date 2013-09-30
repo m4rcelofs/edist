@@ -28,9 +28,6 @@ $(document).ready(function() {
 });
 
 function configureRoutes(route) {
-
-	crossroads.addRoute(route, doRouting);
-
 	$('.nav-tabs a').click(function(event) {
 		event.preventDefault();
 		History.pushState(null, '', this.hash.replace('#', ''));
@@ -41,4 +38,12 @@ function configureRoutes(route) {
 	});
 
 	crossroads.parse(History.getState().hash);
+}
+
+function setCurrentLocation(path) {
+	History.pushState(null, '', path);  
+} 
+
+function getCurrenLocation() {
+	return History.getState().hash; 
 }
