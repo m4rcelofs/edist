@@ -7,10 +7,11 @@ $(document).ready(function() {
 	$('#configTab').on('show.bs.tab', onConfigShow);
 	$('#controlPanelTab').on('show.bs.tab', onControlPanelShow);
 
-	configureRoutes('admin/{tab}');
+	crossroads.addRoute('admin/{tab}', doRouting);
+	configureRoutes();
 
-	if (History.getState().hash === '/admin/') {
-		History.pushState(null, '', 'users');
+	if (getCurrenLocation() === '/admin/') {
+		setCurrentLocation('users'); 
 	}
 });
 

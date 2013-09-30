@@ -42,7 +42,7 @@ function configureRoutes(route) {
 
 function setCurrentLocation(path) {
 	History.pushState(null, '', path);  
-} 
+}
 
 function getCurrenLocation() {
 	return History.getState().hash; 

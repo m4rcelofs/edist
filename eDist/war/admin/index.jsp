@@ -6,14 +6,7 @@
 <t:wrapper>
 
 	<jsp:attribute name="imports">
-		<script type='text/javascript' src='${baseUrl}/admin/admin-engine-20130921.cache.js'></script>
-		<script type='text/javascript' src='${baseUrl}/admin/admin-interface-20130921.cache.js'></script>
-		
-		<script type='text/javascript' src='${baseUrl}/admin/admin.cache.js'></script>
-		<script type='text/javascript' src='${baseUrl}/admin/admin-mods.cache.js'></script>
-		<script type='text/javascript' src='${baseUrl}/admin/admin-dists.cache.js'></script>
-		<script type='text/javascript' src='${baseUrl}/admin/admin-employers.cache.js'></script>
-		<script type='text/javascript' src='${baseUrl}/admin/admin-config.cache.js'></script>
+		<script type='text/javascript' src='${baseUrl}/admin/admin.all.closure.js'></script>
 		<script type='text/javascript' src='${baseUrl}/distconfig/dist-config.cache.js'></script>
 	</jsp:attribute>
 
