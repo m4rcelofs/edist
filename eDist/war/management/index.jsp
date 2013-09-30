@@ -7,10 +7,27 @@
 	<jsp:attribute name="imports">
 		<script type='text/javascript' src='dwr/engine.js'></script>
 		<script type='text/javascript' src='dwr/interface/ManagementService.js'></script>
+		
+		<script type='text/javascript' src='management.cache.js'></script>
+		<script type='text/javascript' src='../distconfig/dist-config.cache.js'></script>
     </jsp:attribute>
 
 	<jsp:body>
-		<!-- TODO -->
+			<div id="error-alert" class="alert alert-danger alert-dismissable"
+			style="display: none;">
+				<button type="button" class="close" aria-hidden="true"
+				onclick="$('#error-alert').fadeOut();">&times;</button>
+				<strong>Ops!</strong> Algo deu errado, por favor tente novamente. <strong>):</strong>
+			</div>
+	
+			<ul class="nav nav-tabs">
+				<%@ include file="tabs.jspf"%>
+			</ul>
+
+			<div class="tab-content">
+				<%@ include file="groups.jspf"%>
+				<%@ include file="players.jspf"%>
+			</div>
 	</jsp:body>
 </t:wrapper>
 

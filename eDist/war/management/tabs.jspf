@@ -1,0 +1,4 @@
+<li class="active"><a href="#groups" data-toggle="tab"
+	id="groupsTab"><span class="glyphicon glyphicon-tags"></span> Grupos</a></li>
+<li><a href="#players" data-toggle="tab" id="playersTab"><span
+		class="glyphicon glyphicon-list"></span> Jogadores</a></li>
