@@ -1,19 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <t:wrapper>
 
 	<jsp:attribute name="imports">
-		<script type='text/javascript' src='admin-engine-20130921.cache.js'></script>
-		<script type='text/javascript' src='admin-interface-20130921.cache.js'></script>
+		<script type='text/javascript' src='${baseUrl}/admin/admin-engine-20130921.cache.js'></script>
+		<script type='text/javascript' src='${baseUrl}/admin/admin-interface-20130921.cache.js'></script>
 		
-		<script type='text/javascript' src='admin.cache.js'></script>
-		<script type='text/javascript' src='admin-mods.cache.js'></script>
-		<script type='text/javascript' src='admin-dists.cache.js'></script>
-		<script type='text/javascript' src='admin-employers.cache.js'></script>
-		<script type='text/javascript' src='admin-config.cache.js'></script>
-		<script type='text/javascript' src='../distconfig/dist-config.cache.js'></script>
+		<script type='text/javascript' src='${baseUrl}/admin/admin.cache.js'></script>
+		<script type='text/javascript' src='${baseUrl}/admin/admin-mods.cache.js'></script>
+		<script type='text/javascript' src='${baseUrl}/admin/admin-dists.cache.js'></script>
+		<script type='text/javascript' src='${baseUrl}/admin/admin-employers.cache.js'></script>
+		<script type='text/javascript' src='${baseUrl}/admin/admin-config.cache.js'></script>
+		<script type='text/javascript' src='${baseUrl}/distconfig/dist-config.cache.js'></script>
 	</jsp:attribute>
 
 	<jsp:body>

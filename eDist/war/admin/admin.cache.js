@@ -7,7 +7,7 @@ $(document).ready(function() {
 	$('#configTab').on('show.bs.tab', onConfigShow);
 	$('#controlPanelTab').on('show.bs.tab', onControlPanelShow);
 
-	configureRoutes('/admin/');
+	configureRoutes('admin/{tab}');
 
 	if (History.getState().hash === '/admin/') {
 		History.pushState(null, '', 'users');

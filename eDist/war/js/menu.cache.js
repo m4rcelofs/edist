@@ -27,15 +27,18 @@ $(document).ready(function() {
 	$('#' + currentLoc).addClass('active');
 });
 
-function configureRoutes(section) {
+function configureRoutes(route) {
+
+	crossroads.addRoute(route, doRouting);
+
 	$('.nav-tabs a').click(function(event) {
 		event.preventDefault();
 		History.pushState(null, '', this.hash.replace('#', ''));
 	});
 
 	History.Adapter.bind(window, 'statechange', function() {
-		doRouting(History.getState().hash.replace(section, ''));
+		crossroads.parse(History.getState().hash);
 	});
 
-	doRouting(History.getState().hash.replace(section, ''));
+	crossroads.parse(History.getState().hash);
 }
