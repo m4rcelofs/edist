@@ -1,13 +1,18 @@
 $(document).ready(function() {
 	$('.help').popover();
 
-	$('#moderatorsTab').on('show.bs.tab', onModeratorsShow);
+	$('#usersTab').on('show.bs.tab', onModeratorsShow);
 	$('#distributorsTab').on('show.bs.tab', onDistributorsShow);
 	$('#employersTab').on('show.bs.tab', onEmployersShow);
 	$('#configTab').on('show.bs.tab', onConfigShow);
 	$('#controlPanelTab').on('show.bs.tab', onControlPanelShow);
 
-	onModeratorsShow();
+	loadRoutes();
+	if (!hasher.getHash()) {
+		hasher.setHash('users');
+		onModeratorsShow();
+	}
+
 });
 
 function onControlPanelShow() {

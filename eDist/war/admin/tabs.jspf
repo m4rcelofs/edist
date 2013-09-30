@@ -1,11 +1,10 @@
-<li class="active"><a href="#moderators" data-toggle="tab"
-	id="moderatorsTab"><span class="glyphicon glyphicon-user"></span>
-		 Usuários</a></li>
-<li><a href="#distributors" data-toggle="tab" id="distributorsTab"><span
+<li class="active"><a href="#users" id="usersTab"><span
+		class="glyphicon glyphicon-user"></span> Usuários</a></li>
+<li><a href="#distributors" id="distributorsTab"><span
 		class="glyphicon glyphicon-lock"></span> Distribuidores</a></li>
-		<li><a href="#employers" data-toggle="tab" id="employersTab"><span
+<li><a href="#employers" id="employersTab"><span
 		class="glyphicon glyphicon-briefcase"></span> Gestores</a></li>
-<li><a href="#config" data-toggle="tab" id="configTab"><span
+<li><a href="#config" id="configTab"><span
 		class="glyphicon glyphicon-cog"></span> Configurações</a></li>
-<li><a href="#controlPanel" data-toggle="tab" id="controlPanelTab"><span
+<li><a href="#controlPanel" id="controlPanelTab"><span
 		class="glyphicon glyphicon-list-alt"></span> Painel de Controle</a></li>

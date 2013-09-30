@@ -5,16 +5,14 @@
 <t:wrapper>
 
 	<jsp:attribute name="imports">
-<!-- 		<script type='text/javascript' src='dwr/engine.js'></script> -->
-<!-- 		<script type='text/javascript' src='dwr/interface/AdminService.js'></script> -->
 		<script type='text/javascript' src='admin-engine-20130921.cache.js'></script>
 		<script type='text/javascript' src='admin-interface-20130921.cache.js'></script>
 		
+		<script type='text/javascript' src='admin.cache.js'></script>
 		<script type='text/javascript' src='admin-mods.cache.js'></script>
 		<script type='text/javascript' src='admin-dists.cache.js'></script>
 		<script type='text/javascript' src='admin-employers.cache.js'></script>
 		<script type='text/javascript' src='admin-config.cache.js'></script>
-		<script type='text/javascript' src='admin.cache.js'></script>
 		<script type='text/javascript' src='../distconfig/dist-config.cache.js'></script>
 	</jsp:attribute>
 

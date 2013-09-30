@@ -17,8 +17,8 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="">
-<meta name="author" content="">
+<meta name="description" content="eDist, distribution and management app for eRepublik military units">
+<meta name="author" content="Guilpas and nW0lf">
 <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon">
 <link rel="icon" href="../favicon.ico" type="image/x-icon">
 
