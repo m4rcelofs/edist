@@ -27,23 +27,27 @@ $(document).ready(function() {
 	$('#' + currentLoc).addClass('active');
 });
 
-function configureRoutes(route) {
-	$('.nav-tabs a').click(function(event) {
-		event.preventDefault();
-		History.pushState(null, '', this.hash.replace('#', ''));
-	});
+var Navigation = new function() {
+	var nav = this;
+	
+	nav.configureRoutes = function(route) {
+		$('.nav-tabs a').click(function(event) {
+			event.preventDefault();
+			History.pushState(null, '', this.hash.replace('#', ''));
+		});
 
-	History.Adapter.bind(window, 'statechange', function() {
+		History.Adapter.bind(window, 'statechange', function() {
+			crossroads.parse(History.getState().hash);
+		});
+
 		crossroads.parse(History.getState().hash);
-	});
+	}
+	
+	nav.setCurrentLocation = function(path) {
+		History.pushState(null, '', path);  
+	}
 
-	crossroads.parse(History.getState().hash);
-}
-
-function setCurrentLocation(path) {
-	History.pushState(null, '', path);  
-}
-
-function getCurrenLocation() {
-	return History.getState().hash; 
-}
+	nav.getCurrenLocation = function() {
+		return History.getState().hash; 
+	}
+};

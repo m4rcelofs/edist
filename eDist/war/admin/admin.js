@@ -8,10 +8,10 @@ $(document).ready(function() {
 	$('#controlPanelTab').on('show.bs.tab', onControlPanelShow);
 
 	crossroads.addRoute('admin/{tab}', selectTab);
-	configureRoutes();
+	Navigation.configureRoutes();
 
-	if (getCurrenLocation() === '/admin/') {
-		setCurrentLocation('users'); 
+	if (Navigation.getCurrenLocation() === '/admin/') {
+		Navigation.setCurrentLocation('users'); 
 	}
 });
 
