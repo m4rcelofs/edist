@@ -14,7 +14,7 @@ $(document).ready(function() {
 	$('#configTab').on('show.bs.tab', onConfigShow);
 	$('#controlPanelTab').on('show.bs.tab', onControlPanelShow);
 
-	crossroads.addRoute('admin/{tab}', doRouting);
+	crossroads.addRoute('admin/{tab}', selectTab);
 	configureRoutes();
 
 	if (getCurrenLocation() === '/admin/') {
@@ -22,7 +22,7 @@ $(document).ready(function() {
 	}
 });
 
-function doRouting(tab) {
+function selectTab(tab) {
 	$('#' + tab + 'Tab').tab('show');
 }
 
