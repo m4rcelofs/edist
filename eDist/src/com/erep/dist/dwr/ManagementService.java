@@ -10,9 +10,11 @@ import org.directwebremoting.annotations.RemoteProxy;
 import com.erep.dist.CloseablePM;
 import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
+import com.erep.dist.data.DistConfig;
 import com.erep.dist.data.Distributor;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
+import com.erep.dist.dwr.dto.PlayerGroupQuery;
 import com.erep.dist.dwr.dto.PlayerQuery;
 import com.erep.dist.instances.frontend.tasks.GetUserInfoTask;
 import com.google.appengine.api.taskqueue.DeferredTask;
@@ -31,11 +33,26 @@ public class ManagementService {
 	}
 
 	@RemoteMethod
-	public List<PlayerGroup> listGroups() {
+	public PlayerGroupQuery listGroups() {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			pm.getFetchPlan().addGroup("groupListing");
-			List<PlayerGroup> groups = new DataAccessObject(pm).listGroups();
-			return groups;
+
+			PlayerGroupQuery dto = new PlayerGroupQuery();
+			DataAccessObject dao = new DataAccessObject(pm);
+
+			dto.setResults(dao.listGroups());
+			dto.setGranularity(dao.getServerConfig().getGranularity());
+
+			return dto;
+		}
+	}
+
+	@RemoteMethod
+	public DistConfig loadGroupDistConfig(PlayerGroup group) {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			pm.getFetchPlan().addGroup("configListing");
+			DataAccessObject dao = new DataAccessObject(pm);
+			PlayerGroup dbGroup = dao.find(group);
+			return dbGroup.getConfig();
 		}
 	}
 

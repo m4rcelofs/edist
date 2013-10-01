@@ -81,10 +81,13 @@
 				com.erep.dist.data.PlayerGroup,
 				com.erep.dist.data.Request,
 				com.erep.dist.data.ResourceDist,
+				com.erep.dist.data.WorkVerification,
+				com.erep.dist.data.FightVerification
 				
 				com.erep.dist.dwr.ManagementService,
 				
 				com.erep.dist.dwr.dto.PlayerQuery,
+				com.erep.dist.dwr.dto.PlayerGroupQuery,
 
 				com.erep.dist.data.enums.ConfigGranularity,
 				com.erep.dist.data.enums.RequestType,

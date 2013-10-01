@@ -16,7 +16,7 @@ function setDistConfig(key, distConfig) {
 
 function fillDistConfigDistributors(distConfig) {
 	var loadingFct;
-	if (AdminService) {
+	if (typeof AdminService !== 'undefined') {
 		loadingFct = AdminService.listDistributors;
 	} else {
 		loadingFct = ManagementService.listDistributors;
@@ -40,6 +40,11 @@ function fillDistConfigDistributors(distConfig) {
 }
 
 function setDistConfigInfo(distConfig) {
+	
+	if(!distConfig){
+		return;
+	}
+	
 	$('#maxFF').val(distConfig.currentMaxDailyFF);
 	$('#rocketAllowed').prop('checked', distConfig.rocketAllowed);
 	$('#autoDist').prop('checked', distConfig.autoSend);

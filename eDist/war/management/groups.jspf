@@ -15,9 +15,10 @@
 			<tr data-bind="attr: { id: encodedKey}">
 				<td><input data-bind="value: groupName" /></td>
 				<td><a href="javascript:void(0);" role="button"
-					data-bind="click: $root.editConfig" title="Editar Configuração">
-						<span class="glyphicon glyphicon-new-window"></span> Configuração
-						da Distribuição
+					data-bind="click: $root.editConfig, visible: $root.granularity() === 'GROUP' || $root.granularity() === 'PLAYER'"
+					title="Editar Configuração"> <span
+						class="glyphicon glyphicon-new-window"></span> Configuração da
+						Distribuição
 				</a></td>
 				<td><a href="javascript:void(0);" role="button"
 					data-bind="click: $root.saveGroup" title="Salvar"> <span
@@ -54,3 +55,5 @@
 	</div>
 	<div class="form-group"></div>
 </div>
+
+<%@ include file="../distconfig/dist-config-bindings.jspf"%>

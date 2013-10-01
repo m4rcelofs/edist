@@ -74,4 +74,23 @@
         </dependencies>
         <properties/>
     </file>
+
+
+<file name="eDist/war/distconfig/dist-config-bindings.js">
+        <min>false</min>
+        <comp>false</comp>
+        <closureCompiler>true</closureCompiler>
+        <gZip>false</gZip>
+        <resolveImports>false</resolveImports>
+        <urlRewriting>false</urlRewriting>
+        <autoBuild>true</autoBuild>
+        <lineLength>-1</lineLength>
+        <autoTimestamps>false</autoTimestamps>
+        <removeLogs>true</removeLogs>
+        <oldFileNames>false</oldFileNames>
+        <dependencies>
+            <file>eDist/war/distconfig/dist-config-bindings.js</file>
+        </dependencies>
+        <properties/>
+    </file>
 </rockstarapps>

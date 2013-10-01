@@ -2,12 +2,14 @@ var GroupsViewModel = new function() {
 	var self = this;
 
 	self.groups = ko.observableArray([]);
+	self.granularity = ko.observable();
 
 	self.onGroupsShow = function() {
 		loadGroupsTable();
 	};
 
 	self.saveGroup = function(group) {
+		group.config = getDistConfig(group.encodedKey);
 		ManagementService.saveGroup(group, {
 			callback : function(response) {
 				if (response) {
@@ -45,13 +47,21 @@ var GroupsViewModel = new function() {
 	}
 	
 	self.editConfig = function(group) {
-		// TODO
+		ManagementService.loadGroupDistConfig(group, {
+			callback : function(response) {
+				console.log(response);
+				setDistConfig(group.encodedKey, response);
+				$('#distConfigDialog').modal('show');
+			}, 
+			onError : Management.defaultError
+		});
 	}
 
 	function loadGroupsTable() {
 		ManagementService.listGroups({
 			callback : function(response) {
-				self.groups(response);
+				self.groups(response.results);
+				self.granularity(response.granularity);
 			}
 		});
 	}
