@@ -1,83 +1,113 @@
-function setDistConfig(key, distConfig) {
-	$('#dist-config-form').attr('entity-key', key);
-	fillDistConfigDistributors(distConfig);
+var DistConfigViewModel = new function() {
+	var self = this;
 
-	if (key === 'server-config') {
-		$('#fight-verification-enabled').attr('disabled', 'disabled');
-		$('#work-verification-enabled').attr('disabled', 'disabled');
-		$('#dist-config-enabled').attr('disabled', 'disabled');
-		$('#dist-config-enabled').prop('checked', true);
+	self.rootEntity = null;
+	self.currentKey = ko.observable();
+	self.currentConfig = ko.mapping.fromJS(new DistConfig());
+	self.distributors = ko.observableArray();
+
+	self.isServerConfig = ko.computed(function() {
+		return this.currentKey() === 'server-config';
+	}, this);
+
+	self.setDistConfig = function(key, root) {
+		loadDistributors();
+		self.rootEntity = root;
+		self.currentKey(key);
+		ko.mapping.fromJS(root.config, self.currentConfig);
 	}
 
-	console.log(key);
-	console.log(JSON.stringify(distConfig));
-	// TODO remove
-}
-
-function fillDistConfigDistributors(distConfig) {
-	var loadingFct;
-	if (typeof AdminService !== 'undefined') {
-		loadingFct = AdminService.listDistributors;
-	} else {
-		loadingFct = ManagementService.listDistributors;
+	self.updateRoot = function() {
+		//TODO test with serverConfig	
+		console.log('updateRoot');
+		self.rootEntity.config = ko.mapping.toJS(self.currentConfig);
+		console.log(self.rootEntity);
+		closeModal();
 	}
+	
+	self.cancel = function() {
+		closeModal();
+	}
+	
+	function loadDistributors() {
+		if (self.distributors().length == 0) {
 
-	loadingFct({
-		callback : function(response) {
-			$('#dist-config-distributor').empty();
-			response.forEach(function(item) {
-				var text = item.name ? item.name : item.email ? item.email
-						: item.encodedKey;
-				var row = '<option value="' + item.encodedKey + '">' + text
-						+ '</option>';
-				$('#dist-config-distributor').append(row);
+			var loadingFct;
+			if (typeof AdminService !== 'undefined') {
+				loadingFct = AdminService.listDistributors;
+			} else {
+				loadingFct = ManagementService.listDistributors;
+			}
+
+			loadingFct({
+				callback : function(response) {
+					self.distributors(response);
+				}
 			});
-			$('#dist-config-distributor').removeAttr('disabled');
-			setDistConfigInfo(distConfig);
 		}
-	});
+	}
+	
+	function closeModal() {
+		$('#distConfigDialog').modal('hide');
+	}
 
 }
 
-function setDistConfigInfo(distConfig) {
-	
-	if(!distConfig){
-		return;
-	}
-	
-	$('#maxFF').val(distConfig.currentMaxDailyFF);
-	$('#rocketAllowed').prop('checked', distConfig.rocketAllowed);
-	$('#autoDist').prop('checked', distConfig.autoSend);
-	$('#distType').val(distConfig.allowedType);
-	$('#distWeaponQuality').val(distConfig.allowedWeaponQuality);
-	$('#dist-config-distributor').val(distConfig.distributor.encodedKey);
+// function setDistConfig(key, distConfig) {
+// $('#dist-config-form').attr('entity-key', key);
+// fillDistConfigDistributors(distConfig);
+//
+// if (key === 'server-config') {
+// $('#fight-verification-enabled').attr('disabled', 'disabled');
+// $('#work-verification-enabled').attr('disabled', 'disabled');
+// $('#dist-config-enabled').attr('disabled', 'disabled');
+// $('#dist-config-enabled').prop('checked', true);
+// }
+//
+// console.log(key);
+// console.log(JSON.stringify(distConfig));
+// // TODO remove
+// }
 
-	if (distConfig.fightVerification
-			&& distConfig.fightVerification.fightVerifAction) {
-		$('#fight-verification-enabled').prop('checked', true);
-		enableFightVerification();
-
-		$('#fight-verification-action').val(
-				distConfig.fightVerification.fightVerifAction);
-		$('#fight-verification-pct').val(
-				distConfig.fightVerification.fightVerifPct);
-		$('#fight-verification-days').val(
-				distConfig.fightVerification.fightVerifDays);
-	}
-
-	if (distConfig.workVerification
-			&& distConfig.workVerification.workVerifAction) {
-		$('#work-verification-enabled').prop('checked', true);
-		enableWorkVerification();
-
-		$('#work-verification-action').val(
-				distConfig.workVerification.workVerifAction);
-		$('#work-verification-pct').val(
-				distConfig.workVerification.minWorkedDaysPct);
-		$('#work-verification-days').val(
-				distConfig.workVerification.workVerifDays);
-	}
-}
+//function setDistConfigInfo(distConfig) {
+//
+//	if (!distConfig) {
+//		return;
+//	}
+//
+//	$('#maxFF').val(distConfig.currentMaxDailyFF);
+//	$('#rocketAllowed').prop('checked', distConfig.rocketAllowed);
+//	$('#autoDist').prop('checked', distConfig.autoSend);
+//	$('#distType').val(distConfig.allowedType);
+//	$('#distWeaponQuality').val(distConfig.allowedWeaponQuality);
+//	$('#dist-config-distributor').val(distConfig.distributor.encodedKey);
+//
+//	if (distConfig.fightVerification
+//			&& distConfig.fightVerification.fightVerifAction) {
+//		$('#fight-verification-enabled').prop('checked', true);
+//		enableFightVerification();
+//
+//		$('#fight-verification-action').val(
+//				distConfig.fightVerification.fightVerifAction);
+//		$('#fight-verification-pct').val(
+//				distConfig.fightVerification.fightVerifPct);
+//		$('#fight-verification-days').val(
+//				distConfig.fightVerification.fightVerifDays);
+//	}
+//
+//	if (distConfig.workVerification
+//			&& distConfig.workVerification.workVerifAction) {
+//		$('#work-verification-enabled').prop('checked', true);
+//		enableWorkVerification();
+//
+//		$('#work-verification-action').val(
+//				distConfig.workVerification.workVerifAction);
+//		$('#work-verification-pct').val(
+//				distConfig.workVerification.minWorkedDaysPct);
+//		$('#work-verification-days').val(
+//				distConfig.workVerification.workVerifDays);
+//	}
+//}
 
 // saving 'null' makes no changes
 // deep save needs empty object

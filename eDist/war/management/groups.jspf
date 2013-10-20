@@ -7,19 +7,38 @@
 		<thead>
 			<tr>
 				<th>Nome</th>
-				<th></th>
+				<th data-bind="visible: $root.groupConfigEnabled()">Distribuição 
+					<a href="#" class="help" data-toggle="popover" title
+					data-content="Caso não seja configurado, utiliza a configuração padrão da Unidade Militar"
+					data-original-title="Configuração de Distribuição"> <span
+					class="glyphicon glyphicon-question-sign"></span>
+					</a>
+				</th>
 				<th></th>
 			</tr>
 		</thead>
 		<tbody data-bind="foreach: groups">
 			<tr data-bind="attr: { id: encodedKey}">
-				<td><input data-bind="value: groupName" /></td>
-				<td><a href="javascript:void(0);" role="button"
-					data-bind="click: $root.editConfig, visible: $root.granularity() === 'GROUP' || $root.granularity() === 'PLAYER'"
+				<td>
+					<input data-bind="value: groupName" />
+				</td>
+				<td>
+					<a href="javascript:void(0);" role="button"
+					data-bind="click: $root.addConfig, visible: $root.groupConfigEnabled() === true && config === null"
+					title="Adicionar Configuração"> <span
+						class="glyphicon glyphicon-new-window"></span> Adicionar
+					</a>
+					<a href="javascript:void(0);" role="button"
+					data-bind="click: $root.editConfig, visible: $root.groupConfigEnabled() === true && config !== null"
 					title="Editar Configuração"> <span
-						class="glyphicon glyphicon-new-window"></span> Configuração da
-						Distribuição
-				</a></td>
+						class="glyphicon glyphicon-pencil"></span> Editar
+					</a>
+					<a href="javascript:void(0);" role="button"
+					data-bind="click: $root.removeConfig, visible: $root.groupConfigEnabled() === true && config !== null"
+					title="Remover Configuração"> <span
+						class="glyphicon glyphicon-remove"></span> Remover
+					</a>
+				</td>
 				<td><a href="javascript:void(0);" role="button"
 					data-bind="click: $root.saveGroup" title="Salvar"> <span
 						class="glyphicon glyphicon-floppy-disk"></span> Salvar
@@ -55,5 +74,3 @@
 	</div>
 	<div class="form-group"></div>
 </div>
-
-<%@ include file="../distconfig/dist-config-bindings.jspf"%>

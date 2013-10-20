@@ -16,7 +16,6 @@ var GroupsViewModel = new function() {
 	};
 
 	self.saveGroup = function(group) {
-		group.config = getDistConfig(group.encodedKey);
 		ManagementService.saveGroup(group, {
 			callback : function(response) {
 				if (response) {
@@ -40,28 +39,35 @@ var GroupsViewModel = new function() {
 		var group = {
 			groupName : $('#new-group-name').val()
 		};
-		
 		ManagementService.saveGroup(group, {
 			callback : function(response) {
-				if(response) {
+				if (response) {
 					loadGroupsTable();
 				} else {
 					Management.defaultError();
 				}
-			}, 
-			onError: Management.defaultError
-		});
-	}
-	
-	self.editConfig = function(group) {
-		ManagementService.loadGroupDistConfig(group, {
-			callback : function(response) {
-				console.log(response);
-				setDistConfig(group.encodedKey, response);
-				$('#distConfigDialog').modal('show');
-			}, 
+			},
 			onError : Management.defaultError
 		});
+	}
+
+	self.editConfig = function(group) {
+		DistConfigViewModel.setDistConfig(group.encodedKey, group);
+		$('#distConfigDialog').modal('show');
+	}
+
+	self.addConfig = function(group) {
+		group.config = new DistConfig();
+		self.editConfig(group);
+	}
+
+	self.removeConfig = function(group) {
+		group.config = null;
+	}
+
+	self.groupConfigEnabled = function() {
+		return self.granularity() === 'GROUP'
+				|| self.granularity() === 'PLAYER';
 	}
 
 	function loadGroupsTable() {
@@ -84,11 +90,15 @@ var GroupsViewModel = new function() {
 $(document).ready(function() {
 	$('.help').popover();
 
-	ko.applyBindings(GroupsViewModel);
+	ko.applyBindings(DistConfigViewModel, document.getElementById('distConfigDialog'));
+	
+	ko.applyBindings(GroupsViewModel, document.getElementById('groupsList'));
 	$('#groupsListTab').on('show.bs.tab', GroupsViewModel.onGroupsShow);
 
 	// ko.applyBindings(PlayersViewModel);
 	$('#playersListTab').on('show.bs.tab', PlayersController.onPlayersShow);
+	
+	
 
 	crossroads.addRoute('management/{tab}', Management.selectTab);
 	Navigation.configureRoutes();

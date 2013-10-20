@@ -9,14 +9,16 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 import org.directwebremoting.annotations.DataTransferObject;
+import org.directwebremoting.annotations.Param;
 import org.directwebremoting.annotations.RemoteProperty;
+import org.directwebremoting.convert.BeanConverter;
 
 import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.data.enums.ResourceQuality;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.datanucleus.annotations.Unowned;
 
-@DataTransferObject
+@DataTransferObject(converter = BeanConverter.class, params = @Param(name = "javascript", value = "DistConfig"))
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 @FetchGroup(name = "configListing", members = {
 		@Persistent(name = "distributor"),

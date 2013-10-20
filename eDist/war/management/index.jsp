@@ -28,6 +28,7 @@
 				<%@ include file="groups.jspf"%>
 				<%@ include file="players.jspf"%>
 			</div>
+			<%@ include file="../distconfig/dist-config-root.jspf"%>
 	</jsp:body>
 </t:wrapper>
 

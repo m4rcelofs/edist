@@ -39,20 +39,12 @@ public class ManagementService {
 			PlayerGroupQuery dto = new PlayerGroupQuery();
 			DataAccessObject dao = new DataAccessObject(pm);
 
+			pm.getFetchPlan().addGroup("configListing");
+
 			dto.setResults(dao.listGroups());
 			dto.setGranularity(dao.getServerConfig().getGranularity());
 
 			return dto;
-		}
-	}
-
-	@RemoteMethod
-	public DistConfig loadGroupDistConfig(PlayerGroup group) {
-		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			pm.getFetchPlan().addGroup("configListing");
-			DataAccessObject dao = new DataAccessObject(pm);
-			PlayerGroup dbGroup = dao.find(group);
-			return dbGroup.getConfig();
 		}
 	}
 

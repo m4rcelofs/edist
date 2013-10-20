@@ -1,0 +1,24 @@
+<div class="modal fade" id="distConfigDialog" tabindex="-10"
+	role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3>Configuração da Distribuição</h3>
+			</div>
+			<div class="modal-body">
+				<form id="dist-config-form" class="form-horizontal" role="form"
+					onsubmit="return false;">
+					<div class="panel-group" id="verification-accordion">
+						<%@ include file="dist-config-basic.jspf"%>
+						<%@ include file="dist-config-fight-validation.jspf"%>
+						<%@ include file="dist-config-work-validation.jspf"%>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-primary" data-bind="click: updateRoot">OK</button>
+				<button class="btn" data-bind="click: cancel">Cancelar</button>
+			</div>
+		</div>
+	</div>
+</div>

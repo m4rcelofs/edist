@@ -16,6 +16,7 @@
 <script type="text/javascript" src="${baseUrl}/js/jquery.history.min.cache.js"></script>
 <script type="text/javascript" src="${baseUrl}/js/signals.min.cache.js"></script>
 <script type="text/javascript" src="${baseUrl}/js/crossroads.min.cache.js"></script>
+<script type="text/javascript" src="${baseUrl}/js/knockout.mapping-2.4.1.cache.js"></script>
 
 <script type="text/javascript" src="${baseUrl}/js/navigation.closure.js"></script>
 
