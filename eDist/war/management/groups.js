@@ -51,16 +51,25 @@ var GroupsViewModel = new function() {
 
 	self.addConfig = function(group) {
 		group.config = new DistConfig();
+		dirtyObservableArrayRefresh(self.groups);
 		self.editConfig(group);
 	}
 
 	self.removeConfig = function(group) {
 		group.config = null;
+		dirtyObservableArrayRefresh(self.groups);
 	}
 
 	self.groupConfigEnabled = function() {
 		return self.granularity() === 'GROUP'
 				|| self.granularity() === 'PLAYER';
+	}
+
+	function dirtyObservableArrayRefresh(array) {
+		// array.valueHasMutated(); doesn't work?
+		var data = array().slice(0);
+		array([]);
+		array(data);
 	}
 
 	function loadGroupsTable() {
