@@ -20,10 +20,7 @@ import com.google.appengine.datanucleus.annotations.Unowned;
 
 @DataTransferObject(converter = BeanConverter.class, params = @Param(name = "javascript", value = "DistConfig"))
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-@FetchGroup(name = "configListing", members = {
-		@Persistent(name = "distributor"),
-		@Persistent(name = "fightVerification"),
-		@Persistent(name = "workVerification") })
+@FetchGroup(name = "configListing", members = { @Persistent(name = "distributor"), })
 public class DistConfig {
 
 	@PrimaryKey
