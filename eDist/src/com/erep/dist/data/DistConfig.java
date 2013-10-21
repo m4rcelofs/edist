@@ -1,6 +1,5 @@
 package com.erep.dist.data;
 
-import javax.jdo.annotations.Embedded;
 import javax.jdo.annotations.FetchGroup;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -15,6 +14,7 @@ import org.directwebremoting.convert.BeanConverter;
 
 import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.data.enums.ResourceQuality;
+import com.erep.dist.data.enums.VerificationAction;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.datanucleus.annotations.Unowned;
 
@@ -58,15 +58,31 @@ public class DistConfig {
 	@RemoteProperty
 	private Distributor			distributor;
 
-	@Embedded
+	// Fight Verification
 	@Persistent
 	@RemoteProperty
-	private FightVerification	fightVerification;
+	private int					fightVerifDays;
 
-	@Embedded
 	@Persistent
 	@RemoteProperty
-	private WorkVerification	workVerification;
+	private double				fightVerifPct;
+
+	@Persistent
+	@RemoteProperty
+	private VerificationAction	fightVerifAction;
+
+	// Work Verification
+	@Persistent
+	@RemoteProperty
+	private int					workVerifDays;
+
+	@Persistent
+	@RemoteProperty
+	private double				minWorkedDaysPct;
+
+	@Persistent
+	@RemoteProperty
+	private VerificationAction	workVerifAction;
 
 	public DistConfig() {}
 
@@ -126,20 +142,52 @@ public class DistConfig {
 		this.allowedWeaponQuality = allowedWeaponQuality;
 	}
 
-	public FightVerification getFightVerification() {
-		return fightVerification;
+	public int getFightVerifDays() {
+		return fightVerifDays;
 	}
 
-	public void setFightVerification(FightVerification fightVerification) {
-		this.fightVerification = fightVerification;
+	public void setFightVerifDays(int fightVerifDays) {
+		this.fightVerifDays = fightVerifDays;
 	}
 
-	public WorkVerification getWorkVerification() {
-		return workVerification;
+	public double getFightVerifPct() {
+		return fightVerifPct;
 	}
 
-	public void setWorkVerification(WorkVerification workVerification) {
-		this.workVerification = workVerification;
+	public void setFightVerifPct(double fightVerifPct) {
+		this.fightVerifPct = fightVerifPct;
+	}
+
+	public VerificationAction getFightVerifAction() {
+		return fightVerifAction;
+	}
+
+	public void setFightVerifAction(VerificationAction fightVerifAction) {
+		this.fightVerifAction = fightVerifAction;
+	}
+
+	public int getWorkVerifDays() {
+		return workVerifDays;
+	}
+
+	public void setWorkVerifDays(int workVerifDays) {
+		this.workVerifDays = workVerifDays;
+	}
+
+	public double getMinWorkedDaysPct() {
+		return minWorkedDaysPct;
+	}
+
+	public void setMinWorkedDaysPct(double minWorkedDaysPct) {
+		this.minWorkedDaysPct = minWorkedDaysPct;
+	}
+
+	public VerificationAction getWorkVerifAction() {
+		return workVerifAction;
+	}
+
+	public void setWorkVerifAction(VerificationAction workVerifAction) {
+		this.workVerifAction = workVerifAction;
 	}
 
 }

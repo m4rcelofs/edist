@@ -32,7 +32,7 @@ public class RequestsHelper {
 	}
 
 	public boolean verifyRocketAllowed(Player player) {
-		boolean rocketAllowed = config.getRocketAllowed(player);
+		boolean rocketAllowed = config.getConfig(player).getRocketAllowed();
 		boolean requestedToday = dao.requestedRocket(player,
 				eRepTimeCalculator.geteRepDay());
 		return rocketAllowed && !requestedToday;
@@ -43,7 +43,7 @@ public class RequestsHelper {
 				|| player.getFightStatus() == PlayerDistStatus.TEMP_BANNED
 				|| player.getWorkStatus() == PlayerDistStatus.TEMP_BANNED)
 			return 0;
-		int maxFF = config.getMaxFF(player);
+		int maxFF = config.getConfig(player).getCurrentMaxDailyFF();
 		int alreadyRequested = dao.getDailyRequestedFF(player,
 				eRepTimeCalculator.geteRepDay());
 		return (maxFF - alreadyRequested);
@@ -67,7 +67,7 @@ public class RequestsHelper {
 		request.setGroup(player.getGroup());
 
 		if (requestedType == RequestType.ROCKET) {
-			if (!config.getRocketAllowed(player))
+			if (!config.getConfig(player).getRocketAllowed())
 				return null;
 			request.setRocketQuality(player.getRocketEnabled());
 			request.setResources(getRocketResources(request));
@@ -84,7 +84,7 @@ public class RequestsHelper {
 			request.setResources(getFFResources(request));
 		}
 
-		request.setDistributor(config.getDistributor(player));
+		request.setDistributor(config.getConfig(player).getDistributor());
 		if (request.getDistributor().getPassword() == null)
 			return null;
 
@@ -111,8 +111,8 @@ public class RequestsHelper {
 		}
 
 		if (sendWeapons) {
-			ResourceQuality quality = config.getAllowedWeaponQuality(request
-					.getPlayer());
+			ResourceQuality quality = config.getConfig(request.getPlayer())
+					.getAllowedWeaponQuality();
 
 			// will always return lower end of division
 			ResourceDist resource = new ResourceDist(ResourceType.WEAPONS,
@@ -139,7 +139,7 @@ public class RequestsHelper {
 		if (requested == null)
 			return null;
 
-		RequestType allowed = config.getDistType(player);
+		RequestType allowed = config.getConfig(player).getAllowedType();
 
 		if (allowed == RequestType.WEAPONS_FOOD)
 			return requested;

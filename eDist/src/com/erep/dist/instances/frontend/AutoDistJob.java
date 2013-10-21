@@ -47,7 +47,7 @@ public class AutoDistJob extends HttpServlet {
 			List<Player> players = dao.listAllPlayers();
 
 			for (Player player : players) {
-				if (config.getAutoSend(player)) {
+				if (config.getConfig(player).getAutoSend()) {
 					Transaction tx = pm.currentTransaction();
 					try {
 						tx.begin();

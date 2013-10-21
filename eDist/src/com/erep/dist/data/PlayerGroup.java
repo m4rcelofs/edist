@@ -12,8 +12,6 @@ import javax.jdo.annotations.PrimaryKey;
 import org.directwebremoting.annotations.DataTransferObject;
 import org.directwebremoting.annotations.RemoteProperty;
 
-import com.erep.dist.data.enums.RequestType;
-import com.erep.dist.data.enums.ResourceQuality;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 
@@ -70,67 +68,12 @@ public class PlayerGroup implements HasEncodedKey {
 	}
 
 	public DistConfig getConfig() {
+		// fallback to default
 		return config;
 	}
 
 	public void setConfig(DistConfig config) {
 		this.config = config;
-	}
-
-	public Boolean getAutoSend() {
-		if (config != null)
-			return config.getAutoSend();
-		// fallback to default
-		return null;
-	}
-
-	public Integer getCurrentMaxDailyFF() {
-		if (config != null)
-			return config.getCurrentMaxDailyFF();
-		// fallback to default
-		return null;
-	}
-
-	public Boolean getRocketAllowed() {
-		if (config != null)
-			return config.getRocketAllowed();
-		// fallback to default
-		return null;
-	}
-
-	public Distributor getDistributor() {
-		if (config != null)
-			return config.getDistributor();
-		// fallback to default
-		return null;
-	}
-
-	public RequestType getAllowedType() {
-		if (config != null)
-			return config.getAllowedType();
-		// fallback to default
-		return null;
-	}
-
-	public ResourceQuality getAllowedWeaponQuality() {
-		if (config != null)
-			return config.getAllowedWeaponQuality();
-		// fallback to default
-		return null;
-	}
-
-	public FightVerification getFightVerification() {
-		if (config != null)
-			return config.getFightVerification();
-		// fallback to default
-		return null;
-	}
-
-	public WorkVerification getWorkVerification() {
-		if (config != null)
-			return config.getWorkVerification();
-		// fallback to default
-		return null;
 	}
 
 	public PlayerGroupRoot getRoot() {

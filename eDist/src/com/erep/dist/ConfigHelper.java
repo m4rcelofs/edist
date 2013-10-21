@@ -1,13 +1,8 @@
 package com.erep.dist;
 
-import com.erep.dist.data.Distributor;
-import com.erep.dist.data.FightVerification;
+import com.erep.dist.data.DistConfig;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.ServerConfig;
-import com.erep.dist.data.WorkVerification;
-import com.erep.dist.data.enums.ConfigGranularity;
-import com.erep.dist.data.enums.RequestType;
-import com.erep.dist.data.enums.ResourceQuality;
 
 public class ConfigHelper {
 
@@ -17,141 +12,27 @@ public class ConfigHelper {
 		this.dao = dao;
 	}
 
-	public boolean getAutoSend(Player player) {
-		Boolean autoSend = null;
-
+	public DistConfig getConfig(Player player) {
 		ServerConfig server = dao.getServerConfig();
 
-		if (server.getGranularity() == ConfigGranularity.PLAYER)
-			autoSend = player.getAutoSend();
-		else
-			if (server.getGranularity() == ConfigGranularity.GROUP)
-				autoSend = player.getGroup().getAutoSend();
+		DistConfig config = null;
+
+		switch (server.getGranularity()) {
+			case PLAYER:
+				config = player.getConfig();
+				break;
+			case GROUP:
+				config = player.getGroup().getConfig();
+				break;
+			default:
+				return server.getMuConfig();
+		}
 
 		// default fallback
-		if (autoSend == null)
-			autoSend = server.getMuConfig().getAutoSend();
+		if (config == null)
+			config = server.getMuConfig();
 
-		return autoSend;
-
+		return config;
 	}
 
-	public boolean getRocketAllowed(Player player) {
-		Boolean rocketAllowed = null;
-		ServerConfig server = dao.getServerConfig();
-
-		if (server.getGranularity() == ConfigGranularity.PLAYER)
-			rocketAllowed = player.getRocketAllowed();
-		else
-			if (server.getGranularity() == ConfigGranularity.GROUP)
-				rocketAllowed = player.getGroup().getRocketAllowed();
-
-		// default fallback
-		if (rocketAllowed == null)
-			rocketAllowed = server.getMuConfig().getRocketAllowed();
-
-		return rocketAllowed;
-	}
-
-	public int getMaxFF(Player player) {
-		Integer maxFF = null;
-		ServerConfig server = dao.getServerConfig();
-
-		if (server.getGranularity() == ConfigGranularity.PLAYER)
-			maxFF = player.getCurrentMaxDailyFF();
-		else
-			if (server.getGranularity() == ConfigGranularity.GROUP)
-				maxFF = player.getGroup().getCurrentMaxDailyFF();
-
-		// default fallback
-		if (maxFF == null)
-			maxFF = server.getMuConfig().getCurrentMaxDailyFF();
-
-		return maxFF;
-	}
-
-	public RequestType getDistType(Player player) {
-		RequestType type = null;
-		ServerConfig server = dao.getServerConfig();
-
-		if (server.getGranularity() == ConfigGranularity.PLAYER)
-			type = player.getAllowedType();
-		else
-			if (server.getGranularity() == ConfigGranularity.GROUP)
-				type = player.getGroup().getAllowedType();
-
-		// default fallback
-		if (type == null)
-			type = server.getMuConfig().getAllowedType();
-
-		return type;
-	}
-
-	public Distributor getDistributor(Player player) {
-		Distributor dist = null;
-		ServerConfig server = dao.getServerConfig();
-
-		if (server.getGranularity() == ConfigGranularity.PLAYER)
-			dist = player.getDistributor();
-		else
-			if (server.getGranularity() == ConfigGranularity.GROUP)
-				dist = player.getGroup().getDistributor();
-
-		// default fallback
-		if (dist == null)
-			dist = server.getMuConfig().getDistributor();
-
-		return dist;
-	}
-
-	public ResourceQuality getAllowedWeaponQuality(Player player) {
-		ResourceQuality q = null;
-		ServerConfig server = dao.getServerConfig();
-
-		if (server.getGranularity() == ConfigGranularity.PLAYER)
-			q = player.getAllowedWeaponQuality();
-		else
-			if (server.getGranularity() == ConfigGranularity.GROUP)
-				q = player.getGroup().getAllowedWeaponQuality();
-
-		// default fallback
-		if (q == null)
-			q = server.getMuConfig().getAllowedWeaponQuality();
-
-		return q;
-	}
-
-	public FightVerification getFightVerification(Player player) {
-		FightVerification q = null;
-		ServerConfig server = dao.getServerConfig();
-
-		if (server.getGranularity() == ConfigGranularity.PLAYER)
-			q = player.getFightVerification();
-		else
-			if (server.getGranularity() == ConfigGranularity.GROUP)
-				q = player.getGroup().getFightVerification();
-
-		// default fallback
-		if (q == null)
-			q = server.getMuConfig().getFightVerification();
-
-		return q;
-	}
-
-	public WorkVerification getWorkVerification(Player player) {
-		WorkVerification q = null;
-		ServerConfig server = dao.getServerConfig();
-
-		if (server.getGranularity() == ConfigGranularity.PLAYER)
-			q = player.getWorkVerification();
-		else
-			if (server.getGranularity() == ConfigGranularity.GROUP)
-				q = player.getGroup().getWorkVerification();
-
-		// default fallback
-		if (q == null)
-			q = server.getMuConfig().getWorkVerification();
-
-		return q;
-	}
 }

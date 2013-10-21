@@ -41,7 +41,7 @@ public class CalculateDailyFightsTask implements DeferredTask {
 			DailyStats previousDayStats = dao.getStats(dbPlayer, today - 1);
 			DailyStats todayStats = dao.getStats(dbPlayer, today);
 
-			ResourceQuality quality = config.getAllowedWeaponQuality(dbPlayer);
+			ResourceQuality quality = config.getConfig(dbPlayer).getAllowedWeaponQuality();
 
 			DailyFights fights = calculateFights(today, dbPlayer,
 					previousDayStats, todayStats, quality);

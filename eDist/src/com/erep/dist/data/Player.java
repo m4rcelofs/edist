@@ -17,8 +17,6 @@ import org.directwebremoting.annotations.RemoteProperty;
 
 import com.erep.dist.data.enums.PlayerDistStatus;
 import com.erep.dist.data.enums.PlayerStatus;
-import com.erep.dist.data.enums.RequestType;
-import com.erep.dist.data.enums.ResourceQuality;
 import com.erep.dist.data.enums.RocketQuality;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
@@ -28,7 +26,7 @@ import com.google.appengine.datanucleus.annotations.Unowned;
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 @FetchGroups({
 		@FetchGroup(name = "playerListing", members = { @Persistent(name = "group") }),
-		@FetchGroup(name = "requestAttempt", members = {  }) })
+		@FetchGroup(name = "requestAttempt", members = {}) })
 public class Player implements HasEncodedKey {
 
 	/**
@@ -159,75 +157,12 @@ public class Player implements HasEncodedKey {
 	}
 
 	public DistConfig getConfig() {
-		return config;
+		// fallback to group
+		return config != null ? config : group.getConfig();
 	}
 
 	public void setConfig(DistConfig config) {
 		this.config = config;
-	}
-
-	public Boolean getAutoSend() {
-		if (config != null && config.getAutoSend() != null)
-			return config.getAutoSend();
-		else
-			// fallback to group
-			return group.getAutoSend();
-	}
-
-	public Integer getCurrentMaxDailyFF() {
-		if (config != null && config.getCurrentMaxDailyFF() != null)
-			return config.getCurrentMaxDailyFF();
-		else
-			// fallback to group
-			return group.getCurrentMaxDailyFF();
-	}
-
-	public Boolean getRocketAllowed() {
-		if (config != null && config.getRocketAllowed() != null)
-			return config.getRocketAllowed();
-		else
-			// fallback to group
-			return group.getRocketAllowed();
-	}
-
-	public Distributor getDistributor() {
-		if (config != null && config.getDistributor() != null)
-			return config.getDistributor();
-		else
-			// fallback to group
-			return group.getDistributor();
-	}
-
-	public RequestType getAllowedType() {
-		if (config != null && config.getAllowedType() != null)
-			return config.getAllowedType();
-		else
-			// fallback to group
-			return group.getAllowedType();
-	}
-
-	public ResourceQuality getAllowedWeaponQuality() {
-		if (config != null && config.getAllowedWeaponQuality() != null)
-			return config.getAllowedWeaponQuality();
-		else
-			// fallback to group
-			return group.getAllowedWeaponQuality();
-	}
-
-	public FightVerification getFightVerification() {
-		if (config != null && config.getFightVerification() != null)
-			return config.getFightVerification();
-		else
-			// fallback to group
-			return group.getFightVerification();
-	}
-
-	public WorkVerification getWorkVerification() {
-		if (config != null && config.getWorkVerification() != null)
-			return config.getWorkVerification();
-		else
-			// fallback to group
-			return group.getWorkVerification();
 	}
 
 	public Set<Request> getRequests() {

@@ -102,8 +102,8 @@ public class RequestService {
 			try {
 				Player dbPlayer = identifyRequestString(dao,
 						idNameOrLink.trim());
-				dto.setAllowedType(config.getDistType(dbPlayer));
-				dto.setAllowedQuality(config.getAllowedWeaponQuality(dbPlayer));
+				dto.setAllowedType(config.getConfig(dbPlayer).getAllowedType());
+				dto.setAllowedQuality(config.getConfig(dbPlayer).getAllowedWeaponQuality());
 
 				tx.begin();
 				dto.setRocketAllowed(requests.verifyRocketAllowed(dbPlayer));

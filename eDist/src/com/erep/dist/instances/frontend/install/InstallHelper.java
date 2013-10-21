@@ -5,12 +5,10 @@ import com.erep.dist.data.DistConfig;
 import com.erep.dist.data.Distributor;
 import com.erep.dist.data.DistributorRoot;
 import com.erep.dist.data.EmployerRoot;
-import com.erep.dist.data.FightVerification;
 import com.erep.dist.data.Licence;
 import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.PlayerGroupRoot;
 import com.erep.dist.data.ServerConfig;
-import com.erep.dist.data.WorkVerification;
 import com.erep.dist.data.enums.ConfigGranularity;
 import com.erep.dist.data.enums.ReportsAccessLevel;
 import com.erep.dist.data.enums.RequestType;
@@ -40,10 +38,8 @@ public class InstallHelper {
 		distConfig.setAllowedWeaponQuality(ResourceQuality.Q7);
 		distConfig.setDistributor(defaultDistributor());
 
-		distConfig.setFightVerification(new FightVerification(
-				VerificationAction.NONE));
-		distConfig.setWorkVerification(new WorkVerification(
-				VerificationAction.NONE));
+		distConfig.setFightVerifAction(VerificationAction.NONE);
+		distConfig.setWorkVerifAction(VerificationAction.NONE);
 
 		config.setMuConfig(distConfig);
 
