@@ -10,8 +10,8 @@
 					onsubmit="return false;">
 					<div class="panel-group" id="verification-accordion">
 						<%@ include file="dist-config-basic.jspf"%>
-						<%@ include file="dist-config-fight-validation.jspf"%>
-						<%@ include file="dist-config-work-validation.jspf"%>
+						<%@ include file="dist-config-fight-verif.jspf"%>
+						<%@ include file="dist-config-work-verif.jspf"%>
 					</div>
 				</form>
 			</div>

@@ -94,7 +94,8 @@
 				com.erep.dist.data.enums.ResourceDistStatus,
 				com.erep.dist.data.enums.ResourceType,
 				com.erep.dist.data.enums.ResourceQuality,
-				com.erep.dist.data.enums.RocketQuality
+				com.erep.dist.data.enums.RocketQuality,
+				com.erep.dist.data.enums.VerificationAction
     		</param-value>
 		</init-param>
 	</servlet>
