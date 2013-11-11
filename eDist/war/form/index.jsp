@@ -14,7 +14,7 @@
 	<jsp:body>
 		<div class="jumbotron">
 			<div class="container">
-				<div class="col-lg-8">
+				<div class="col-md-8">
 					<img class="img-responsive" src="../img/formtitle.cache.png"></img>
 					<div class="form-group"></div>
 					<form onsubmit="return false;" id="infoform"
@@ -35,8 +35,8 @@
 							</div>
 							<div class="form-group">
 								<div class="row">
-									<div class="col-lg-offset-2">
-										<div class="col-lg-8">
+									<div class="col-md-offset-2">
+										<div class="col-md-8">
 											<select class="selectpicker" name="type" id="type"
 											disabled="disabled">
 												<option value="WEAPONS">Armas</option>
@@ -51,7 +51,7 @@
 							</div>
 					</form>
 				</div>
-				<div class="col-lg-4">
+				<div class="col-md-4">
 					<img id="citizen-avatar" class="img-thumbnail img-responsive"
 						src="../img/profile_avatar.cache.png"></img>
 					<div class="form-group"></div>
@@ -63,7 +63,7 @@
 						</li> 
 					</ul>
 				</div>
-				<div class="col-lg-4 col-lg-offset-4">
+				<div class="col-md-4 col-md-offset-4">
 					<button type="submit" onclick="request();"
 						class="btn btn-primary btn-large">Enviar</button>
 					<button type="reset" class="btn btn-default">Cancelar</button>

@@ -7,17 +7,17 @@
 		style="display: none;" onsubmit="return false;">
 		<div class="form-group"></div>
 		<div class="form-group">
-			<label class="control-label col-lg-6" for="muName">Nome da
+			<label class="control-label col-md-6" for="muName">Nome da
 				Unidade Militar</label>
-			<div class="col-lg-5">
+			<div class="col-md-5">
 				<input type="text" class="form-control" id="muName"
 					placeholder="nome da mu" required>
 			</div>
 		</div>
 		<div class="form-group">
-			<label class="col-lg-6 control-label" for="granularity">Granularidade
+			<label class="col-md-6 control-label" for="granularity">Granularidade
 				da Configuração de Distribuição</label>
-			<div class="col-lg-5">
+			<div class="col-md-5">
 				<select class="form-control" data-style="btn-inverse"
 					name="granularity" id="granularity">
 					<option value="MU">Unidade Militar</option>
@@ -41,9 +41,9 @@
 			</a>
 		</div>
 		<div class="form-group">
-			<label class="col-lg-6 control-label" for="reportsAccess">Acesso
+			<label class="col-md-6 control-label" for="reportsAccess">Acesso
 				aos Relatórios de Distribuição</label>
-			<div class="col-lg-5">
+			<div class="col-md-5">
 				<select class="form-control" data-style="btn-inverse"
 					name="reportsAccess" id="reportsAccess">
 					<option value="ADMINS">Administradores</option>
@@ -59,9 +59,9 @@
 			</a>
 		</div>
 		<div class="form-group">
-			<label class="control-label col-lg-6" for="playerReportsAccess">Acesso
+			<label class="control-label col-md-6" for="playerReportsAccess">Acesso
 				aos Relatórios de Jogadores</label>
-			<div class="col-lg-5">
+			<div class="col-md-5">
 				<select class="form-control" data-style="btn-inverse"
 					name="playerReportsAccess" id="playerReportsAccess">
 					<option value="ADMINS">Administradores</option>
@@ -77,9 +77,9 @@
 			</a>
 		</div>
 		<div class="form-group">
-			<label class="control-label col-lg-6" for="email">E-mail do
+			<label class="control-label col-md-6" for="email">E-mail do
 				Responsável</label>
-			<div class="input-group col-lg-5">
+			<div class="input-group col-md-5">
 				<input type="email" class="form-control" id="contactEmail"
 					placeholder="email@exemplo.com" required> <span
 					class="input-group-addon"> <span
@@ -88,7 +88,7 @@
 			</div>
 		</div>
 		<div class="form-group">
-			<div class="col-lg-offset-6 col-lg-2">
+			<div class="col-md-offset-6 col-md-2">
 				<button id="save-config" type="submit" class="btn btn-primary"
 					onclick="saveConfig()" data-loading-text="Salvando..."
 					autocomplete="off">
