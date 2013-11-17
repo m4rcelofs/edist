@@ -19,15 +19,15 @@ var GroupsViewModel = new function() {
 		ManagementService.saveGroup(group, {
 			callback : function(response) {
 				if (response) {
-					$('#' + group.encodedKey).removeClass('danger');
-					$('#' + group.encodedKey).addClass('success');
+					$('#' + group.encodedKey).removeClass('panel-danger');
+					$('#' + group.encodedKey).addClass('panel-success');
 
 					setTimeout(function() {
-						$('#' + group.encodedKey).removeClass('success');
+						$('#' + group.encodedKey).removeClass('panel-success');
 					}, 3000);
 				} else {
-					$('#' + group.encodedKey).removeClass('success');
-					$('#' + group.encodedKey).addClass('danger');
+					$('#' + group.encodedKey).removeClass('panel-success');
+					$('#' + group.encodedKey).addClass('panel-danger');
 					Management.defaultError();
 				}
 			},
@@ -42,6 +42,7 @@ var GroupsViewModel = new function() {
 		ManagementService.saveGroup(group, {
 			callback : function(response) {
 				if (response) {
+					$('#add-group-form').trigger('reset');
 					loadGroupsTable();
 				} else {
 					Management.defaultError();
