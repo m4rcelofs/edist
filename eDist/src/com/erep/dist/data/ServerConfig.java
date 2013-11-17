@@ -14,7 +14,7 @@ import com.erep.dist.data.enums.ReportsAccessLevel;
 import com.google.appengine.api.datastore.Key;
 
 @DataTransferObject
-@FetchGroup(name = "configListing", members = { @Persistent(name = "muConfig") })
+@FetchGroup(name = "configListing", members = { @Persistent(name = "distConfig") })
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class ServerConfig {
 
@@ -28,7 +28,15 @@ public class ServerConfig {
 
 	@Persistent(dependent = "true")
 	@RemoteProperty
-	private DistConfig			muConfig;
+	private DistConfig			distConfig;
+
+	@Persistent(dependent = "true")
+	@RemoteProperty
+	private FightVerification	fightVerif;
+
+	@Persistent(dependent = "true")
+	@RemoteProperty
+	private WorkVerification	workVerif;
 
 	@Persistent
 	@RemoteProperty
@@ -55,11 +63,11 @@ public class ServerConfig {
 	}
 
 	public DistConfig getMuConfig() {
-		return muConfig;
+		return distConfig;
 	}
 
 	public void setMuConfig(DistConfig muConfig) {
-		this.muConfig = muConfig;
+		this.distConfig = muConfig;
 	}
 
 	public ConfigGranularity getGranularity() {
@@ -100,6 +108,30 @@ public class ServerConfig {
 
 	public void setPlayerReportsAccess(ReportsAccessLevel playerReportsAccess) {
 		this.playerReportsAccess = playerReportsAccess;
+	}
+
+	public DistConfig getDistConfig() {
+		return distConfig;
+	}
+
+	public void setDistConfig(DistConfig distConfig) {
+		this.distConfig = distConfig;
+	}
+
+	public FightVerification getFightVerif() {
+		return fightVerif;
+	}
+
+	public void setFightVerif(FightVerification fightVerif) {
+		this.fightVerif = fightVerif;
+	}
+
+	public WorkVerification getWorkVerif() {
+		return workVerif;
+	}
+
+	public void setWorkVerif(WorkVerification workVerif) {
+		this.workVerif = workVerif;
 	}
 
 }

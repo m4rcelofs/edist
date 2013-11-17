@@ -9,7 +9,7 @@
 		<script type='text/javascript' src='${baseUrl}/management/dwr/interface/ManagementService.js'></script>
 		
 		<script type='text/javascript' src='${baseUrl}/management/management.all.closure.js'></script>
-		<script type='text/javascript' src='${baseUrl}/distconfig/dist-config-bindings.closure.js'></script>
+		<script type='text/javascript' src='${baseUrl}/distconfig/distconfig.all.closure.js'></script>
     </jsp:attribute>
 
 	<jsp:body>

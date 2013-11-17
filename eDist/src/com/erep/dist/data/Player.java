@@ -74,6 +74,14 @@ public class Player implements HasEncodedKey {
 	@RemoteProperty
 	private DistConfig			config;
 
+	@Persistent(dependent = "true")
+	@RemoteProperty
+	private FightVerification	fightVerif;
+
+	@Persistent(dependent = "true")
+	@RemoteProperty
+	private WorkVerification	workVerif;
+
 	@Persistent
 	@RemoteProperty
 	private RocketQuality		rocketEnabled;
@@ -245,6 +253,22 @@ public class Player implements HasEncodedKey {
 		if (getDailyWork() == null)
 			setDailyWork(new HashSet<DailyWork>());
 		this.getDailyWork().add(work);
+	}
+
+	public FightVerification getFightVerif() {
+		return fightVerif;
+	}
+
+	public void setFightVerif(FightVerification fightVerif) {
+		this.fightVerif = fightVerif;
+	}
+
+	public WorkVerification getWorkVerif() {
+		return workVerif;
+	}
+
+	public void setWorkVerif(WorkVerification workVerif) {
+		this.workVerif = workVerif;
 	}
 
 }

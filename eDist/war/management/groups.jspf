@@ -14,6 +14,20 @@
 					class="glyphicon glyphicon-question-sign"></span>
 					</a>
 				</th>
+				<th data-bind="visible: $root.groupConfigEnabled()">Verif. de Lutas 
+					<a href="#" class="help" data-toggle="popover" title
+					data-content="Caso não seja configurado, utiliza a configuração padrão da Unidade Militar"
+					data-original-title="Verificação de Lutas"> <span
+					class="glyphicon glyphicon-question-sign"></span>
+					</a>
+				</th>
+				<th data-bind="visible: $root.groupConfigEnabled()">Verif. de Trabalho 
+					<a href="#" class="help" data-toggle="popover" title
+					data-content="Caso não seja configurado, utiliza a configuração padrão da Unidade Militar"
+					data-original-title="Verificação de Trabalho"> <span
+					class="glyphicon glyphicon-question-sign"></span>
+					</a>
+				</th>
 				<th></th>
 			</tr>
 		</thead>
@@ -36,6 +50,40 @@
 					<a href="javascript:void(0);" role="button"
 					data-bind="click: $root.removeConfig, visible: $root.groupConfigEnabled() === true && config !== null"
 					title="Remover Configuração"> <span
+						class="glyphicon glyphicon-remove"></span> Remover
+					</a>
+				</td>
+				<td>
+					<a href="javascript:void(0);" role="button"
+					data-bind="click: $root.addFightVerif, visible: $root.groupConfigEnabled() === true && fightVerif === null"
+					title="Adicionar Verificação de Lutas"> <span
+						class="glyphicon glyphicon-new-window"></span> Adicionar
+					</a>
+					<a href="javascript:void(0);" role="button"
+					data-bind="click: $root.editFightVerif, visible: $root.groupConfigEnabled() === true && fightVerif !== null"
+					title="Editar Verificação de Lutas"> <span
+						class="glyphicon glyphicon-pencil"></span> Editar
+					</a>
+					<a href="javascript:void(0);" role="button"
+					data-bind="click: $root.removeFightVerif, visible: $root.groupConfigEnabled() === true && fightVerif !== null"
+					title="Remover Verificação de Lutas"> <span
+						class="glyphicon glyphicon-remove"></span> Remover
+					</a>
+				</td>
+				<td>
+					<a href="javascript:void(0);" role="button"
+					data-bind="click: $root.addWorkVerif, visible: $root.groupConfigEnabled() === true && workVerif === null"
+					title="Adicionar Verificação de Trabalho"> <span
+						class="glyphicon glyphicon-new-window"></span> Adicionar
+					</a>
+					<a href="javascript:void(0);" role="button"
+					data-bind="click: $root.editWorkVerif, visible: $root.groupConfigEnabled() === true && workVerif !== null"
+					title="Editar Verificação de Trabalho"> <span
+						class="glyphicon glyphicon-pencil"></span> Editar
+					</a>
+					<a href="javascript:void(0);" role="button"
+					data-bind="click: $root.removeWorkVerif, visible: $root.groupConfigEnabled() === true && workVerif !== null"
+					title="Remover Verificação de Trabalho"> <span
 						class="glyphicon glyphicon-remove"></span> Remover
 					</a>
 				</td>

@@ -3,16 +3,54 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h3>Configuração da Distribuição</h3>
+				<h3><span class="glyphicon glyphicon-cog"></span> Configuração da Distribuição</h3>
 			</div>
 			<div class="modal-body">
 				<form id="dist-config-form" class="form-horizontal" role="form"
 					onsubmit="return false;">
-					<div class="panel-group" id="verification-accordion">
-						<%@ include file="dist-config-basic.jspf"%>
-						<%@ include file="dist-config-fight-verif.jspf"%>
-						<%@ include file="dist-config-work-verif.jspf"%>
-					</div>
+					<%@ include file="dist-config-basic.jspf"%>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-primary" data-bind="click: updateRoot">OK</button>
+				<button class="btn" data-bind="click: cancel">Cancelar</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="fightVerifDialog" tabindex="-11"
+	role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3><span class="glyphicon glyphicon-screenshot"></span> Verificação de Lutas</h3>
+			</div>
+			<div class="modal-body">
+				<form id="fight-verif-form" class="form-horizontal" role="form"
+					onsubmit="return false;">
+					<%@ include file="dist-config-fight-verif.jspf"%>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-primary" data-bind="click: updateRoot">OK</button>
+				<button class="btn" data-bind="click: cancel">Cancelar</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="workVerifDialog" tabindex="-12"
+	role="dialog" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h3><span class="glyphicon glyphicon-wrench"></span> Verificação de Trabalho</h3>
+			</div>
+			<div class="modal-body">
+				<form id="work-verif-form" class="form-horizontal" role="form"
+					onsubmit="return false;">
+					<%@ include file="dist-config-work-verif.jspf"%>
 				</form>
 			</div>
 			<div class="modal-footer">

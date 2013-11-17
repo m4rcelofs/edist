@@ -76,6 +76,8 @@
 			<param-name>classes</param-name>
 			<param-value>
 				com.erep.dist.data.DistConfig,
+				com.erep.dist.data.FightVerification,
+				com.erep.dist.data.WorkVerification,
 				com.erep.dist.data.Distributor,
 				com.erep.dist.data.Player,
 				com.erep.dist.data.PlayerGroup,
@@ -121,6 +123,8 @@
 				com.erep.dist.data.Employer,
 				com.erep.dist.data.ServerConfig,
 				com.erep.dist.data.DistConfig,
+				com.erep.dist.data.FightVerification,
+				com.erep.dist.data.WorkVerification,
 				com.erep.dist.data.RegisteredUser,
 				
 				com.erep.dist.dwr.dto.RegisteredUserQuery,

@@ -1,52 +1,38 @@
-<div class="panel panel-default">
-	<div class="panel-heading">
-		<h4 class="panel-title">
-			<span class="glyphicon glyphicon-screenshot"></span> <a
-				class="accordion-toggle" data-toggle="collapse"
-				data-parent="#verification-accordion"
-				href="#fight-verification-panel"> Verificação de Lutas </a>
-		</h4>
+<div class="form-group">
+	<label class="control-label col-md-6 sr-only"
+		for="fight-verification-action">Ação</label>
+	<div class="col-md-5">
+		<select class="form-control fight-verification-group"
+			data-style="btn-inverse" name="fight-verification-action"
+			id="fight-verification-action"
+			data-bind="value: currentFightVerif.fightVerifAction">
+			<option value="NONE">Não fazer nada...</option>
+			<option value="WARN">Avisar...</option>
+			<option value="TEMP_BAN">Bloquear distribuição...</option>
+		</select>
 	</div>
-	<div id="fight-verification-panel" class="panel-collapse collapse">
-		<div class="panel-body">
-			<div class="form-group">
-				<label class="control-label col-md-6 sr-only"
-					for="fight-verification-action">Ação</label>
-				<div class="col-md-5">
-					<select class="form-control fight-verification-group"
-						data-style="btn-inverse" name="fight-verification-action"
-						id="fight-verification-action"
-						data-bind="value: currentConfig.fightVerifAction">
-						<option value="NONE">Não fazer nada...</option>
-						<option value="WARN">Avisar...</option>
-						<option value="TEMP_BAN">Bloquear distribuição...</option>
-					</select>
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-md-6" for="fight-verification-pct">...
-					caso o jogador não lute ao menos ...</label>
-				<div class="col-md-5">
-					<div class="input-group">
-						<input type="number" class="form-control fight-verification-group"
-							id="fight-verification-pct" required min="0"
-							data-bind="value: currentConfig.fightVerifPct, enable: currentConfig.fightVerifAction() != 'NONE'"> <span
-							class="input-group-addon"> %</span>
-					</div>
-				</div>
-			</div>
-			<div class="form-group">
-				<label class="control-label col-md-6" for="fight-verification-days">...
-					das FFs requisitadas nos últimos ...</label>
-				<div class="col-md-5">
-					<div class="input-group">
-						<input type="number" class="form-control fight-verification-group"
-							id="fight-verification-days" required
-							data-bind="value: currentConfig.fightVerifDays, enable: currentConfig.fightVerifAction() != 'NONE'"><span
-							class="input-group-addon" min="0"> dias</span>
-					</div>
-				</div>
-			</div>
+</div>
+<div class="form-group">
+	<label class="control-label col-md-6" for="fight-verification-pct">...
+		caso o jogador não lute ao menos ...</label>
+	<div class="col-md-5">
+		<div class="input-group">
+			<input type="number" class="form-control fight-verification-group"
+				id="fight-verification-pct" required min="0"
+				data-bind="value: currentFightVerif.fightVerifPct, enable: currentFightVerif.fightVerifAction() != 'NONE'">
+			<span class="input-group-addon"> %</span>
+		</div>
+	</div>
+</div>
+<div class="form-group">
+	<label class="control-label col-md-6" for="fight-verification-days">...
+		das FFs requisitadas nos últimos ...</label>
+	<div class="col-md-5">
+		<div class="input-group">
+			<input type="number" class="form-control fight-verification-group"
+				id="fight-verification-days" required
+				data-bind="value: currentFightVerif.fightVerifDays, enable: currentFightVerif.fightVerifAction() != 'NONE'"><span
+				class="input-group-addon" min="0"> dias</span>
 		</div>
 	</div>
 </div>

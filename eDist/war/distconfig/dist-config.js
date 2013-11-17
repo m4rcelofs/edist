@@ -19,7 +19,7 @@ var DistConfigViewModel = new function() {
 
 	self.updateRoot = function() {
 		// TODO test with serverConfig
-		console.log('updateRoot');
+		console.log('updateRoot distconfig');
 		self.rootEntity.config = ko.mapping.toJS(self.currentConfig);
 		console.log(self.rootEntity);
 		closeModal();

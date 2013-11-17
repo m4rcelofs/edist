@@ -76,7 +76,7 @@
     </file>
 
 
-<file name="eDist/war/distconfig/dist-config-bindings.js">
+<file name="eDist/war/distconfig/distconfig.all.js">
         <min>false</min>
         <comp>false</comp>
         <closureCompiler>true</closureCompiler>
@@ -89,7 +89,9 @@
         <removeLogs>true</removeLogs>
         <oldFileNames>false</oldFileNames>
         <dependencies>
-            <file>eDist/war/distconfig/dist-config-bindings.js</file>
+            <file>eDist/war/distconfig/dist-config.js</file>
+            <file>eDist/war/distconfig/fight-verification.js</file>
+            <file>eDist/war/distconfig/work-verification.js</file>
         </dependencies>
         <properties/>
     </file>

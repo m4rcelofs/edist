@@ -182,8 +182,10 @@ public class DataAccessObject {
 		if (newest.getConfig() != null) {
 			newest.getConfig().setDistributor(
 					find(newest.getConfig().getDistributor()));
-			old.setConfig(newest.getConfig());
 		}
+		old.setConfig(newest.getConfig());
+		old.setFightVerif(newest.getFightVerif());
+		old.setWorkVerif(newest.getWorkVerif());
 
 		return true;
 	}
@@ -255,8 +257,10 @@ public class DataAccessObject {
 		if (newest.getConfig() != null) {
 			newest.getConfig().setDistributor(
 					find(newest.getConfig().getDistributor()));
-			old.setConfig(newest.getConfig());
 		}
+		old.setConfig(newest.getConfig());
+		old.setFightVerif(newest.getFightVerif());
+		old.setWorkVerif(newest.getWorkVerif());
 
 		old.setRocketEnabled(newest.getRocketEnabled());
 		old.setDbStatus(newest.getDbStatus());

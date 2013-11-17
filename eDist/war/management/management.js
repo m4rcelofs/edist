@@ -2,6 +2,8 @@ $(document).ready(function() {
 	$('.help').popover();
 
 	ko.applyBindings(DistConfigViewModel, document.getElementById('distConfigDialog'));
+	ko.applyBindings(FightVerificationViewModel, document.getElementById('fightVerifDialog'));
+	ko.applyBindings(WorkVerificationViewModel, document.getElementById('workVerifDialog'));
 	
 	ko.applyBindings(GroupsViewModel, document.getElementById('groupsList'));
 	$('#groupsListTab').on('show.bs.tab', GroupsViewModel.onGroupsShow);
@@ -9,8 +11,6 @@ $(document).ready(function() {
 	// ko.applyBindings(PlayersViewModel);
 	$('#playersListTab').on('show.bs.tab', PlayersController.onPlayersShow);
 	
-	
-
 	crossroads.addRoute('management/{tab}', Management.selectTab);
 	Navigation.configureRoutes();
 

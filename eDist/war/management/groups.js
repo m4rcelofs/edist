@@ -65,6 +65,38 @@ var GroupsViewModel = new function() {
 				|| self.granularity() === 'PLAYER';
 	}
 
+	self.editFightVerif = function(group) {
+		FightVerificationViewModel.setFightVerif(group.encodedKey, group);
+		$('#fightVerifDialog').modal('show');
+	}
+
+	self.addFightVerif = function(group) {
+		group.fightVerif = new FightVerification();
+		dirtyObservableArrayRefresh(self.groups);
+		self.editFightVerif(group);
+	}
+
+	self.removeFightVerif = function(group) {
+		group.fightVerif = null;
+		dirtyObservableArrayRefresh(self.groups);
+	}
+
+	self.editWorkVerif = function(group) {
+		WorkVerificationViewModel.setWorkVerif(group.encodedKey, group);
+		$('#workVerifDialog').modal('show');
+	}
+
+	self.addWorkVerif = function(group) {
+		group.workVerif = new WorkVerification();
+		dirtyObservableArrayRefresh(self.groups);
+		self.editWorkVerif(group);
+	}
+
+	self.removeWorkVerif = function(group) {
+		group.workVerif = null;
+		dirtyObservableArrayRefresh(self.groups);
+	}
+
 	function dirtyObservableArrayRefresh(array) {
 		// array.valueHasMutated(); doesn't work?
 		var data = array().slice(0);

@@ -17,27 +17,37 @@ import com.google.appengine.api.datastore.KeyFactory;
 
 @DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-@FetchGroups({ @FetchGroup(name = "configListing", members = { @Persistent(name = "config") }) })
+@FetchGroups({ @FetchGroup(name = "configListing", members = {
+		@Persistent(name = "config"), @Persistent(name = "fightVerif"),
+		@Persistent(name = "workVerif") }) })
 public class PlayerGroup implements HasEncodedKey {
 
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private Key				key;
+	private Key					key;
 
 	@NotPersistent
 	@RemoteProperty
-	private String			encodedKey;
+	private String				encodedKey;
 
 	@Persistent
 	@RemoteProperty
-	private String			groupName;
+	private String				groupName;
 
 	@Persistent(dependent = "true")
 	@RemoteProperty
-	private DistConfig		config;
+	private DistConfig			config;
+
+	@Persistent(dependent = "true")
+	@RemoteProperty
+	private FightVerification	fightVerif;
+
+	@Persistent(dependent = "true")
+	@RemoteProperty
+	private WorkVerification	workVerif;
 
 	@Persistent
-	private PlayerGroupRoot	root;
+	private PlayerGroupRoot		root;
 
 	public Key getKey() {
 		return key;
@@ -82,5 +92,21 @@ public class PlayerGroup implements HasEncodedKey {
 
 	public void setRoot(PlayerGroupRoot root) {
 		this.root = root;
+	}
+
+	public FightVerification getFightVerif() {
+		return fightVerif;
+	}
+
+	public void setFightVerif(FightVerification fightVerif) {
+		this.fightVerif = fightVerif;
+	}
+
+	public WorkVerification getWorkVerif() {
+		return workVerif;
+	}
+
+	public void setWorkVerif(WorkVerification workVerif) {
+		this.workVerif = workVerif;
 	}
 }

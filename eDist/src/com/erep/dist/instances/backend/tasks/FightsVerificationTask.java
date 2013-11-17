@@ -7,7 +7,7 @@ import com.erep.dist.ConfigHelper;
 import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
 import com.erep.dist.data.DailyFights;
-import com.erep.dist.data.DistConfig;
+import com.erep.dist.data.FightVerification;
 import com.erep.dist.data.Player;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.taskqueue.DeferredTask;
@@ -35,17 +35,17 @@ public class FightsVerificationTask implements DeferredTask {
 
 			Player dbPlayer = dao.find(new Player(playerKey));
 			DailyFights fights = dao.find(new DailyFights(dailyFightsKey));
-			DistConfig distConfig = config.getConfig(dbPlayer);
+			FightVerification fightVerif = config.getFightVerification(dbPlayer);
 
-			int fromDay = today - distConfig.getFightVerifDays();
+			int fromDay = today - fightVerif.getFightVerifDays();
 			double requestedFF = dao.getRequestedFFSum(dbPlayer, fromDay);
 			double fightsFF = dao.getFightsFFSum(dbPlayer, fromDay);
 
 			double pctUsed = fightsFF / requestedFF;
 
-			if (pctUsed < distConfig.getFightVerifPct()) {
-				fights.setVerificationStatus(distConfig.getFightVerifAction().statusToSet);
-				dbPlayer.setFightStatus(distConfig.getFightVerifAction().statusToSet);
+			if (pctUsed < fightVerif.getFightVerifPct()) {
+				fights.setVerificationStatus(fightVerif.getFightVerifAction().statusToSet);
+				dbPlayer.setFightStatus(fightVerif.getFightVerifAction().statusToSet);
 			} else {
 				fights.setVerificationStatus(OK);
 				dbPlayer.setFightStatus(OK);
