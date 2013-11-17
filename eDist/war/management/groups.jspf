@@ -2,99 +2,86 @@
 	<div class="text-center" data-bind="visible: groups().length == 0">
 		<img id="mods-loader" src="../img/loader.cache.gif" />
 	</div>
-	<table class="table table-striped table-hover" id="groups-table"
-		data-bind="visible: groups().length > 0">
-		<thead>
-			<tr>
-				<th>Nome</th>
-				<th data-bind="visible: $root.groupConfigEnabled()">Distribuição 
-					<a href="#" class="help" data-toggle="popover" title
-					data-content="Caso não seja configurado, utiliza a configuração padrão da Unidade Militar"
-					data-original-title="Configuração de Distribuição"> <span
-					class="glyphicon glyphicon-question-sign"></span>
+	<div class="table-responsive">
+		<table class="table table-striped table-hover" id="groups-table"
+			data-bind="visible: groups().length > 0">
+			<thead>
+				<tr>
+					<th>Nome</th>
+					<th data-bind="visible: $root.groupConfigEnabled()">Distribuição
+						<a href="#" class="help" data-toggle="popover" title
+						data-content="Caso não seja configurado, utiliza a configuração padrão da Unidade Militar"
+						data-original-title="Configuração de Distribuição"> <span
+							class="glyphicon glyphicon-question-sign"></span>
 					</a>
-				</th>
-				<th data-bind="visible: $root.groupConfigEnabled()">Verif. de Lutas 
-					<a href="#" class="help" data-toggle="popover" title
-					data-content="Caso não seja configurado, utiliza a configuração padrão da Unidade Militar"
-					data-original-title="Verificação de Lutas"> <span
-					class="glyphicon glyphicon-question-sign"></span>
+					</th>
+					<th data-bind="visible: $root.groupConfigEnabled()">Verif. de
+						Lutas <a href="#" class="help" data-toggle="popover" title
+						data-content="Caso não seja configurado, utiliza a configuração padrão da Unidade Militar"
+						data-original-title="Verificação de Lutas"> <span
+							class="glyphicon glyphicon-question-sign"></span>
 					</a>
-				</th>
-				<th data-bind="visible: $root.groupConfigEnabled()">Verif. de Trabalho 
-					<a href="#" class="help" data-toggle="popover" title
-					data-content="Caso não seja configurado, utiliza a configuração padrão da Unidade Militar"
-					data-original-title="Verificação de Trabalho"> <span
-					class="glyphicon glyphicon-question-sign"></span>
+					</th>
+					<th data-bind="visible: $root.groupConfigEnabled()">Verif. de
+						Trabalho <a href="#" class="help" data-toggle="popover" title
+						data-content="Caso não seja configurado, utiliza a configuração padrão da Unidade Militar"
+						data-original-title="Verificação de Trabalho"> <span
+							class="glyphicon glyphicon-question-sign"></span>
 					</a>
-				</th>
-				<th></th>
-			</tr>
-		</thead>
-		<tbody data-bind="foreach: groups">
-			<tr data-bind="attr: { id: encodedKey}">
-				<td>
-					<input data-bind="value: groupName" />
-				</td>
-				<td>
-					<a href="javascript:void(0);" role="button"
-					data-bind="click: $root.addConfig, visible: $root.groupConfigEnabled() === true && config === null"
-					title="Adicionar Configuração"> <span
-						class="glyphicon glyphicon-new-window"></span> Adicionar
-					</a>
-					<a href="javascript:void(0);" role="button"
-					data-bind="click: $root.editConfig, visible: $root.groupConfigEnabled() === true && config !== null"
-					title="Editar Configuração"> <span
-						class="glyphicon glyphicon-pencil"></span> Editar
-					</a>
-					<a href="javascript:void(0);" role="button"
-					data-bind="click: $root.removeConfig, visible: $root.groupConfigEnabled() === true && config !== null"
-					title="Remover Configuração"> <span
-						class="glyphicon glyphicon-remove"></span> Remover
-					</a>
-				</td>
-				<td>
-					<a href="javascript:void(0);" role="button"
-					data-bind="click: $root.addFightVerif, visible: $root.groupConfigEnabled() === true && fightVerif === null"
-					title="Adicionar Verificação de Lutas"> <span
-						class="glyphicon glyphicon-new-window"></span> Adicionar
-					</a>
-					<a href="javascript:void(0);" role="button"
-					data-bind="click: $root.editFightVerif, visible: $root.groupConfigEnabled() === true && fightVerif !== null"
-					title="Editar Verificação de Lutas"> <span
-						class="glyphicon glyphicon-pencil"></span> Editar
-					</a>
-					<a href="javascript:void(0);" role="button"
-					data-bind="click: $root.removeFightVerif, visible: $root.groupConfigEnabled() === true && fightVerif !== null"
-					title="Remover Verificação de Lutas"> <span
-						class="glyphicon glyphicon-remove"></span> Remover
-					</a>
-				</td>
-				<td>
-					<a href="javascript:void(0);" role="button"
-					data-bind="click: $root.addWorkVerif, visible: $root.groupConfigEnabled() === true && workVerif === null"
-					title="Adicionar Verificação de Trabalho"> <span
-						class="glyphicon glyphicon-new-window"></span> Adicionar
-					</a>
-					<a href="javascript:void(0);" role="button"
-					data-bind="click: $root.editWorkVerif, visible: $root.groupConfigEnabled() === true && workVerif !== null"
-					title="Editar Verificação de Trabalho"> <span
-						class="glyphicon glyphicon-pencil"></span> Editar
-					</a>
-					<a href="javascript:void(0);" role="button"
-					data-bind="click: $root.removeWorkVerif, visible: $root.groupConfigEnabled() === true && workVerif !== null"
-					title="Remover Verificação de Trabalho"> <span
-						class="glyphicon glyphicon-remove"></span> Remover
-					</a>
-				</td>
-				<td><a href="javascript:void(0);" role="button"
-					data-bind="click: $root.saveGroup" title="Salvar"> <span
-						class="glyphicon glyphicon-floppy-disk"></span> Salvar
-				</a></td>
-			</tr>
-		</tbody>
-	</table>
-
+					</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody data-bind="foreach: groups">
+				<tr data-bind="attr: { id: encodedKey}">
+					<td><input data-bind="value: groupName" /></td>
+					<td><a href="javascript:void(0);" role="button"
+						data-bind="click: $root.addConfig, visible: $root.groupConfigEnabled() === true && config === null"
+						title="Adicionar Configuração"> <span
+							class="glyphicon glyphicon-new-window"></span> Adicionar
+					</a> <a href="javascript:void(0);" role="button"
+						data-bind="click: $root.editConfig, visible: $root.groupConfigEnabled() === true && config !== null"
+						title="Editar Configuração"> <span
+							class="glyphicon glyphicon-pencil"></span> Editar
+					</a> <a href="javascript:void(0);" role="button"
+						data-bind="click: $root.removeConfig, visible: $root.groupConfigEnabled() === true && config !== null"
+						title="Remover Configuração"> <span
+							class="glyphicon glyphicon-remove"></span> Remover
+					</a></td>
+					<td><a href="javascript:void(0);" role="button"
+						data-bind="click: $root.addFightVerif, visible: $root.groupConfigEnabled() === true && fightVerif === null"
+						title="Adicionar Verificação de Lutas"> <span
+							class="glyphicon glyphicon-new-window"></span> Adicionar
+					</a> <a href="javascript:void(0);" role="button"
+						data-bind="click: $root.editFightVerif, visible: $root.groupConfigEnabled() === true && fightVerif !== null"
+						title="Editar Verificação de Lutas"> <span
+							class="glyphicon glyphicon-pencil"></span> Editar
+					</a> <a href="javascript:void(0);" role="button"
+						data-bind="click: $root.removeFightVerif, visible: $root.groupConfigEnabled() === true && fightVerif !== null"
+						title="Remover Verificação de Lutas"> <span
+							class="glyphicon glyphicon-remove"></span> Remover
+					</a></td>
+					<td><a href="javascript:void(0);" role="button"
+						data-bind="click: $root.addWorkVerif, visible: $root.groupConfigEnabled() === true && workVerif === null"
+						title="Adicionar Verificação de Trabalho"> <span
+							class="glyphicon glyphicon-new-window"></span> Adicionar
+					</a> <a href="javascript:void(0);" role="button"
+						data-bind="click: $root.editWorkVerif, visible: $root.groupConfigEnabled() === true && workVerif !== null"
+						title="Editar Verificação de Trabalho"> <span
+							class="glyphicon glyphicon-pencil"></span> Editar
+					</a> <a href="javascript:void(0);" role="button"
+						data-bind="click: $root.removeWorkVerif, visible: $root.groupConfigEnabled() === true && workVerif !== null"
+						title="Remover Verificação de Trabalho"> <span
+							class="glyphicon glyphicon-remove"></span> Remover
+					</a></td>
+					<td><a href="javascript:void(0);" role="button"
+						data-bind="click: $root.saveGroup" title="Salvar"> <span
+							class="glyphicon glyphicon-floppy-disk"></span> Salvar
+					</a></td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
 	<div class="panel-group" id="add-group-accordion">
 		<div class="panel panel-default">
 			<div class="panel-heading">
