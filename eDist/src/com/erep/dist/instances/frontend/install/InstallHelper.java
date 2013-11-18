@@ -9,6 +9,7 @@ import com.erep.dist.data.FightVerification;
 import com.erep.dist.data.Licence;
 import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.PlayerGroupRoot;
+import com.erep.dist.data.PlayerRoot;
 import com.erep.dist.data.ServerConfig;
 import com.erep.dist.data.WorkVerification;
 import com.erep.dist.data.enums.ConfigGranularity;
@@ -41,7 +42,7 @@ public class InstallHelper {
 		distConfig.setDistributor(defaultDistributor());
 
 		config.setMuConfig(distConfig);
-		
+
 		config.setFightVerif(new FightVerification(VerificationAction.NONE));
 		config.setWorkVerif(new WorkVerification(VerificationAction.NONE));
 
@@ -76,6 +77,17 @@ public class InstallHelper {
 
 	private static Key employerRootKey() {
 		return KeyFactory.createKey(EmployerRoot.class.getSimpleName(),
+				ServerConstants.DEFAULT_ID);
+	}
+
+	public static PlayerRoot newPlayerRoot() {
+		PlayerRoot root = new PlayerRoot();
+		root.setKey(playerRootKey());
+		return root;
+	}
+
+	private static Key playerRootKey() {
+		return KeyFactory.createKey(PlayerRoot.class.getSimpleName(),
 				ServerConstants.DEFAULT_ID);
 	}
 

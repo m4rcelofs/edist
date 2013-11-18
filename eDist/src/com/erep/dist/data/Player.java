@@ -13,7 +13,9 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 import org.directwebremoting.annotations.DataTransferObject;
+import org.directwebremoting.annotations.Param;
 import org.directwebremoting.annotations.RemoteProperty;
+import org.directwebremoting.convert.BeanConverter;
 
 import com.erep.dist.data.enums.PlayerDistStatus;
 import com.erep.dist.data.enums.PlayerStatus;
@@ -22,10 +24,13 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.datanucleus.annotations.Unowned;
 
-@DataTransferObject
+@DataTransferObject(converter = BeanConverter.class, params = @Param(name = "javascript", value = "Player"))
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 @FetchGroups({
-		@FetchGroup(name = "playerListing", members = { @Persistent(name = "group") }),
+		@FetchGroup(name = "configListing", members = {
+				@Persistent(name = "group"), @Persistent(name = "config"),
+				@Persistent(name = "fightVerif"),
+				@Persistent(name = "workVerif") }),
 		@FetchGroup(name = "requestAttempt", members = {}) })
 public class Player implements HasEncodedKey {
 
@@ -98,6 +103,9 @@ public class Player implements HasEncodedKey {
 	@Persistent(mappedBy = "player")
 	private Set<DailyWork>		dailyWork;
 
+	@Persistent
+	private PlayerRoot root;
+	
 	public Player() {}
 
 	public Player(Key key) {
@@ -269,6 +277,14 @@ public class Player implements HasEncodedKey {
 
 	public void setWorkVerif(WorkVerification workVerif) {
 		this.workVerif = workVerif;
+	}
+
+	public PlayerRoot getRoot() {
+		return root;
+	}
+
+	public void setRoot(PlayerRoot root) {
+		this.root = root;
 	}
 
 }

@@ -27,6 +27,7 @@ import com.erep.dist.data.Licence;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.PlayerGroupRoot;
+import com.erep.dist.data.PlayerRoot;
 import com.erep.dist.data.RegisteredUser;
 import com.erep.dist.data.Request;
 import com.erep.dist.data.ServerConfig;
@@ -244,8 +245,8 @@ public class DataAccessObject {
 	}
 
 	public Key createPlayerKey(String erId) {
-		return KeyFactory.createKey(Player.class.getSimpleName(),
-				Long.valueOf(erId));
+		return KeyFactory.createKey(playerRootKey(),
+				Player.class.getSimpleName(), Long.valueOf(erId));
 	}
 
 	public Key createDailyWorkKey(Player player, Integer day) {
@@ -273,97 +274,109 @@ public class DataAccessObject {
 	}
 
 	public List<RegisteredUser> listUsers(String encodedCursor) {
-		return queryWithCursor(RegisteredUser.class, null, encodedCursor);
+		return executeQueryWithCursor(RegisteredUser.class, null, encodedCursor);
 	}
 
 	@SuppressWarnings("unchecked")
 	public List<Player> listAllPlayers() {
 		Query q = pm.newQuery(Player.class);
-		return (List<Player>) q.execute();
+		q.setFilter("root == rootParam");
+		q.declareParameters(Key.class.getName() + " rootParam");
+		return (List<Player>) q.execute(playerRootKey());
 	}
 
+	@SuppressWarnings("unchecked")
 	public List<Player> listPlayers(String encodedCursor) {
-		return queryWithCursor(Player.class, null, encodedCursor);
+		Query q = queryWithCursor(Player.class, "root == rootParam",
+				encodedCursor);
+		q.declareParameters(Key.class.getName() + " rootParam");
+		return (List<Player>) q.execute(playerRootKey());
 	}
 
 	public List<Request> listRequests(String encodedCursor) {
-		return queryWithCursor(Request.class, "", encodedCursor);
+		return executeQueryWithCursor(Request.class, "", encodedCursor);
 	}
 
 	public List<Request> listRequests(Integer eRepDay, String encodedCursor) {
 		String filter = "eRepDay == " + eRepDay;
-		return queryWithCursor(Request.class, filter, encodedCursor);
+		return executeQueryWithCursor(Request.class, filter, encodedCursor);
 	}
 
 	public List<Request> listRequests(Distributor dist, String encodedCursor) {
 		String filter = "distributor == '" + dist.getKey() + "'";
-		return queryWithCursor(Request.class, filter, encodedCursor);
+		return executeQueryWithCursor(Request.class, filter, encodedCursor);
 	}
 
 	public List<Request> listRequests(Player player, String encodedCursor) {
 		String filter = "player == '" + player.getKey() + "'";
-		return queryWithCursor(Request.class, filter, encodedCursor);
+		return executeQueryWithCursor(Request.class, filter, encodedCursor);
 	}
 
 	public List<Request> listRequests(PlayerGroup group, String encodedCursor) {
 		String filter = "group == '" + group.getKey() + "'";
-		return queryWithCursor(Request.class, filter, encodedCursor);
+		return executeQueryWithCursor(Request.class, filter, encodedCursor);
 	}
 
 	public List<DailyStats> listStats(Player player, String encodedCursor) {
 		String filter = "player == '" + player.getKey() + "'";
-		return queryWithCursor(DailyStats.class, filter, encodedCursor);
+		return executeQueryWithCursor(DailyStats.class, filter, encodedCursor);
 	}
 
 	public List<DailyWork> listWork(Player player, String encodedCursor) {
 		String filter = "player == '" + player.getKey() + "'";
-		return queryWithCursor(DailyWork.class, filter, encodedCursor);
+		return executeQueryWithCursor(DailyWork.class, filter, encodedCursor);
 	}
 
 	public List<DailyWork> listWork(PlayerGroup group, String encodedCursor) {
 		String filter = "group == '" + group.getKey() + "'";
-		return queryWithCursor(DailyWork.class, filter, encodedCursor);
+		return executeQueryWithCursor(DailyWork.class, filter, encodedCursor);
 	}
 
 	public List<DailyWork> listWork(Employer employer, String encodedCursor) {
 		String filter = "employer == '" + employer.getKey() + "'";
-		return queryWithCursor(DailyWork.class, filter, encodedCursor);
+		return executeQueryWithCursor(DailyWork.class, filter, encodedCursor);
 	}
 
 	public List<DailyWork> listWork(Integer day, String encodedCursor) {
 		String filter = "day == " + day;
-		return queryWithCursor(DailyWork.class, filter, encodedCursor);
+		return executeQueryWithCursor(DailyWork.class, filter, encodedCursor);
 	}
 
 	public List<DailyStats> listStats(Integer day, String encodedCursor) {
 		String filter = "day == " + day;
-		return queryWithCursor(DailyStats.class, filter, encodedCursor);
+		return executeQueryWithCursor(DailyStats.class, filter, encodedCursor);
 	}
 
 	public List<DailyFights> listFights(Player player, String encodedCursor) {
 		String filter = "player == '" + player.getKey() + "'";
-		return queryWithCursor(DailyFights.class, filter, encodedCursor);
+		return executeQueryWithCursor(DailyFights.class, filter, encodedCursor);
 	}
 
 	public List<DailyFights> listFights(Integer day, String encodedCursor) {
 		String filter = "day == " + day;
-		return queryWithCursor(DailyFights.class, filter, encodedCursor);
+		return executeQueryWithCursor(DailyFights.class, filter, encodedCursor);
 	}
 
 	public List<DailyFights> listFights(PlayerGroup group, String encodedCursor) {
 		String filter = "group == '" + group.getKey() + "'";
-		return queryWithCursor(DailyFights.class, filter, encodedCursor);
+		return executeQueryWithCursor(DailyFights.class, filter, encodedCursor);
 	}
 
 	@SuppressWarnings("unchecked")
-	private <T> List<T> queryWithCursor(Class<T> clazz, String filter,
+	private <T> List<T> executeQueryWithCursor(Class<T> clazz, String filter,
+			String encodedCursor) {
+		Query q = queryWithCursor(clazz, filter, encodedCursor);
+		return (List<T>) q.execute();
+	}
+
+	private <T> Query queryWithCursor(Class<T> clazz, String filter,
 			String encodedCursor) {
 		Query q = pm.newQuery(clazz);
 		if (filter != null && !filter.trim().isEmpty())
 			q.setFilter(filter);
 		setCursor(q, encodedCursor);
 		q.setRange(0, ServerConstants.QUERY_PAGE_LIMIT);
-		return (List<T>) q.execute();
+		return q;
 	}
 
 	public int getDailyRequestedFF(Player player, int eRepDay) {
@@ -537,6 +550,11 @@ public class DataAccessObject {
 
 	private Key employerRootKey() {
 		return KeyFactory.createKey(EmployerRoot.class.getSimpleName(),
+				ServerConstants.DEFAULT_ID);
+	}
+
+	private Key playerRootKey() {
+		return KeyFactory.createKey(PlayerRoot.class.getSimpleName(),
 				ServerConstants.DEFAULT_ID);
 	}
 
