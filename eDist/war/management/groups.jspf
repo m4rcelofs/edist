@@ -1,6 +1,6 @@
 <div class="tab-pane" id="groupsList">
 	<div class="text-center" data-bind="if: groups().length == 0">
-		<img id="mods-loader" src="../img/loader.cache.gif" />
+		<img id="groups-loader" src="../img/loader.cache.gif" />
 	</div>
 	<div class="form-group"></div>
 	<div class="panel-group" id="add-group-accordion">
@@ -34,9 +34,6 @@
 			<div class="col-md-10 col-md-offset-1">
 				<div class="panel panel-default"
 					data-bind="css: { 'panel-primary': groupName === 'Default' }, attr: { id: encodedKey}">
-					<div class="panel-heading">
-						<h3 class="panel-title" data-bind="text: groupName"></h3>
-					</div>
 					<div class="panel-body">
 						<div class="row">
 							<div class="col-md-12 table-responsive">
