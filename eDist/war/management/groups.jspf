@@ -1,7 +1,4 @@
 <div class="tab-pane" id="groupsList">
-	<div class="text-center" data-bind="if: groups().length == 0">
-		<img id="groups-loader" src="../img/loader.cache.gif" />
-	</div>
 	<div class="form-group"></div>
 	<div class="panel-group" id="add-group-accordion">
 		<div class="panel panel-default">
@@ -29,6 +26,9 @@
 		</div>
 	</div>
 	<div class="form-group"></div>
+	<div class="text-center" data-bind="if: groups().length == 0">
+		<img id="groups-loader" src="../img/loader.cache.gif" />
+	</div>
 	<div data-bind="foreach: groups">
 		<div class="row">
 			<div class="col-md-10 col-md-offset-1">
@@ -38,7 +38,7 @@
 						<div class="row">
 							<div class="col-md-12 table-responsive">
 								<div
-									data-bind="if: $root.groupConfigEnabled() && config === null || fightVerif === null || workVerif === null">
+									data-bind="if: $root.groupConfigEnabled() === true && (config === null || fightVerif === null || workVerif === null)">
 									<div class="alert alert-info">
 										<span class="glyphicon glyphicon-question-sign"></span> Caso
 										as configurações de distribuição ou verificações não sejam
@@ -58,7 +58,7 @@
 												</div>
 											</td>
 										</tr>
-										<tr data-bind="visible: $root.groupConfigEnabled()">
+										<tr data-bind="if: $root.groupConfigEnabled() === true">
 											<td><span class="glyphicon glyphicon-cog"></span>
 												Distribuição:</td>
 											<td><a href="javascript:void(0);"
@@ -76,7 +76,7 @@
 													class="glyphicon glyphicon-remove"></span> Remover
 											</a></td>
 										</tr>
-										<tr data-bind="visible: $root.groupConfigEnabled() === true">
+										<tr data-bind="if: $root.groupConfigEnabled() === true">
 											<td><span class="glyphicon glyphicon-screenshot"></span>
 												Verificação de Lutas:</td>
 											<td><a href="javascript:void(0);"
@@ -94,7 +94,7 @@
 													class="glyphicon glyphicon-remove"></span> Remover
 											</a></td>
 										</tr>
-										<tr data-bind="visible: $root.groupConfigEnabled() === true">
+										<tr data-bind="if: $root.groupConfigEnabled() === true">
 											<td><span class="glyphicon glyphicon-wrench"></span>
 												Verificação de Trabalho:</td>
 											<td><a href="javascript:void(0);"

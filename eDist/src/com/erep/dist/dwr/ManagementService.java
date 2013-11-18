@@ -58,8 +58,7 @@ public class ManagementService {
 			if (created) {
 				DeferredTask task = new GetUserInfoTask(player);
 				Queue queue = QueueFactory.getQueue("erepublik-not-logged-in");
-				queue.add(withPayload(task).taskName(
-						"GetUserInfoTask " + player.getKey().toString()));
+				queue.add(withPayload(task));
 			}
 			return created;
 		}
@@ -77,14 +76,18 @@ public class ManagementService {
 	public PlayerQuery listPlayers(String cursor) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 
-			pm.getFetchPlan().addGroup("playerListing");
+			pm.getFetchPlan().addGroup("configListing");
 
 			PlayerQuery queryResults = new PlayerQuery();
-			List<Player> players = new DataAccessObject(pm).listPlayers(cursor);
+			DataAccessObject dao = new DataAccessObject(pm);
+			List<Player> players = dao.listPlayers(cursor);
 
 			queryResults.setResults(players);
 			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(players)
 					.toWebSafeString());
+			
+			queryResults.setGranularity(dao.getServerConfig().getGranularity());
+			
 			return queryResults;
 		}
 	}

@@ -92,6 +92,7 @@
 				com.erep.dist.data.enums.ConfigGranularity,
 				com.erep.dist.data.enums.RequestType,
 				com.erep.dist.data.enums.PlayerStatus,
+				com.erep.dist.data.enums.PlayerDistStatus,
 				com.erep.dist.data.enums.RequestStatus,
 				com.erep.dist.data.enums.ResourceDistStatus,
 				com.erep.dist.data.enums.ResourceType,

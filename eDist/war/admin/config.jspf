@@ -99,4 +99,4 @@
 	</form>
 </div>
 
-<%@ include file="../distconfig/distConfig.jspf"%>
+<%@ include file="../distconfig/dist-config-root.jspf"%>

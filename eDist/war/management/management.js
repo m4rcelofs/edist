@@ -8,8 +8,8 @@ $(document).ready(function() {
 	ko.applyBindings(GroupsViewModel, document.getElementById('groupsList'));
 	$('#groupsListTab').on('show.bs.tab', GroupsViewModel.onGroupsShow);
 
-	// ko.applyBindings(PlayersViewModel);
-	$('#playersListTab').on('show.bs.tab', PlayersController.onPlayersShow);
+	ko.applyBindings(PlayersViewModel, document.getElementById('playersList'));
+	$('#playersListTab').on('show.bs.tab', PlayersViewModel.onPlayersShow);
 	
 	crossroads.addRoute('management/{tab}', Management.selectTab);
 	Navigation.configureRoutes();

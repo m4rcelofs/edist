@@ -106,6 +106,7 @@ var GroupsViewModel = new function() {
 	}
 
 	function loadGroupsTable() {
+		self.groups([]);
 		ManagementService.listGroups({
 			callback : function(response) {
 				self.groups(response.results);

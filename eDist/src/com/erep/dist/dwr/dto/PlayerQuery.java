@@ -6,10 +6,14 @@ import org.directwebremoting.annotations.DataTransferObject;
 import org.directwebremoting.annotations.RemoteProperty;
 
 import com.erep.dist.data.Player;
+import com.erep.dist.data.enums.ConfigGranularity;
 
 @DataTransferObject
 public class PlayerQuery {
 
+	@RemoteProperty
+	private ConfigGranularity granularity;
+	
 	@RemoteProperty
 	private String			encodedCursor;
 
@@ -30,5 +34,13 @@ public class PlayerQuery {
 
 	public void setResults(List<Player> results) {
 		this.results = results;
+	}
+
+	public ConfigGranularity getGranularity() {
+		return granularity;
+	}
+
+	public void setGranularity(ConfigGranularity granularity) {
+		this.granularity = granularity;
 	}
 }
