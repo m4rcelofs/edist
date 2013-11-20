@@ -6,7 +6,7 @@
 	</div>
 	<a href="#" class="help" data-toggle="popover" title
 		data-content="Uma Food Fight (FF) é igual a 10 de energia"
-		data-original-title="Food Fight"> <span
+		data-original-title="Food Fight" data-bind="updatePopup:{}"> <span
 		class="glyphicon glyphicon-question-sign"></span>
 	</a>
 </div>
@@ -19,7 +19,7 @@
 	</div>
 	<a href="#" class="help" data-toggle="popover" title
 		data-content="Envia armas de todas as qualidades. O nível do foguete é definido no cadastro do jogador."
-		data-original-title="Foguetes"> <span
+		data-original-title="Foguetes" data-bind="updatePopup:{}"> <span
 		class="glyphicon glyphicon-question-sign"></span>
 	</a>
 </div>
@@ -32,7 +32,7 @@
 	</div>
 	<a href="#" class="help" data-toggle="popover" title
 		data-content="Ativa a distribuição automática de FFs na virada do dia (foguetes não são enviados)"
-		data-original-title="Distribuição automática"> <span
+		data-original-title="Distribuição automática" data-bind="updatePopup:{}"> <span
 		class="glyphicon glyphicon-question-sign"></span>
 	</a>
 </div>
@@ -66,7 +66,7 @@
 	</div>
 	<a href="#" class="help" data-toggle="popover" title
 		data-content="A qualidade dos alimentos é escolhida com base no disponível"
-		data-original-title="Qualidade"> <span
+		data-original-title="Qualidade" data-bind="updatePopup:{}"> <span
 		class="glyphicon glyphicon-question-sign"></span>
 	</a>
 </div>

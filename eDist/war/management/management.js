@@ -1,6 +1,4 @@
 $(document).ready(function() {
-	$('.help').popover();
-
 	ko.applyBindings(DistConfigViewModel, document.getElementById('distConfigDialog'));
 	ko.applyBindings(FightVerificationViewModel, document.getElementById('fightVerifDialog'));
 	ko.applyBindings(WorkVerificationViewModel, document.getElementById('workVerifDialog'));
@@ -10,7 +8,7 @@ $(document).ready(function() {
 
 	ko.applyBindings(PlayersViewModel, document.getElementById('playersList'));
 	$('#playersListTab').on('show.bs.tab', PlayersViewModel.onPlayersShow);
-	
+
 	crossroads.addRoute('management/{tab}', Management.selectTab);
 	Navigation.configureRoutes();
 
@@ -21,21 +19,20 @@ $(document).ready(function() {
 
 var Management = new function() {
 
-	var mgm = this;
+	var self = this;
 
-	mgm.selectTab = function(tab) {
+	self.selectTab = function(tab) {
 		$('#' + tab + 'Tab').tab('show');
 	}
 
-	mgm.defaultSuccess = function() {
+	self.defaultSuccess = function() {
 		$('#error-alert').fadeOut();
 	}
 
-	mgm.defaultError = function(message) {
+	self.defaultError = function(message) {
 		if (console.log) {
 			console.log(message);
 		}
 		$('#error-alert').fadeIn();
 	}
-
 };

@@ -110,20 +110,31 @@
 							</div>
 							<div class="col-md-9 table-responsive"
 								data-bind="if : dbStatus !== 'NEW' && dbStatus !== 'ERROR'">
-								<div
-									data-bind="if: $root.playerConfigEnabled() === true && (config === null || fightVerif === null || workVerif === null)">
-									<div class="alert alert-info">
-										<span class="glyphicon glyphicon-question-sign"></span> Caso
-										as configurações de distribuição ou verificações não sejam
-										definidas, serão utilizadas as do grupo.
-									</div>
-								</div>
 								<strong> <a
 									data-bind="attr : { href: 'http://www.erepublik.com/en/citizen/profile/' + erId }"><span
 										data-bind="text: name"></span></a>
 								</strong>
 								<table class="table table-condensed">
 									<tbody>
+										<tr data-bind="">
+											<td><span class="glyphicon glyphicon-tags"></span>
+												Grupos:</td>
+											<td>
+												<!-- TODO -->
+											</td>
+										</tr>
+										<tr>
+											<td><span class="glyphicon glyphicon-fire"></span>
+												Fábrica de Foguetes:</td>
+											<td>
+												<!-- TODO --> <span class="pull-right"><a href="#"
+													class="help" data-toggle="popover" title=""
+													data-content="Só é utilizada se a Distribuição de Foguetes estiver ativa"
+													data-bind="updatePopup:{}"> <span
+														class="glyphicon glyphicon-question-sign"></span>
+												</a></span>
+											</td>
+										</tr>
 										<tr data-bind="if: $root.playerConfigEnabled() === true">
 											<td><span class="glyphicon glyphicon-cog"></span>
 												Distribuição:</td>
@@ -140,7 +151,13 @@
 												data-bind="click: $root.removeConfig, visible: config !== null"
 												title="Remover Configuração"> <span
 													class="glyphicon glyphicon-remove"></span> Remover
-											</a></td>
+											</a> <span class="pull-right" data-bind="if: config === null"><a
+													href="#" class="help" data-toggle="popover" title=""
+													data-content="Será utilizada a configuração do(s) grupo(s)"
+													data-bind="updatePopup:{}"> <span
+														class="glyphicon glyphicon-question-sign"></span>
+												</a></span></td>
+
 										</tr>
 										<tr data-bind="if: $root.playerConfigEnabled() === true">
 											<td><span class="glyphicon glyphicon-screenshot"></span>
@@ -158,7 +175,12 @@
 												data-bind="click: $root.removeFightVerif, visible: fightVerif !== null"
 												title="Remover Verificação de Lutas"> <span
 													class="glyphicon glyphicon-remove"></span> Remover
-											</a></td>
+											</a> <span class="pull-right" data-bind="if: fightVerif === null"><a
+													href="#" class="help" data-toggle="popover" title=""
+													data-content="Será utilizada a verificação de lutas do(s) grupo(s)"
+													data-bind="updatePopup:{}"> <span
+														class="glyphicon glyphicon-question-sign"></span>
+												</a></span></td>
 										</tr>
 										<tr data-bind="if: $root.playerConfigEnabled() === true">
 											<td><span class="glyphicon glyphicon-wrench"></span>
@@ -180,7 +202,12 @@
 												data-bind="click: $root.removeWorkVerif, visible: workVerif !== null"
 												title="Remover Verificação de Trabalho"> <span
 													class="glyphicon glyphicon-remove"></span> Remover
-											</a></td>
+											</a> <span class="pull-right" data-bind="if: workVerif === null"><a
+													href="#" class="help" data-toggle="popover" title=""
+													data-content="Será utilizada a verificação de trabalho do(s) grupo(s)"
+													data-bind="updatePopup:{}"> <span
+														class="glyphicon glyphicon-question-sign"></span>
+												</a></span></td>
 										</tr>
 									</tbody>
 								</table>

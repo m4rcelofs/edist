@@ -37,14 +37,6 @@
 					<div class="panel-body">
 						<div class="row">
 							<div class="col-md-12 table-responsive">
-								<div
-									data-bind="if: $root.groupConfigEnabled() === true && (config === null || fightVerif === null || workVerif === null)">
-									<div class="alert alert-info">
-										<span class="glyphicon glyphicon-question-sign"></span> Caso
-										as configurações de distribuição ou verificações não sejam
-										definidas, serão utilizadas as padrão da Unidade Militar.
-									</div>
-								</div>
 								<table class="table table-condensed">
 									<tbody>
 										<tr>
@@ -74,7 +66,12 @@
 												data-bind="click: $root.removeConfig, visible: config !== null"
 												title="Remover Configuração"> <span
 													class="glyphicon glyphicon-remove"></span> Remover
-											</a></td>
+											</a> <span class="pull-right" data-bind="if: config === null"><a
+													href="#" class="help" data-toggle="popover" title=""
+													data-content="Será utilizada a configuração da Unidade Militar"
+													data-bind="updatePopup:{}"> <span
+														class="glyphicon glyphicon-question-sign"></span>
+												</a></span></td>
 										</tr>
 										<tr data-bind="if: $root.groupConfigEnabled() === true">
 											<td><span class="glyphicon glyphicon-screenshot"></span>
@@ -92,7 +89,12 @@
 												data-bind="click: $root.removeFightVerif, visible: fightVerif !== null"
 												title="Remover Verificação de Lutas"> <span
 													class="glyphicon glyphicon-remove"></span> Remover
-											</a></td>
+											</a><span class="pull-right" data-bind="if: fightVerif === null"><a
+													href="#" class="help" data-toggle="popover" title=""
+													data-content="Será utilizada a verificação de lutas da Unidade Militar"
+													data-bind="updatePopup:{}"> <span
+														class="glyphicon glyphicon-question-sign"></span>
+												</a></span></td>
 										</tr>
 										<tr data-bind="if: $root.groupConfigEnabled() === true">
 											<td><span class="glyphicon glyphicon-wrench"></span>
@@ -110,7 +112,12 @@
 												data-bind="click: $root.removeWorkVerif, visible: workVerif !== null"
 												title="Remover Verificação de Trabalho"> <span
 													class="glyphicon glyphicon-remove"></span> Remover
-											</a></td>
+											</a> <span class="pull-right" data-bind="if: workVerif === null"><a
+													href="#" class="help" data-toggle="popover" title=""
+													data-content="Será utilizada a verificação de trabalho da Unidade Militar"
+													data-bind="updatePopup:{}"> <span
+														class="glyphicon glyphicon-question-sign"></span>
+												</a></span></td>
 										</tr>
 									</tbody>
 								</table>

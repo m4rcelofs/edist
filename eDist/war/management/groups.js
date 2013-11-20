@@ -110,7 +110,7 @@ var GroupsViewModel = new function() {
 		ManagementService.listGroups({
 			callback : function(response) {
 				self.groups(response.results);
-				self.granularity(response.granularity);
+				self.granularity(response.granularity);				
 			}
 		});
 	}

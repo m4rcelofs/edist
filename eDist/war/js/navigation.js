@@ -25,6 +25,15 @@ $(document).ready(function() {
 
 	var currentLoc = window.location.pathname.split('/')[1];
 	$('#' + currentLoc).addClass('active');
+	
+	//binding handler for Bootstrap's Popup trigger on help icons
+	ko.bindingHandlers.updatePopup = {
+			update: function(element) {
+				$(element).popover({
+					trigger: 'hover'
+				});
+			}
+	};
 });
 
 var Navigation = new function() {
