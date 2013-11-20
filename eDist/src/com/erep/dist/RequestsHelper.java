@@ -6,6 +6,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import com.erep.dist.data.Player;
 import com.erep.dist.data.Request;
 import com.erep.dist.data.ResourceDist;
@@ -23,12 +25,20 @@ import com.google.appengine.api.taskqueue.QueueFactory;
 
 public class RequestsHelper {
 
-	private final DataAccessObject	dao;
-	private final ConfigHelper		config;
+	private final DataAccessObject		dao;
+	private final ConfigHelper			config;
+	private final HttpServletRequest	req;
 
 	public RequestsHelper(DataAccessObject dao) {
 		this.dao = dao;
 		this.config = new ConfigHelper(dao);
+		this.req = null;
+	}
+
+	public RequestsHelper(DataAccessObject dao, HttpServletRequest req) {
+		this.dao = dao;
+		this.config = new ConfigHelper(dao);
+		this.req = req;
 	}
 
 	public boolean verifyRocketAllowed(Player player) {
@@ -90,6 +100,12 @@ public class RequestsHelper {
 
 		request.setRequestedAt(new Date());
 		request.seteRepDay(eRepTimeCalculator.geteRepDay());
+
+		request.setIp(req.getRemoteAddr());
+		request.setX_AppEngine_Country(req.getHeader("X-AppEngine-Country"));
+		request.setX_AppEngine_Region(req.getHeader("X-AppEngine-Region"));
+		request.setX_AppEngine_City(req.getHeader("X-AppEngine-City"));
+
 		request.setStatus(RequestStatus.REQUESTED);
 
 		return request;

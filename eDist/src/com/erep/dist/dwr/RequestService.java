@@ -8,6 +8,8 @@ import java.util.regex.Pattern;
 import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.Transaction;
 
+import org.directwebremoting.WebContext;
+import org.directwebremoting.WebContextFactory;
 import org.directwebremoting.annotations.RemoteMethod;
 import org.directwebremoting.annotations.RemoteProxy;
 
@@ -53,7 +55,9 @@ public class RequestService {
 			Transaction tx = pm.currentTransaction();
 			try {
 
-				RequestsHelper helper = new RequestsHelper(dao);
+				WebContext ctx = WebContextFactory.get();
+				RequestsHelper helper = new RequestsHelper(dao,
+						ctx.getHttpServletRequest());
 
 				Player dbPlayer = dao.find(player);
 
@@ -103,7 +107,8 @@ public class RequestService {
 				Player dbPlayer = identifyRequestString(dao,
 						idNameOrLink.trim());
 				dto.setAllowedType(config.getConfig(dbPlayer).getAllowedType());
-				dto.setAllowedQuality(config.getConfig(dbPlayer).getAllowedWeaponQuality());
+				dto.setAllowedQuality(config.getConfig(dbPlayer)
+						.getAllowedWeaponQuality());
 
 				tx.begin();
 				dto.setRocketAllowed(requests.verifyRocketAllowed(dbPlayer));

@@ -79,6 +79,22 @@ public class Request implements HasEncodedKey {
 	@RemoteProperty
 	private Player				player;
 
+	@Persistent(defaultFetchGroup = "false")
+	@RemoteProperty
+	private String				ip;
+
+	@Persistent(defaultFetchGroup = "false")
+	@RemoteProperty
+	private String				X_AppEngine_Country;
+
+	@Persistent(defaultFetchGroup = "false")
+	@RemoteProperty
+	private String				X_AppEngine_Region;
+
+	@Persistent(defaultFetchGroup = "false")
+	@RemoteProperty
+	private String				X_AppEngine_City;
+
 	@Unowned
 	@Persistent
 	@RemoteProperty
@@ -198,5 +214,37 @@ public class Request implements HasEncodedKey {
 		if (id != null)
 			this.key = KeyFactory.stringToKey(id);
 		this.encodedKey = id;
+	}
+
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+
+	public String getX_AppEngine_Country() {
+		return X_AppEngine_Country;
+	}
+
+	public void setX_AppEngine_Country(String x_AppEngine_Country) {
+		X_AppEngine_Country = x_AppEngine_Country;
+	}
+
+	public String getX_AppEngine_Region() {
+		return X_AppEngine_Region;
+	}
+
+	public void setX_AppEngine_Region(String x_AppEngine_Region) {
+		X_AppEngine_Region = x_AppEngine_Region;
+	}
+
+	public String getX_AppEngine_City() {
+		return X_AppEngine_City;
+	}
+
+	public void setX_AppEngine_City(String x_AppEngine_City) {
+		X_AppEngine_City = x_AppEngine_City;
 	}
 }
