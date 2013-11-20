@@ -34,6 +34,13 @@ $(document).ready(function() {
 				});
 			}
 	};
+	
+	//binding handler for bootstrap-select trigger
+	ko.bindingHandlers.updateSelectPicker = {
+			update: function(element) {
+				$(element).selectpicker();
+			}
+	};
 });
 
 var Navigation = new function() {

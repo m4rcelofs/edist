@@ -121,19 +121,31 @@
 												Grupos:</td>
 											<td>
 												<!-- TODO -->
+<!-- 												<select class="selectpicker show-menu-arrow" multiple -->
+<!-- 												data-selected-text-format="count>3"> -->
+<!-- 													<option value="bla">TODO</option> -->
+<!-- 											</select> -->
 											</td>
 										</tr>
 										<tr>
 											<td><span class="glyphicon glyphicon-fire"></span>
 												Fábrica de Foguetes:</td>
 											<td>
-												<!-- TODO --> <span class="pull-right"><a href="#"
+											<select class="selectpicker show-menu-arrow" data-bind="value: rocketEnabled, updateSelectPicker:{}">
+													<option value="NONE" data-subtext="):">Sem fábrica</option>
+													<option value="Q1">Fábrica Q1</option>
+													<option value="Q2">Fábrica Q2</option>
+													<option value="Q3">Fábrica Q3</option>
+													<option value="Q4">Fábrica Q4</option>
+													<option value="Q5">Fábrica Q5</option>
+											</select>  
+											
+											<span class="pull-right"><a href="#"
 													class="help" data-toggle="popover" title=""
 													data-content="Só é utilizada se a Distribuição de Foguetes estiver ativa"
 													data-bind="updatePopup:{}"> <span
 														class="glyphicon glyphicon-question-sign"></span>
-												</a></span>
-											</td>
+												</a></span></td>
 										</tr>
 										<tr data-bind="if: $root.playerConfigEnabled() === true">
 											<td><span class="glyphicon glyphicon-cog"></span>
@@ -157,7 +169,6 @@
 													data-bind="updatePopup:{}"> <span
 														class="glyphicon glyphicon-question-sign"></span>
 												</a></span></td>
-
 										</tr>
 										<tr data-bind="if: $root.playerConfigEnabled() === true">
 											<td><span class="glyphicon glyphicon-screenshot"></span>
