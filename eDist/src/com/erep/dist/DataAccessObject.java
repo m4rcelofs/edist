@@ -237,9 +237,11 @@ public class DataAccessObject {
 		Key key = createPlayerKey(newPlayer.getErId());
 		newPlayer.setKey(key);
 
-		PlayerGroup group = find(newPlayer.getGroup());
-
-		newPlayer.setGroup(group);
+		if (newPlayer.getGroups() != null)
+			for (PlayerGroup group : newPlayer.getGroups())
+				newPlayer.addGroup(find(group));
+		else
+			newPlayer.addGroup(defaultGroup());
 
 		pm.makePersistent(newPlayer);
 
@@ -269,8 +271,11 @@ public class DataAccessObject {
 		old.setDbStatus(newest.getDbStatus());
 
 		Set<PlayerGroup> groups = new HashSet<>();
-		for (PlayerGroup group : newest.getGroups()) {
-			groups.add(find(group));
+		if (newest.getGroups() == null || newest.getGroups().isEmpty()) {
+			groups.add(defaultGroup());
+		} else {
+			for (PlayerGroup group : newest.getGroups())
+				groups.add(find(group));
 		}
 		old.setGroups(groups);
 

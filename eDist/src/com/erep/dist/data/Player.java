@@ -173,11 +173,6 @@ public class Player implements HasEncodedKey {
 		return group;
 	}
 
-	@Deprecated
-	public void setGroup(PlayerGroup group) {
-		this.group = group;
-	}
-
 	public DistConfig getConfig() {
 		// fallback to group
 		// return config != null ? config : group.getConfig();
@@ -302,6 +297,12 @@ public class Player implements HasEncodedKey {
 		this.groups = groups;
 	}
 
+	public void addGroup(PlayerGroup group) {
+		if (getGroups() == null)
+			setGroups(new HashSet<PlayerGroup>());
+		getGroups().add(group);
+	}
+
 	@RemoteProperty
 	public Set<String> getGroupIds() {
 		if (getGroups() == null)
@@ -318,7 +319,7 @@ public class Player implements HasEncodedKey {
 	public void setGroupIds(Set<String> groupIds) {
 		if (groupIds == null)
 			return;
-		
+
 		Set<PlayerGroup> groups = new HashSet<>();
 		for (String id : groupIds) {
 			PlayerGroup group = new PlayerGroup();
