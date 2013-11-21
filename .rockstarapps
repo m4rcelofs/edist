@@ -71,6 +71,8 @@
             <file>eDist/war/management/groups.js</file>
             <file>eDist/war/management/management.js</file>
             <file>eDist/war/management/players.js</file>
+            <file>eDist/war/management/dwr-engine-20131121.js</file>
+            <file>eDist/war/management/dwr-interface-20131121.js</file>
         </dependencies>
         <properties/>
     </file>
