@@ -17,7 +17,7 @@ import com.google.appengine.api.datastore.KeyFactory;
 
 @DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-@FetchGroups({ @FetchGroup(name = "configListing", members = {
+@FetchGroups({ @FetchGroup(name = "groupConfigListing", members = {
 		@Persistent(name = "config"), @Persistent(name = "fightVerif"),
 		@Persistent(name = "workVerif") }) })
 public class PlayerGroup implements HasEncodedKey {

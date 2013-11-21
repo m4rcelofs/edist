@@ -4,8 +4,10 @@ import static com.erep.dist.auth.SymmetricCipherUtils.encrypt;
 import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withPayload;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -266,9 +268,11 @@ public class DataAccessObject {
 		old.setRocketEnabled(newest.getRocketEnabled());
 		old.setDbStatus(newest.getDbStatus());
 
-		PlayerGroup newGroup = find(newest.getGroup());
-
-		old.setGroup(newGroup);
+		Set<PlayerGroup> groups = new HashSet<>();
+		for (PlayerGroup group : newest.getGroups()) {
+			groups.add(find(group));
+		}
+		old.setGroups(groups);
 
 		return true;
 	}

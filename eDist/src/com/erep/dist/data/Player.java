@@ -27,8 +27,8 @@ import com.google.appengine.datanucleus.annotations.Unowned;
 @DataTransferObject(converter = BeanConverter.class, params = @Param(name = "javascript", value = "Player"))
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 @FetchGroups({
-		@FetchGroup(name = "configListing", members = {
-				@Persistent(name = "group"), @Persistent(name = "config"),
+		@FetchGroup(name = "playerConfigListing", members = {
+				@Persistent(name = "groups"), @Persistent(name = "config"),
 				@Persistent(name = "fightVerif"),
 				@Persistent(name = "workVerif") }),
 		@FetchGroup(name = "requestAttempt", members = {}) })
@@ -72,8 +72,12 @@ public class Player implements HasEncodedKey {
 
 	@Unowned
 	@Persistent
-	@RemoteProperty
+	@Deprecated
 	private PlayerGroup			group;
+
+	@Unowned
+	@Persistent
+	private Set<PlayerGroup>	groups;
 
 	@Persistent(dependent = "true")
 	@RemoteProperty
@@ -104,8 +108,8 @@ public class Player implements HasEncodedKey {
 	private Set<DailyWork>		dailyWork;
 
 	@Persistent
-	private PlayerRoot root;
-	
+	private PlayerRoot			root;
+
 	public Player() {}
 
 	public Player(Key key) {
@@ -164,17 +168,20 @@ public class Player implements HasEncodedKey {
 		this.key = key;
 	}
 
+	@Deprecated
 	public PlayerGroup getGroup() {
 		return group;
 	}
 
+	@Deprecated
 	public void setGroup(PlayerGroup group) {
 		this.group = group;
 	}
 
 	public DistConfig getConfig() {
 		// fallback to group
-		return config != null ? config : group.getConfig();
+		// return config != null ? config : group.getConfig();
+		return config;
 	}
 
 	public void setConfig(DistConfig config) {
@@ -285,6 +292,40 @@ public class Player implements HasEncodedKey {
 
 	public void setRoot(PlayerRoot root) {
 		this.root = root;
+	}
+
+	public Set<PlayerGroup> getGroups() {
+		return groups;
+	}
+
+	public void setGroups(Set<PlayerGroup> groups) {
+		this.groups = groups;
+	}
+
+	@RemoteProperty
+	public Set<String> getGroupIds() {
+		if (getGroups() == null)
+			return null;
+
+		Set<String> ids = new HashSet<>();
+		for (PlayerGroup group : getGroups()) {
+			ids.add(group.getEncodedKey());
+		}
+		return ids;
+	}
+
+	@RemoteProperty
+	public void setGroupIds(Set<String> groupIds) {
+		if (groupIds == null)
+			return;
+		
+		Set<PlayerGroup> groups = new HashSet<>();
+		for (String id : groupIds) {
+			PlayerGroup group = new PlayerGroup();
+			group.setEncodedKey(id);
+			groups.add(group);
+		}
+		setGroups(groups);
 	}
 
 }

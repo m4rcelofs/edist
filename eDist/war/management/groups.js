@@ -109,6 +109,7 @@ var GroupsViewModel = new function() {
 		self.groups([]);
 		ManagementService.listGroups({
 			callback : function(response) {
+				response.results.sort(Management.groupSortFct);
 				self.groups(response.results);
 				self.granularity(response.granularity);				
 			}

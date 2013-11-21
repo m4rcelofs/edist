@@ -32,13 +32,25 @@ public class ManagementService {
 	}
 
 	@RemoteMethod
+	public PlayerGroupQuery listGroupNames() {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+
+			PlayerGroupQuery dto = new PlayerGroupQuery();
+			DataAccessObject dao = new DataAccessObject(pm);
+			dto.setResults(dao.listGroups());
+
+			return dto;
+		}
+	}
+
+	@RemoteMethod
 	public PlayerGroupQuery listGroups() {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 
 			PlayerGroupQuery dto = new PlayerGroupQuery();
 			DataAccessObject dao = new DataAccessObject(pm);
 
-			pm.getFetchPlan().addGroup("configListing");
+			pm.getFetchPlan().addGroup("groupConfigListing");
 
 			dto.setResults(dao.listGroups());
 			dto.setGranularity(dao.getServerConfig().getGranularity());
@@ -76,7 +88,7 @@ public class ManagementService {
 	public PlayerQuery listPlayers(String cursor) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 
-			pm.getFetchPlan().addGroup("configListing");
+			pm.getFetchPlan().addGroup("playerConfigListing");
 
 			PlayerQuery queryResults = new PlayerQuery();
 			DataAccessObject dao = new DataAccessObject(pm);
@@ -85,9 +97,9 @@ public class ManagementService {
 			queryResults.setResults(players);
 			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(players)
 					.toWebSafeString());
-			
+
 			queryResults.setGranularity(dao.getServerConfig().getGranularity());
-			
+
 			return queryResults;
 		}
 	}
