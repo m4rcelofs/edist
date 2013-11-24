@@ -11,6 +11,7 @@ import com.erep.dist.PMF;
 import com.erep.dist.data.DailyFights;
 import com.erep.dist.data.DailyStats;
 import com.erep.dist.data.Player;
+import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.enums.ResourceQuality;
 import com.erep.dist.erep.HitCalculator;
 import com.google.appengine.api.datastore.Key;
@@ -41,11 +42,17 @@ public class CalculateDailyFightsTask implements DeferredTask {
 			DailyStats previousDayStats = dao.getStats(dbPlayer, today - 1);
 			DailyStats todayStats = dao.getStats(dbPlayer, today);
 
-			ResourceQuality quality = config.getConfig(dbPlayer).getAllowedWeaponQuality();
+			ResourceQuality quality = ResourceQuality.Q1;
+			for (PlayerGroup group : dbPlayer.getGroups()) {
+				ResourceQuality groupQuality = config
+						.getConfig(dbPlayer, group).getAllowedWeaponQuality();
+				if (groupQuality.firepower > quality.firepower)
+					quality = groupQuality;
+			}
 
 			DailyFights fights = calculateFights(today, dbPlayer,
 					previousDayStats, todayStats, quality);
-			fights.setGroup(dbPlayer.getGroup());
+			fights.setGroups(dbPlayer.getGroups());
 
 			dbPlayer.addDailyFights(fights);
 
@@ -93,8 +100,7 @@ public class CalculateDailyFightsTask implements DeferredTask {
 		queue.add(withPayload(task).taskName(
 				"FightsVerificationTask_"
 						+ dbPlayer.getKey().toString().replace('(', '_')
-								.replace(')', '_') + "_"
-						+ today));
+								.replace(')', '_') + "_" + today));
 	}
 
 	private Key createKey(Player dbPlayer, Integer day) {

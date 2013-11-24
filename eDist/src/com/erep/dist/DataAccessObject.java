@@ -400,12 +400,15 @@ public class DataAccessObject {
 		return response != null ? response.intValue() : 0;
 	}
 
-	public int getRequestedFFSum(Player player, int fromDay) {
+	public int getRequestedFFSum(Player player, PlayerGroup group, int fromDay) {
 		Query q = pm.newQuery(Request.class);
-		q.setFilter("player == '" + player.getKey() + "' && eRepDay >= "
-				+ fromDay);
+		q.setFilter("player == playerParam && group == groupParam && eRepDay >= fromDayParam");
+		q.declareParameters(Key.class.getName() + " playerParam, "
+				+ Key.class.getName() + " groupParam, "
+				+ Integer.class.getName() + " fromDayParam");
 		q.setResult("sum(requestedFF)");
-		Long response = ((Long) q.execute());
+		Long response = ((Long) q.execute(player.getKey(), group.getKey(),
+				fromDay));
 		return response != null ? response.intValue() : 0;
 	}
 

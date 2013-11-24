@@ -18,6 +18,7 @@ import com.erep.dist.PMF;
 import com.erep.dist.RequestsHelper;
 import com.erep.dist.auth.LicensingHelper;
 import com.erep.dist.data.Player;
+import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.Request;
 
 public class AutoDistJob extends HttpServlet {
@@ -47,24 +48,27 @@ public class AutoDistJob extends HttpServlet {
 			List<Player> players = dao.listAllPlayers();
 
 			for (Player player : players) {
-				if (config.getConfig(player).getAutoSend()) {
-					Transaction tx = pm.currentTransaction();
-					try {
-						tx.begin();
-						Request request = requests.createRequest(player);
-						player.addRequest(request);
-						dao.save(request);
-						requests.addToQueue(request);
-						tx.commit();
-						autoDist++;
-					} finally {
-						if (tx.isActive()) {
-							tx.rollback();
-							logger.log(Level.SEVERE, "Request for player {0} failed",
-									player.getName());
+				for (PlayerGroup group : player.getGroups())
+					if (config.getConfig(player, group).getAutoSend()) {
+						Transaction tx = pm.currentTransaction();
+						try {
+							tx.begin();
+							Request request = requests.createRequest(player,
+									group);
+							player.addRequest(request);
+							dao.save(request);
+							requests.addToQueue(request);
+							tx.commit();
+							autoDist++;
+						} finally {
+							if (tx.isActive()) {
+								tx.rollback();
+								logger.log(Level.SEVERE,
+										"Request for player {0} failed",
+										player.getName());
+							}
 						}
 					}
-				}
 			}
 
 		}

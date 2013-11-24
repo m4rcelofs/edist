@@ -9,6 +9,8 @@ import com.erep.dist.PMF;
 import com.erep.dist.data.DailyFights;
 import com.erep.dist.data.FightVerification;
 import com.erep.dist.data.Player;
+import com.erep.dist.data.PlayerGroup;
+import com.erep.dist.data.enums.PlayerDistStatus;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.taskqueue.DeferredTask;
 
@@ -33,23 +35,29 @@ public class FightsVerificationTask implements DeferredTask {
 			DataAccessObject dao = new DataAccessObject(pm);
 			ConfigHelper config = new ConfigHelper(dao);
 
-			Player dbPlayer = dao.find(new Player(playerKey));
 			DailyFights fights = dao.find(new DailyFights(dailyFightsKey));
-			FightVerification fightVerif = config.getFightVerification(dbPlayer);
+			Player dbPlayer = dao.find(new Player(playerKey));
 
-			int fromDay = today - fightVerif.getFightVerifDays();
-			double requestedFF = dao.getRequestedFFSum(dbPlayer, fromDay);
-			double fightsFF = dao.getFightsFFSum(dbPlayer, fromDay);
+			PlayerDistStatus statusToSet = OK;
+			for (PlayerGroup group : dbPlayer.getGroups()) {
+				FightVerification fightVerif = config.getFightVerification(
+						dbPlayer, group);
 
-			double pctUsed = fightsFF / requestedFF;
+				int fromDay = today - fightVerif.getFightVerifDays();
+				double requestedFF = dao.getRequestedFFSum(dbPlayer, group,
+						fromDay);
+				double fightsFF = dao.getFightsFFSum(dbPlayer, fromDay);
 
-			if (pctUsed < fightVerif.getFightVerifPct()) {
-				fights.setVerificationStatus(fightVerif.getFightVerifAction().statusToSet);
-				dbPlayer.setFightStatus(fightVerif.getFightVerifAction().statusToSet);
-			} else {
-				fights.setVerificationStatus(OK);
-				dbPlayer.setFightStatus(OK);
+				double pctUsed = fightsFF / requestedFF;
+
+				if ((pctUsed * 100) < fightVerif.getFightVerifPct())
+					if (fightVerif.getFightVerifAction().statusToSet.priority > statusToSet.priority)
+						statusToSet = fightVerif.getFightVerifAction().statusToSet;
+
 			}
-		} 
+
+			fights.setVerificationStatus(statusToSet);
+			dbPlayer.setFightStatus(statusToSet);
+		}
 	}
 }
