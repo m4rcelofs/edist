@@ -3,7 +3,7 @@ package com.erep.dist.dwr.dto;
 import org.directwebremoting.annotations.DataTransferObject;
 import org.directwebremoting.annotations.RemoteProperty;
 
-import com.erep.dist.data.Player;
+import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.data.enums.ResourceQuality;
 
@@ -11,30 +11,22 @@ import com.erep.dist.data.enums.ResourceQuality;
 public class RequestAttempt {
 
 	@RemoteProperty
-	private Player		player;
+	private PlayerGroup		group;
 
 	@RemoteProperty
-	private Integer		availableFF;
+	private Integer			availableFF;
 
 	@RemoteProperty
-	private Integer		rechargeTime;
+	private Integer			rechargeTime;
 
 	@RemoteProperty
-	private Boolean		rocketAllowed;
+	private Boolean			rocketAllowed;
 
 	@RemoteProperty
-	private RequestType	allowedType;
-	
+	private RequestType		allowedType;
+
 	@RemoteProperty
-	private ResourceQuality allowedQuality;
-
-	public Player getPlayer() {
-		return player;
-	}
-
-	public void setPlayer(Player player) {
-		this.player = player;
-	}
+	private ResourceQuality	allowedQuality;
 
 	public Integer getAvailableFF() {
 		return availableFF;
@@ -74,6 +66,14 @@ public class RequestAttempt {
 
 	public void setAllowedQuality(ResourceQuality allowedQuality) {
 		this.allowedQuality = allowedQuality;
+	}
+
+	public PlayerGroup getGroup() {
+		return group;
+	}
+
+	public void setGroup(PlayerGroup group) {
+		this.group = group;
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.erep.dist.data;
 
+import java.util.Set;
+
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -29,7 +31,7 @@ public class DailyWork {
 
 	@Unowned
 	@Persistent
-	private PlayerGroup			group;
+	private Set<PlayerGroup>	groups;
 
 	@Unowned
 	@Persistent
@@ -71,14 +73,6 @@ public class DailyWork {
 		this.player = player;
 	}
 
-	public PlayerGroup getGroup() {
-		return group;
-	}
-
-	public void setGroup(PlayerGroup group) {
-		this.group = group;
-	}
-
 	public Employer getEmployer() {
 		return employer;
 	}
@@ -109,6 +103,14 @@ public class DailyWork {
 
 	public void setVerificationStatus(PlayerDistStatus verificationStatus) {
 		this.verificationStatus = verificationStatus;
+	}
+
+	public Set<PlayerGroup> getGroups() {
+		return groups;
+	}
+
+	public void setGroups(Set<PlayerGroup> groups) {
+		this.groups = groups;
 	}
 
 }

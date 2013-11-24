@@ -14,8 +14,8 @@ import javax.jdo.annotations.PrimaryKey;
 import org.directwebremoting.annotations.DataTransferObject;
 import org.directwebremoting.annotations.RemoteProperty;
 
-import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.data.enums.RequestStatus;
+import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.data.enums.RocketQuality;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
@@ -98,7 +98,7 @@ public class Request implements HasEncodedKey {
 	@Unowned
 	@Persistent
 	@RemoteProperty
-	private PlayerGroup			group;
+	private PlayerGroup	group;
 
 	public Request() {}
 
@@ -186,14 +186,6 @@ public class Request implements HasEncodedKey {
 		this.distributor = distributor;
 	}
 
-	public PlayerGroup getGroup() {
-		return group;
-	}
-
-	public void setGroup(PlayerGroup group) {
-		this.group = group;
-	}
-
 	public List<ResourceDist> getResources() {
 		return resources;
 	}
@@ -246,5 +238,13 @@ public class Request implements HasEncodedKey {
 
 	public void setX_AppEngine_City(String x_AppEngine_City) {
 		X_AppEngine_City = x_AppEngine_City;
+	}
+
+	public PlayerGroup getGroup() {
+		return group;
+	}
+
+	public void setGroup(PlayerGroup group) {
+		this.group = group;
 	}
 }

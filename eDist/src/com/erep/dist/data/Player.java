@@ -31,7 +31,7 @@ import com.google.appengine.datanucleus.annotations.Unowned;
 				@Persistent(name = "groups"), @Persistent(name = "config"),
 				@Persistent(name = "fightVerif"),
 				@Persistent(name = "workVerif") }),
-		@FetchGroup(name = "requestAttempt", members = {}) })
+		@FetchGroup(name = "requestIdentify", members = { @Persistent(name = "groups") }) })
 public class Player implements HasEncodedKey {
 
 	/**
@@ -69,11 +69,6 @@ public class Player implements HasEncodedKey {
 	@Persistent
 	@RemoteProperty
 	private PlayerDistStatus	workStatus;
-
-	@Unowned
-	@Persistent
-	@Deprecated
-	private PlayerGroup			group;
 
 	@Unowned
 	@Persistent
@@ -168,14 +163,7 @@ public class Player implements HasEncodedKey {
 		this.key = key;
 	}
 
-	@Deprecated
-	public PlayerGroup getGroup() {
-		return group;
-	}
-
 	public DistConfig getConfig() {
-		// fallback to group
-		// return config != null ? config : group.getConfig();
 		return config;
 	}
 

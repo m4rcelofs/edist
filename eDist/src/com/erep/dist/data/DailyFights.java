@@ -1,5 +1,7 @@
 package com.erep.dist.data;
 
+import java.util.Set;
+
 import javax.jdo.annotations.FetchGroup;
 import javax.jdo.annotations.FetchGroups;
 import javax.jdo.annotations.IdentityType;
@@ -38,7 +40,7 @@ public class DailyFights {
 	@Unowned
 	@Persistent
 	@RemoteProperty
-	private PlayerGroup		group;
+	private Set<PlayerGroup>		groups;
 
 	@Persistent
 	@RemoteProperty
@@ -102,19 +104,19 @@ public class DailyFights {
 		this.calculatedWithWeaponQuality = calculatedWithWeaponQuality;
 	}
 
-	public PlayerGroup getGroup() {
-		return group;
-	}
-
-	public void setGroup(PlayerGroup group) {
-		this.group = group;
-	}
-
 	public PlayerDistStatus getVerificationStatus() {
 		return verificationStatus;
 	}
 
 	public void setVerificationStatus(PlayerDistStatus verificationStatus) {
 		this.verificationStatus = verificationStatus;
+	}
+
+	public Set<PlayerGroup> getGroups() {
+		return groups;
+	}
+
+	public void setGroups(Set<PlayerGroup> groups) {
+		this.groups = groups;
 	}
 }
