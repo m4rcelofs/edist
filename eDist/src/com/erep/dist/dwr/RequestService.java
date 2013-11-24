@@ -19,7 +19,9 @@ import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
 import com.erep.dist.RequestsHelper;
 import com.erep.dist.auth.LicensingHelper;
+import com.erep.dist.data.DistConfig;
 import com.erep.dist.data.Player;
+import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.Request;
 import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.dwr.dto.RequestAttempt;
@@ -37,8 +39,8 @@ public class RequestService {
 													.compile("(http://|https://)?(www\\.)?erepublik\\.com/\\D{2}/citizen/profile/(?<id>\\d+)");
 
 	@RemoteMethod
-	public boolean sendRequest(Player player, Integer requestedFF,
-			RequestType type) {
+	public boolean sendRequest(Player player, PlayerGroup group,
+			Integer requestedFF, RequestType type) {
 
 		if (player == null || player.getKey() == null || requestedFF == null
 				|| requestedFF <= 0 || type == null)
@@ -60,10 +62,11 @@ public class RequestService {
 						ctx.getHttpServletRequest());
 
 				Player dbPlayer = dao.find(player);
+				PlayerGroup dbGroup = dao.find(group);
 
 				tx.begin();
-				Request request = helper.createRequest(dbPlayer, requestedFF,
-						type);
+				Request request = helper.createRequest(dbPlayer, dbGroup,
+						requestedFF, type);
 
 				if (request != null) {
 					dbPlayer.addRequest(request);
@@ -80,7 +83,7 @@ public class RequestService {
 					tx.rollback();
 					response = false;
 					logger.log(Level.SEVERE, "Request for player {0} failed",
-							player.getName());
+							player.getErId());
 				}
 			}
 			return response;
@@ -88,13 +91,24 @@ public class RequestService {
 	}
 
 	@RemoteMethod
-	public RequestAttempt getCurrentStatus(String idNameOrLink) {
+	public Player identify(String idNameOrLink) {
+		if (idNameOrLink == null || idNameOrLink.trim().isEmpty())
+			return new Player();
+
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			pm.getFetchPlan().addGroup("requestIdentify");
+			DataAccessObject dao = new DataAccessObject(pm);
+			return identifyRequestString(dao, idNameOrLink.trim());
+		} catch (JDOObjectNotFoundException e) {
+			// no player, ignore
+			return new Player();
+		}
+	}
+
+	@RemoteMethod
+	public RequestAttempt getCurrentStatus(Player player, PlayerGroup group) {
 
 		RequestAttempt dto = new RequestAttempt();
-
-		if (idNameOrLink == null || idNameOrLink.trim().isEmpty())
-			return dto;
-
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			pm.getFetchPlan().addGroup("requestAttempt");
 
@@ -104,19 +118,22 @@ public class RequestService {
 
 			Transaction tx = pm.currentTransaction();
 			try {
-				Player dbPlayer = identifyRequestString(dao,
-						idNameOrLink.trim());
-				dto.setAllowedType(config.getConfig(dbPlayer).getAllowedType());
-				dto.setAllowedQuality(config.getConfig(dbPlayer)
-						.getAllowedWeaponQuality());
+				Player dbPlayer = dao.find(player);
+				PlayerGroup dbGroup = dao.find(group);
+
+				DistConfig distConfig = config.getConfig(dbPlayer, dbGroup);
+
+				dto.setAllowedType(distConfig.getAllowedType());
+				dto.setAllowedQuality(distConfig.getAllowedWeaponQuality());
 
 				tx.begin();
-				dto.setRocketAllowed(requests.verifyRocketAllowed(dbPlayer));
-				dto.setAvailableFF(requests.verifyMaxFF(dbPlayer));
+				dto.setRocketAllowed(requests.verifyRocketAllowed(dbPlayer,
+						dbGroup));
+				dto.setAvailableFF(requests.verifyMaxFF(dbPlayer, dbGroup));
 				tx.commit();
 
 				dto.setRechargeTime(eRepTimeCalculator.secondsToDayChange());
-				dto.setPlayer(dbPlayer);
+				dto.setGroup(group);
 
 			} catch (JDOObjectNotFoundException e) {
 				// no player, ignore
@@ -124,7 +141,7 @@ public class RequestService {
 				if (tx.isActive()) {
 					tx.rollback();
 					logger.log(Level.SEVERE, "getStatus for player {0} failed",
-							idNameOrLink);
+							player.getErId());
 				}
 			}
 

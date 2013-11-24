@@ -106,7 +106,7 @@ public class EmployerFacadeServlet extends HttpServlet {
 			DailyWork work = new DailyWork();
 			work.setDay(Integer.valueOf(workDay.get("day").toString()));
 			work.setEmployer(employer);
-			work.setGroup(player.getGroup());
+			work.setGroups(player.getGroups());
 			work.setPlayer(player);
 			work.setKey(dao.createDailyWorkKey(player, work.getDay()));
 

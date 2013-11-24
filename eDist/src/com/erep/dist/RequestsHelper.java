@@ -8,7 +8,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.erep.dist.data.DistConfig;
 import com.erep.dist.data.Player;
+import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.Request;
 import com.erep.dist.data.ResourceDist;
 import com.erep.dist.data.enums.PlayerDistStatus;
@@ -41,60 +43,64 @@ public class RequestsHelper {
 		this.req = req;
 	}
 
-	public boolean verifyRocketAllowed(Player player) {
-		boolean rocketAllowed = config.getConfig(player).getRocketAllowed();
+	public boolean verifyRocketAllowed(Player player, PlayerGroup group) {
+		boolean rocketAllowed = config.getConfig(player, group)
+				.getRocketAllowed();
 		boolean requestedToday = dao.requestedRocket(player,
 				eRepTimeCalculator.geteRepDay());
 		return rocketAllowed && !requestedToday;
 	}
 
-	public int verifyMaxFF(Player player) {
+	public int verifyMaxFF(Player player, PlayerGroup group) {
 		if (player.getDbStatus() != PlayerStatus.ENABLED
 				|| player.getFightStatus() == PlayerDistStatus.TEMP_BANNED
 				|| player.getWorkStatus() == PlayerDistStatus.TEMP_BANNED)
 			return 0;
-		int maxFF = config.getConfig(player).getCurrentMaxDailyFF();
+		int maxFF = config.getConfig(player, group).getCurrentMaxDailyFF();
 		int alreadyRequested = dao.getDailyRequestedFF(player,
 				eRepTimeCalculator.geteRepDay());
 		return (maxFF - alreadyRequested);
 	}
 
-	public Request createRequest(Player player) {
-		return createRequest(player, Integer.MAX_VALUE,
+	public Request createRequest(Player player, PlayerGroup group) {
+		return createRequest(player, group, Integer.MAX_VALUE,
 				RequestType.WEAPONS_FOOD);
 	}
 
-	public Request createRequest(Player player, Integer requestedFF,
-			RequestType type) {
-		return newRequest(player, requestedFF, type);
+	public Request createRequest(Player player, PlayerGroup group,
+			Integer requestedFF, RequestType type) {
+		return newRequest(player, group, requestedFF, type);
 	}
 
-	private Request newRequest(Player player, Integer requestedFF,
-			RequestType requestedType) {
+	private Request newRequest(Player player, PlayerGroup group,
+			Integer requestedFF, RequestType requestedType) {
 
 		Request request = new Request();
 		request.setPlayer(player);
-		request.setGroup(player.getGroup());
+		request.setGroup(group);
+
+		DistConfig distConfig = config.getConfig(player, group);
 
 		if (requestedType == RequestType.ROCKET) {
-			if (!config.getConfig(player).getRocketAllowed())
+			if (!distConfig.getRocketAllowed())
 				return null;
 			request.setRocketQuality(player.getRocketEnabled());
 			request.setResources(getRocketResources(request));
 		} else {
 
-			RequestType allowedType = decideDistType(player, requestedType);
+			RequestType allowedType = decideDistType(player, requestedType,
+					distConfig);
 			request.setType(allowedType);
-			int maxFF = verifyMaxFF(player);
+			int maxFF = verifyMaxFF(player, group);
 
 			if (maxFF <= 0)
 				return null;
 
 			request.setRequestedFF(requestedFF < maxFF ? requestedFF : maxFF);
-			request.setResources(getFFResources(request));
+			request.setResources(getFFResources(request, distConfig));
 		}
 
-		request.setDistributor(config.getConfig(player).getDistributor());
+		request.setDistributor(distConfig.getDistributor());
 		if (request.getDistributor().getPassword() == null)
 			return null;
 
@@ -111,7 +117,8 @@ public class RequestsHelper {
 		return request;
 	}
 
-	private List<ResourceDist> getFFResources(Request request) {
+	private List<ResourceDist> getFFResources(Request request,
+			DistConfig distConfig) {
 		List<ResourceDist> resources = new ArrayList<>();
 
 		RequestType type = request.getType();
@@ -127,8 +134,7 @@ public class RequestsHelper {
 		}
 
 		if (sendWeapons) {
-			ResourceQuality quality = config.getConfig(request.getPlayer())
-					.getAllowedWeaponQuality();
+			ResourceQuality quality = distConfig.getAllowedWeaponQuality();
 
 			// will always return lower end of division
 			ResourceDist resource = new ResourceDist(ResourceType.WEAPONS,
@@ -151,11 +157,12 @@ public class RequestsHelper {
 		return resources;
 	}
 
-	private RequestType decideDistType(Player player, RequestType requested) {
+	private RequestType decideDistType(Player player, RequestType requested,
+			DistConfig distConfig) {
 		if (requested == null)
 			return null;
 
-		RequestType allowed = config.getConfig(player).getAllowedType();
+		RequestType allowed = distConfig.getAllowedType();
 
 		if (allowed == RequestType.WEAPONS_FOOD)
 			return requested;
