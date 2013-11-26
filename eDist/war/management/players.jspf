@@ -124,7 +124,7 @@
 												data-bind="options: $root.groups, 
 															optionsText: 'groupName',
 															optionsValue: 'encodedKey', 
-												 	 		selectedOptions: groupIds,
+															selectedOptions: groupIds,
 												 	 		updateSelectPicker:{}">
 											</select></td>
 										</tr>

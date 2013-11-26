@@ -30,6 +30,8 @@ var PlayersViewModel = new function() {
 	}
 
 	self.savePlayer = function(player) {
+		// converts back to PlayerGroup objects because of funny transforms
+		groupIdsToGroups(player);
 		ManagementService.editPlayer(player, {
 			callback : function(response) {
 				if (response) {
@@ -129,5 +131,15 @@ var PlayersViewModel = new function() {
 				self.cursor(response.encodedCursor);
 			}
 		});
+	}
+	
+	function groupIdsToGroups(player) {
+		var groups = [];
+		player.groupIds.forEach(function(groupId) {
+			groups.push({
+				encodedKey : groupId
+			});
+		});
+		player.groups = groups;
 	}
 };

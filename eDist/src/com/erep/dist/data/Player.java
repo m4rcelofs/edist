@@ -72,6 +72,7 @@ public class Player implements HasEncodedKey {
 
 	@Unowned
 	@Persistent
+	@RemoteProperty
 	private Set<PlayerGroup>	groups;
 
 	@Persistent(dependent = "true")
@@ -302,19 +303,4 @@ public class Player implements HasEncodedKey {
 		}
 		return ids;
 	}
-
-	@RemoteProperty
-	public void setGroupIds(Set<String> groupIds) {
-		if (groupIds == null)
-			return;
-
-		Set<PlayerGroup> groups = new HashSet<>();
-		for (String id : groupIds) {
-			PlayerGroup group = new PlayerGroup();
-			group.setEncodedKey(id);
-			groups.add(group);
-		}
-		setGroups(groups);
-	}
-
 }
