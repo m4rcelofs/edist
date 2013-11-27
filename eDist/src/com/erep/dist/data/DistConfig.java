@@ -28,15 +28,15 @@ public class DistConfig {
 
 	@Persistent
 	@RemoteProperty
-	private int				currentMaxDailyFF;
+	private Integer			currentMaxDailyFF;
 
 	@Persistent
 	@RemoteProperty
-	private boolean			rocketAllowed;
+	private Boolean			rocketAllowed;
 
 	@Persistent
 	@RemoteProperty
-	private boolean			autoSend;
+	private Boolean			autoSend;
 
 	/**
 	 * weapon, food, or both
@@ -64,37 +64,34 @@ public class DistConfig {
 		this.key = key;
 	}
 
-	public int getCurrentMaxDailyFF() {
+	public Integer getCurrentMaxDailyFF() {
+		if (currentMaxDailyFF == null)
+			return 0;
 		return currentMaxDailyFF;
 	}
 
 	public void setCurrentMaxDailyFF(Integer currentMaxDailyFF) {
-		if (currentMaxDailyFF != null)
-			this.currentMaxDailyFF = currentMaxDailyFF;
-		else
-			this.currentMaxDailyFF = 0;
+		this.currentMaxDailyFF = currentMaxDailyFF;
 	}
 
-	public boolean getRocketAllowed() {
+	public Boolean getRocketAllowed() {
+		if (rocketAllowed == null)
+			return false;
 		return rocketAllowed;
 	}
 
 	public void setRocketAllowed(Boolean rocketAllowed) {
-		if (rocketAllowed != null)
-			this.rocketAllowed = rocketAllowed;
-		else
-			this.rocketAllowed = false;
+		this.rocketAllowed = rocketAllowed;
 	}
 
-	public boolean getAutoSend() {
+	public Boolean getAutoSend() {
+		if (autoSend == null)
+			return false;
 		return autoSend;
 	}
 
 	public void setAutoSend(Boolean autoSend) {
-		if (autoSend != null)
-			this.autoSend = autoSend;
-		else
-			this.autoSend = false;
+		this.autoSend = autoSend;
 	}
 
 	public Distributor getDistributor() {
