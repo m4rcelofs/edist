@@ -25,27 +25,32 @@ $(document).ready(function() {
 
 	var currentLoc = window.location.pathname.split('/')[1];
 	$('#' + currentLoc).addClass('active');
-	
-	//binding handler for Bootstrap's Popup trigger on help icons
+
+	// binding handler for Bootstrap's Popup trigger on help icons
 	ko.bindingHandlers.updatePopup = {
-			update: function(element) {
-				$(element).popover({
-					trigger: 'hover'
-				});
-			}
+		update : function(element) {
+			$(element).popover({
+				trigger : 'hover'
+			});
+		}
 	};
-	
-	//binding handler for bootstrap-select trigger
+
+	// binding handler for bootstrap-select trigger
 	ko.bindingHandlers.updateSelectPicker = {
-			update: function(element) {
-				$(element).selectpicker();
+		update : function(element, valueAccessor) {
+			$(element).selectpicker();
+
+			// this is necessary to force ko's binding
+			if (ko.unwrap(valueAccessor())) {
+				$(element).selectpicker('refresh');
 			}
+		}
 	};
 });
 
 var Navigation = new function() {
 	var nav = this;
-	
+
 	nav.configureRoutes = function(route) {
 		$('.nav-tabs a').click(function(event) {
 			event.preventDefault();
@@ -58,12 +63,12 @@ var Navigation = new function() {
 
 		crossroads.parse(History.getState().hash);
 	}
-	
+
 	nav.setCurrentLocation = function(path) {
-		History.pushState(null, '', path);  
+		History.pushState(null, '', path);
 	}
 
 	nav.getCurrenLocation = function() {
-		return History.getState().hash; 
+		return History.getState().hash;
 	}
 };

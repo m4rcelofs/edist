@@ -1,5 +1,7 @@
 package com.erep.dist.dwr;
 
+import static com.erep.dist.DataAccessObject.playerRootKey;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.regex.Matcher;
@@ -101,8 +103,8 @@ public class RequestService {
 			return identifyRequestString(dao, idNameOrLink.trim());
 		} catch (JDOObjectNotFoundException e) {
 			// no player, ignore
-			return new Player();
 		}
+		return new Player();
 	}
 
 	@RemoteMethod
@@ -133,7 +135,7 @@ public class RequestService {
 				tx.commit();
 
 				dto.setRechargeTime(eRepTimeCalculator.secondsToDayChange());
-				dto.setGroup(group);
+				dto.setGroup(dbGroup);
 
 			} catch (JDOObjectNotFoundException e) {
 				// no player, ignore
@@ -161,13 +163,16 @@ public class RequestService {
 			else
 				// assume name
 				p.setKey(dao.findPlayerKey(idNameOrLink));
+		} catch(IllegalArgumentException e){
+			return p;
 		}
 		return dao.find(p);
 	}
 
 	private Key keyFromId(String id) {
 		Integer keyValue = Integer.parseInt(id);
-		return KeyFactory.createKey(Player.class.getSimpleName(), keyValue);
+		return KeyFactory.createKey(playerRootKey(),
+				Player.class.getSimpleName(), keyValue);
 	}
 
 }

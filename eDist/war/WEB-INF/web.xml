@@ -29,6 +29,16 @@
 		<url-pattern>/management/*</url-pattern>
 	</servlet-mapping>
 
+	<!-- form ep -->
+	<servlet>
+		<servlet-name>formEP</servlet-name>
+		<jsp-file>/form/index.jsp</jsp-file>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>formEP</servlet-name>
+		<url-pattern>/form/*</url-pattern>
+	</servlet-mapping>
 
 	<!-- Public DWR (requests) -->
 	<servlet>
@@ -52,8 +62,7 @@
 				com.erep.dist.data.Player,
 				com.erep.dist.data.PlayerGroup,
 				
-				com.erep.dist.dwr.dto.RequestAttempt
-				
+				com.erep.dist.dwr.dto.RequestAttempt				
 			</param-value>
 		</init-param>
 	</servlet>

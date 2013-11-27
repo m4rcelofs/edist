@@ -156,6 +156,7 @@ public class DataAccessObject {
 	private boolean add(PlayerGroup group) {
 		groupRoot().addGroup(group);
 		pm.makePersistent(group);
+		CacheFacade.remove(getClass().getName()+".listGroups();");
 		return true;
 	}
 
@@ -193,6 +194,7 @@ public class DataAccessObject {
 		return true;
 	}
 
+	@Cacheable
 	@SuppressWarnings("unchecked")
 	public List<PlayerGroup> listGroups() {
 		Query q = pm.newQuery(PlayerGroup.class);
@@ -565,7 +567,7 @@ public class DataAccessObject {
 				ServerConstants.DEFAULT_ID);
 	}
 
-	private Key playerRootKey() {
+	public static Key playerRootKey() {
 		return KeyFactory.createKey(PlayerRoot.class.getSimpleName(),
 				ServerConstants.DEFAULT_ID);
 	}

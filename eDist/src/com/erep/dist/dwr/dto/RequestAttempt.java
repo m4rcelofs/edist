@@ -1,13 +1,15 @@
 package com.erep.dist.dwr.dto;
 
 import org.directwebremoting.annotations.DataTransferObject;
+import org.directwebremoting.annotations.Param;
 import org.directwebremoting.annotations.RemoteProperty;
+import org.directwebremoting.convert.BeanConverter;
 
 import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.data.enums.ResourceQuality;
 
-@DataTransferObject
+@DataTransferObject(converter = BeanConverter.class, params = @Param(name = "javascript", value = "RequestAttempt"))
 public class RequestAttempt {
 
 	@RemoteProperty
