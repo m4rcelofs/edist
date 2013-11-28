@@ -19,6 +19,7 @@ var FormViewModel = new function() {
 	self.selectedFFs = ko.observable(0);
 	self.selectedType = ko.observable('');
 	self.refreshCountdown = ko.observable();
+	self.requestStatus = ko.observable();
 
 	self.selectedName = ko.observable();
 	ko.computed(function() {
@@ -30,6 +31,7 @@ var FormViewModel = new function() {
 	self.selectedGroup = ko.observable({});
 	ko.computed(function() {
 		fetchGroupConfig(self.selectedGroup());
+		self.selectedFFs(0);
 	}, this).extend({
 		throttle : 100
 	});
@@ -40,6 +42,34 @@ var FormViewModel = new function() {
 		}
 		return 'url(../img/default_male.cache.gif) no-repeat center'
 	});
+
+	self.sendRequest = function(formElement) {
+		var player = {
+			encodedKey : ko.unwrap(self.player().encodedKey())
+		};
+		var group = {
+			encodedKey : ko.unwrap(self.selectedGroup().encodedKey)
+		};
+		
+		$('#sendRequestBtn').button('loading');
+		RequestService.sendRequest(player, group, self.selectedFFs(), self
+				.selectedType(), {
+			callback : function(response) {
+				console.log(response);
+				if(response === true) {
+					$('#sendRequestBtn').button('complete');
+
+					self.requestStatus('OK');
+					self.requestAttempt().availableFF(self.requestAttempt().availableFF() - self.selectedFFs());
+					self.selectedFFs(0);
+				} else {
+					$('#sendRequestBtn').button('reset');
+					self.requestStatus('ERROR');
+				}
+				
+			}
+		});
+	}
 
 	function fetchPlayer(playerString) {
 		if (playerString) {

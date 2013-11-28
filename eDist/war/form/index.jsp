@@ -7,11 +7,10 @@
 	<jsp:attribute name="imports">
 		<script type='text/javascript'
 			src="${baseUrl}/form/form.all.closure.js"></script>
-		<link href="${baseUrl}/form/styleform.cache.css" rel="stylesheet">
     </jsp:attribute>
 
 	<jsp:body>
-		<div class="jumbotron">
+		<div class="jumbotron" style="font-size: inherit;">
 			<div class="row">
 				<img class="img-responsive" src="../img/formtitle.cache.png"
 					alt="Suprimentos"></img>
@@ -19,14 +18,18 @@
 			<div class="form-group"></div>
 			<div id="playerForm" class="row">
 				<div class="col-md-10">
-					<form onsubmit="return false;" id="infoform"
-						class="form-horizontal" role="form">
-							<div class="form-group">
+					<form id="infoform" class="form-horizontal" role="form"
+						data-bind="submit: sendRequest">
+							<div class="form-group"
+							data-bind="css: {'has-success' : player().name() !== null,
+											 'has-error' : player().name() === null}">
 								<div class="input-group">
 									<span class="input-group-addon input-large">Id:</span> 
 									<input type="text" class="form-control input-large" name="id"
 									id="id" placeholder="Nick, id ou link do perfil"
-									data-bind="value : selectedName, valueUpdate: 'keyup'">
+									style="text-align: center;"
+									data-bind="value : selectedName, 
+											   valueUpdate: 'keyup'">
 								</div>
 							</div>
 							<div class="form-group text-center"
@@ -41,11 +44,13 @@
 							</div>
 							<div class="row">
 								<div class="col-md-7">
-									<div class="form-group">
+									<div class="form-group"
+									data-bind="css:{'has-success': selectedFFs() <= requestAttempt().availableFF() && selectedFFs() > 0,
+													'has-error': selectedFFs() > requestAttempt().availableFF() || selectedFFs() < 0}">
 										<div class="input-group">
 											<span class="input-group-addon">FF:</span> 
 											<input type="number" class="form-control" id="quant" min="0"
-											step="10"
+											step="1" style="text-align: center;"
 											data-bind="enable: requestAttempt().availableFF() > 0, 
 														value: selectedFFs, 
 														attr: {max: requestAttempt().availableFF()}">
@@ -83,13 +88,17 @@
 									</div>
 								</div>
 							</div>
+							<div class="row">
+								<div class="col-md-12">
+									<button id="sendRequestBtn" type="submit"
+									class="btn btn-primary btn-lg btn-block"
+									data-loading-text="Requisitando..."
+									data-complete-text="Suprimentos na fila para envio!"
+									data-bind="css: {'btn-success' : requestStatus() == 'OK',
+													 'btn-danger' : requestStatus() == 'ERROR'}">Requisitar Suprimentos</button>
+								</div>					
+							</div>
 					</form>
-					<div class="row">
-						<div class="col-md-12">
-							<button type="submit" onclick="request();"
-								class="btn btn-primary btn-lg btn-block">Requisitar Suprimentos</button>
-						</div>					
-					</div>
 				</div>
 				<div class="col-md-2">
 					<img id="citizen-avatar"

@@ -1,5 +1,14 @@
 package com.erep.dist;
 
+import static com.erep.dist.data.enums.PlayerDistStatus.TEMP_BANNED;
+import static com.erep.dist.data.enums.PlayerStatus.ENABLED;
+import static com.erep.dist.data.enums.RequestStatus.REQUESTED;
+import static com.erep.dist.data.enums.RequestType.FOOD;
+import static com.erep.dist.data.enums.RequestType.ROCKET;
+import static com.erep.dist.data.enums.RequestType.WEAPONS;
+import static com.erep.dist.data.enums.RequestType.WEAPONS_FOOD;
+import static com.erep.dist.data.enums.ResourceQuality.Q7;
+import static com.erep.dist.data.enums.RocketQuality.NONE;
 import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withPayload;
 
 import java.util.ArrayList;
@@ -13,9 +22,6 @@ import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.Request;
 import com.erep.dist.data.ResourceDist;
-import com.erep.dist.data.enums.PlayerDistStatus;
-import com.erep.dist.data.enums.PlayerStatus;
-import com.erep.dist.data.enums.RequestStatus;
 import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.data.enums.ResourceQuality;
 import com.erep.dist.data.enums.ResourceType;
@@ -44,27 +50,28 @@ public class RequestsHelper {
 	}
 
 	public boolean verifyRocketAllowed(Player player, PlayerGroup group) {
-		boolean rocketAllowed = config.getConfig(player, group)
-				.getRocketAllowed();
-		boolean requestedToday = dao.requestedRocket(player,
-				eRepTimeCalculator.geteRepDay());
-		return rocketAllowed && !requestedToday;
+		if (player.getRocketEnabled() != NONE) {
+			if (config.getConfig(player, group).getRocketAllowed()) {
+				return !dao.requestedRocket(player, group,
+						eRepTimeCalculator.geteRepDay());
+			}
+		}
+		return false;
 	}
 
 	public int verifyMaxFF(Player player, PlayerGroup group) {
-		if (player.getDbStatus() != PlayerStatus.ENABLED
-				|| player.getFightStatus() == PlayerDistStatus.TEMP_BANNED
-				|| player.getWorkStatus() == PlayerDistStatus.TEMP_BANNED)
+		if (player.getDbStatus() != ENABLED
+				|| player.getFightStatus() == TEMP_BANNED
+				|| player.getWorkStatus() == TEMP_BANNED)
 			return 0;
 		int maxFF = config.getConfig(player, group).getCurrentMaxDailyFF();
-		int alreadyRequested = dao.getDailyRequestedFF(player,
+		int alreadyRequested = dao.getDailyRequestedFF(player, group,
 				eRepTimeCalculator.geteRepDay());
 		return (maxFF - alreadyRequested);
 	}
 
 	public Request createRequest(Player player, PlayerGroup group) {
-		return createRequest(player, group, Integer.MAX_VALUE,
-				RequestType.WEAPONS_FOOD);
+		return createRequest(player, group, Integer.MAX_VALUE, WEAPONS_FOOD);
 	}
 
 	public Request createRequest(Player player, PlayerGroup group,
@@ -81,11 +88,13 @@ public class RequestsHelper {
 
 		DistConfig distConfig = config.getConfig(player, group);
 
-		if (requestedType == RequestType.ROCKET) {
-			if (!distConfig.getRocketAllowed())
+		if (requestedType == ROCKET) {
+			if (!verifyRocketAllowed(player, group))
 				return null;
+			request.setRequestedFF(0);
 			request.setRocketQuality(player.getRocketEnabled());
 			request.setResources(getRocketResources(request));
+			request.setType(ROCKET);
 		} else {
 
 			RequestType allowedType = decideDistType(player, requestedType,
@@ -112,7 +121,7 @@ public class RequestsHelper {
 		request.setX_AppEngine_Region(req.getHeader("X-AppEngine-Region"));
 		request.setX_AppEngine_City(req.getHeader("X-AppEngine-City"));
 
-		request.setStatus(RequestStatus.REQUESTED);
+		request.setStatus(REQUESTED);
 
 		return request;
 	}
@@ -122,10 +131,8 @@ public class RequestsHelper {
 		List<ResourceDist> resources = new ArrayList<>();
 
 		RequestType type = request.getType();
-		boolean sendFood = type == RequestType.FOOD
-				|| type == RequestType.WEAPONS_FOOD;
-		boolean sendWeapons = type == RequestType.WEAPONS
-				|| type == RequestType.WEAPONS_FOOD;
+		boolean sendFood = type == FOOD || type == WEAPONS_FOOD;
+		boolean sendWeapons = type == WEAPONS || type == WEAPONS_FOOD;
 
 		if (sendFood) {
 			ResourceDist resource = new ResourceDist(ResourceType.FOOD, null,
@@ -149,9 +156,11 @@ public class RequestsHelper {
 		List<ResourceDist> resources = new ArrayList<>();
 
 		for (ResourceQuality quality : ResourceQuality.values()) {
-			ResourceDist resource = new ResourceDist(ResourceType.WEAPONS,
-					quality, request.getRocketQuality().weaponsNeeded);
-			resources.add(resource);
+			if (quality != Q7) {
+				ResourceDist resource = new ResourceDist(ResourceType.WEAPONS,
+						quality, request.getRocketQuality().weaponsNeeded);
+				resources.add(resource);
+			}
 		}
 
 		return resources;
@@ -164,7 +173,7 @@ public class RequestsHelper {
 
 		RequestType allowed = distConfig.getAllowedType();
 
-		if (allowed == RequestType.WEAPONS_FOOD)
+		if (allowed == WEAPONS_FOOD)
 			return requested;
 
 		return allowed;

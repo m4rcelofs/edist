@@ -1,6 +1,7 @@
 package com.erep.dist;
 
 import static com.erep.dist.auth.SymmetricCipherUtils.encrypt;
+import static com.erep.dist.data.enums.RequestType.ROCKET;
 import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withPayload;
 
 import java.util.HashMap;
@@ -156,7 +157,7 @@ public class DataAccessObject {
 	private boolean add(PlayerGroup group) {
 		groupRoot().addGroup(group);
 		pm.makePersistent(group);
-		CacheFacade.remove(getClass().getName()+".listGroups();");
+		CacheFacade.remove(getClass().getName() + ".listGroups();");
 		return true;
 	}
 
@@ -390,16 +391,17 @@ public class DataAccessObject {
 		return q;
 	}
 
-	public int getDailyRequestedFF(Player player, int eRepDay) {
+	public int getDailyRequestedFF(Player player, PlayerGroup group, int eRepDay) {
 		Query q = pm.newQuery(Request.class);
 
-		q.setFilter("player == playerParam && eRepDay == eRepDayParam");
+		q.setFilter("player == playerParam && group == groupParam && eRepDay == eRepDayParam");
 		q.declareParameters(Key.class.getName() + " playerParam, "
+				+ Key.class.getName() + " groupParam, "
 				+ Integer.class.getName() + " eRepDayParam");
 		q.setResult("sum(requestedFF)");
 
-		Long response = ((Long) q.execute(player.getKey(), eRepDay));
-		return response != null ? response.intValue() : 0;
+		Object response = q.execute(player.getKey(), group.getKey(), eRepDay);
+		return response != null ? ((Long) response).intValue() : 0;
 	}
 
 	public int getRequestedFFSum(Player player, PlayerGroup group, int fromDay) {
@@ -409,9 +411,8 @@ public class DataAccessObject {
 				+ Key.class.getName() + " groupParam, "
 				+ Integer.class.getName() + " fromDayParam");
 		q.setResult("sum(requestedFF)");
-		Long response = ((Long) q.execute(player.getKey(), group.getKey(),
-				fromDay));
-		return response != null ? response.intValue() : 0;
+		Object response = q.execute(player.getKey(), group.getKey(), fromDay);
+		return response != null ? ((Long) response).intValue() : 0;
 	}
 
 	public int getFightsFFSum(Player player, int fromDay) {
@@ -430,12 +431,24 @@ public class DataAccessObject {
 		return (List<DailyWork>) q.execute();
 	}
 
-	public boolean requestedRocket(Player player, int eRepDay) {
+	public boolean requestedRocket(Player player, PlayerGroup group, int eRepDay) {
 		Query q = pm.newQuery(Request.class);
-		q.setFilter("player == '" + player.getKey() + "' && eRepDay == "
-				+ eRepDay + " && type == '" + RequestType.ROCKET.name() + "'");
+		q.setFilter("player == playerParam && group == groupParam && eRepDay == eRepDayParam && type == typeParam");
+		q.declareParameters(Key.class.getName() + " playerParam, "
+				+ Key.class.getName() + " groupParam, "
+				+ Integer.class.getName() + " eRepDayParam, "
+				+ RequestType.class.getName() + " typeParam");
 		q.setUnique(true);
-		Request request = (Request) q.execute();
+
+		Map<String, Object> parameters = new HashMap<>();
+		{
+			parameters.put("playerParam", player.getKey());
+			parameters.put("groupParam", group.getKey());
+			parameters.put("eRepDayParam", eRepDay);
+			parameters.put("typeParam", ROCKET);
+		}
+
+		Object request = q.executeWithMap(parameters);
 		return request != null;
 	}
 

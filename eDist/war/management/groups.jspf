@@ -46,7 +46,7 @@
 													<input data-bind="value: groupName" />
 												</div>
 												<div data-bind="if: groupName === 'Default'">
-													<span data-bind="text: groupName"></span>
+													<p class="form-control-static" data-bind="text: groupName"></p>
 												</div>
 											</td>
 										</tr>

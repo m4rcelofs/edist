@@ -1,6 +1,7 @@
 package com.erep.dist.dwr;
 
 import static com.erep.dist.DataAccessObject.playerRootKey;
+import static com.erep.dist.data.enums.RequestType.ROCKET;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,7 +46,7 @@ public class RequestService {
 			Integer requestedFF, RequestType type) {
 
 		if (player == null || player.getKey() == null || requestedFF == null
-				|| requestedFF <= 0 || type == null)
+				|| (requestedFF <= 0 && type != ROCKET) || type == null)
 			return false;
 
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
@@ -163,7 +164,7 @@ public class RequestService {
 			else
 				// assume name
 				p.setKey(dao.findPlayerKey(idNameOrLink));
-		} catch(IllegalArgumentException e){
+		} catch (IllegalArgumentException e) {
 			return p;
 		}
 		return dao.find(p);
