@@ -303,4 +303,15 @@ public class Player implements HasEncodedKey {
 		}
 		return ids;
 	}
+
+	public boolean isInGroup(PlayerGroup group) {
+		if (getGroups() == null)
+			return false;
+
+		for (PlayerGroup pGroup : getGroups())
+			if (pGroup.getKey().equals(group.getKey()))
+				return true;
+
+		return false;
+	}
 }

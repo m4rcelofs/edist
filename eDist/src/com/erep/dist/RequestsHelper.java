@@ -82,6 +82,9 @@ public class RequestsHelper {
 	private Request newRequest(Player player, PlayerGroup group,
 			Integer requestedFF, RequestType requestedType) {
 
+		if (!player.isInGroup(group))
+			return null;
+
 		Request request = new Request();
 		request.setPlayer(player);
 		request.setGroup(group);
