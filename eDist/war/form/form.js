@@ -50,50 +50,47 @@ var FormViewModel = new function() {
 		var group = {
 			encodedKey : ko.unwrap(self.selectedGroup().encodedKey)
 		};
-		
+
 		$('#sendRequestBtn').button('loading');
 		RequestService.sendRequest(player, group, self.selectedFFs(), self
 				.selectedType(), {
 			callback : function(response) {
 				console.log(response);
-				if(response === true) {
+				if (response === true) {
 					$('#sendRequestBtn').button('complete');
 
 					self.requestStatus('OK');
-					self.requestAttempt().availableFF(self.requestAttempt().availableFF() - self.selectedFFs());
+					self.requestAttempt().availableFF(
+							self.requestAttempt().availableFF()
+									- self.selectedFFs());
 					self.selectedFFs(0);
 				} else {
 					$('#sendRequestBtn').button('reset');
 					self.requestStatus('ERROR');
 				}
-				
+
 			}
 		});
 	}
 
 	function fetchPlayer(playerString) {
-		if (playerString) {
-			RequestService.identify(playerString, {
-				callback : function(response) {
-					Navigation.setCurrentLocation(response.erId ? '/form/'
-							+ response.erId : '/form');
+		RequestService.identify(playerString, {
+			callback : function(response) {
+				Navigation.setCurrentLocation(response.erId ? '/form/'
+						+ response.erId : '/form');
 
-					if (response.groups) {
-						response.groups.sort(function(left, right) {
-							return left.groupName == right.groupName ? 0
-									: (left.groupName < right.groupName ? -1
-											: 1)
-						});
-						self.selectedGroup(response.groups[0]);
-					}
-
-					self.player(ko.mapping.fromJS(response, self.player()));
-					self
-							.requestAttempt(ko.mapping
-									.fromJS(new RequestAttempt()));
+				if (response.groups) {
+					response.groups.sort(function(left, right) {
+						return left.groupName == right.groupName ? 0
+								: (left.groupName < right.groupName ? -1 : 1)
+					});
+					self.selectedGroup(response.groups[0]);
 				}
-			});
-		}
+
+				self.player(ko.mapping.fromJS(response, self.player()));
+				self.requestAttempt(ko.mapping.fromJS(new RequestAttempt()));
+			}
+		});
 	}
 
 	function fetchGroupConfig(group) {
