@@ -4,11 +4,10 @@ $(document).ready(function() {
 	ko.applyBindings(FightVerificationViewModel, document.getElementById('fightVerifDialog'));
 	ko.applyBindings(WorkVerificationViewModel, document.getElementById('workVerifDialog'));
 	ko.applyBindings(GroupsViewModel, document.getElementById('groupsList'));
-
-	$('#groupsListTab').on('show.bs.tab', GroupsViewModel.onGroupsShow);
 	ko.applyBindings(PlayersViewModel, document.getElementById('playersList'));
-	
-	$('#playersListTab').on('show.bs.tab',PlayersViewModel.onPlayersShow);
+		
+	$('#groupsListTab').on('show.bs.tab', GroupsViewModel.onGroupsShow);
+	$('#playersListTab').on('show.bs.tab', PlayersViewModel.onPlayersShow);
 
 	crossroads.addRoute('management/{tab}', Management.selectTab);
 	Navigation.configureRoutes();

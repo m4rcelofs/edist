@@ -137,11 +137,10 @@ $(document).ready(function() {
 	ko.applyBindings(FightVerificationViewModel, document.getElementById('fightVerifDialog'));
 	ko.applyBindings(WorkVerificationViewModel, document.getElementById('workVerifDialog'));
 	ko.applyBindings(GroupsViewModel, document.getElementById('groupsList'));
-
-	$('#groupsListTab').on('show.bs.tab', GroupsViewModel.onGroupsShow);
 	ko.applyBindings(PlayersViewModel, document.getElementById('playersList'));
-	
-	$('#playersListTab').on('show.bs.tab',PlayersViewModel.onPlayersShow);
+		
+	$('#groupsListTab').on('show.bs.tab', GroupsViewModel.onGroupsShow);
+	$('#playersListTab').on('show.bs.tab', PlayersViewModel.onPlayersShow);
 
 	crossroads.addRoute('management/{tab}', Management.selectTab);
 	Navigation.configureRoutes();
@@ -193,11 +192,17 @@ var PlayersViewModel = new function() {
 	self.players = ko.observableArray([]);
 	self.groups = ko.observableArray([]);
 	self.granularity = ko.observable();
-	self.cursor = ko.observable();
+	self.playersCursor = ko.observable();
 
 	self.onPlayersShow = function() {
 		loadGroupNames(loadPlayers);
 	};
+
+	self.loadNextPage = function() {
+		if (self.playersCursor() !== null) {
+			loadPlayers(self.playersCursor());
+		}
+	}
 
 	self.addPlayer = function() {
 		var player = new Player();
@@ -312,16 +317,21 @@ var PlayersViewModel = new function() {
 	}
 
 	function loadPlayers(cursor) {
-		self.players([]);
 		ManagementService.listPlayers(cursor, {
 			callback : function(response) {
-				self.players(response.results);
 				self.granularity(response.granularity);
-				self.cursor(response.encodedCursor);
+				response.results.forEach(function(item) {
+					self.players.push(item);
+				});
+				if (response.results.length >= window.edist.server.pageSize) {
+					self.playersCursor(response.encodedCursor);
+				} else {
+					self.playersCursor(null);
+				}
 			}
 		});
 	}
-	
+
 	function groupIdsToGroups(player) {
 		var groups = [];
 		player.groupIds.forEach(function(groupId) {

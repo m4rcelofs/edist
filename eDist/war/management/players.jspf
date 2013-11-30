@@ -233,4 +233,10 @@
 			</div>
 		</div>
 	</div>
+	<ul class="pager">
+		<li class="next"
+			data-bind="css: {disabled: playersCursor() === null},
+						click: loadNextPage"><a
+			href="#">Exibir próximos</a></li>
+	</ul>
 </div>
