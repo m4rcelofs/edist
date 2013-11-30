@@ -6,7 +6,7 @@
 
 	<jsp:attribute name="imports">
 		<script type='text/javascript' src='${baseUrl}/admin/admin.all.closure.js'></script>
-		<script type='text/javascript' src='${baseUrl}/distconfig/dist-config.cache.js'></script>
+		<script type='text/javascript' src='${baseUrl}/distconfig/distconfig.all.closure.js'></script>
 	</jsp:attribute>
 
 	<jsp:body>

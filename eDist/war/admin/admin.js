@@ -1,39 +1,48 @@
 $(document).ready(function() {
-	$('.help').popover();
+	// $('.help').popover();
 
-	$('#usersTab').on('show.bs.tab', onModeratorsShow);
-	$('#distributorsTab').on('show.bs.tab', onDistributorsShow);
-	$('#employersTab').on('show.bs.tab', onEmployersShow);
-	$('#configTab').on('show.bs.tab', onConfigShow);
-	$('#controlPanelTab').on('show.bs.tab', onControlPanelShow);
+	ko.applyBindings(ModeratorsViewModel, document.getElementById('users'));
 
-	crossroads.addRoute('admin/{tab}', selectTab);
+	$('#usersTab').on('show.bs.tab', ModeratorsViewModel.onModeratorsShow);
+
+	// TODO
+	// $('#distributorsTab').on('show.bs.tab', onDistributorsShow);
+	// $('#employersTab').on('show.bs.tab', onEmployersShow);
+	// $('#configTab').on('show.bs.tab', onConfigShow);
+	$('#controlPanelTab').on('show.bs.tab', Admin.onControlPanelShow);
+
+	crossroads.addRoute('admin/{tab}', Admin.selectTab);
 	Navigation.configureRoutes();
 
 	if (Navigation.getCurrenLocation() === '/admin/') {
-		Navigation.setCurrentLocation('users'); 
+		Navigation.setCurrentLocation('users');
 	}
 });
 
-function selectTab(tab) {
-	$('#' + tab + 'Tab').tab('show');
-}
+var Admin = new function() {
+	var self = this;
 
-function onControlPanelShow() {
-	var loc = 'https://appengine.google.com';
-	if (edist.server.appId) {
-		loc += '/dashboard?&app_id=s~' + edist.server.appId;
+	self.selectTab = function(tab) {
+		$('#' + tab + 'Tab').tab('show');
 	}
-	window.location.href = loc;
-}
 
-function defaultSuccess() {
-	$('#error-alert').fadeOut();
-}
-
-function defaultError(message) {
-	if (console.log) {
-		console.log(message);
+	self.defaultSuccess = function() {
+		$('#error-alert').fadeOut();
 	}
-	$('#error-alert').fadeIn();
-}
+
+	self.defaultError = function(message) {
+		if (console.log) {
+			console.log(message);
+		}
+		$('#error-alert').fadeIn();
+	}
+
+	self.onControlPanelShow = function() {
+		var loc = 'https://appengine.google.com';
+		if (edist.server.appId) {
+			loc += '/dashboard?&app_id=s~' + edist.server.appId;
+		}
+		window.location.href = loc;
+	}
+
+};
