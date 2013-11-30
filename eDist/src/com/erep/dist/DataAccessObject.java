@@ -240,14 +240,18 @@ public class DataAccessObject {
 		Key key = createPlayerKey(newPlayer.getErId());
 		newPlayer.setKey(key);
 
-		if (newPlayer.getGroups() != null)
-			for (PlayerGroup group : newPlayer.getGroups())
-				newPlayer.addGroup(find(group));
-		else
-			newPlayer.addGroup(defaultGroup());
+		try {
+			pm.getObjectById(Player.class, newPlayer.getKey());
+			return false;
+		} catch (JDOObjectNotFoundException e) {
+			if (newPlayer.getGroups() != null)
+				for (PlayerGroup group : newPlayer.getGroups())
+					newPlayer.addGroup(find(group));
+			else
+				newPlayer.addGroup(defaultGroup());
 
-		pm.makePersistent(newPlayer);
-
+			pm.makePersistent(newPlayer);
+		}
 		return true;
 	}
 
