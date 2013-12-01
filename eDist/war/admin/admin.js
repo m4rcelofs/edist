@@ -2,11 +2,12 @@ $(document).ready(function() {
 	// $('.help').popover();
 
 	ko.applyBindings(ModeratorsViewModel, document.getElementById('users'));
+	ko.applyBindings(DistributorsViewModel, document.getElementById('distributors'));
 
 	$('#usersTab').on('show.bs.tab', ModeratorsViewModel.onModeratorsShow);
-
+	$('#distributorsTab').on('show.bs.tab', DistributorsViewModel.onDistributorsShow);
+	
 	// TODO
-	// $('#distributorsTab').on('show.bs.tab', onDistributorsShow);
 	// $('#employersTab').on('show.bs.tab', onEmployersShow);
 	// $('#configTab').on('show.bs.tab', onConfigShow);
 	$('#controlPanelTab').on('show.bs.tab', Admin.onControlPanelShow);

@@ -1,99 +1,70 @@
-function onDistributorsShow() {
-	loadDistributorsTable();
-}
+var DistributorsViewModel = new function() {
 
-function loadDistributorsTable() {
-	$('#dists-table').hide();
-	$('#dists-loader').show();
-	$('#dists-table > tbody > tr').remove();
-	AdminService.listDistributors({
-		callback : function(response) {
+	var self = this;
 
-			response.forEach(function(item) {
-				addCustomDistributorRow(item);
-			});
+	self.distributors = ko.observableArray([]);
 
-			$('#dists-loader').hide();
-			$('#dists-table').fadeIn();
-		},
-		onError : defaultError
-	});
-}
-
-function addCustomDistributorRow(item) {
-
-	var name = '<input type="text" id="name' + item.encodedKey
-			+ '" placeholder="nome/nick">';
-
-	var email = '<input type="email" id="email' + item.encodedKey
-			+ '" placeholder="email">';
-
-	var password = '<input type="password" id="password' + item.encodedKey
-			+ '" placeholder="senha">';
-
-	var date = 'Não acessado';
-	if (item.lastAccessTimestamp) {
-		date = new Date(item.lastAccessTimestamp).toLocaleString();
+	self.onDistributorsShow = function() {
+		loadDistributorsTable();
 	}
 
-	var saveIcon = createDistSaveIcon(item);
-
-	var row = '<tr id="' + item.encodedKey + '"><td>' + name + '</td><td>'
-			+ email + '</td><td>' + password + '</td><td>' + date + '</td><td>'
-			+ saveIcon + '</td></tr>';
-
-	$('#dists-table > tbody').append(row);
-
-	$('#name' + item.encodedKey).val(item.name);
-	$('#email' + item.encodedKey).val(item.email);
-}
-
-function createDistSaveIcon(item) {
-	var save = '<a href="javascript:void(0);" role="button" '
-			+ 'onclick="saveDistributor(\'' + item.encodedKey
-			+ '\');"><span class="glyphicon glyphicon-floppy-disk"></span></a>';
-	return save;
-}
-
-function saveDistributor(encodedKey) {
-	var distributor = {
-		encodedKey : encodedKey,
-		name : $('#name' + encodedKey).val(),
-		email : $('#email' + encodedKey).val(),
-		password : $('#password' + encodedKey).val()
+	self.lastAccessString = function(distributor) {
+		if (distributor.lastAccessTimestamp) {
+			return new Date(item.lastAccessTimestamp).toLocaleString();
+		} else {
+			return null;
+		}
 	}
-	AdminService.saveDistributor(distributor, {
-		callback : function(response) {
-			if (response) {
-				$('#' + encodedKey).addClass('success');
-				setTimeout(function() {
-					$('#' + encodedKey).removeClass('success');
-				}, 3000);
-			} else {
-				defaultError();
-			}
-		},
-		onError : defaultError
-	});
-}
 
-function addDistributor() {
-	var distributor = {
-		name : $('#new-dist-name').val(),
-		email : $('#new-dist-email').val(),
-		password : $('#new-dist-password').val()
+	self.saveDistributor = function(distributor) {
+		AdminService.saveDistributor(distributor, {
+			callback : function(response) {
+				if (response) {
+					$('#' + distributor.encodedKey).addClass('success');
+					setTimeout(function() {
+						$('#' + distributor.encodedKey).removeClass('success');
+					}, 3000);
+				} else {
+					Admin.defaultError();
+				}
+			},
+			onError : Admin.defaultError
+		});
 	}
-	$('#add-dist-form').attr("disabled", "disabled");
-	AdminService.saveDistributor(distributor, {
-		callback : function(response) {
-			if (response) {
-				$('#add-dist-form').trigger('reset');
-				$('#add-dist-form').removeAttr("disabled");
-				loadDistributorsTable();
-			} else {
-				defaultError();
-			}
-		},
-		onError : defaultError
-	});
-}
+
+	self.addDistributor = function() {
+		var distributor = {
+			name : $('#new-dist-name').val(),
+			email : $('#new-dist-email').val(),
+			password : $('#new-dist-password').val()
+		}
+		$('#add-dist-form').attr("disabled", "disabled");
+		AdminService.saveDistributor(distributor, {
+			callback : function(response) {
+				if (response) {
+					$('#add-dist-form').trigger('reset');
+					$('#add-dist-form').removeAttr("disabled");
+					loadDistributorsTable();
+				} else {
+					Admin.defaultError();
+				}
+			},
+			onError : Admin.defaultError
+		});
+	}
+
+	function loadDistributorsTable() {
+		self.distributors([]);
+		AdminService.listDistributors({
+			callback : function(response) {
+
+				response.forEach(function(item) {
+					self.distributors.push(item);
+				});
+
+			},
+			onError : Admin.defaultError
+		});
+	}
+
+};
