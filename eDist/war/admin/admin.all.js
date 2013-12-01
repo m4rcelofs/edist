@@ -10,12 +10,13 @@ $(document).ready(function() {
 
 	ko.applyBindings(ModeratorsViewModel, document.getElementById('users'));
 	ko.applyBindings(DistributorsViewModel, document.getElementById('distributors'));
+	ko.applyBindings(EmployersViewModel, document.getElementById('employers'));
 
 	$('#usersTab').on('show.bs.tab', ModeratorsViewModel.onModeratorsShow);
 	$('#distributorsTab').on('show.bs.tab', DistributorsViewModel.onDistributorsShow);
+	$('#employersTab').on('show.bs.tab', EmployersViewModel.onEmployersShow);
 	
 	// TODO
-	// $('#employersTab').on('show.bs.tab', onEmployersShow);
 	// $('#configTab').on('show.bs.tab', onConfigShow);
 	$('#controlPanelTab').on('show.bs.tab', Admin.onControlPanelShow);
 
@@ -126,11 +127,8 @@ var DistributorsViewModel = new function() {
 	}
 
 	self.lastAccessString = function(distributor) {
-		if (distributor.lastAccessTimestamp) {
-			return new Date(item.lastAccessTimestamp).toLocaleString();
-		} else {
-			return null;
-		}
+		return distributor.lastAccessTimestamp ? new Date(
+				item.lastAccessTimestamp).toLocaleString() : null;
 	}
 
 	self.saveDistributor = function(distributor) {
@@ -1865,77 +1863,70 @@ AdminService.saveEmployer = function(p0, callback) {
 /*
  * START OF FILE - /edist/eDist/war/admin/employers.js
  */
-function onEmployersShow() {
-	loadEmployersTable();
-}
+var EmployersViewModel = new function() {
+	var self = this;
 
-function loadEmployersTable() {
-	$('#employers-table').hide();
-	$('#employers-loader').show();
-	$('#employers-table > tbody > tr').remove();
-	AdminService.listEmployers({
-		callback : function(response) {
+	self.employers = ko.observableArray([]);
+	self.selectedEmployer = ko.observable({});
 
-			response.forEach(function(item) {
-				addCustomEmployerRow(item);
+	self.selectedEmployerName = ko
+			.computed(function() {
+				return self.selectedEmployer().name ? self.selectedEmployer().name
+						: '';
 			});
 
-			$('#employers-loader').hide();
-			$('#employers-table').fadeIn();
-		},
-		onError : defaultError
-	});
-}
+	self.selectedEmployerKey = ko
+			.computed(function() {
+				return self.selectedEmployer().encodedKey ? self
+						.selectedEmployer().encodedKey : '';
+			});
 
-function addCustomEmployerRow(item) {
-
-	var date = 'Não acessado';
-	if (item.lastUpdatedAt) {
-		date = item.lastUpdatedAt.toLocaleString();
+	self.onEmployersShow = function() {
+		loadEmployersTable();
 	}
 
-	var row = '<tr id="' + item.encodedKey
-			+ '"><td><a href="http://www.erepublik.com/en/citizen/profile/'
-			+ item.erId + '">' + item.name + '</a></td><td>' + date
-			+ '</td><td>' + createEmployerKeyIcon(item) + '</td></tr>';
+	self.addEmployer = function() {
+		var employer = {
+			name : $('#new-employer-name').val(),
+			erId : $('#new-employer-id').val()
+		};
 
-	$('#employers-table > tbody').append(row);
-}
+		$('#add-employer-form').attr("disabled", "disabled");
+		AdminService.saveEmployer(employer, {
+			callback : function(response) {
+				if (response) {
+					$('#add-employer-form').trigger('reset');
+					$('#add-employer-form').removeAttr("disabled");
+					loadEmployersTable();
+				} else {
+					Admin.defaultError();
+				}
+			},
+			onError : Admin.defaultError
+		});
+	}
 
-function createEmployerKeyIcon(item) {
-	var icon = '<a id="employer'
-			+ item.erId
-			+ '" data-toggle="modal" href="#employerKeyModal" onclick="setModalEmployer(\''
-			+ item.name + '\', \'' + item.encodedKey
-			+ '\');"><span class="glyphicon glyphicon-barcode"></span> Chave de Autenticação</a>'
-	return icon;
-}
+	self.lastUpdateString = function(employer) {
+		if (employer.lastUpdatedAt) {
+			return employer.lastUpdatedAt.toLocaleString();
+		} else {
+			return null;
+		}
+	}
 
-function setModalEmployer(name, key) {
-	$('#employer-modal-name').val(name);
-	$('#employer-modal-key').val(key);
-}
+	function loadEmployersTable() {
+		self.employers([]);
+		AdminService.listEmployers({
+			callback : function(response) {
+				response.forEach(function(item) {
+					self.employers.push(item);
+				});
+			},
+			onError : Admin.defaultError
+		});
+	}
+};
 
-function addEmployer() {
-	var employer = {
-		name : $('#new-employer-name').val(),
-		erId : $('#new-employer-id').val()
-	};
-
-	$('#add-employer-form').attr("disabled", "disabled");
-	AdminService.saveEmployer(employer, {
-		callback : function(response) {
-			if (response) {
-				$('#add-employer-form').trigger('reset');
-				$('#add-employer-form').removeAttr("disabled");
-				loadEmployersTable();
-			} else {
-				defaultError();
-			}
-		},
-		onError : defaultError
-	});
-}
 /*
  * END OF FILE - /edist/eDist/war/admin/employers.js
  */
@@ -2006,6 +1997,7 @@ var ModeratorsViewModel = new function() {
 	}
 
 	function loadModeratorsTable(encodedCursor) {
+		self.registeredUsers([]);
 		AdminService.listRegisteredUsers(encodedCursor, {
 			callback : function(response) {
 

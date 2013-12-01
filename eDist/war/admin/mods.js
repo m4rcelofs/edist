@@ -61,6 +61,7 @@ var ModeratorsViewModel = new function() {
 	}
 
 	function loadModeratorsTable(encodedCursor) {
+		self.registeredUsers([]);
 		AdminService.listRegisteredUsers(encodedCursor, {
 			callback : function(response) {
 
