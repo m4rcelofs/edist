@@ -6,18 +6,20 @@
  * START OF FILE - /edist/eDist/war/admin/admin.js
  */
 $(document).ready(function() {
-	// $('.help').popover();
-
+	
+	ko.applyBindings(DistConfigViewModel, document.getElementById('distConfigDialog'));
+	ko.applyBindings(FightVerificationViewModel, document.getElementById('fightVerifDialog'));
+	ko.applyBindings(WorkVerificationViewModel, document.getElementById('workVerifDialog'));
+	
 	ko.applyBindings(ModeratorsViewModel, document.getElementById('users'));
 	ko.applyBindings(DistributorsViewModel, document.getElementById('distributors'));
 	ko.applyBindings(EmployersViewModel, document.getElementById('employers'));
+	ko.applyBindings(ConfigViewModel, document.getElementById('config'));
 
 	$('#usersTab').on('show.bs.tab', ModeratorsViewModel.onModeratorsShow);
 	$('#distributorsTab').on('show.bs.tab', DistributorsViewModel.onDistributorsShow);
 	$('#employersTab').on('show.bs.tab', EmployersViewModel.onEmployersShow);
-	
-	// TODO
-	// $('#configTab').on('show.bs.tab', onConfigShow);
+	$('#configTab').on('show.bs.tab', ConfigViewModel.onConfigShow);
 	$('#controlPanelTab').on('show.bs.tab', Admin.onControlPanelShow);
 
 	crossroads.addRoute('admin/{tab}', Admin.selectTab);
@@ -63,52 +65,64 @@ var Admin = new function() {
 /*
  * START OF FILE - /edist/eDist/war/admin/config.js
  */
-function onConfigShow() {
-	AdminService.getServerConfig({
-		callback : function(response) {
+var ConfigViewModel = new function() {
+	var self = this;
 
-			$('#muName').val(response.muName);
-			$('#granularity').val(response.granularity);
-			$('#reportsAccess').val(response.reportsAccess);
-			$('#playerReportsAccess').val(response.playerReportsAccess);
-			$('#contactEmail').val(response.contactEmail);
+	self.config = ko.mapping.fromJS(new ServerConfig());
 
-			$('#config-loader').hide();
-			$('#config-form').show();
-			
-			setDistConfig('server-config', response.muConfig);
+	self.onConfigShow = function() {
+		loadConfig();
+	}
 
-		},
-		onError : defaultError
-	});
-}
+	self.saveConfig = function() {
+		saveConfigs();
+	}
 
-function saveConfig() {
-	$('#save-config').button('loading');
-	var config = {
-		muName : $('#muName').val(),
-		granularity : $('#granularity').val(),
-		reportsAccess : $('#reportsAccess').val(),
-		playerReportsAccess : $('#playerReportsAccess').val(),
-		contactEmail : $('#contactEmail').val(),
-		muConfig : getDistConfig('server-config')
-	};
-	
-	$('#config-form').attr("disabled", "disabled");
+	self.editConfig = function() {
+		DistConfigViewModel.setDistConfig('server-config', self.config);
+		$('#distConfigDialog').modal('show');
+	}
 
-	AdminService.saveServerConfig(config, {
-		callback : function(response) {
-			$('#config-form').removeAttr("disabled");
-			$('#save-config').button('reset');
-			if (response) {
-				defaultSuccess();
-			} else {
-				defaultError();
-			}
-		},
-		onError : defaultError
-	});
-}
+	self.editFightVerif = function() {
+		FightVerificationViewModel.setFightVerif('server-config', self.config);
+		$('#fightVerifDialog').modal('show');
+	}
+
+	self.editWorkVerif = function() {
+		WorkVerificationViewModel.setWorkVerif('server-config', self.config);
+		$('#workVerifDialog').modal('show');
+	}
+
+	function loadConfig() {
+		AdminService.getServerConfig({
+			callback : function(response) {
+				ko.mapping.fromJS(response, self.config);
+			},
+			onError : Admin.defaultError
+		});
+	}
+
+	function saveConfigs() {
+		$('#save-config').button('loading');
+		$('#config-form').attr("disabled", "disabled");
+
+		var config = ko.mapping.toJS(self.config);
+
+		AdminService.saveServerConfig(config, {
+			callback : function(response) {
+				$('#config-form').removeAttr("disabled");
+				$('#save-config').button('reset');
+				if (response) {
+					Admin.defaultSuccess();
+				} else {
+					Admin.defaultError();
+				}
+			},
+			onError : Admin.defaultError
+		});
+	}
+};
+
 /*
  * END OF FILE - /edist/eDist/war/admin/config.js
  */
@@ -1782,79 +1796,80 @@ dwr.engine._debug = function(message, stacktrace) {
 /*
  * START OF FILE - /edist/eDist/war/admin/dwr-interface-20130921.js
  */
+
 if (typeof FightVerification != "function") {
-	function FightVerification() {
-		this.fightVerifPct = 0;
-		this.fightVerifDays = 0;
-		this.fightVerifAction = null;
-	}
+  function FightVerification() {
+    this.fightVerifPct = 0;
+    this.fightVerifDays = 0;
+    this.fightVerifAction = null;
+  }
+}
+
+if (typeof ServerConfig != "function") {
+  function ServerConfig() {
+    this.contactEmail = null;
+    this.playerReportsAccess = null;
+    this.granularity = null;
+    this.config = null;
+    this.fightVerif = null;
+    this.workVerif = null;
+    this.reportsAccess = null;
+    this.muName = null;
+  }
 }
 
 if (typeof WorkVerification != "function") {
-	function WorkVerification() {
-		this.workVerifDays = 0;
-		this.minWorkedDaysPct = 0;
-		this.workVerifAction = null;
-	}
+  function WorkVerification() {
+    this.workVerifDays = 0;
+    this.minWorkedDaysPct = 0;
+    this.workVerifAction = null;
+  }
 }
 
 if (typeof DistConfig != "function") {
-	function DistConfig() {
-		this.allowedType = null;
-		this.allowedWeaponQuality = null;
-		this.autoSend = null;
-		this.rocketAllowed = null;
-		this.distributor = null;
-		this.currentMaxDailyFF = null;
-	}
+  function DistConfig() {
+    this.allowedType = null;
+    this.allowedWeaponQuality = null;
+    this.autoSend = null;
+    this.rocketAllowed = null;
+    this.distributor = null;
+    this.currentMaxDailyFF = null;
+  }
 }
 
 // Provide a default path to dwr.engine
-if (dwr == null)
-	var dwr = {};
-if (dwr.engine == null)
-	dwr.engine = {};
-if (DWREngine == null)
-	var DWREngine = dwr.engine;
+if (dwr == null) var dwr = {};
+if (dwr.engine == null) dwr.engine = {};
+if (DWREngine == null) var DWREngine = dwr.engine;
 
-if (AdminService == null)
-	var AdminService = {};
+if (AdminService == null) var AdminService = {};
 AdminService._path = '/admin/dwr';
-AdminService.saveServerConfig = function(p0, callback) {
-	dwr.engine._execute(AdminService._path, 'AdminService', 'saveServerConfig',
-			p0, callback);
-}
-AdminService.saveDistributor = function(p0, callback) {
-	dwr.engine._execute(AdminService._path, 'AdminService', 'saveDistributor',
-			p0, callback);
-}
-AdminService.removeRegisteredUser = function(p0, callback) {
-	dwr.engine._execute(AdminService._path, 'AdminService',
-			'removeRegisteredUser', p0, callback);
-}
-AdminService.saveRegisteredUser = function(p0, callback) {
-	dwr.engine._execute(AdminService._path, 'AdminService',
-			'saveRegisteredUser', p0, callback);
-}
-AdminService.listRegisteredUsers = function(p0, callback) {
-	dwr.engine._execute(AdminService._path, 'AdminService',
-			'listRegisteredUsers', p0, callback);
-}
-AdminService.getServerConfig = function(callback) {
-	dwr.engine._execute(AdminService._path, 'AdminService', 'getServerConfig',
-			callback);
+AdminService.saveEmployer = function(p0, callback) {
+  dwr.engine._execute(AdminService._path, 'AdminService', 'saveEmployer', p0, callback);
 }
 AdminService.listDistributors = function(callback) {
-	dwr.engine._execute(AdminService._path, 'AdminService', 'listDistributors',
-			callback);
+  dwr.engine._execute(AdminService._path, 'AdminService', 'listDistributors', callback);
 }
 AdminService.listEmployers = function(callback) {
-	dwr.engine._execute(AdminService._path, 'AdminService', 'listEmployers',
-			callback);
+  dwr.engine._execute(AdminService._path, 'AdminService', 'listEmployers', callback);
 }
-AdminService.saveEmployer = function(p0, callback) {
-	dwr.engine._execute(AdminService._path, 'AdminService', 'saveEmployer', p0,
-			callback);
+AdminService.getServerConfig = function(callback) {
+  dwr.engine._execute(AdminService._path, 'AdminService', 'getServerConfig', callback);
+}
+AdminService.removeRegisteredUser = function(p0, callback) {
+  dwr.engine._execute(AdminService._path, 'AdminService', 'removeRegisteredUser', p0, callback);
+}
+AdminService.saveRegisteredUser = function(p0, callback) {
+  dwr.engine._execute(AdminService._path, 'AdminService', 'saveRegisteredUser', p0, callback);
+}
+AdminService.listRegisteredUsers = function(p0, callback) {
+  dwr.engine._execute(AdminService._path, 'AdminService', 'listRegisteredUsers', p0, callback);
+}
+AdminService.saveServerConfig = function(p0, callback) {
+  dwr.engine._execute(AdminService._path, 'AdminService', 'saveServerConfig', p0, callback);
+}
+AdminService.saveDistributor = function(p0, callback) {
+  dwr.engine._execute(AdminService._path, 'AdminService', 'saveDistributor', p0, callback);
 }
 /*
  * END OF FILE - /edist/eDist/war/admin/dwr-interface-20130921.js

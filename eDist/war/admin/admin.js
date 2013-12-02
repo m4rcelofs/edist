@@ -1,16 +1,18 @@
 $(document).ready(function() {
-	// $('.help').popover();
-
+	
+	ko.applyBindings(DistConfigViewModel, document.getElementById('distConfigDialog'));
+	ko.applyBindings(FightVerificationViewModel, document.getElementById('fightVerifDialog'));
+	ko.applyBindings(WorkVerificationViewModel, document.getElementById('workVerifDialog'));
+	
 	ko.applyBindings(ModeratorsViewModel, document.getElementById('users'));
 	ko.applyBindings(DistributorsViewModel, document.getElementById('distributors'));
 	ko.applyBindings(EmployersViewModel, document.getElementById('employers'));
+	ko.applyBindings(ConfigViewModel, document.getElementById('config'));
 
 	$('#usersTab').on('show.bs.tab', ModeratorsViewModel.onModeratorsShow);
 	$('#distributorsTab').on('show.bs.tab', DistributorsViewModel.onDistributorsShow);
 	$('#employersTab').on('show.bs.tab', EmployersViewModel.onEmployersShow);
-	
-	// TODO
-	// $('#configTab').on('show.bs.tab', onConfigShow);
+	$('#configTab').on('show.bs.tab', ConfigViewModel.onConfigShow);
 	$('#controlPanelTab').on('show.bs.tab', Admin.onControlPanelShow);
 
 	crossroads.addRoute('admin/{tab}', Admin.selectTab);

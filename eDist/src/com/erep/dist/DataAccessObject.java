@@ -634,11 +634,17 @@ public class DataAccessObject {
 			dbConfig.setContactEmail(newConfig.getContactEmail());
 		}
 
-		if (newConfig.getMuConfig() != null) {
-			newConfig.getMuConfig().setDistributor(
-					find(newConfig.getMuConfig().getDistributor()));
-			dbConfig.setMuConfig(newConfig.getMuConfig());
+		if (newConfig.getConfig() != null) {
+			newConfig.getConfig().setDistributor(
+					find(newConfig.getConfig().getDistributor()));
+			dbConfig.setConfig(newConfig.getConfig());
 		}
+
+		if (newConfig.getWorkVerif() != null)
+			dbConfig.setWorkVerif(newConfig.getWorkVerif());
+
+		if (newConfig.getFightVerif() != null)
+			dbConfig.setFightVerif(newConfig.getFightVerif());
 
 		CacheFacade.remove("com.erep.dist.DataAccessObject.getServerConfig()");
 		return true;

@@ -7,14 +7,17 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 import org.directwebremoting.annotations.DataTransferObject;
+import org.directwebremoting.annotations.Param;
 import org.directwebremoting.annotations.RemoteProperty;
+import org.directwebremoting.convert.BeanConverter;
 
 import com.erep.dist.data.enums.ConfigGranularity;
 import com.erep.dist.data.enums.ReportsAccessLevel;
 import com.google.appengine.api.datastore.Key;
 
-@DataTransferObject
-@FetchGroup(name = "configListing", members = { @Persistent(name = "distConfig") })
+@DataTransferObject(converter = BeanConverter.class, params = @Param(name = "javascript", value = "ServerConfig"))
+@FetchGroup(name = "configListing", members = { @Persistent(name = "config"),
+		@Persistent(name = "fightVerif"), @Persistent(name = "workVerif") })
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class ServerConfig {
 
@@ -28,7 +31,7 @@ public class ServerConfig {
 
 	@Persistent(dependent = "true")
 	@RemoteProperty
-	private DistConfig			distConfig;
+	private DistConfig			config;
 
 	@Persistent(dependent = "true")
 	@RemoteProperty
@@ -60,14 +63,6 @@ public class ServerConfig {
 
 	public void setMuName(String muName) {
 		this.muName = muName;
-	}
-
-	public DistConfig getMuConfig() {
-		return distConfig;
-	}
-
-	public void setMuConfig(DistConfig muConfig) {
-		this.distConfig = muConfig;
 	}
 
 	public ConfigGranularity getGranularity() {
@@ -110,12 +105,12 @@ public class ServerConfig {
 		this.playerReportsAccess = playerReportsAccess;
 	}
 
-	public DistConfig getDistConfig() {
-		return distConfig;
+	public DistConfig getConfig() {
+		return config;
 	}
 
-	public void setDistConfig(DistConfig distConfig) {
-		this.distConfig = distConfig;
+	public void setConfig(DistConfig distConfig) {
+		this.config = distConfig;
 	}
 
 	public FightVerification getFightVerif() {

@@ -12,14 +12,11 @@ var FightVerificationViewModel = new function() {
 	self.setFightVerif = function(key, root) {
 		self.rootEntity = root;
 		self.currentKey(key);
-		ko.mapping.fromJS(root.fightVerif, self.currentFightVerif);
+		ko.mapping.fromJS(ko.unwrap(root.fightVerif), self.currentFightVerif);
 	}
 	
 	self.updateRoot = function() {
-		// TODO test with serverConfig
-		console.log('updateRoot fightverif');
 		self.rootEntity.fightVerif = ko.mapping.toJS(self.currentFightVerif);
-		console.log(self.rootEntity);
 		closeModal();
 	}
 	

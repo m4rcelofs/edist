@@ -12,14 +12,11 @@ var WorkVerificationViewModel = new function() {
 	self.setWorkVerif = function(key, root) {
 		self.rootEntity = root;
 		self.currentKey(key);
-		ko.mapping.fromJS(root.workVerif, self.currentWorkVerif);
+		ko.mapping.fromJS(ko.unwrap(root.workVerif), self.currentWorkVerif);
 	}
 
 	self.updateRoot = function() {
-		// TODO test with serverConfig
-		console.log('updateRoot workverif');
 		self.rootEntity.workVerif = ko.mapping.toJS(self.currentWorkVerif);
-		console.log(self.rootEntity);
 		closeModal();
 	}
 

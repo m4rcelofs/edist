@@ -1,46 +1,57 @@
-function onConfigShow() {
-	AdminService.getServerConfig({
-		callback : function(response) {
+var ConfigViewModel = new function() {
+	var self = this;
 
-			$('#muName').val(response.muName);
-			$('#granularity').val(response.granularity);
-			$('#reportsAccess').val(response.reportsAccess);
-			$('#playerReportsAccess').val(response.playerReportsAccess);
-			$('#contactEmail').val(response.contactEmail);
+	self.config = ko.mapping.fromJS(new ServerConfig());
 
-			$('#config-loader').hide();
-			$('#config-form').show();
-			
-			setDistConfig('server-config', response.muConfig);
+	self.onConfigShow = function() {
+		loadConfig();
+	}
 
-		},
-		onError : defaultError
-	});
-}
+	self.saveConfig = function() {
+		saveConfigs();
+	}
 
-function saveConfig() {
-	$('#save-config').button('loading');
-	var config = {
-		muName : $('#muName').val(),
-		granularity : $('#granularity').val(),
-		reportsAccess : $('#reportsAccess').val(),
-		playerReportsAccess : $('#playerReportsAccess').val(),
-		contactEmail : $('#contactEmail').val(),
-		muConfig : getDistConfig('server-config')
-	};
-	
-	$('#config-form').attr("disabled", "disabled");
+	self.editConfig = function() {
+		DistConfigViewModel.setDistConfig('server-config', self.config);
+		$('#distConfigDialog').modal('show');
+	}
 
-	AdminService.saveServerConfig(config, {
-		callback : function(response) {
-			$('#config-form').removeAttr("disabled");
-			$('#save-config').button('reset');
-			if (response) {
-				defaultSuccess();
-			} else {
-				defaultError();
-			}
-		},
-		onError : defaultError
-	});
-}
+	self.editFightVerif = function() {
+		FightVerificationViewModel.setFightVerif('server-config', self.config);
+		$('#fightVerifDialog').modal('show');
+	}
+
+	self.editWorkVerif = function() {
+		WorkVerificationViewModel.setWorkVerif('server-config', self.config);
+		$('#workVerifDialog').modal('show');
+	}
+
+	function loadConfig() {
+		AdminService.getServerConfig({
+			callback : function(response) {
+				ko.mapping.fromJS(response, self.config);
+			},
+			onError : Admin.defaultError
+		});
+	}
+
+	function saveConfigs() {
+		$('#save-config').button('loading');
+		$('#config-form').attr("disabled", "disabled");
+
+		var config = ko.mapping.toJS(self.config);
+
+		AdminService.saveServerConfig(config, {
+			callback : function(response) {
+				$('#config-form').removeAttr("disabled");
+				$('#save-config').button('reset');
+				if (response) {
+					Admin.defaultSuccess();
+				} else {
+					Admin.defaultError();
+				}
+			},
+			onError : Admin.defaultError
+		});
+	}
+};

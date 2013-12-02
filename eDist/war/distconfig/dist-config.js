@@ -14,14 +14,12 @@ var DistConfigViewModel = new function() {
 		loadDistributors();
 		self.rootEntity = root;
 		self.currentKey(key);
-		ko.mapping.fromJS(root.config, self.currentConfig);
+		ko.mapping.fromJS(ko.unwrap(root.config), self.currentConfig);
+		
 	}
 
 	self.updateRoot = function() {
-		// TODO test with serverConfig
-		console.log('updateRoot distconfig');
 		self.rootEntity.config = ko.mapping.toJS(self.currentConfig);
-		console.log(self.rootEntity);
 		closeModal();
 	}
 

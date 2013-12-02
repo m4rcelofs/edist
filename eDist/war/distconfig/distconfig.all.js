@@ -21,14 +21,12 @@ var DistConfigViewModel = new function() {
 		loadDistributors();
 		self.rootEntity = root;
 		self.currentKey(key);
-		ko.mapping.fromJS(root.config, self.currentConfig);
+		ko.mapping.fromJS(ko.unwrap(root.config), self.currentConfig);
+		
 	}
 
 	self.updateRoot = function() {
-		// TODO test with serverConfig
-		console.log('updateRoot distconfig');
 		self.rootEntity.config = ko.mapping.toJS(self.currentConfig);
-		console.log(self.rootEntity);
 		closeModal();
 	}
 
@@ -79,14 +77,11 @@ var FightVerificationViewModel = new function() {
 	self.setFightVerif = function(key, root) {
 		self.rootEntity = root;
 		self.currentKey(key);
-		ko.mapping.fromJS(root.fightVerif, self.currentFightVerif);
+		ko.mapping.fromJS(ko.unwrap(root.fightVerif), self.currentFightVerif);
 	}
 	
 	self.updateRoot = function() {
-		// TODO test with serverConfig
-		console.log('updateRoot fightverif');
 		self.rootEntity.fightVerif = ko.mapping.toJS(self.currentFightVerif);
-		console.log(self.rootEntity);
 		closeModal();
 	}
 	
@@ -119,14 +114,11 @@ var WorkVerificationViewModel = new function() {
 	self.setWorkVerif = function(key, root) {
 		self.rootEntity = root;
 		self.currentKey(key);
-		ko.mapping.fromJS(root.workVerif, self.currentWorkVerif);
+		ko.mapping.fromJS(ko.unwrap(root.workVerif), self.currentWorkVerif);
 	}
 
 	self.updateRoot = function() {
-		// TODO test with serverConfig
-		console.log('updateRoot workverif');
 		self.rootEntity.workVerif = ko.mapping.toJS(self.currentWorkVerif);
-		console.log(self.rootEntity);
 		closeModal();
 	}
 

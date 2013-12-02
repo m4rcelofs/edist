@@ -41,7 +41,7 @@ public class InstallHelper {
 		distConfig.setAllowedWeaponQuality(ResourceQuality.Q7);
 		distConfig.setDistributor(defaultDistributor());
 
-		config.setMuConfig(distConfig);
+		config.setConfig(distConfig);
 
 		config.setFightVerif(new FightVerification(VerificationAction.NONE));
 		config.setWorkVerif(new WorkVerification(VerificationAction.NONE));
