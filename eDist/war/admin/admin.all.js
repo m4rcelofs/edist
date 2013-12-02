@@ -3,205 +3,6 @@
 */
 
 /*
- * START OF FILE - /edist/eDist/war/admin/admin.js
- */
-$(document).ready(function() {
-	
-	ko.applyBindings(DistConfigViewModel, document.getElementById('distConfigDialog'));
-	ko.applyBindings(FightVerificationViewModel, document.getElementById('fightVerifDialog'));
-	ko.applyBindings(WorkVerificationViewModel, document.getElementById('workVerifDialog'));
-	
-	ko.applyBindings(ModeratorsViewModel, document.getElementById('users'));
-	ko.applyBindings(DistributorsViewModel, document.getElementById('distributors'));
-	ko.applyBindings(EmployersViewModel, document.getElementById('employers'));
-	ko.applyBindings(ConfigViewModel, document.getElementById('config'));
-
-	$('#usersTab').on('show.bs.tab', ModeratorsViewModel.onModeratorsShow);
-	$('#distributorsTab').on('show.bs.tab', DistributorsViewModel.onDistributorsShow);
-	$('#employersTab').on('show.bs.tab', EmployersViewModel.onEmployersShow);
-	$('#configTab').on('show.bs.tab', ConfigViewModel.onConfigShow);
-	$('#controlPanelTab').on('show.bs.tab', Admin.onControlPanelShow);
-
-	crossroads.addRoute('admin/{tab}', Admin.selectTab);
-	Navigation.configureRoutes();
-
-	if (Navigation.getCurrenLocation() === '/admin/') {
-		Navigation.setCurrentLocation('users');
-	}
-});
-
-var Admin = new function() {
-	var self = this;
-
-	self.selectTab = function(tab) {
-		$('#' + tab + 'Tab').tab('show');
-	}
-
-	self.defaultSuccess = function() {
-		$('#error-alert').fadeOut();
-	}
-
-	self.defaultError = function(message) {
-		if (console.log) {
-			console.log(message);
-		}
-		$('#error-alert').fadeIn();
-	}
-
-	self.onControlPanelShow = function() {
-		var loc = 'https://appengine.google.com';
-		if (edist.server.appId) {
-			loc += '/dashboard?&app_id=s~' + edist.server.appId;
-		}
-		window.location.href = loc;
-	}
-
-};
-
-/*
- * END OF FILE - /edist/eDist/war/admin/admin.js
- */
-
-/*
- * START OF FILE - /edist/eDist/war/admin/config.js
- */
-var ConfigViewModel = new function() {
-	var self = this;
-
-	self.config = ko.mapping.fromJS(new ServerConfig());
-
-	self.onConfigShow = function() {
-		loadConfig();
-	}
-
-	self.saveConfig = function() {
-		saveConfigs();
-	}
-
-	self.editConfig = function() {
-		DistConfigViewModel.setDistConfig('server-config', self.config);
-		$('#distConfigDialog').modal('show');
-	}
-
-	self.editFightVerif = function() {
-		FightVerificationViewModel.setFightVerif('server-config', self.config);
-		$('#fightVerifDialog').modal('show');
-	}
-
-	self.editWorkVerif = function() {
-		WorkVerificationViewModel.setWorkVerif('server-config', self.config);
-		$('#workVerifDialog').modal('show');
-	}
-
-	function loadConfig() {
-		AdminService.getServerConfig({
-			callback : function(response) {
-				ko.mapping.fromJS(response, self.config);
-			},
-			onError : Admin.defaultError
-		});
-	}
-
-	function saveConfigs() {
-		$('#save-config').button('loading');
-		$('#config-form').attr("disabled", "disabled");
-
-		var config = ko.mapping.toJS(self.config);
-
-		AdminService.saveServerConfig(config, {
-			callback : function(response) {
-				$('#config-form').removeAttr("disabled");
-				$('#save-config').button('reset');
-				if (response) {
-					Admin.defaultSuccess();
-				} else {
-					Admin.defaultError();
-				}
-			},
-			onError : Admin.defaultError
-		});
-	}
-};
-
-/*
- * END OF FILE - /edist/eDist/war/admin/config.js
- */
-
-/*
- * START OF FILE - /edist/eDist/war/admin/dists.js
- */
-var DistributorsViewModel = new function() {
-
-	var self = this;
-
-	self.distributors = ko.observableArray([]);
-
-	self.onDistributorsShow = function() {
-		loadDistributorsTable();
-	}
-
-	self.lastAccessString = function(distributor) {
-		return distributor.lastAccessTimestamp ? new Date(
-				item.lastAccessTimestamp).toLocaleString() : null;
-	}
-
-	self.saveDistributor = function(distributor) {
-		AdminService.saveDistributor(distributor, {
-			callback : function(response) {
-				if (response) {
-					$('#' + distributor.encodedKey).addClass('success');
-					setTimeout(function() {
-						$('#' + distributor.encodedKey).removeClass('success');
-					}, 3000);
-				} else {
-					Admin.defaultError();
-				}
-			},
-			onError : Admin.defaultError
-		});
-	}
-
-	self.addDistributor = function() {
-		var distributor = {
-			name : $('#new-dist-name').val(),
-			email : $('#new-dist-email').val(),
-			password : $('#new-dist-password').val()
-		}
-		$('#add-dist-form').attr("disabled", "disabled");
-		AdminService.saveDistributor(distributor, {
-			callback : function(response) {
-				if (response) {
-					$('#add-dist-form').trigger('reset');
-					$('#add-dist-form').removeAttr("disabled");
-					loadDistributorsTable();
-				} else {
-					Admin.defaultError();
-				}
-			},
-			onError : Admin.defaultError
-		});
-	}
-
-	function loadDistributorsTable() {
-		self.distributors([]);
-		AdminService.listDistributors({
-			callback : function(response) {
-
-				response.forEach(function(item) {
-					self.distributors.push(item);
-				});
-
-			},
-			onError : Admin.defaultError
-		});
-	}
-
-};
-/*
- * END OF FILE - /edist/eDist/war/admin/dists.js
- */
-
-/*
  * START OF FILE - /edist/eDist/war/admin/dwr-engine-20130921.js
  */
 /*
@@ -1796,83 +1597,298 @@ dwr.engine._debug = function(message, stacktrace) {
 /*
  * START OF FILE - /edist/eDist/war/admin/dwr-interface-20130921.js
  */
-
 if (typeof FightVerification != "function") {
-  function FightVerification() {
-    this.fightVerifPct = 0;
-    this.fightVerifDays = 0;
-    this.fightVerifAction = null;
-  }
+	function FightVerification() {
+		this.fightVerifPct = 0;
+		this.fightVerifDays = 0;
+		this.fightVerifAction = null;
+	}
 }
 
 if (typeof ServerConfig != "function") {
-  function ServerConfig() {
-    this.contactEmail = null;
-    this.playerReportsAccess = null;
-    this.granularity = null;
-    this.config = null;
-    this.fightVerif = null;
-    this.workVerif = null;
-    this.reportsAccess = null;
-    this.muName = null;
-  }
+	function ServerConfig() {
+		this.contactEmail = null;
+		this.playerReportsAccess = null;
+		this.granularity = null;
+		this.config = null;
+		this.fightVerif = null;
+		this.workVerif = null;
+		this.reportsAccess = null;
+		this.muName = null;
+	}
 }
 
 if (typeof WorkVerification != "function") {
-  function WorkVerification() {
-    this.workVerifDays = 0;
-    this.minWorkedDaysPct = 0;
-    this.workVerifAction = null;
-  }
+	function WorkVerification() {
+		this.workVerifDays = 0;
+		this.minWorkedDaysPct = 0;
+		this.workVerifAction = null;
+	}
 }
 
 if (typeof DistConfig != "function") {
-  function DistConfig() {
-    this.allowedType = null;
-    this.allowedWeaponQuality = null;
-    this.autoSend = null;
-    this.rocketAllowed = null;
-    this.distributor = null;
-    this.currentMaxDailyFF = null;
-  }
+	function DistConfig() {
+		this.allowedType = null;
+		this.allowedWeaponQuality = null;
+		this.autoSend = null;
+		this.rocketAllowed = null;
+		this.distributor = null;
+		this.currentMaxDailyFF = null;
+	}
 }
 
 // Provide a default path to dwr.engine
-if (dwr == null) var dwr = {};
-if (dwr.engine == null) dwr.engine = {};
-if (DWREngine == null) var DWREngine = dwr.engine;
+if (dwr == null)
+	var dwr = {};
+if (dwr.engine == null)
+	dwr.engine = {};
+if (DWREngine == null)
+	var DWREngine = dwr.engine;
 
-if (AdminService == null) var AdminService = {};
+if (AdminService == null)
+	var AdminService = {};
 AdminService._path = '/admin/dwr';
 AdminService.saveEmployer = function(p0, callback) {
-  dwr.engine._execute(AdminService._path, 'AdminService', 'saveEmployer', p0, callback);
+	dwr.engine._execute(AdminService._path, 'AdminService', 'saveEmployer', p0,
+			callback);
 }
 AdminService.listDistributors = function(callback) {
-  dwr.engine._execute(AdminService._path, 'AdminService', 'listDistributors', callback);
+	dwr.engine._execute(AdminService._path, 'AdminService', 'listDistributors',
+			callback);
 }
 AdminService.listEmployers = function(callback) {
-  dwr.engine._execute(AdminService._path, 'AdminService', 'listEmployers', callback);
+	dwr.engine._execute(AdminService._path, 'AdminService', 'listEmployers',
+			callback);
 }
 AdminService.getServerConfig = function(callback) {
-  dwr.engine._execute(AdminService._path, 'AdminService', 'getServerConfig', callback);
+	dwr.engine._execute(AdminService._path, 'AdminService', 'getServerConfig',
+			callback);
 }
 AdminService.removeRegisteredUser = function(p0, callback) {
-  dwr.engine._execute(AdminService._path, 'AdminService', 'removeRegisteredUser', p0, callback);
+	dwr.engine._execute(AdminService._path, 'AdminService',
+			'removeRegisteredUser', p0, callback);
 }
 AdminService.saveRegisteredUser = function(p0, callback) {
-  dwr.engine._execute(AdminService._path, 'AdminService', 'saveRegisteredUser', p0, callback);
+	dwr.engine._execute(AdminService._path, 'AdminService',
+			'saveRegisteredUser', p0, callback);
 }
 AdminService.listRegisteredUsers = function(p0, callback) {
-  dwr.engine._execute(AdminService._path, 'AdminService', 'listRegisteredUsers', p0, callback);
+	dwr.engine._execute(AdminService._path, 'AdminService',
+			'listRegisteredUsers', p0, callback);
 }
 AdminService.saveServerConfig = function(p0, callback) {
-  dwr.engine._execute(AdminService._path, 'AdminService', 'saveServerConfig', p0, callback);
+	dwr.engine._execute(AdminService._path, 'AdminService', 'saveServerConfig',
+			p0, callback);
 }
 AdminService.saveDistributor = function(p0, callback) {
-  dwr.engine._execute(AdminService._path, 'AdminService', 'saveDistributor', p0, callback);
+	dwr.engine._execute(AdminService._path, 'AdminService', 'saveDistributor',
+			p0, callback);
 }
 /*
  * END OF FILE - /edist/eDist/war/admin/dwr-interface-20130921.js
+ */
+
+/*
+ * START OF FILE - /edist/eDist/war/admin/admin.js
+ */
+$(document).ready(function() {
+	
+	ko.applyBindings(DistConfigViewModel, document.getElementById('distConfigDialog'));
+	ko.applyBindings(FightVerificationViewModel, document.getElementById('fightVerifDialog'));
+	ko.applyBindings(WorkVerificationViewModel, document.getElementById('workVerifDialog'));
+	
+	ko.applyBindings(ModeratorsViewModel, document.getElementById('users'));
+	ko.applyBindings(DistributorsViewModel, document.getElementById('distributors'));
+	ko.applyBindings(EmployersViewModel, document.getElementById('employers'));
+	ko.applyBindings(ConfigViewModel, document.getElementById('config'));
+
+	$('#usersTab').on('show.bs.tab', ModeratorsViewModel.onModeratorsShow);
+	$('#distributorsTab').on('show.bs.tab', DistributorsViewModel.onDistributorsShow);
+	$('#employersTab').on('show.bs.tab', EmployersViewModel.onEmployersShow);
+	$('#configTab').on('show.bs.tab', ConfigViewModel.onConfigShow);
+	$('#controlPanelTab').on('show.bs.tab', Admin.onControlPanelShow);
+
+	crossroads.addRoute('admin/{tab}', Admin.selectTab);
+	Navigation.configureRoutes();
+
+	if (Navigation.getCurrenLocation() === '/admin/') {
+		Navigation.setCurrentLocation('users');
+	}
+	
+	if (Navigation.getCurrenLocation() === '/admin') {
+		Navigation.setCurrentLocation('admin/users');
+	}
+});
+
+var Admin = new function() {
+	var self = this;
+
+	self.selectTab = function(tab) {
+		$('#' + tab + 'Tab').tab('show');
+	}
+
+	self.defaultSuccess = function() {
+		$('#error-alert').fadeOut();
+	}
+
+	self.defaultError = function(message) {
+		if (console.log) {
+			console.log(message);
+		}
+		$('#error-alert').fadeIn();
+	}
+
+	self.onControlPanelShow = function() {
+		var loc = 'https://appengine.google.com';
+		if (edist.server.appId) {
+			loc += '/dashboard?&app_id=s~' + edist.server.appId;
+		}
+		window.location.href = loc;
+	}
+
+};
+
+/*
+ * END OF FILE - /edist/eDist/war/admin/admin.js
+ */
+
+/*
+ * START OF FILE - /edist/eDist/war/admin/config.js
+ */
+var ConfigViewModel = new function() {
+	var self = this;
+
+	self.config = ko.mapping.fromJS(new ServerConfig());
+
+	self.onConfigShow = function() {
+		loadConfig();
+	}
+
+	self.saveConfig = function() {
+		saveConfigs();
+	}
+
+	self.editConfig = function() {
+		DistConfigViewModel.setDistConfig('server-config', self.config);
+		$('#distConfigDialog').modal('show');
+	}
+
+	self.editFightVerif = function() {
+		FightVerificationViewModel.setFightVerif('server-config', self.config);
+		$('#fightVerifDialog').modal('show');
+	}
+
+	self.editWorkVerif = function() {
+		WorkVerificationViewModel.setWorkVerif('server-config', self.config);
+		$('#workVerifDialog').modal('show');
+	}
+
+	function loadConfig() {
+		AdminService.getServerConfig({
+			callback : function(response) {
+				ko.mapping.fromJS(response, self.config);
+			},
+			onError : Admin.defaultError
+		});
+	}
+
+	function saveConfigs() {
+		$('#save-config').button('loading');
+		$('#config-form').attr("disabled", "disabled");
+
+		var config = ko.mapping.toJS(self.config);
+
+		AdminService.saveServerConfig(config, {
+			callback : function(response) {
+				$('#config-form').removeAttr("disabled");
+				$('#save-config').button('reset');
+				if (response) {
+					Admin.defaultSuccess();
+				} else {
+					Admin.defaultError();
+				}
+			},
+			onError : Admin.defaultError
+		});
+	}
+};
+
+/*
+ * END OF FILE - /edist/eDist/war/admin/config.js
+ */
+
+/*
+ * START OF FILE - /edist/eDist/war/admin/dists.js
+ */
+var DistributorsViewModel = new function() {
+
+	var self = this;
+
+	self.distributors = ko.observableArray([]);
+
+	self.onDistributorsShow = function() {
+		loadDistributorsTable();
+	}
+
+	self.lastAccessString = function(distributor) {
+		return distributor.lastAccessTimestamp ? new Date(
+				item.lastAccessTimestamp).toLocaleString() : null;
+	}
+
+	self.saveDistributor = function(distributor) {
+		AdminService.saveDistributor(distributor, {
+			callback : function(response) {
+				if (response) {
+					$('#' + distributor.encodedKey).addClass('success');
+					setTimeout(function() {
+						$('#' + distributor.encodedKey).removeClass('success');
+					}, 3000);
+				} else {
+					Admin.defaultError();
+				}
+			},
+			onError : Admin.defaultError
+		});
+	}
+
+	self.addDistributor = function() {
+		var distributor = {
+			name : $('#new-dist-name').val(),
+			email : $('#new-dist-email').val(),
+			password : $('#new-dist-password').val()
+		}
+		$('#add-dist-form').attr("disabled", "disabled");
+		AdminService.saveDistributor(distributor, {
+			callback : function(response) {
+				if (response) {
+					$('#add-dist-form').trigger('reset');
+					$('#add-dist-form').removeAttr("disabled");
+					loadDistributorsTable();
+				} else {
+					Admin.defaultError();
+				}
+			},
+			onError : Admin.defaultError
+		});
+	}
+
+	function loadDistributorsTable() {
+		self.distributors([]);
+		AdminService.listDistributors({
+			callback : function(response) {
+
+				response.forEach(function(item) {
+					self.distributors.push(item);
+				});
+
+			},
+			onError : Admin.defaultError
+		});
+	}
+
+};
+/*
+ * END OF FILE - /edist/eDist/war/admin/dists.js
  */
 
 /*

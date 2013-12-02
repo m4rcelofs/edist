@@ -43,11 +43,11 @@
         <removeLogs>true</removeLogs>
         <oldFileNames>false</oldFileNames>
         <dependencies>
+        	<file>eDist/war/admin/dwr-engine-20130921.js</file>
+            <file>eDist/war/admin/dwr-interface-20130921.js</file>
             <file>eDist/war/admin/admin.js</file>
             <file>eDist/war/admin/config.js</file>
             <file>eDist/war/admin/dists.js</file>
-            <file>eDist/war/admin/dwr-engine-20130921.js</file>
-            <file>eDist/war/admin/dwr-interface-20130921.js</file>
             <file>eDist/war/admin/employers.js</file>
             <file>eDist/war/admin/mods.js</file>
         </dependencies>
@@ -68,11 +68,11 @@
         <removeLogs>true</removeLogs>
         <oldFileNames>false</oldFileNames>
         <dependencies>
+        	<file>eDist/war/management/dwr-engine-20131121.js</file>
+            <file>eDist/war/management/dwr-interface-20131121.js</file>
             <file>eDist/war/management/groups.js</file>
             <file>eDist/war/management/management.js</file>
             <file>eDist/war/management/players.js</file>
-            <file>eDist/war/management/dwr-engine-20131121.js</file>
-            <file>eDist/war/management/dwr-interface-20131121.js</file>
         </dependencies>
         <properties/>
     </file>
@@ -99,7 +99,7 @@
     </file>
 
 
-<file name="eDist/war/form/form.all.js">
+<file name="eDist/war/request/form.all.js">
         <min>false</min>
         <comp>false</comp>
         <closureCompiler>true</closureCompiler>
@@ -112,9 +112,9 @@
         <removeLogs>true</removeLogs>
         <oldFileNames>false</oldFileNames>
         <dependencies>
-            <file>eDist/war/form/dwr-engine-20131127.js</file>
-            <file>eDist/war/form/dwr-interface20131127.js</file>
-            <file>eDist/war/form/form.js</file>
+            <file>eDist/war/request/dwr-engine-20131127.js</file>
+            <file>eDist/war/request/dwr-interface20131127.js</file>
+            <file>eDist/war/request/form.js</file>
         </dependencies>
         <properties/>
     </file>

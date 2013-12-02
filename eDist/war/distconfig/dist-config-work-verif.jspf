@@ -2,10 +2,10 @@
 	<label class="control-label col-md-6 sr-only"
 		for="work-verification-action">Ação</label>
 	<div class="col-md-5">
-		<select class="form-control work-verification-group"
-			data-style="btn-inverse" name="work-verification-action"
-			id="work-verification-action"
-			data-bind="value: currentWorkVerif.workVerifAction">
+		<select
+			class="form-control work-verification-group selectpicker show-menu-arrow show-tick"
+			name="work-verification-action" id="work-verification-action"
+			data-bind="value: currentWorkVerif.workVerifAction, updateSelectPicker: {}">
 			<option value="NONE">Não fazer nada...</option>
 			<option value="WARN">Avisar...</option>
 			<option value="TEMP_BAN">Bloquear distribuição...</option>

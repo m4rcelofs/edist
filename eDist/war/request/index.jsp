@@ -6,7 +6,7 @@
 
 	<jsp:attribute name="imports">
 		<script type='text/javascript'
-			src="${baseUrl}/form/form.all.closure.js"></script>
+			src="${baseUrl}/request/form.all.closure.js"></script>
     </jsp:attribute>
 
 	<jsp:body>
@@ -55,10 +55,11 @@
 														value: selectedFFs, 
 														attr: {max: requestAttempt().availableFF()}">
 										</div>
-										<p class="help-block">Disponíveis: <span
+										<p class="help-block"
+										data-bind="visible: requestAttempt().availableFF() != null &&  requestAttempt().availableFF() > 0">Disponíveis: <span
 											data-bind="text: requestAttempt().availableFF()"></span> <abbr
 											title="Food Fights">FF</abbr>
-									</p>
+										</p>
 									</div>
 								</div>
 								<div class="col-md-offset-1 col-md-4">
@@ -106,11 +107,11 @@
 						src="../img/profile_avatar.cache.png"
 						data-bind="style: {'background': avatarImage}"></img>
 					<div class="form-group"></div>
-					<div class="panel panel-default">
+					<div class="panel panel-default"
+						data-bind="visible: refreshCountdown() !== null && refreshCountdown() > 0">
 						<div class="panel-body text-center">
 							Virada do Dia
-						    <span class="badge"
-								data-bind="visible: refreshCountdown() !== null, text: refreshCountdown"></span>	
+						    <span class="badge" data-bind="text: refreshCountdown"></span>	
 						</div>
 					</div>
 				</div>

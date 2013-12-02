@@ -12,13 +12,13 @@
 	</p>
 	<p>
 		eDist <span id="appVersion"></span> - &copy; 2013, <a
-			href="http://www.erepublik.com/en/citizen/profile/3885795">Guilpas</a>
-		e <a href="http://www.erepublik.com/en/citizen/profile/5313713">nW0lf</a>
+			href="http://www.erepublik.com/en/citizen/profile/5313713">nW0lf</a>
+		e <a href="http://www.erepublik.com/en/citizen/profile/3885795">Guilpas</a>
 	</p>
 	<p>
 		<a
 			href="https://bitbucket.org/marcelofs/edist/issues?status=new&status=open">Bugs
 			e Sugestões</a> | <a href="https://edist-licence.appspot.com/">Homepage</a>
 	</p>
-	
+
 </div>

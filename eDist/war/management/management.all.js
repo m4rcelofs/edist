@@ -3,350 +3,6 @@
 */
 
 /*
- * START OF FILE - /edist/eDist/war/management/groups.js
- */
-var GroupsViewModel = new function() {
-	var self = this;
-
-	self.groups = ko.observableArray([]);
-	self.granularity = ko.observable();
-
-	self.onGroupsShow = function() {
-		loadGroupsTable();
-	};
-
-	self.saveGroup = function(group) {
-		ManagementService.saveGroup(group, {
-			callback : function(response) {
-				if (response) {
-					$('#' + group.encodedKey).removeClass('panel-danger');
-					$('#' + group.encodedKey).addClass('panel-success');
-
-					setTimeout(function() {
-						$('#' + group.encodedKey).removeClass('panel-success');
-					}, 3000);
-				} else {
-					$('#' + group.encodedKey).removeClass('panel-success');
-					$('#' + group.encodedKey).addClass('panel-danger');
-					Management.defaultError();
-				}
-			},
-			onError : Management.defaultError
-		});
-	}
-
-	self.addGroup = function() {
-		var group = {
-			groupName : $('#new-group-name').val()
-		};
-		ManagementService.saveGroup(group, {
-			callback : function(response) {
-				if (response) {
-					$('#add-group-form').trigger('reset');
-					loadGroupsTable();
-				} else {
-					Management.defaultError();
-				}
-			},
-			onError : Management.defaultError
-		});
-	}
-
-	self.editConfig = function(group) {
-		DistConfigViewModel.setDistConfig(group.encodedKey, group);
-		$('#distConfigDialog').modal('show');
-	}
-
-	self.addConfig = function(group) {
-		group.config = new DistConfig();
-		dirtyObservableArrayRefresh(self.groups);
-		self.editConfig(group);
-	}
-
-	self.removeConfig = function(group) {
-		group.config = null;
-		dirtyObservableArrayRefresh(self.groups);
-	}
-
-	self.groupConfigEnabled = function() {
-		return self.granularity() === 'GROUP'
-				|| self.granularity() === 'PLAYER';
-	}
-
-	self.editFightVerif = function(group) {
-		FightVerificationViewModel.setFightVerif(group.encodedKey, group);
-		$('#fightVerifDialog').modal('show');
-	}
-
-	self.addFightVerif = function(group) {
-		group.fightVerif = new FightVerification();
-		dirtyObservableArrayRefresh(self.groups);
-		self.editFightVerif(group);
-	}
-
-	self.removeFightVerif = function(group) {
-		group.fightVerif = null;
-		dirtyObservableArrayRefresh(self.groups);
-	}
-
-	self.editWorkVerif = function(group) {
-		WorkVerificationViewModel.setWorkVerif(group.encodedKey, group);
-		$('#workVerifDialog').modal('show');
-	}
-
-	self.addWorkVerif = function(group) {
-		group.workVerif = new WorkVerification();
-		dirtyObservableArrayRefresh(self.groups);
-		self.editWorkVerif(group);
-	}
-
-	self.removeWorkVerif = function(group) {
-		group.workVerif = null;
-		dirtyObservableArrayRefresh(self.groups);
-	}
-
-	function dirtyObservableArrayRefresh(array) {
-		// array.valueHasMutated(); doesn't work?
-		var data = array().slice(0);
-		array([]);
-		array(data);
-	}
-
-	function loadGroupsTable() {
-		self.groups([]);
-		ManagementService.listGroups({
-			callback : function(response) {
-				response.results.sort(Management.groupSortFct);
-				self.groups(response.results);
-				self.granularity(response.granularity);				
-			}
-		});
-	}
-};
-
-/*
- * END OF FILE - /edist/eDist/war/management/groups.js
- */
-
-/*
- * START OF FILE - /edist/eDist/war/management/management.js
- */
-$(document).ready(function() {
-	
-	ko.applyBindings(DistConfigViewModel, document.getElementById('distConfigDialog'));
-	ko.applyBindings(FightVerificationViewModel, document.getElementById('fightVerifDialog'));
-	ko.applyBindings(WorkVerificationViewModel, document.getElementById('workVerifDialog'));
-	ko.applyBindings(GroupsViewModel, document.getElementById('groupsList'));
-	ko.applyBindings(PlayersViewModel, document.getElementById('playersList'));
-		
-	$('#groupsListTab').on('show.bs.tab', GroupsViewModel.onGroupsShow);
-	$('#playersListTab').on('show.bs.tab', PlayersViewModel.onPlayersShow);
-
-	crossroads.addRoute('management/{tab}', Management.selectTab);
-	Navigation.configureRoutes();
-	
-	if (Navigation.getCurrenLocation() === '/management/') {
-		Navigation.setCurrentLocation('groupsList');
-	}
-});
-
-var Management = new function() {
-
-	var self = this;
-
-	self.selectTab = function(tab) {
-		$('#' + tab + 'Tab').tab('show');
-	}
-
-	self.defaultSuccess = function() {
-		$('#error-alert').fadeOut();
-	}
-
-	self.defaultError = function(message) {
-		if (console.log) {
-			console.log(message);
-		}
-		$('#error-alert').fadeIn();
-	}
-
-	self.groupSortFct = function(a, b) {
-		if (a.groupName === 'Default' || a.groupName < b.groupName) {
-			return -1;
-		}
-		if (a.groupName > b.groupName) {
-			return 1;
-		}
-		return 0;
-	}
-};
-/*
- * END OF FILE - /edist/eDist/war/management/management.js
- */
-
-/*
- * START OF FILE - /edist/eDist/war/management/players.js
- */
-var PlayersViewModel = new function() {
-	var self = this;
-
-	self.players = ko.observableArray([]);
-	self.groups = ko.observableArray([]);
-	self.granularity = ko.observable();
-	self.playersCursor = ko.observable();
-
-	self.onPlayersShow = function() {
-		loadGroupNames(loadPlayers);
-	};
-
-	self.loadNextPage = function() {
-		if (self.playersCursor() !== null) {
-			loadPlayers(self.playersCursor());
-		}
-	}
-
-	self.addPlayer = function() {
-		var player = new Player();
-		player.erId = $('#new-player-id').val()
-
-		ManagementService.addPlayer(player, {
-			callback : function(response) {
-				if (response) {
-					$('#add-player-form').trigger('reset');
-
-					player.dbStatus = 'NEW';
-					self.players.push(player);
-				} else {
-					Management.defaultError();
-				}
-			},
-			onError : Management.defaultError
-		});
-	}
-
-	self.savePlayer = function(player) {
-		// converts back to PlayerGroup objects because of funny transforms
-		groupIdsToGroups(player);
-		ManagementService.editPlayer(player, {
-			callback : function(response) {
-				if (response) {
-					$('#' + player.encodedKey).removeClass('panel-danger');
-					$('#' + player.encodedKey).addClass('panel-success');
-
-					setTimeout(
-							function() {
-								$('#' + player.encodedKey).removeClass(
-										'panel-success');
-							}, 3000);
-				} else {
-					$('#' + player.encodedKey).removeClass('panel-success');
-					$('#' + player.encodedKey).addClass('panel-danger');
-					Management.defaultError();
-				}
-			},
-			onError : Management.defaultError
-		});
-	}
-
-	self.playerConfigEnabled = function() {
-		return self.granularity() === 'PLAYER';
-	}
-
-	self.editConfig = function(player) {
-		DistConfigViewModel.setDistConfig(player.encodedKey, player);
-		$('#distConfigDialog').modal('show');
-	}
-
-	self.addConfig = function(player) {
-		player.config = new DistConfig();
-		dirtyObservableArrayRefresh(self.players);
-		self.editConfig(player);
-	}
-
-	self.removeConfig = function(player) {
-		player.config = null;
-		dirtyObservableArrayRefresh(self.players);
-	}
-
-	self.editFightVerif = function(player) {
-		FightVerificationViewModel.setFightVerif(player.encodedKey, player);
-		$('#fightVerifDialog').modal('show');
-	}
-
-	self.addFightVerif = function(player) {
-		player.fightVerif = new FightVerification();
-		dirtyObservableArrayRefresh(self.players);
-		self.editFightVerif(player);
-	}
-
-	self.removeFightVerif = function(player) {
-		player.fightVerif = null;
-		dirtyObservableArrayRefresh(self.players);
-	}
-
-	self.editWorkVerif = function(player) {
-		WorkVerificationViewModel.setWorkVerif(player.encodedKey, player);
-		$('#workVerifDialog').modal('show');
-	}
-
-	self.addWorkVerif = function(player) {
-		player.workVerif = new WorkVerification();
-		dirtyObservableArrayRefresh(self.players);
-		self.editWorkVerif(player);
-	}
-
-	self.removeWorkVerif = function(player) {
-		player.workVerif = null;
-		dirtyObservableArrayRefresh(self.players);
-	}
-
-	function dirtyObservableArrayRefresh(array) {
-		// array.valueHasMutated(); doesn't work?
-		var data = array().slice(0);
-		array([]);
-		array(data);
-	}
-
-	function loadGroupNames(callback) {
-		ManagementService.listGroupNames({
-			callback : function(response) {
-				response.results.sort(Management.groupSortFct);
-				self.groups(response.results);
-				callback();
-			}
-		});
-	}
-
-	function loadPlayers(cursor) {
-		ManagementService.listPlayers(cursor, {
-			callback : function(response) {
-				self.granularity(response.granularity);
-				response.results.forEach(function(item) {
-					self.players.push(item);
-				});
-				if (response.results.length >= window.edist.server.pageSize) {
-					self.playersCursor(response.encodedCursor);
-				} else {
-					self.playersCursor(null);
-				}
-			}
-		});
-	}
-
-	function groupIdsToGroups(player) {
-		var groups = [];
-		player.groupIds.forEach(function(groupId) {
-			groups.push({
-				encodedKey : groupId
-			});
-		});
-		player.groups = groups;
-	}
-};
-/*
- * END OF FILE - /edist/eDist/war/management/players.js
- */
-
-/*
  * START OF FILE - /edist/eDist/war/management/dwr-engine-20131121.js
  */
 /*
@@ -1686,81 +1342,438 @@ dwr.engine._debug = function(message, stacktrace) {
 /*
  * START OF FILE - /edist/eDist/war/management/dwr-interface-20131121.js
  */
-
 if (typeof FightVerification != "function") {
-  function FightVerification() {
-    this.fightVerifPct = 0;
-    this.fightVerifDays = 0;
-    this.fightVerifAction = null;
-  }
+	function FightVerification() {
+		this.fightVerifPct = 0;
+		this.fightVerifDays = 0;
+		this.fightVerifAction = null;
+	}
 }
 
 if (typeof WorkVerification != "function") {
-  function WorkVerification() {
-    this.workVerifDays = 0;
-    this.minWorkedDaysPct = 0;
-    this.workVerifAction = null;
-  }
+	function WorkVerification() {
+		this.workVerifDays = 0;
+		this.minWorkedDaysPct = 0;
+		this.workVerifAction = null;
+	}
 }
 
 if (typeof DistConfig != "function") {
-  function DistConfig() {
-    this.allowedType = null;
-    this.allowedWeaponQuality = null;
-    this.autoSend = null;
-    this.rocketAllowed = null;
-    this.distributor = null;
-    this.currentMaxDailyFF = null;
-  }
+	function DistConfig() {
+		this.allowedType = null;
+		this.allowedWeaponQuality = null;
+		this.autoSend = null;
+		this.rocketAllowed = null;
+		this.distributor = null;
+		this.currentMaxDailyFF = null;
+	}
 }
 
 if (typeof Player != "function") {
-  function Player() {
-    this.groupIds = null;
-    this.fightStatus = null;
-    this.name = null;
-    this.dbStatus = null;
-    this.config = null;
-    this.workStatus = null;
-    this.fightVerif = null;
-    this.rocketEnabled = null;
-    this.avatar = null;
-    this.workVerif = null;
-    this.encodedKey = null;
-    this.erId = null;
-  }
+	function Player() {
+		this.groupIds = null;
+		this.fightStatus = null;
+		this.name = null;
+		this.dbStatus = null;
+		this.config = null;
+		this.workStatus = null;
+		this.fightVerif = null;
+		this.rocketEnabled = null;
+		this.avatar = null;
+		this.workVerif = null;
+		this.encodedKey = null;
+		this.erId = null;
+	}
 }
 
 // Provide a default path to dwr.engine
-if (dwr == null) var dwr = {};
-if (dwr.engine == null) dwr.engine = {};
-if (DWREngine == null) var DWREngine = dwr.engine;
+if (dwr == null)
+	var dwr = {};
+if (dwr.engine == null)
+	dwr.engine = {};
+if (DWREngine == null)
+	var DWREngine = dwr.engine;
 
-if (ManagementService == null) var ManagementService = {};
+if (ManagementService == null)
+	var ManagementService = {};
 ManagementService._path = '/management/dwr';
 ManagementService.editPlayer = function(p0, callback) {
-  dwr.engine._execute(ManagementService._path, 'ManagementService', 'editPlayer', p0, callback);
+	dwr.engine._execute(ManagementService._path, 'ManagementService',
+			'editPlayer', p0, callback);
 }
 ManagementService.saveGroup = function(p0, callback) {
-  dwr.engine._execute(ManagementService._path, 'ManagementService', 'saveGroup', p0, callback);
+	dwr.engine._execute(ManagementService._path, 'ManagementService',
+			'saveGroup', p0, callback);
 }
 ManagementService.listPlayers = function(p0, callback) {
-  dwr.engine._execute(ManagementService._path, 'ManagementService', 'listPlayers', p0, callback);
+	dwr.engine._execute(ManagementService._path, 'ManagementService',
+			'listPlayers', p0, callback);
 }
 ManagementService.listGroups = function(callback) {
-  dwr.engine._execute(ManagementService._path, 'ManagementService', 'listGroups', callback);
+	dwr.engine._execute(ManagementService._path, 'ManagementService',
+			'listGroups', callback);
 }
 ManagementService.listGroupNames = function(callback) {
-  dwr.engine._execute(ManagementService._path, 'ManagementService', 'listGroupNames', callback);
+	dwr.engine._execute(ManagementService._path, 'ManagementService',
+			'listGroupNames', callback);
 }
 ManagementService.addPlayer = function(p0, callback) {
-  dwr.engine._execute(ManagementService._path, 'ManagementService', 'addPlayer', p0, callback);
+	dwr.engine._execute(ManagementService._path, 'ManagementService',
+			'addPlayer', p0, callback);
 }
 ManagementService.listDistributors = function(callback) {
-  dwr.engine._execute(ManagementService._path, 'ManagementService', 'listDistributors', callback);
+	dwr.engine._execute(ManagementService._path, 'ManagementService',
+			'listDistributors', callback);
 }
 /*
  * END OF FILE - /edist/eDist/war/management/dwr-interface-20131121.js
+ */
+
+/*
+ * START OF FILE - /edist/eDist/war/management/groups.js
+ */
+var GroupsViewModel = new function() {
+	var self = this;
+
+	self.groups = ko.observableArray([]);
+	self.granularity = ko.observable();
+
+	self.onGroupsShow = function() {
+		loadGroupsTable();
+	};
+
+	self.saveGroup = function(group) {
+		ManagementService.saveGroup(group, {
+			callback : function(response) {
+				if (response) {
+					$('#' + group.encodedKey).removeClass('panel-danger');
+					$('#' + group.encodedKey).addClass('panel-success');
+
+					setTimeout(function() {
+						$('#' + group.encodedKey).removeClass('panel-success');
+					}, 3000);
+				} else {
+					$('#' + group.encodedKey).removeClass('panel-success');
+					$('#' + group.encodedKey).addClass('panel-danger');
+					Management.defaultError();
+				}
+			},
+			onError : Management.defaultError
+		});
+	}
+
+	self.addGroup = function() {
+		var group = {
+			groupName : $('#new-group-name').val()
+		};
+		ManagementService.saveGroup(group, {
+			callback : function(response) {
+				if (response) {
+					$('#add-group-form').trigger('reset');
+					loadGroupsTable();
+				} else {
+					Management.defaultError();
+				}
+			},
+			onError : Management.defaultError
+		});
+	}
+
+	self.editConfig = function(group) {
+		DistConfigViewModel.setDistConfig(group.encodedKey, group);
+		$('#distConfigDialog').modal('show');
+	}
+
+	self.addConfig = function(group) {
+		group.config = new DistConfig();
+		dirtyObservableArrayRefresh(self.groups);
+		self.editConfig(group);
+	}
+
+	self.removeConfig = function(group) {
+		group.config = null;
+		dirtyObservableArrayRefresh(self.groups);
+	}
+
+	self.groupConfigEnabled = function() {
+		return self.granularity() === 'GROUP'
+				|| self.granularity() === 'PLAYER';
+	}
+
+	self.editFightVerif = function(group) {
+		FightVerificationViewModel.setFightVerif(group.encodedKey, group);
+		$('#fightVerifDialog').modal('show');
+	}
+
+	self.addFightVerif = function(group) {
+		group.fightVerif = new FightVerification();
+		dirtyObservableArrayRefresh(self.groups);
+		self.editFightVerif(group);
+	}
+
+	self.removeFightVerif = function(group) {
+		group.fightVerif = null;
+		dirtyObservableArrayRefresh(self.groups);
+	}
+
+	self.editWorkVerif = function(group) {
+		WorkVerificationViewModel.setWorkVerif(group.encodedKey, group);
+		$('#workVerifDialog').modal('show');
+	}
+
+	self.addWorkVerif = function(group) {
+		group.workVerif = new WorkVerification();
+		dirtyObservableArrayRefresh(self.groups);
+		self.editWorkVerif(group);
+	}
+
+	self.removeWorkVerif = function(group) {
+		group.workVerif = null;
+		dirtyObservableArrayRefresh(self.groups);
+	}
+
+	function dirtyObservableArrayRefresh(array) {
+		// array.valueHasMutated(); doesn't work?
+		var data = array().slice(0);
+		array([]);
+		array(data);
+	}
+
+	function loadGroupsTable() {
+		self.groups([]);
+		ManagementService.listGroups({
+			callback : function(response) {
+				response.results.sort(Management.groupSortFct);
+				self.groups(response.results);
+				self.granularity(response.granularity);				
+			}
+		});
+	}
+};
+
+/*
+ * END OF FILE - /edist/eDist/war/management/groups.js
+ */
+
+/*
+ * START OF FILE - /edist/eDist/war/management/management.js
+ */
+$(document).ready(function() {
+	
+	ko.applyBindings(DistConfigViewModel, document.getElementById('distConfigDialog'));
+	ko.applyBindings(FightVerificationViewModel, document.getElementById('fightVerifDialog'));
+	ko.applyBindings(WorkVerificationViewModel, document.getElementById('workVerifDialog'));
+	ko.applyBindings(GroupsViewModel, document.getElementById('groupsList'));
+	ko.applyBindings(PlayersViewModel, document.getElementById('playersList'));
+		
+	$('#groupsListTab').on('show.bs.tab', GroupsViewModel.onGroupsShow);
+	$('#playersListTab').on('show.bs.tab', PlayersViewModel.onPlayersShow);
+
+	crossroads.addRoute('management/{tab}', Management.selectTab);
+	Navigation.configureRoutes();
+	
+	if (Navigation.getCurrenLocation() === '/management/') {
+		Navigation.setCurrentLocation('groupsList');
+	}
+	if (Navigation.getCurrenLocation() === '/management') {
+		Navigation.setCurrentLocation('management/groupsList');
+	} 
+});
+
+var Management = new function() {
+
+	var self = this;
+
+	self.selectTab = function(tab) {
+		$('#' + tab + 'Tab').tab('show');
+	}
+
+	self.defaultSuccess = function() {
+		$('#error-alert').fadeOut();
+	}
+
+	self.defaultError = function(message) {
+		if (console.log) {
+			console.log(message);
+		}
+		$('#error-alert').fadeIn();
+	}
+
+	self.groupSortFct = function(a, b) {
+		if (a.groupName === 'Default' || a.groupName < b.groupName) {
+			return -1;
+		}
+		if (a.groupName > b.groupName) {
+			return 1;
+		}
+		return 0;
+	}
+};
+/*
+ * END OF FILE - /edist/eDist/war/management/management.js
+ */
+
+/*
+ * START OF FILE - /edist/eDist/war/management/players.js
+ */
+var PlayersViewModel = new function() {
+	var self = this;
+
+	self.players = ko.observableArray([]);
+	self.groups = ko.observableArray([]);
+	self.granularity = ko.observable();
+	self.playersCursor = ko.observable();
+
+	self.onPlayersShow = function() {
+		loadGroupNames(loadPlayers);
+	};
+
+	self.loadNextPage = function() {
+		if (self.playersCursor() !== null) {
+			loadPlayers(self.playersCursor());
+		}
+	}
+
+	self.addPlayer = function() {
+		var player = new Player();
+		player.erId = $('#new-player-id').val()
+
+		ManagementService.addPlayer(player, {
+			callback : function(response) {
+				if (response) {
+					$('#add-player-form').trigger('reset');
+
+					player.dbStatus = 'NEW';
+					self.players.push(player);
+				} else {
+					Management.defaultError();
+				}
+			},
+			onError : Management.defaultError
+		});
+	}
+
+	self.savePlayer = function(player) {
+		// converts back to PlayerGroup objects because of funny transforms
+		groupIdsToGroups(player);
+		ManagementService.editPlayer(player, {
+			callback : function(response) {
+				if (response) {
+					$('#' + player.encodedKey).removeClass('panel-danger');
+					$('#' + player.encodedKey).addClass('panel-success');
+
+					setTimeout(
+							function() {
+								$('#' + player.encodedKey).removeClass(
+										'panel-success');
+							}, 3000);
+				} else {
+					$('#' + player.encodedKey).removeClass('panel-success');
+					$('#' + player.encodedKey).addClass('panel-danger');
+					Management.defaultError();
+				}
+			},
+			onError : Management.defaultError
+		});
+	}
+
+	self.playerConfigEnabled = function() {
+		return self.granularity() === 'PLAYER';
+	}
+
+	self.editConfig = function(player) {
+		DistConfigViewModel.setDistConfig(player.encodedKey, player);
+		$('#distConfigDialog').modal('show');
+	}
+
+	self.addConfig = function(player) {
+		player.config = new DistConfig();
+		dirtyObservableArrayRefresh(self.players);
+		self.editConfig(player);
+	}
+
+	self.removeConfig = function(player) {
+		player.config = null;
+		dirtyObservableArrayRefresh(self.players);
+	}
+
+	self.editFightVerif = function(player) {
+		FightVerificationViewModel.setFightVerif(player.encodedKey, player);
+		$('#fightVerifDialog').modal('show');
+	}
+
+	self.addFightVerif = function(player) {
+		player.fightVerif = new FightVerification();
+		dirtyObservableArrayRefresh(self.players);
+		self.editFightVerif(player);
+	}
+
+	self.removeFightVerif = function(player) {
+		player.fightVerif = null;
+		dirtyObservableArrayRefresh(self.players);
+	}
+
+	self.editWorkVerif = function(player) {
+		WorkVerificationViewModel.setWorkVerif(player.encodedKey, player);
+		$('#workVerifDialog').modal('show');
+	}
+
+	self.addWorkVerif = function(player) {
+		player.workVerif = new WorkVerification();
+		dirtyObservableArrayRefresh(self.players);
+		self.editWorkVerif(player);
+	}
+
+	self.removeWorkVerif = function(player) {
+		player.workVerif = null;
+		dirtyObservableArrayRefresh(self.players);
+	}
+
+	function dirtyObservableArrayRefresh(array) {
+		// array.valueHasMutated(); doesn't work?
+		var data = array().slice(0);
+		array([]);
+		array(data);
+	}
+
+	function loadGroupNames(callback) {
+		ManagementService.listGroupNames({
+			callback : function(response) {
+				response.results.sort(Management.groupSortFct);
+				self.groups(response.results);
+				callback();
+			}
+		});
+	}
+
+	function loadPlayers(cursor) {
+		ManagementService.listPlayers(cursor, {
+			callback : function(response) {
+				self.granularity(response.granularity);
+				response.results.forEach(function(item) {
+					self.players.push(item);
+				});
+				if (response.results.length >= window.edist.server.pageSize) {
+					self.playersCursor(response.encodedCursor);
+				} else {
+					self.playersCursor(null);
+				}
+			}
+		});
+	}
+
+	function groupIdsToGroups(player) {
+		var groups = [];
+		player.groupIds.forEach(function(groupId) {
+			groups.push({
+				encodedKey : groupId
+			});
+		});
+		player.groups = groups;
+	}
+};
+/*
+ * END OF FILE - /edist/eDist/war/management/players.js
  */
 
 /*

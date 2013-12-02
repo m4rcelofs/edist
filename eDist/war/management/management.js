@@ -15,6 +15,9 @@ $(document).ready(function() {
 	if (Navigation.getCurrenLocation() === '/management/') {
 		Navigation.setCurrentLocation('groupsList');
 	}
+	if (Navigation.getCurrenLocation() === '/management') {
+		Navigation.setCurrentLocation('management/groupsList');
+	} 
 });
 
 var Management = new function() {

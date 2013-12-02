@@ -7,6 +7,17 @@
 
 	<!-- Entry Points -->
 
+	<!-- default url mapper -->
+	<servlet>
+		<servlet-name>defaultEP</servlet-name>
+		<servlet-class>com.erep.dist.instances.frontend.URLMapperServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>defaultEP</servlet-name>
+		<url-pattern>/*</url-pattern>
+	</servlet-mapping>
+
 	<!-- admin ep -->
 	<servlet>
 		<servlet-name>adminEP</servlet-name>
@@ -31,14 +42,15 @@
 
 	<!-- form ep -->
 	<servlet>
-		<servlet-name>formEP</servlet-name>
-		<jsp-file>/form/index.jsp</jsp-file>
+		<servlet-name>requestEP</servlet-name>
+		<jsp-file>/request/index.jsp</jsp-file>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>formEP</servlet-name>
-		<url-pattern>/form/*</url-pattern>
+		<servlet-name>requestEP</servlet-name>
+		<url-pattern>/request/*</url-pattern>
 	</servlet-mapping>
+
 
 	<!-- Public DWR (requests) -->
 	<servlet>
@@ -69,7 +81,7 @@
 
 	<servlet-mapping>
 		<servlet-name>dwr-invoker</servlet-name>
-		<url-pattern>/form/dwr/*</url-pattern>
+		<url-pattern>/request/dwr/*</url-pattern>
 	</servlet-mapping>
 
 	<!-- Private DWR (management) -->

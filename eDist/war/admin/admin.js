@@ -21,6 +21,10 @@ $(document).ready(function() {
 	if (Navigation.getCurrenLocation() === '/admin/') {
 		Navigation.setCurrentLocation('users');
 	}
+	
+	if (Navigation.getCurrenLocation() === '/admin') {
+		Navigation.setCurrentLocation('admin/users');
+	}
 });
 
 var Admin = new function() {

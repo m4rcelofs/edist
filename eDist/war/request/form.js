@@ -2,7 +2,7 @@ $(document).ready(function() {
 
 	ko.applyBindings(FormViewModel, document.getElementById('playerForm'));
 
-	crossroads.addRoute('form/{id}', function(id) {
+	crossroads.addRoute('request/{id}', function(id) {
 		FormViewModel.selectedName(id);
 	});
 	Navigation.configureRoutes();
@@ -76,8 +76,8 @@ var FormViewModel = new function() {
 	function fetchPlayer(playerString) {
 		RequestService.identify(playerString, {
 			callback : function(response) {
-				Navigation.setCurrentLocation(response.erId ? '/form/'
-						+ response.erId : '/form');
+				Navigation.setCurrentLocation(response.erId ? '/request/'
+						+ response.erId : '/request');
 
 				if (response.groups) {
 					response.groups.sort(function(left, right) {

@@ -27,8 +27,9 @@
 				<td><input type="text" placeholder="nome/nick"
 					data-bind="value: name"></td>
 				<td data-bind="text: gEmail"></td>
-				<td><select class="form-control selectpicker" name="role"
-					data-bind="value: role, updateSelectPicker:{}">
+				<td><select
+					class="form-control selectpicker show-menu-arrow show-tick"
+					name="role" data-bind="value: role, updateSelectPicker:{}">
 						<option value="NONE">Nenhum</option>
 						<option value="VIEWER">Visitante</option>
 						<option value="MODERATOR">Moderador</option>

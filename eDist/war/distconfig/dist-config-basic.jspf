@@ -28,9 +28,9 @@
 	<label class="control-label col-md-6" for="distType">Tipo da
 		Distribuição</label>
 	<div class="col-md-5">
-		<select class="form-control" data-style="btn-inverse" name="distType"
-			id="distType"
-			data-bind="value: currentConfig.allowedType, enable: currentConfig.currentMaxDailyFF() > 0">
+		<select class="form-control selectpicker show-menu-arrow show-tick"
+			name="distType" id="distType"
+			data-bind="value: currentConfig.allowedType, enable: currentConfig.currentMaxDailyFF() > 0, updateSelectPicker: currentConfig.currentMaxDailyFF">
 			<option value="WEAPONS_FOOD">Armas + Alimentos</option>
 			<option value="WEAPONS">Somente Armas</option>
 			<option value="FOOD">Somente Alimentos</option>
@@ -41,9 +41,9 @@
 	<label class="control-label col-md-6" for="distWeaponQuality">Qualidade
 		das Armas</label>
 	<div class="col-md-5">
-		<select class="form-control" data-style="btn-inverse"
+		<select class="form-control selectpicker show-menu-arrow show-tick"
 			name="distWeaponQuality" id="distWeaponQuality"
-			data-bind="value: currentConfig.allowedWeaponQuality, enable: currentConfig.currentMaxDailyFF() > 0">
+			data-bind="value: currentConfig.allowedWeaponQuality, enable: currentConfig.currentMaxDailyFF() > 0, updateSelectPicker: currentConfig.currentMaxDailyFF">
 			<option value="Q7">Q7</option>
 			<option value="Q6">Q6</option>
 			<option value="Q5">Q5</option>
@@ -75,12 +75,13 @@
 <div class="form-group">
 	<label class="control-label col-md-6" for="dist-config-distributor">Distribuidor</label>
 	<div class="col-md-5">
-		<select class="form-control" data-style="btn-inverse"
+		<select class="form-control selectpicker show-menu-arrow show-tick"
 			name="dist-config-distributor" id="dist-config-distributor"
 			data-bind=" options: distributors, 
 									optionsText: function(item){ return item.name ? item.name : item.email ? item.email : item.encodedKey;}, 
 									value: currentConfig.distributor, 
-									enable: distributors() !== null">
+									enable: distributors() !== null,
+									updateSelectPicker: distributors">
 		</select>
 	</div>
 </div>

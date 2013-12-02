@@ -33,13 +33,13 @@ if (dwr.engine == null) dwr.engine = {};
 if (DWREngine == null) var DWREngine = dwr.engine;
 
 if (RequestService == null) var RequestService = {};
-RequestService._path = '/form/dwr';
+RequestService._path = '/request/dwr';
+RequestService.identify = function(p0, callback) {
+  dwr.engine._execute(RequestService._path, 'RequestService', 'identify', p0, callback);
+}
 RequestService.getCurrentStatus = function(p0, p1, callback) {
   dwr.engine._execute(RequestService._path, 'RequestService', 'getCurrentStatus', p0, p1, callback);
 }
 RequestService.sendRequest = function(p0, p1, p2, p3, callback) {
   dwr.engine._execute(RequestService._path, 'RequestService', 'sendRequest', p0, p1, p2, p3, callback);
-}
-RequestService.identify = function(p0, callback) {
-  dwr.engine._execute(RequestService._path, 'RequestService', 'identify', p0, callback);
 }

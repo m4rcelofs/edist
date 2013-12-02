@@ -11,5 +11,6 @@ window.edist.server = {
 
 $(document).ready(function() {
 	$('#eRepDay').text(edist.server.eRepDay);
-	$('#appVersion').text(edist.server.version);
+	var version = edist.server.version;
+	$('#appVersion').text(version.substring(0, version.lastIndexOf('.')));
 });
