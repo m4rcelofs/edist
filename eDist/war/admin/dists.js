@@ -10,7 +10,7 @@ var DistributorsViewModel = new function() {
 
 	self.lastAccessString = function(distributor) {
 		return distributor.lastAccessTimestamp ? new Date(
-				item.lastAccessTimestamp).toLocaleString() : null;
+				distributor.lastAccessTimestamp).toLocaleString() : null;
 	}
 
 	self.saveDistributor = function(distributor) {
