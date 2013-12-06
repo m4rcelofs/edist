@@ -26,8 +26,6 @@ import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
 import org.esxx.js.protocol.GAEConnectionManager;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 
 import com.erep.dist.data.Player;
 import com.erep.dist.data.ResourceDist;
@@ -71,22 +69,24 @@ public class ErepScrapper implements Closeable {
 			nvps.add(new BasicNameValuePair("_token", formToken));
 			httpPost.setEntity(new UrlEncodedFormEntity(nvps, Consts.UTF_8));
 		}
+		httpPost.setHeader(
+				"Referer",
+				"http://www.erepublik.com/en/economy/donate-items/"
+						+ player.getErId());
+
+		printCookies(client.getCookieStore().getCookies());
 		HttpResponse postResponse = client.execute(httpPost);
 		printHeaders(postResponse);
 
 		String htmlResponse = read(postResponse);
 
-		if (htmlResponse.contains("Successfully transferred"))
-			return true;
-		else {
-			Document doc = Jsoup.parse(htmlResponse);
-			String errorMessage = doc.select(
-					"table.info_message > tbody > tr > td").text();
-			throw new ResourcesSendingException(errorMessage);
-		}
+		if (htmlResponse.contains("error"))
+			throw new ResourcesSendingException(htmlResponse);
+
+		return true;
 	}
 
-	public void login() throws IOException {
+	public void login() throws IOException, ErepLoginException {
 
 		log.warning("GET response");
 		HttpGet httpGet = new HttpGet("http://www.erepublik.com/en");
@@ -104,21 +104,21 @@ public class ErepScrapper implements Closeable {
 		log.log(Level.WARNING, "Hidden token: " + hiddenToken);
 
 		log.warning("Post response");
-		HttpPost httpPost = new HttpPost("http://www.erepublik.com/en/email");
+		HttpPost httpPost = new HttpPost("http://www.erepublik.com/en/login");
 
 		List<NameValuePair> nvps = new ArrayList<>(4);
 		nvps.add(new BasicNameValuePair("_token", hiddenToken));
 		nvps.add(new BasicNameValuePair("citizen_email", email));
 		nvps.add(new BasicNameValuePair("citizen_password", password));
-		// nvps.add(new BasicNameValuePair("remember", "on"));
+		nvps.add(new BasicNameValuePair("remember", "on"));
 
 		httpPost.setEntity(new UrlEncodedFormEntity(nvps, Consts.UTF_8));
 		HttpResponse postResponse = client.execute(httpPost);
 		printHeaders(postResponse);
+		printCookies(client.getCookieStore().getCookies());
 
 		String setCookieHeader = postResponse.getHeaders("Set-Cookie")[0]
 				.getValue();
-		log.warning("Set-Cookie header value: " + setCookieHeader);
 
 		String erpkValue = setCookieHeader.substring(
 				setCookieHeader.indexOf("erpk=") + 5,
@@ -128,21 +128,25 @@ public class ErepScrapper implements Closeable {
 				setCookieHeader.lastIndexOf("; expires="));
 
 		BasicClientCookie erpk = new BasicClientCookie("erpk", erpkValue);
-		BasicClientCookie erpk_auth = new BasicClientCookie("erpk_auth", "1");
 		BasicClientCookie erpk_mid = new BasicClientCookie("erpk_mid",
 				erpkMidValue);
+		BasicClientCookie erpk_rm = new BasicClientCookie("erpk_rm",
+				erpkMidValue);
+
+		BasicClientCookie erpk_auth = new BasicClientCookie("erpk_auth", "1");
+		BasicClientCookie erpk_plang = new BasicClientCookie("erpk_plang", "en");
 
 		for (BasicClientCookie c : new BasicClientCookie[] { erpk, erpk_auth,
-				erpk_mid }) {
+				erpk_plang, erpk_mid, erpk_rm }) {
 			c.setPath("/");
 			c.setDomain(".erepublik.com");
 		}
 
 		client.getCookieStore().addCookie(erpk);
 		client.getCookieStore().addCookie(erpk_auth);
+		client.getCookieStore().addCookie(erpk_plang);
 		client.getCookieStore().addCookie(erpk_mid);
-
-		printCookies(client.getCookieStore().getCookies());
+		// client.getCookieStore().addCookie(erpk_rm);
 
 		read(postResponse);
 
@@ -151,7 +155,9 @@ public class ErepScrapper implements Closeable {
 		HttpResponse finalResponse = client.execute(httpGet);
 		printHeaders(finalResponse);
 		printCookies(client.getCookieStore().getCookies());
-		read(finalResponse);
+		String finalHtml = read(finalResponse);
+		if (finalHtml.contains("Sign up"))
+			throw new ErepLoginException(email);
 	}
 
 	public void close() {

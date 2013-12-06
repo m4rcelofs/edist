@@ -51,7 +51,12 @@ public class FoodStrategy extends ManufacturedStrategy {
 					break;
 			}
 
-		return resource.getQuality() != null;
+		if (resource.getQuality() == null)
+			throw new InventoryValidationException(
+					"Could not find enough food to supply " + requestedFF
+							+ " FF");
+
+		return true;
 	}
 
 	private boolean isFFMatch(ResourceQuality quality) {

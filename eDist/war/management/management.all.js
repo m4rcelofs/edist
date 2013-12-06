@@ -1625,7 +1625,9 @@ var PlayersViewModel = new function() {
 	self.playersCursor = ko.observable();
 
 	self.onPlayersShow = function() {
-		loadGroupNames(loadPlayers);
+		if(self.players().length == 0) {
+			loadGroupNames(loadPlayers);			
+		}
 	};
 
 	self.loadNextPage = function() {
