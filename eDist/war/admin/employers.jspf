@@ -94,16 +94,11 @@
 						<div class="form-group">
 							<label for="employer-modal-key" class="col-lg-2 control-label">Chave:</label>
 							<div class="col-lg-10">
-								<input type="text" class="form-control" id="employer-modal-key"
-									placeholder="Chave"
-									data-bind="value: $root.selectedEmployerKey">
+								<textarea class="form-control" id="employer-modal-key" readonly
+									data-bind="value: $root.selectedEmployerKey"></textarea>
 							</div>
 						</div>
 					</form>
-					<div class="alert alert-info text-center">
-						<span class="glyphicon glyphicon-info-sign"></span> Cuidado para
-						copiar a chave inteira (:
-					</div>
 				</div>
 				<div class="modal-footer">
 					<button class="btn btn-primary" data-dismiss="modal">Fechar</button>
