@@ -40,16 +40,16 @@ public class ModeratorsFilter implements Filter {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			AuthHelper auth = new AuthHelper(new DataAccessObject(pm),
 					userService);
-			if (!auth.hasManagementAccess()) {
+
+			if (auth.hasManagementAccess()) {
+				filterChain.doFilter(req, resp);
+			} else {
 				((HttpServletResponse) resp).sendError(403);
-				log.log(Level.SEVERE,
-						"Unauthorized access attempt: " + gUser.getEmail());
-				return;
+				log.log(Level.SEVERE, "Unauthorized access attempt!");
+				if (gUser != null) {
+					log.log(Level.SEVERE, "eMail: " + gUser.getEmail());
+				}
 			}
 		}
-
-		filterChain.doFilter(req, resp);
-
 	}
-
 }
