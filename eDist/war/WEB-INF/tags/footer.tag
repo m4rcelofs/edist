@@ -4,7 +4,7 @@
 
 <div class="footer">
 	<div class="pull-right">
-		<img src="../img/appengine-noborder-120x30.cache.gif"
+		<img src="${baseUrl}/img/appengine-noborder-120x30.cache.gif"
 			alt="Powered by Google App Engine" />
 	</div>
 	<p>
