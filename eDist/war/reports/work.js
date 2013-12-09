@@ -1,0 +1,16 @@
+var WorkViewModel = new function() {
+	var self = this;
+
+
+	self.workTab = function(type) {
+		console.log('work');
+		$('#workTab').tab('show');
+		//TODO
+	}
+	
+	
+	self.onWorkShow = function() {
+		// TODO
+		console.log('onWorkShow');
+	}
+};

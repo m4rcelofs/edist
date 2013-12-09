@@ -1,0 +1,4 @@
+<li><a href="#requests" id="requestsTab"><span
+		class="glyphicon glyphicon-list"></span> Distribuição</a></li>
+<li><a href="#work" id="workTab"><span
+		class="glyphicon glyphicon-wrench"></span> Trabalho</a></li>

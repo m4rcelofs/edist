@@ -5,12 +5,27 @@
 <t:wrapper>
 
 	<jsp:attribute name="imports">
-		<script type='text/javascript' src='dwr/engine.js'></script>
-		<script type='text/javascript' src='dwr/interface/ReportService.js'></script>
+		<script type='text/javascript' src='${baseUrl}/reports/dwr/engine.js'></script>
+		<script type='text/javascript' src='${baseUrl}/reports/dwr/interface/ReportService.js'></script>
+		<script type='text/javascript' src='${baseUrl}/reports/reports.all.js'></script>
     </jsp:attribute>
 
 	<jsp:body>
-		<!-- TODO -->
+		<div id="error-alert" class="alert alert-danger alert-dismissable"
+			style="display: none;">
+				<button type="button" class="close" aria-hidden="true"
+				onclick="$('#error-alert').fadeOut();">&times;</button>
+				<strong>Ops!</strong> Algo deu errado, por favor tente novamente. <strong>):</strong>
+			</div>
+	
+			<ul class="nav nav-tabs">
+				<%@ include file="tabs.jspf"%>
+			</ul>
+
+			<div class="tab-content">
+				<%@ include file="requests.jspf"%>
+				<%@ include file="work.jspf"%>
+			</div>
 	</jsp:body>
 </t:wrapper>
 
