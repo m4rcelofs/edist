@@ -10,10 +10,16 @@ $(document).ready(
 		ko.applyBindings(RequestsViewModel, document.getElementById('requests'));
 		ko.applyBindings(WorkViewModel, document.getElementById('work'));
 
-		$('#requestsTab').on('show.bs.tab', RequestsViewModel.onRequestsShow);
-		$('#workTab').on('show.bs.tab', WorkViewModel.onWorkShow);
+//		$('#requestsTab').on('show.bs.tab', RequestsViewModel.onRequestsShow);
+//		$('#workTab').on('show.bs.tab', WorkViewModel.onWorkShow);
 		
-		crossroads.addRoute('reports/requests/:type:', RequestsViewModel.requestsTab);
+		crossroads.addRoute('reports/requests/all', RequestsViewModel.allRequests);
+		crossroads.addRoute('reports/requests/date/:param:', RequestsViewModel.filterByDate);
+		crossroads.addRoute('reports/requests/distributor/:param:', RequestsViewModel.filterByDistributor);
+		crossroads.addRoute('reports/requests/group/:param:', RequestsViewModel.filterByGroup);
+		crossroads.addRoute('reports/requests/player/:param:', RequestsViewModel.filterByPlayer);
+		crossroads.addRoute('reports/requests/status/:param:', RequestsViewModel.filterByStatus);
+		
 		crossroads.addRoute('reports/work/:type:', WorkViewModel.workTab);
 		Navigation.configureRoutes();
 
@@ -52,15 +58,49 @@ var Reports = new function() {
 var RequestsViewModel = new function() {
 	var self = this;
 
-	self.requestsTab = function(type) {
-		console.log('requests: ' + type);
-		$('#requestsTab').tab('show');
+	self.allRequests = function() {
+		showTab();
+		console.log('all');
+		//TODO
+	}
+	
+	self.filterByDate = function(param) {
+		showTab();
+		console.log('date');
+		//TODO
+	}
+	
+	self.filterByDistributor = function(param) {
+		showTab();
+		console.log('dist');
+		//TODO
+	}
+	
+	self.filterByGroup = function(param) {
+		showTab();
+		console.log('group');
+		//TODO
+	}
+	
+	self.filterByPlayer = function(param) {
+		showTab();
+		console.log('player');
+		//TODO
+	}
+	
+	self.filterByStatus = function(param) {
+		showTab();
+		console.log('status');
 		//TODO
 	}
 	
 	self.onRequestsShow = function() {
 		//TODO
 		console.log('onRequestsShow');
+	}
+	
+	function showTab() {
+		$('#requestsTab').tab('show');
 	}
 };
 

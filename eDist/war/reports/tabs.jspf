@@ -1,4 +1,16 @@
-<li><a href="#requests" id="requestsTab"><span
-		class="glyphicon glyphicon-list"></span> Distribuição</a></li>
-<li><a href="#work" id="workTab"><span
-		class="glyphicon glyphicon-wrench"></span> Trabalho</a></li>
+<li class="dropdown">
+	<a id="requestsTab" class="dropdown-toggle" data-toggle="dropdown" href="#">
+		<span class="glyphicon glyphicon-list"></span> Distribuição <span class="caret"></span>
+	</a>
+	<ul class="dropdown-menu">
+		<li><a href="#/reports/requests/all">Todas</a></li>
+		<li class="divider"></li>
+		<li><a href="#/reports/requests/date">por Data</a></li>
+		<li><a href="#/reports/requests/distributor">por Distribuidor</a></li>
+		<li><a href="#/reports/requests/group">por Grupo</a></li>
+		<li><a href="#/reports/requests/player">por Jogador</a></li>
+		<li><a href="#/reports/requests/status">por Status</a></li> 	
+	</ul>
+</li>
+<!-- <li><a href="#/reports/work" id="workTab"><span -->
+<!-- 		class="glyphicon glyphicon-wrench"></span> Trabalho</a></li> -->
