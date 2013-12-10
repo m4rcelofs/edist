@@ -2,7 +2,7 @@
 
 <div class="header">
 	<ul class="nav nav-pills pull-right">
-		<li id="request"><a href="../request/">Formulário</a></li>
+		<li id="request"><a href="${baseUrl}/request/">Formulário</a></li>
 		<li id="admin" style="display: none;"><a href="${baseUrl}/admin/">Administração</a></li>
 		<li id="management" style="display: none;"><a href="${baseUrl}/management/">Moderação</a></li>
 		<li id="reports" style="display: none;"><a href="${baseUrl}/reports/">Relatórios</a></li>
