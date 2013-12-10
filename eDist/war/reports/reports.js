@@ -3,18 +3,20 @@ $(document).ready(
 		ko.applyBindings(RequestsViewModel, document.getElementById('requests'));
 		ko.applyBindings(WorkViewModel, document.getElementById('work'));
 
-//		$('#requestsTab').on('show.bs.tab', RequestsViewModel.onRequestsShow);
-//		$('#workTab').on('show.bs.tab', WorkViewModel.onWorkShow);
-		
+		$('#workTab').on('show.bs.tab', WorkViewModel.onWorkShow);
+
+		crossroads.addRoute('reports/requests', RequestsViewModel.initRequests);
 		crossroads.addRoute('reports/requests/all', RequestsViewModel.allRequests);
 		crossroads.addRoute('reports/requests/date/:param:', RequestsViewModel.filterByDate);
 		crossroads.addRoute('reports/requests/distributor/:param:', RequestsViewModel.filterByDistributor);
 		crossroads.addRoute('reports/requests/group/:param:', RequestsViewModel.filterByGroup);
 		crossroads.addRoute('reports/requests/player/:param:', RequestsViewModel.filterByPlayer);
 		crossroads.addRoute('reports/requests/status/:param:', RequestsViewModel.filterByStatus);
+		crossroads.addRoute('reports/requests/type/:param:', RequestsViewModel.filterByType);
 		
-		crossroads.addRoute('reports/work/:type:', WorkViewModel.workTab);
-		Navigation.configureRoutes();
+		crossroads.addRoute('reports/work', WorkViewModel.workTab);
+		
+		Navigation.configureRoutes('/reports/');
 
 		if (Navigation.getCurrenLocation() === '/reports/') {
 			Navigation.setCurrentLocation('requests');

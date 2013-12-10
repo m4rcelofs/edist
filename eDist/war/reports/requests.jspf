@@ -1,5 +1,96 @@
 <div class="tab-pane active" id="requests">
 
-requests
 
+	<div class="row">
+		<div class="form-group"></div>
+
+		<div class="col-md-2">
+
+			<ul id="requests.horizontal.nav" class="nav nav-pills nav-stacked">
+				<li data-bind="css: {active : category() === 'all'}"><a
+					href="#/reports/requests/all">Todas</a></li>
+				<li data-bind="css: {active : category() === 'date'}"><a
+					href="#/reports/requests/date">por Data</a></li>
+				<li data-bind="css: {active : category() === 'distributor'}"><a
+					href="#/reports/requests/distributor">por Distribuidor</a></li>
+				<li data-bind="css: {active : category() === 'group'}"><a
+					href="#/reports/requests/group">por Grupo</a></li>
+				<li data-bind="css: {active : category() === 'player'}"><a
+					href="#/reports/requests/player">por Jogador</a></li>
+				<li data-bind="css: {active : category() === 'status'}"><a
+					href="#/reports/requests/status">por Status</a></li>
+				<li data-bind="css: {active : category() === 'type'}"><a
+					href="#/reports/requests/type">por Tipo</a></li>
+			</ul>
+		</div>
+		<div class="col-md-10">
+			<table class="table table-striped table-hover table-responsive"
+				data-bind="if: dists().length > 0">
+				<thead>
+					<tr>
+						<th>Dia</th>
+						<th>Jogador</th>
+						<th>Status</th>
+						<th>Quantidade</th>
+						<th>Grupo</th>
+						<th>Distribuidor</th>
+						<th>Detalhes</th>
+						<th>Requisitada em</th>
+						<th>Completada em</th>
+					</tr>
+				</thead>
+				<tbody data-bind="foreach: dists">
+					<tr data-bind="attr: {id: encodedKey}">
+						<td><a
+							data-bind="text: eRepDay, attr: {href : '#/reports/requests/date/'+eRepDay}"></a>
+						</td>
+						<td data-bind="text: player.avatar"></td>
+						<td>
+							<p>
+								<a href="#/reports/requests/status/requested"
+									data-bind="if: status === 'REQUESTED'"> <span
+									class="label label-primary">Requisitada</span>
+								</a> <a href="#/reports/requests/status/error"
+									data-bind="if: status === 'ERROR'"> <span
+									class="label label-danger">Erro</span>
+								</a> <a href="#/reports/requests/status/sent"
+									data-bind="if: status === 'SENT'"> <span
+									class="label label-success">Enviada</span>
+								</a> <a href="#/reports/requests/status/sent_partial"
+									data-bind="if: status === 'SENT_PARTIAL'"> <span
+									class="label label-warning">Enviada Parcialmente</span>
+								</a>
+							</p>
+							<p>
+								<a href="#/reports/requests/type/weapons"
+									data-bind="if: type === 'WEAPONS'"> <span
+									class="label label-default">Armas</span>
+								</a> <a href="#/reports/requests/type/food"
+									data-bind="if: type === 'FOOD'"> <span
+									class="label label-default">Comida</span>
+								</a> <a href="#/reports/requests/type/weapons_food"
+									data-bind="if: type === 'WEAPONS_FOOD'"> <span
+									class="label label-default">Armas + Comida</span>
+								</a> <a href="#/reports/requests/type/rocket"
+									data-bind="if: type === 'ROCKET'"> <span
+									class="label label-info">Foguete</span>
+								</a>
+							</p>
+						</td>
+						<td
+							data-bind="text: rocketQuality !== null ? 'Foguete ' + rocketQuality : requestedFF + ' FF'"></td>
+						<td><a
+							data-bind="text: group.groupName, attr: {href : '#/reports/requests/group/'+group.encodedKey}"></a></td>
+						<td><a
+							data-bind="text: distributor.name, attr: {href : '#/reports/requests/distributor/'+distributor.encodedKey}"></a></td>
+						<td data-bind=""></td>
+						<td data-bind="text: $root.requestedAt($data)"></td>
+						<td data-bind="text: $root.completedAt($data)"></td>
+					</tr>
+				</tbody>
+			</table>
+
+		</div>
+	</div>
+	<div class="form-group"></div>
 </div>

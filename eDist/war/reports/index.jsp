@@ -11,7 +11,7 @@
     </jsp:attribute>
 
 	<jsp:body>
-		<div id="error-alert" class="alert alert-danger alert-dismissable"
+			<div id="error-alert" class="alert alert-danger alert-dismissable"
 			style="display: none;">
 				<button type="button" class="close" aria-hidden="true"
 				onclick="$('#error-alert').fadeOut();">&times;</button>

@@ -10,18 +10,20 @@ $(document).ready(
 		ko.applyBindings(RequestsViewModel, document.getElementById('requests'));
 		ko.applyBindings(WorkViewModel, document.getElementById('work'));
 
-//		$('#requestsTab').on('show.bs.tab', RequestsViewModel.onRequestsShow);
-//		$('#workTab').on('show.bs.tab', WorkViewModel.onWorkShow);
-		
+		$('#workTab').on('show.bs.tab', WorkViewModel.onWorkShow);
+
+		crossroads.addRoute('reports/requests', RequestsViewModel.initRequests);
 		crossroads.addRoute('reports/requests/all', RequestsViewModel.allRequests);
 		crossroads.addRoute('reports/requests/date/:param:', RequestsViewModel.filterByDate);
 		crossroads.addRoute('reports/requests/distributor/:param:', RequestsViewModel.filterByDistributor);
 		crossroads.addRoute('reports/requests/group/:param:', RequestsViewModel.filterByGroup);
 		crossroads.addRoute('reports/requests/player/:param:', RequestsViewModel.filterByPlayer);
 		crossroads.addRoute('reports/requests/status/:param:', RequestsViewModel.filterByStatus);
+		crossroads.addRoute('reports/requests/type/:param:', RequestsViewModel.filterByType);
 		
-		crossroads.addRoute('reports/work/:type:', WorkViewModel.workTab);
-		Navigation.configureRoutes();
+		crossroads.addRoute('reports/work', WorkViewModel.workTab);
+		
+		Navigation.configureRoutes('/reports/');
 
 		if (Navigation.getCurrenLocation() === '/reports/') {
 			Navigation.setCurrentLocation('requests');
@@ -58,50 +60,88 @@ var Reports = new function() {
 var RequestsViewModel = new function() {
 	var self = this;
 
+	self.category = ko.observable('');
+	self.dists = ko.observableArray([]);
+	self.cursor = ko.observable(null);
+
+	ko.computed(function() {
+		if (self.category()) {
+			showTab();
+		}
+	});
+
+	self.initRequests = function() {
+		showTab();
+	}
+
 	self.allRequests = function() {
-		showTab();
-		console.log('all');
-		//TODO
+		self.category('all');
+
+		// TODO
+
+		ReportService.listRequests(self.cursor(), {
+			callback : function(response) {
+				console.log(response);
+				self.cursor(response.encodedCursor);
+				response.results.forEach(function(item) {
+					self.dists.push(item);
+				});
+			}
+		});
 	}
-	
+
 	self.filterByDate = function(param) {
-		showTab();
-		console.log('date');
-		//TODO
+		self.category('date');
+
+		// TODO
 	}
-	
+
 	self.filterByDistributor = function(param) {
-		showTab();
-		console.log('dist');
-		//TODO
+		self.category('distributor');
+
+		// TODO
 	}
-	
+
 	self.filterByGroup = function(param) {
-		showTab();
-		console.log('group');
-		//TODO
+		self.category('group');
+
+		// TODO
 	}
-	
+
 	self.filterByPlayer = function(param) {
-		showTab();
-		console.log('player');
-		//TODO
+		self.category('player');
+
+		// TODO
 	}
-	
+
 	self.filterByStatus = function(param) {
-		showTab();
-		console.log('status');
-		//TODO
+		self.category('status');
+
+		// TODO
 	}
-	
-	self.onRequestsShow = function() {
-		//TODO
-		console.log('onRequestsShow');
+
+	self.filterByType = function(param) {
+		self.category('type');
+
+		// TODO
 	}
-	
+
+	self.requestedAt = function(item) {
+		return formatDate(item.requestedAt);
+	}
+
+	self.completedAt = function(item) {
+		return formatDate(item.completedAt);
+	}
+
+	function formatDate(date) {
+		return date ? date.toLocaleString() : '';
+	}
+
 	function showTab() {
 		$('#requestsTab').tab('show');
 	}
+
 };
 
 /*

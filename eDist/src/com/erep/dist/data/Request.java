@@ -98,7 +98,7 @@ public class Request implements HasEncodedKey {
 	@Unowned
 	@Persistent
 	@RemoteProperty
-	private PlayerGroup	group;
+	private PlayerGroup			group;
 
 	public Request() {}
 

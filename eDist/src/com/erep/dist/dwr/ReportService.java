@@ -3,6 +3,8 @@ package com.erep.dist.dwr;
 import java.util.Date;
 import java.util.List;
 
+import javax.jdo.FetchPlan;
+
 import org.directwebremoting.annotations.RemoteMethod;
 import org.directwebremoting.annotations.RemoteProxy;
 
@@ -37,6 +39,7 @@ public class ReportService {
 	public RequestQuery listRequests(String cursor) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 
+			pm.getFetchPlan().setMaxFetchDepth(-1);
 			pm.getFetchPlan().addGroup("reportListing");
 
 			RequestQuery queryResults = new RequestQuery();
