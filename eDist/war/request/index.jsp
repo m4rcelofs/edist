@@ -51,7 +51,7 @@
 											<span class="input-group-addon">FF:</span> 
 											<input type="number" class="form-control" id="quant" min="0"
 											step="1" style="text-align: center;"
-											data-bind="enable: requestAttempt().availableFF() > 0, 
+											data-bind="enable: requestAttempt().availableFF() > 0 && selectedType() !== 'ROCKET', 
 														value: selectedFFs, 
 														attr: {max: requestAttempt().availableFF()}">
 										</div>

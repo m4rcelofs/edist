@@ -28,7 +28,7 @@ var FormViewModel = new function() {
 		throttle : 750
 	});
 
-	self.selectedGroup = ko.observable({});
+	self.selectedGroup = ko.observable();
 	ko.computed(function() {
 		fetchGroupConfig(self.selectedGroup());
 		self.selectedFFs(0);
@@ -74,23 +74,28 @@ var FormViewModel = new function() {
 	}
 
 	function fetchPlayer(playerString) {
-		RequestService.identify(playerString, {
-			callback : function(response) {
-				Navigation.setCurrentLocation(response.erId ? '/request/'
-						+ response.erId : '/request');
+		if (playerString) {
+			RequestService.identify(playerString, {
+				callback : function(response) {
+					Navigation.setCurrentLocation(response.erId ? '/request/'
+							+ response.erId : '/request');
 
-				if (response.groups) {
-					response.groups.sort(function(left, right) {
-						return left.groupName == right.groupName ? 0
-								: (left.groupName < right.groupName ? -1 : 1)
-					});
-					self.selectedGroup(response.groups[0]);
+					if (response.groups) {
+						response.groups.sort(function(left, right) {
+							return left.groupName == right.groupName ? 0
+									: (left.groupName < right.groupName ? -1
+											: 1)
+						});
+						self.selectedGroup(response.groups[0]);
+					}
+
+					self.player(ko.mapping.fromJS(response, self.player()));
+					self
+							.requestAttempt(ko.mapping
+									.fromJS(new RequestAttempt()));
 				}
-
-				self.player(ko.mapping.fromJS(response, self.player()));
-				self.requestAttempt(ko.mapping.fromJS(new RequestAttempt()));
-			}
-		});
+			});
+		}
 	}
 
 	function fetchGroupConfig(group) {
