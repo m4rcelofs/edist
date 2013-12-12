@@ -1,0 +1,52 @@
+<div data-bind="if: $root.filters.showFilters() === true">
+	<nav class="navbar navbar-default" role="navigation">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse"
+				data-target="#requests-filter-collapse">
+				<span class="sr-only">Abrir/Fechar Filtros</span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+			<p class="navbar-text">Filtros</p>
+		</div>
+		<div class="collapse navbar-collapse" id="requests-filter-collapse">
+			<form class="navbar-form navbar-right" role="search"
+				data-bind="submit: doSearch">
+				<div class="form-group"
+					data-bind="if: $root.filters.showDateFilter() === true">
+					<input type="date" class="form-control" placeholder="aaaa-mm-dd"
+						data-bind="value: filters.searchText">
+				</div>
+				<div class="form-group"
+					data-bind="if: $root.filters.showDayFilter() === true">
+					<input type="number" class="form-control" placeholder="Dia"
+						data-bind="value: filters.searchText">
+				</div>
+				<div class="form-group"
+					data-bind="if: $root.filters.showStatusFilter() === true">
+					<select class="selectpicker show-menu-arrow navbar-btn show-tick"
+						data-bind="value: filters.searchText, updateSelectPicker:{}">
+						<option value="REQUESTED">Requisitada</option>
+						<option value="ERROR">Com Erro</option>
+						<option value="SENT">Enviada</option>
+						<option value="SENT_PARTIAL">Enviada Parcialmente</option>
+					</select>
+				</div>
+				<div class="form-group"
+					data-bind="if: $root.filters.showTypeFilter() === true">
+					<select class="selectpicker show-menu-arrow navbar-btn show-tick"
+						data-bind="value: filters.searchText, updateSelectPicker:{}">
+						<option value="WEAPONS">Armas</option>
+						<option value="FOOD">Comida</option>
+						<option value="WEAPONS_FOOD">Armas + Comida</option>
+						<option value="ROCKET">Foguete</option>
+					</select>
+				</div>
+				<button type="submit" class="btn btn-default">
+					<span class="glyphicon glyphicon-search"></span> <span
+						class="sr-only">Filtrar</span>
+				</button>
+			</form>
+		</div>
+	</nav>
+</div>

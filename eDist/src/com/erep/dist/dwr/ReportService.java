@@ -3,8 +3,6 @@ package com.erep.dist.dwr;
 import java.util.Date;
 import java.util.List;
 
-import javax.jdo.FetchPlan;
-
 import org.directwebremoting.annotations.RemoteMethod;
 import org.directwebremoting.annotations.RemoteProxy;
 
@@ -18,6 +16,8 @@ import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.Request;
 import com.erep.dist.data.ResourceDist;
+import com.erep.dist.data.enums.RequestStatus;
+import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.dwr.dto.RequestQuery;
 import com.erep.dist.dwr.dto.WorkQuery;
 import com.erep.dist.erep.eRepTimeCalculator;
@@ -124,6 +124,42 @@ public class ReportService {
 
 			List<Request> requests = new DataAccessObject(pm).listRequests(
 					group, cursor);
+
+			queryResults.setResults(requests);
+			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(requests)
+					.toWebSafeString());
+			return queryResults;
+		}
+	}
+
+	@RemoteMethod
+	public RequestQuery listRequestsByStatus(RequestStatus status, String cursor) {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+
+			pm.getFetchPlan().addGroup("reportListing");
+
+			RequestQuery queryResults = new RequestQuery();
+
+			List<Request> requests = new DataAccessObject(pm).listRequests(
+					status, cursor);
+
+			queryResults.setResults(requests);
+			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(requests)
+					.toWebSafeString());
+			return queryResults;
+		}
+	}
+	
+	@RemoteMethod
+	public RequestQuery listRequestsByType(RequestType type, String cursor) {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+
+			pm.getFetchPlan().addGroup("reportListing");
+
+			RequestQuery queryResults = new RequestQuery();
+
+			List<Request> requests = new DataAccessObject(pm).listRequests(
+					type, cursor);
 
 			queryResults.setResults(requests);
 			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(requests)

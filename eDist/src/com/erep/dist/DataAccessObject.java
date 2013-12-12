@@ -34,6 +34,7 @@ import com.erep.dist.data.PlayerRoot;
 import com.erep.dist.data.RegisteredUser;
 import com.erep.dist.data.Request;
 import com.erep.dist.data.ServerConfig;
+import com.erep.dist.data.enums.RequestStatus;
 import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.instances.frontend.tasks.NotifyEmailChangeTask;
 import com.google.appengine.api.datastore.Cursor;
@@ -315,6 +316,7 @@ public class DataAccessObject {
 		Query q = queryWithCursor(Request.class, "eRepDay == eRepDayParam",
 				encodedCursor);
 		q.declareParameters(Integer.class.getName() + " eRepDayParam");
+		q.setOrdering("requestedAt desc");
 		return (List<Request>) q.execute(eRepDay);
 	}
 
@@ -322,6 +324,7 @@ public class DataAccessObject {
 		Query q = queryWithCursor(Request.class,
 				"distributor == distributorParam", encodedCursor);
 		q.declareParameters(Key.class.getName() + " distributorParam");
+		q.setOrdering("requestedAt desc");
 		return (List<Request>) q.execute(dist.getKey());
 	}
 
@@ -329,6 +332,7 @@ public class DataAccessObject {
 		Query q = queryWithCursor(Request.class, "player == playerParam",
 				encodedCursor);
 		q.declareParameters(Key.class.getName() + " playerParam");
+		q.setOrdering("requestedAt desc");
 		return (List<Request>) q.execute(player.getKey());
 	}
 
@@ -336,7 +340,24 @@ public class DataAccessObject {
 		Query q = queryWithCursor(Request.class, "group == groupParam",
 				encodedCursor);
 		q.declareParameters(Key.class.getName() + " groupParam");
+		q.setOrdering("requestedAt desc");
 		return (List<Request>) q.execute(group.getKey());
+	}
+
+	public List<Request> listRequests(RequestStatus status, String encodedCursor) {
+		Query q = queryWithCursor(Request.class, "status == statusParam",
+				encodedCursor);
+		q.declareParameters(RequestStatus.class.getName() + " statusParam");
+		q.setOrdering("requestedAt desc");
+		return (List<Request>) q.execute(status);
+	}
+	
+	public List<Request> listRequests(RequestType type, String encodedCursor) {
+		Query q = queryWithCursor(Request.class, "type == typeParam",
+				encodedCursor);
+		q.declareParameters(RequestType.class.getName() + " typeParam");
+		q.setOrdering("requestedAt desc");
+		return (List<Request>) q.execute(type);
 	}
 
 	public List<DailyStats> listStats(Player player, String encodedCursor) {
@@ -354,8 +375,8 @@ public class DataAccessObject {
 	}
 
 	public List<DailyWork> listWork(PlayerGroup group, String encodedCursor) {
-		Query q = queryWithCursor(DailyWork.class, "groups.contains(groupParam)",
-				encodedCursor);
+		Query q = queryWithCursor(DailyWork.class,
+				"groups.contains(groupParam)", encodedCursor);
 		q.declareParameters(Key.class.getName() + " groupParam");
 		return (List<DailyWork>) q.execute(group.getKey());
 	}
@@ -396,8 +417,8 @@ public class DataAccessObject {
 	}
 
 	public List<DailyFights> listFights(PlayerGroup group, String encodedCursor) {
-		Query q = queryWithCursor(DailyFights.class, "groups.contains(groupParam)",
-				encodedCursor);
+		Query q = queryWithCursor(DailyFights.class,
+				"groups.contains(groupParam)", encodedCursor);
 		q.declareParameters(Key.class.getName() + " groupParam");
 		return (List<DailyFights>) q.execute(group.getKey());
 	}

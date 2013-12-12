@@ -6,8 +6,8 @@ $(document).ready(
 		$('#workTab').on('show.bs.tab', WorkViewModel.onWorkShow);
 
 		crossroads.addRoute('reports/requests', RequestsViewModel.initRequests);
-		crossroads.addRoute('reports/requests/all', RequestsViewModel.allRequests);
 		crossroads.addRoute('reports/requests/date/:param:', RequestsViewModel.filterByDate);
+		crossroads.addRoute('reports/requests/day/:param:', RequestsViewModel.filterByDay);
 		crossroads.addRoute('reports/requests/distributor/:param:', RequestsViewModel.filterByDistributor);
 		crossroads.addRoute('reports/requests/group/:param:', RequestsViewModel.filterByGroup);
 		crossroads.addRoute('reports/requests/player/:param:', RequestsViewModel.filterByPlayer);
@@ -19,11 +19,11 @@ $(document).ready(
 		Navigation.configureRoutes('/reports/');
 
 		if (Navigation.getCurrenLocation() === '/reports/') {
-			Navigation.setCurrentLocation('requests');
+			Navigation.setCurrentLocation('requests/day');
 		}
 
 		if (Navigation.getCurrenLocation() === '/reports') {
-			Navigation.setCurrentLocation('reports/requests');
+			Navigation.setCurrentLocation('reports/requests/day');
 		}
 	}
 );
