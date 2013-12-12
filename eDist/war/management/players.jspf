@@ -132,7 +132,7 @@
 										<tr>
 											<td><span class="glyphicon glyphicon-fire"></span>
 												Fábrica de Foguetes:</td>
-											<td><select class="selectpicker show-menu-arrow"
+											<td><select class="selectpicker show-menu-arrow show-tick"
 												data-bind="value: rocketEnabled, updateSelectPicker:{}">
 													<option value="NONE" data-subtext="):">Sem fábrica</option>
 													<option value="Q1">Fábrica Q1</option>
