@@ -3,12 +3,15 @@ package com.erep.dist.dwr;
 import java.util.Date;
 import java.util.List;
 
+import javax.jdo.JDOObjectNotFoundException;
+
 import org.directwebremoting.annotations.RemoteMethod;
 import org.directwebremoting.annotations.RemoteProxy;
 
 import com.erep.dist.CloseablePM;
 import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
+import com.erep.dist.PlayerIdentificator;
 import com.erep.dist.data.DailyWork;
 import com.erep.dist.data.Distributor;
 import com.erep.dist.data.Employer;
@@ -97,15 +100,23 @@ public class ReportService {
 	}
 
 	@RemoteMethod
-	public RequestQuery listRequestsByPlayer(Player player, String cursor) {
+	public RequestQuery listRequestsByPlayer(String idNameOrLink, String cursor) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+
+			RequestQuery queryResults = new RequestQuery();
+			DataAccessObject dao = new DataAccessObject(pm);
+
+			Player player = null;
+			try {
+				player = new PlayerIdentificator(dao)
+						.identifyRequestString(idNameOrLink);
+			} catch (JDOObjectNotFoundException e) {
+				return queryResults;
+			}
 
 			pm.getFetchPlan().addGroup("reportListing");
 
-			RequestQuery queryResults = new RequestQuery();
-
-			List<Request> requests = new DataAccessObject(pm).listRequests(
-					player, cursor);
+			List<Request> requests = dao.listRequests(player, cursor);
 
 			queryResults.setResults(requests);
 			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(requests)
@@ -149,7 +160,7 @@ public class ReportService {
 			return queryResults;
 		}
 	}
-	
+
 	@RemoteMethod
 	public RequestQuery listRequestsByType(RequestType type, String cursor) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {

@@ -74,6 +74,10 @@ function RequestsFiltersViewModel(cat) {
 		return category() === 'day';
 	});
 
+	self.showPlayerFilter = ko.computed(function() {
+		return category() === 'player';
+	});
+
 	self.showStatusFilter = ko.computed(function() {
 		return category() === 'status';
 	});
@@ -84,7 +88,8 @@ function RequestsFiltersViewModel(cat) {
 
 	self.showFilters = ko.computed(function() {
 		return self.showDateFilter() || self.showDayFilter()
-				|| self.showStatusFilter() || self.showTypeFilter();
+				|| self.showStatusFilter() || self.showTypeFilter()
+				|| self.showPlayerFilter();
 	});
 
 }
@@ -110,7 +115,7 @@ var RequestsViewModel = new function() {
 
 	self.doSearch = function() {
 		var searchText = self.filters.searchText();
-		if (typeof searchText == 'string') {
+		if (self.category() === 'status' || self.category() === 'type') {
 			searchText = searchText.toLowerCase();
 		}
 		Navigation.setCurrentLocation('/reports/requests/' + self.category()
@@ -148,9 +153,8 @@ var RequestsViewModel = new function() {
 	}
 
 	self.filterByPlayer = function(param) {
-		self.category('player');
-
-		// TODO
+		reset('player', ReportService.listRequestsByPlayer, param, param);
+		queryServer();
 	}
 
 	self.filterByStatus = function(param) {
@@ -188,12 +192,14 @@ var RequestsViewModel = new function() {
 	}
 
 	function queryServer() {
-		self.filters.searchFct(self.filters.searchParam(), self.cursor(), {
-			callback : function(response) {
-				console.log(response);
-				setResults(response);
-			}
-		});
+		if (self.filters.searchParam()) {
+			self.filters.searchFct(self.filters.searchParam(), self.cursor(), {
+				callback : function(response) {
+					console.log(response);
+					setResults(response);
+				}
+			});
+		}
 	}
 
 	function setResults(response) {
