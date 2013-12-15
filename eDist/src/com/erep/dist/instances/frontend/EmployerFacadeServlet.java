@@ -128,9 +128,7 @@ public class EmployerFacadeServlet extends HttpServlet {
 				"Host",
 				BackendServiceFactory.getBackendService().getBackendAddress(
 						"edist-default-backend")).taskName(
-				"WorkVerificationTask_"
-						+ player.getKey().toString().replace('(', '_')
-								.replace(')', '_') + "_");
+				"WorkVerificationTask_" + player.getErId());
 		queue.add(taskOptions);
 	}
 

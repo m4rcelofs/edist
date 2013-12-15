@@ -104,8 +104,7 @@ public class PlayerStatsTask implements DeferredTask {
 		Queue queue = QueueFactory.getDefaultQueue();
 		queue.add(withPayload(task).taskName(
 				"CalculateDailyFightsTask_"
-						+ dbPlayer.getKey().toString().replace('(', '_')
-								.replace(')', '_') + "_" + day));
+						+ dbPlayer.getErId() + "_" + day));
 	}
 
 }
