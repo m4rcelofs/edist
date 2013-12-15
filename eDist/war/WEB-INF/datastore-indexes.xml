@@ -2,8 +2,6 @@
 
 <datastore-indexes autoGenerate="true">
 
-
-
 	<datastore-index kind="DailyFights" ancestor="true"
 		source="manual">
 		<property name="day" direction="asc" />
@@ -35,4 +33,9 @@
 		<property name="requestedAt" direction="desc" />
 	</datastore-index>
 
+	<datastore-index kind="Request" ancestor="false"
+		source="auto">
+		<property name="distributor_key_OID" direction="asc" />
+		<property name="requestedAt" direction="desc" />
+	</datastore-index>
 </datastore-indexes>

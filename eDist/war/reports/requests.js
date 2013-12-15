@@ -7,12 +7,23 @@ function RequestsFiltersViewModel(cat) {
 	self.searchParam = ko.observable();
 	self.searchFct = null;
 
+	self.groups = Reports.groups;
+	self.distributors = Reports.distributors;
+
 	self.showDateFilter = ko.computed(function() {
 		return category() === 'date';
 	});
 
 	self.showDayFilter = ko.computed(function() {
 		return category() === 'day';
+	});
+
+	self.showDistributorFilter = ko.computed(function() {
+		return category() === 'distributor';
+	});
+
+	self.showGroupFilter = ko.computed(function() {
+		return category() === 'group';
 	});
 
 	self.showPlayerFilter = ko.computed(function() {
@@ -30,7 +41,8 @@ function RequestsFiltersViewModel(cat) {
 	self.showFilters = ko.computed(function() {
 		return self.showDateFilter() || self.showDayFilter()
 				|| self.showStatusFilter() || self.showTypeFilter()
-				|| self.showPlayerFilter();
+				|| self.showPlayerFilter() || self.showDistributorFilter()
+				|| self.showGroupFilter();
 	});
 
 }
@@ -82,15 +94,17 @@ var RequestsViewModel = new function() {
 	}
 
 	self.filterByDistributor = function(param) {
-		// reset('distributor', ReportService.listRequestsByDistributor, param,
-		// checkParam(param) ? param : edist.server.eRepDay);
-		// queryServer();
+		reset('distributor', ReportService.listRequestsByDistributor, param, {
+			encodedKey : param
+		});
+		queryServer();
 	}
 
 	self.filterByGroup = function(param) {
-		self.category('group');
-
-		// TODO
+		reset('group', ReportService.listRequestsByGroup, param, {
+			encodedKey : param
+		});
+		queryServer();
 	}
 
 	self.filterByPlayer = function(param) {

@@ -191,6 +191,7 @@
 				com.erep.dist.dwr.ReportService,
 				
 				com.erep.dist.dwr.dto.RequestQuery,
+				com.erep.dist.dwr.dto.FiltersInitialInfo,
 
 				com.erep.dist.data.enums.RequestType,
 				com.erep.dist.data.enums.PlayerStatus,

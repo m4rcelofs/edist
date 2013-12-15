@@ -12,6 +12,7 @@ import com.erep.dist.CloseablePM;
 import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
 import com.erep.dist.PlayerIdentificator;
+import com.erep.dist.auth.AuthHelper;
 import com.erep.dist.data.DailyWork;
 import com.erep.dist.data.Distributor;
 import com.erep.dist.data.Employer;
@@ -21,6 +22,7 @@ import com.erep.dist.data.Request;
 import com.erep.dist.data.ResourceDist;
 import com.erep.dist.data.enums.RequestStatus;
 import com.erep.dist.data.enums.RequestType;
+import com.erep.dist.dwr.dto.FiltersInitialInfo;
 import com.erep.dist.dwr.dto.RequestQuery;
 import com.erep.dist.dwr.dto.WorkQuery;
 import com.erep.dist.erep.eRepTimeCalculator;
@@ -28,6 +30,23 @@ import com.google.appengine.datanucleus.query.JDOCursorHelper;
 
 @RemoteProxy
 public class ReportService {
+
+	@RemoteMethod
+	public FiltersInitialInfo getInitialInfo() {
+		FiltersInitialInfo dto = new FiltersInitialInfo();
+
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			DataAccessObject dao = new DataAccessObject(pm);
+
+			AuthHelper auth = new AuthHelper(dao);
+			if (auth.hasManagementAccess())
+				dto.setDistributors(dao.listDistributors());
+
+			dto.setGroups(dao.listGroups());
+		}
+
+		return dto;
+	}
 
 	@RemoteMethod
 	public List<ResourceDist> requestDetails(Request request) {
