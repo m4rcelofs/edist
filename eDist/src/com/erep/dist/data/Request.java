@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.jdo.annotations.FetchGroup;
+import javax.jdo.annotations.FetchGroups;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.NotPersistent;
@@ -23,9 +24,11 @@ import com.google.appengine.datanucleus.annotations.Unowned;
 
 @DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-@FetchGroup(name = "reportListing", members = {
-		@Persistent(name = "distributor"), @Persistent(name = "player"),
-		@Persistent(name = "group") })
+@FetchGroups( {
+		@FetchGroup(name = "reportListing", members = { @Persistent(name = "player"),
+														@Persistent(name = "group") }),
+		@FetchGroup(name = "distributor", members = { @Persistent(name = "distributor") })
+})
 public class Request implements HasEncodedKey {
 
 	@PrimaryKey

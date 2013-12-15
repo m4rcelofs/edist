@@ -61,7 +61,8 @@
 			<td data-bind="if: $root.category() !== 'group'"><a
 				data-bind="text: group.groupName, attr: {href : '#/reports/requests/group/'+group.encodedKey}"></a></td>
 			<td data-bind="if: $root.category() !== 'distributor'"><a
-				data-bind="text: distributor.name, attr: {href : '#/reports/requests/distributor/'+distributor.encodedKey}"></a></td>
+				data-bind="text: distributor ? distributor.name : '',
+							attr: {href : distributor ? '#/reports/requests/distributor/'+distributor.encodedKey : ''}"></a></td>
 			<td data-bind="text: $root.requestedAt($data)"></td>
 			<td data-bind="text: $root.completedAt($data)"></td>
 		</tr>
