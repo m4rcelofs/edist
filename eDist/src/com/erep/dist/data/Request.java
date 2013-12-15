@@ -13,7 +13,9 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 import org.directwebremoting.annotations.DataTransferObject;
+import org.directwebremoting.annotations.Param;
 import org.directwebremoting.annotations.RemoteProperty;
+import org.directwebremoting.convert.BeanConverter;
 
 import com.erep.dist.data.enums.RequestStatus;
 import com.erep.dist.data.enums.RequestType;
@@ -22,13 +24,16 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.datanucleus.annotations.Unowned;
 
-@DataTransferObject
+@DataTransferObject(converter = BeanConverter.class, params = @Param(name = "javascript", value = "Request"))
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-@FetchGroups( {
-		@FetchGroup(name = "reportListing", members = { @Persistent(name = "player"),
-														@Persistent(name = "group") }),
-		@FetchGroup(name = "distributor", members = { @Persistent(name = "distributor") })
-})
+@FetchGroups({
+		@FetchGroup(name = "reportListing", members = {
+				@Persistent(name = "playerInfo"), @Persistent(name = "group") }),
+		@FetchGroup(name = "managementAccess", members = {
+				@Persistent(name = "distributor"), @Persistent(name = "ip"),
+				@Persistent(name = "XAppEngineCountry"),
+				@Persistent(name = "XAppEngineRegion"),
+				@Persistent(name = "XAppEngineCity") }) })
 public class Request implements HasEncodedKey {
 
 	@PrimaryKey
@@ -79,8 +84,15 @@ public class Request implements HasEncodedKey {
 	private Distributor			distributor;
 
 	@Persistent
-	@RemoteProperty
 	private Player				player;
+
+	@Unowned
+	@Persistent
+	@RemoteProperty
+	/**
+	 * Forced unowned relation to allow fetchgroup loading 
+	 */
+	private Player				playerInfo;
 
 	@Persistent(defaultFetchGroup = "false")
 	@RemoteProperty
@@ -88,15 +100,15 @@ public class Request implements HasEncodedKey {
 
 	@Persistent(defaultFetchGroup = "false")
 	@RemoteProperty
-	private String				X_AppEngine_Country;
+	private String				XAppEngineCountry;
 
 	@Persistent(defaultFetchGroup = "false")
 	@RemoteProperty
-	private String				X_AppEngine_Region;
+	private String				XAppEngineRegion;
 
 	@Persistent(defaultFetchGroup = "false")
 	@RemoteProperty
-	private String				X_AppEngine_City;
+	private String				XAppEngineCity;
 
 	@Unowned
 	@Persistent
@@ -123,6 +135,7 @@ public class Request implements HasEncodedKey {
 
 	public void setPlayer(Player player) {
 		this.player = player;
+		setPlayerInfo(player);
 	}
 
 	public Integer geteRepDay() {
@@ -219,28 +232,28 @@ public class Request implements HasEncodedKey {
 		this.ip = ip;
 	}
 
-	public String getX_AppEngine_Country() {
-		return X_AppEngine_Country;
+	public String getXAppEngineCountry() {
+		return XAppEngineCountry;
 	}
 
-	public void setX_AppEngine_Country(String x_AppEngine_Country) {
-		X_AppEngine_Country = x_AppEngine_Country;
+	public void setXAppEngineCountry(String x_AppEngine_Country) {
+		XAppEngineCountry = x_AppEngine_Country;
 	}
 
-	public String getX_AppEngine_Region() {
-		return X_AppEngine_Region;
+	public String getXAppEngineRegion() {
+		return XAppEngineRegion;
 	}
 
-	public void setX_AppEngine_Region(String x_AppEngine_Region) {
-		X_AppEngine_Region = x_AppEngine_Region;
+	public void setXAppEngineRegion(String x_AppEngine_Region) {
+		XAppEngineRegion = x_AppEngine_Region;
 	}
 
-	public String getX_AppEngine_City() {
-		return X_AppEngine_City;
+	public String getXAppEngineCity() {
+		return XAppEngineCity;
 	}
 
-	public void setX_AppEngine_City(String x_AppEngine_City) {
-		X_AppEngine_City = x_AppEngine_City;
+	public void setXAppEngineCity(String x_AppEngine_City) {
+		XAppEngineCity = x_AppEngine_City;
 	}
 
 	public PlayerGroup getGroup() {
@@ -249,5 +262,15 @@ public class Request implements HasEncodedKey {
 
 	public void setGroup(PlayerGroup group) {
 		this.group = group;
+	}
+
+	public Player getPlayerInfo() {
+		if (playerInfo == null)
+			return getPlayer();
+		return playerInfo;
+	}
+
+	public void setPlayerInfo(Player playerInfo) {
+		this.playerInfo = playerInfo;
 	}
 }

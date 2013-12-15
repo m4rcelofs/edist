@@ -7,7 +7,8 @@
 			<th>Status</th>
 			<th>Quantidade</th>
 			<th data-bind="if: category() !== 'group'">Grupo</th>
-			<th data-bind="if: category() !== 'distributor'">Distribuidor</th>
+			<th
+				data-bind="if: category() !== 'distributor' && window.edist.user.hasManagementAccess === true">Distribuidor</th>
 			<th>Requisitada em</th>
 			<th>Completada em</th>
 		</tr>
@@ -17,8 +18,21 @@
 			<td data-bind="if: $root.category() !== 'day'"><a
 				data-bind="text: eRepDay, attr: {href : '#/reports/requests/day/'+eRepDay}"></a>
 			</td>
-			<td data-bind="if: $root.category() !== 'player'"><span
-				data-bind="text: player.avatar"></span></td>
+			<td data-bind="if: $root.category() !== 'player'">
+				<a data-bind="attr: {href : playerInfo ? '#/reports/requests/player/' + playerInfo.erId : ''}">
+					<img class="img-thumbnail img-responsive"
+						 src="${baseUrl}/img/profile_avatar_55.cache.png"
+						 width="55px"
+						 data-bind="style: { 'background-image' : $root.avatar($data) !== null ? $root.avatar($data) :
+										 'url(${baseUrl}/img/default_male_55.cache.gif)' ,
+										 'background-size' : '55px 55px',
+										 'background-repeat' : 'no-repeat',
+										 'background-position' : 'center'},
+									attr : {'data-content' : playerInfo ? playerInfo.name : ''},
+									updatePopup:{}"
+						data-toggle="popover">
+				</a>
+			</td>
 			<td>
 				<p data-bind="if: $root.category() !== 'status'">
 					<a href="#/reports/requests/status/requested"

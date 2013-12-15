@@ -181,6 +181,12 @@ var RequestsViewModel = new function() {
 		return formatDate(item.completedAt);
 	}
 
+	self.avatar = function(item) {
+		return item && item.playerInfo ? 'url('
+				+ item.playerInfo.avatar.replace('142x142', '55x55') + ')'
+				: null;
+	}
+
 	function checkParam(param) {
 		return param && param !== 'undefined' && param !== 'null' ? param
 				: null;

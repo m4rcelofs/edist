@@ -61,7 +61,6 @@ public class ReportService {
 	public RequestQuery listRequests(String cursor) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 
-			pm.getFetchPlan().setMaxFetchDepth(-1);
 			pm.getFetchPlan().addGroup("reportListing");
 
 			RequestQuery queryResults = new RequestQuery();
@@ -85,13 +84,12 @@ public class ReportService {
 	public RequestQuery listRequestsByDay(Integer eRepDay, String cursor) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 
-			pm.getFetchPlan().setMaxFetchDepth(-1);
 			pm.getFetchPlan().addGroup("reportListing");
 
 			DataAccessObject dao = new DataAccessObject(pm);
 			AuthHelper auth = new AuthHelper(dao);
 			if (auth.hasManagementAccess())
-				pm.getFetchPlan().addGroup("distributor");
+				pm.getFetchPlan().addGroup("managementAccess");
 
 			RequestQuery queryResults = new RequestQuery();
 
@@ -109,9 +107,6 @@ public class ReportService {
 			String cursor) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 
-			pm.getFetchPlan().setMaxFetchDepth(-1);
-			pm.getFetchPlan().addGroup("reportListing");
-
 			RequestQuery queryResults = new RequestQuery();
 
 			DataAccessObject dao = new DataAccessObject(pm);
@@ -119,6 +114,9 @@ public class ReportService {
 			if (!auth.hasManagementAccess())
 				return queryResults;
 
+			pm.getFetchPlan().addGroup("reportListing");
+			pm.getFetchPlan().addGroup("managementAccess");
+			
 			List<Request> requests = dao.listRequests(dist, cursor);
 
 			queryResults.setResults(requests);
@@ -132,7 +130,6 @@ public class ReportService {
 	public RequestQuery listRequestsByPlayer(String idNameOrLink, String cursor) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 
-			pm.getFetchPlan().setMaxFetchDepth(-1);
 			RequestQuery queryResults = new RequestQuery();
 			DataAccessObject dao = new DataAccessObject(pm);
 
@@ -148,7 +145,7 @@ public class ReportService {
 
 			AuthHelper auth = new AuthHelper(dao);
 			if (auth.hasManagementAccess())
-				pm.getFetchPlan().addGroup("distributor");
+				pm.getFetchPlan().addGroup("managementAccess");
 
 			List<Request> requests = dao.listRequests(player, cursor);
 
@@ -163,13 +160,12 @@ public class ReportService {
 	public RequestQuery listRequestsByGroup(PlayerGroup group, String cursor) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 
-			pm.getFetchPlan().setMaxFetchDepth(-1);
 			pm.getFetchPlan().addGroup("reportListing");
 
 			DataAccessObject dao = new DataAccessObject(pm);
 			AuthHelper auth = new AuthHelper(dao);
 			if (auth.hasManagementAccess())
-				pm.getFetchPlan().addGroup("distributor");
+				pm.getFetchPlan().addGroup("managementAccess");
 
 			RequestQuery queryResults = new RequestQuery();
 
@@ -186,13 +182,12 @@ public class ReportService {
 	public RequestQuery listRequestsByStatus(RequestStatus status, String cursor) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 
-			pm.getFetchPlan().setMaxFetchDepth(-1);
 			pm.getFetchPlan().addGroup("reportListing");
 
 			DataAccessObject dao = new DataAccessObject(pm);
 			AuthHelper auth = new AuthHelper(dao);
 			if (auth.hasManagementAccess())
-				pm.getFetchPlan().addGroup("distributor");
+				pm.getFetchPlan().addGroup("managementAccess");
 
 			RequestQuery queryResults = new RequestQuery();
 
@@ -209,13 +204,12 @@ public class ReportService {
 	public RequestQuery listRequestsByType(RequestType type, String cursor) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 
-			pm.getFetchPlan().setMaxFetchDepth(-1);
 			pm.getFetchPlan().addGroup("reportListing");
 
 			DataAccessObject dao = new DataAccessObject(pm);
 			AuthHelper auth = new AuthHelper(dao);
 			if (auth.hasManagementAccess())
-				pm.getFetchPlan().addGroup("distributor");
+				pm.getFetchPlan().addGroup("managementAccess");
 
 			RequestQuery queryResults = new RequestQuery();
 
