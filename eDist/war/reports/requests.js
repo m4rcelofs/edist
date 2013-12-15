@@ -132,7 +132,6 @@ var RequestsViewModel = new function() {
 		if (self.filters.searchParam()) {
 			self.filters.searchFct(self.filters.searchParam(), self.cursor(), {
 				callback : function(response) {
-					console.log(response);
 					setResults(response);
 				}
 			});
