@@ -11,6 +11,7 @@
 				data-bind="if: category() !== 'distributor' && window.edist.user.hasManagementAccess === true">Distribuidor</th>
 			<th>Requisitada em</th>
 			<th>Completada em</th>
+			<th data-bind="if: window.edist.user.hasManagementAccess === true">IP</th>
 		</tr>
 	</thead>
 	<tbody data-bind="foreach: dists">
@@ -79,6 +80,13 @@
 							attr: {href : distributor ? '#/reports/requests/distributor/'+distributor.encodedKey : ''}"></a></td>
 			<td data-bind="text: $root.requestedAt($data)"></td>
 			<td data-bind="text: $root.completedAt($data)"></td>
+			<td data-bind="if: window.edist.user.hasManagementAccess === true">
+				<img data-bind="attr: { src : XAppEngineCountry ? '${baseUrl}/img/flags/' + XAppEngineCountry.toLowerCase() + '.png' : '${baseUrl}/img/flags/zz.png',
+										'data-content' : XAppEngineCity + ', ' + XAppEngineRegion + ', ' + XAppEngineCountry,
+										'data-title' : ip},
+								updatePopup:{}"
+					data-toggle="popover">
+			</td>
 		</tr>
 	</tbody>
 </table>
