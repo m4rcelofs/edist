@@ -1,4 +1,4 @@
-<div data-bind="if: $root.filters.showFilters() === true">
+<div data-bind="if: $root.category()">
 	<nav class="navbar navbar-default" role="navigation">
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle" data-toggle="collapse"
@@ -13,17 +13,17 @@
 			<form class="navbar-form navbar-right" role="search"
 				data-bind="submit: doSearch">
 				<div class="form-group"
-					data-bind="if: $root.filters.showDateFilter() === true">
+					data-bind="if: $root.category() === 'date'">
 					<input type="date" class="form-control" placeholder="aaaa-mm-dd"
 						data-bind="value: filters.searchText">
 				</div>
 				<div class="form-group"
-					data-bind="if: $root.filters.showDayFilter() === true">
+					data-bind="if: $root.category() === 'day'">
 					<input type="number" class="form-control" placeholder="Dia"
 						data-bind="value: filters.searchText">
 				</div>
 				<div class="form-group"
-					data-bind="if: $root.filters.showDistributorFilter() === true">
+					data-bind="if: $root.category() === 'distributor'">
 					<select class="selectpicker show-menu-arrow navbar-btn show-tick"
 						data-bind=" options: filters.distributors, 
 									optionsText: function(item){ return item.name ? item.name : item.email ? item.email : item.encodedKey;},
@@ -34,7 +34,7 @@
 					</select>
 				</div>
 				<div class="form-group"
-					data-bind="if: $root.filters.showGroupFilter() === true">
+					data-bind="if: $root.category() === 'group'">
 					<select class="selectpicker show-menu-arrow navbar-btn show-tick"
 						data-bind=" options: filters.groups, 
 									optionsText: function(item){ return item ? item.groupName : '' },
@@ -45,13 +45,13 @@
 					</select>
 				</div>
 				<div class="form-group"
-					data-bind="if: $root.filters.showPlayerFilter() === true">
+					data-bind="if: $root.category() === 'player'">
 					<input type="text" class="form-control"
 						placeholder="ID, link ou nick"
 						data-bind="value: filters.searchText">
 				</div>
 				<div class="form-group"
-					data-bind="if: $root.filters.showStatusFilter() === true">
+					data-bind="if: $root.category() === 'status'">
 					<select class="selectpicker show-menu-arrow navbar-btn show-tick"
 						data-bind="value: filters.searchText, updateSelectPicker:{}">
 						<option value="REQUESTED">Requisitada</option>
@@ -61,7 +61,7 @@
 					</select>
 				</div>
 				<div class="form-group"
-					data-bind="if: $root.filters.showTypeFilter() === true">
+					data-bind="if: $root.category() === 'type'">
 					<select class="selectpicker show-menu-arrow navbar-btn show-tick"
 						data-bind="value: filters.searchText, updateSelectPicker:{}">
 						<option value="WEAPONS">Armas</option>

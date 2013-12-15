@@ -1,6 +1,5 @@
-function RequestsFiltersViewModel(cat) {
+function RequestsFiltersViewModel() {
 
-	var category = cat;
 	var self = this;
 
 	self.searchText = ko.observable();
@@ -9,42 +8,6 @@ function RequestsFiltersViewModel(cat) {
 
 	self.groups = Reports.groups;
 	self.distributors = Reports.distributors;
-
-	self.showDateFilter = ko.computed(function() {
-		return category() === 'date';
-	});
-
-	self.showDayFilter = ko.computed(function() {
-		return category() === 'day';
-	});
-
-	self.showDistributorFilter = ko.computed(function() {
-		return category() === 'distributor';
-	});
-
-	self.showGroupFilter = ko.computed(function() {
-		return category() === 'group';
-	});
-
-	self.showPlayerFilter = ko.computed(function() {
-		return category() === 'player';
-	});
-
-	self.showStatusFilter = ko.computed(function() {
-		return category() === 'status';
-	});
-
-	self.showTypeFilter = ko.computed(function() {
-		return category() === 'type';
-	});
-
-	self.showFilters = ko.computed(function() {
-		return self.showDateFilter() || self.showDayFilter()
-				|| self.showStatusFilter() || self.showTypeFilter()
-				|| self.showPlayerFilter() || self.showDistributorFilter()
-				|| self.showGroupFilter();
-	});
-
 }
 
 var RequestsViewModel = new function() {
@@ -54,7 +17,7 @@ var RequestsViewModel = new function() {
 
 	self.dists = ko.observableArray([]);
 	self.cursor = ko.observable(null);
-	self.filters = new RequestsFiltersViewModel(self.category);
+	self.filters = new RequestsFiltersViewModel();
 
 	ko.computed(function() {
 		if (self.category()) {
