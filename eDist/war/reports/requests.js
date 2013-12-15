@@ -19,6 +19,8 @@ var RequestsViewModel = new function() {
 	self.cursor = ko.observable(null);
 	self.filters = new RequestsFiltersViewModel();
 
+	self.requestDetails = ko.observableArray();
+
 	ko.computed(function() {
 		if (self.category()) {
 			showTab();
@@ -42,6 +44,17 @@ var RequestsViewModel = new function() {
 		if (self.cursor() !== null) {
 			queryServer();
 		}
+	}
+
+	self.loadDetails = function(request) {
+		ReportService.requestDetails({
+			encodedKey : request.encodedKey
+		}, {
+			callback : function(response) {
+				self.requestDetails(response);
+				$('#requestDetails').modal('show');
+			}
+		});
 	}
 
 	self.filterByDate = function(param) {

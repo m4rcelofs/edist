@@ -8,7 +8,6 @@
 			<th>Quantidade</th>
 			<th data-bind="if: category() !== 'group'">Grupo</th>
 			<th data-bind="if: category() !== 'distributor'">Distribuidor</th>
-			<th>Detalhes</th>
 			<th>Requisitada em</th>
 			<th>Completada em</th>
 		</tr>
@@ -51,6 +50,11 @@
 						class="label label-info">Foguete</span>
 					</a>
 				</p>
+				<p>
+					<a href="#requestDetails" data-bind="click: $root.loadDetails">
+						Detalhes <span class="glyphicon glyphicon-new-window"></span>
+					</a>
+				</p>
 			</td>
 			<td
 				data-bind="text: rocketQuality !== null ? 'Foguete ' + rocketQuality : requestedFF + ' FF'"></td>
@@ -58,7 +62,6 @@
 				data-bind="text: group.groupName, attr: {href : '#/reports/requests/group/'+group.encodedKey}"></a></td>
 			<td data-bind="if: $root.category() !== 'distributor'"><a
 				data-bind="text: distributor.name, attr: {href : '#/reports/requests/distributor/'+distributor.encodedKey}"></a></td>
-			<td data-bind=""></td>
 			<td data-bind="text: $root.requestedAt($data)"></td>
 			<td data-bind="text: $root.completedAt($data)"></td>
 		</tr>
