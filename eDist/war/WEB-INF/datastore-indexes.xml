@@ -7,7 +7,7 @@
 		<property name="day" direction="asc" />
 	</datastore-index>
 
-	<datastore-index kind="Request" ancestor="true" source="auto">
+	<datastore-index kind="Request" ancestor="true" source="manual">
 		<property name="requestedAt" direction="desc" />
 	</datastore-index>
 
@@ -16,26 +16,32 @@
 	</datastore-index>
 
 	<datastore-index kind="Request" ancestor="false"
-		source="auto">
+		source="manual">
 		<property name="eRepDay" direction="asc" />
 		<property name="requestedAt" direction="desc" />
 	</datastore-index>
 
 	<datastore-index kind="Request" ancestor="false"
-		source="auto">
+		source="manual">
 		<property name="status" direction="asc" />
 		<property name="requestedAt" direction="desc" />
 	</datastore-index>
 
 	<datastore-index kind="Request" ancestor="false"
-		source="auto">
+		source="manual">
 		<property name="type" direction="asc" />
 		<property name="requestedAt" direction="desc" />
 	</datastore-index>
 
 	<datastore-index kind="Request" ancestor="false"
-		source="auto">
+		source="manual">
 		<property name="distributor_key_OID" direction="asc" />
+		<property name="requestedAt" direction="desc" />
+	</datastore-index>
+
+	<datastore-index kind="Request" ancestor="false"
+		source="manual">
+		<property name="group_key_OID" direction="asc" />
 		<property name="requestedAt" direction="desc" />
 	</datastore-index>
 </datastore-indexes>
