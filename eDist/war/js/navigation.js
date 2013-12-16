@@ -71,6 +71,7 @@ var Navigation = new function() {
 
 	nav.setCurrentLocation = function(path) {
 		History.pushState(null, '', path);
+		ga('send', 'pageview');
 	}
 
 	nav.getCurrenLocation = function() {
