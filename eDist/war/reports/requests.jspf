@@ -1,0 +1,42 @@
+<div class="tab-pane active" id="requests">
+	<div class="row">
+		<div class="form-group"></div>
+
+		<div class="col-md-2">
+
+			<ul id="requests.horizontal.nav" class="nav nav-pills nav-stacked">
+				<li data-bind="css: {active : category() === 'date'}"><a
+					href="#/reports/requests/date">por Data</a></li>
+				<li data-bind="css: {active : category() === 'day'}"><a
+					href="#/reports/requests/day">por Dia</a></li>
+				<li data-bind="css: {active : category() === 'distributor'}"><a
+					href="#/reports/requests/distributor">por Distribuidor</a></li>
+				<li data-bind="css: {active : category() === 'group'}"><a
+					href="#/reports/requests/group">por Grupo</a></li>
+				<li data-bind="css: {active : category() === 'player'}"><a
+					href="#/reports/requests/player">por Jogador</a></li>
+				<li data-bind="css: {active : category() === 'status'}"><a
+					href="#/reports/requests/status">por Status</a></li>
+				<li data-bind="css: {active : category() === 'type'}"><a
+					href="#/reports/requests/type">por Tipo</a></li>
+			</ul>
+		</div>
+		<div class="col-md-10">
+
+			<%@ include file="requests_filters.jspf"%>
+
+			<%@ include file="requests_table.jspf"%>
+
+			<ul class="pager">
+				<li class="next"
+					data-bind="css: {disabled: cursor() === null},
+						click: loadNextPage"><a
+					href="#">Exibir próximos</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="form-group"></div>
+	
+	<%@ include file="requests_details.jspf"%>
+
+</div>

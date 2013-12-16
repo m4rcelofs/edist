@@ -45,8 +45,10 @@ public class ReportsFilter implements Filter {
 				filterChain.doFilter(req, resp);
 			else {
 				((HttpServletResponse) resp).sendError(403);
-				log.log(Level.SEVERE,
-						"Unauthorized access attempt: " + gUser.getEmail());
+				log.log(Level.SEVERE, "Unauthorized access attempt!");
+				if (gUser != null) {
+					log.log(Level.SEVERE, "eMail: " + gUser.getEmail());
+				}
 			}
 		}
 	}

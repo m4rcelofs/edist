@@ -120,9 +120,9 @@ public class RequestsHelper {
 		request.seteRepDay(eRepTimeCalculator.geteRepDay());
 
 		request.setIp(req.getRemoteAddr());
-		request.setX_AppEngine_Country(req.getHeader("X-AppEngine-Country"));
-		request.setX_AppEngine_Region(req.getHeader("X-AppEngine-Region"));
-		request.setX_AppEngine_City(req.getHeader("X-AppEngine-City"));
+		request.setXAppEngineCountry(req.getHeader("X-AppEngine-Country"));
+		request.setXAppEngineRegion(req.getHeader("X-AppEngine-Region"));
+		request.setXAppEngineCity(req.getHeader("X-AppEngine-City"));
 
 		request.setStatus(REQUESTED);
 

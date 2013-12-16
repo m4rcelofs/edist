@@ -19,7 +19,9 @@ import com.google.appengine.api.datastore.KeyFactory;
 @DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 @FetchGroups({
-		@FetchGroup(name = "distributorListing", members = { @Persistent(name = "email") }),
+		@FetchGroup(name = "distributorListing", members = {
+				@Persistent(name = "email"),
+				@Persistent(name = "lastAccessTimestamp") }),
 		@FetchGroup(name = "configListing", members = { @Persistent(name = "email") }) })
 public class Distributor implements HasEncodedKey {
 
@@ -42,7 +44,7 @@ public class Distributor implements HasEncodedKey {
 	@RemoteProperty
 	private String			email;
 
-	@Persistent
+	@Persistent(defaultFetchGroup = "false")
 	@RemoteProperty
 	private long			lastAccessTimestamp;
 

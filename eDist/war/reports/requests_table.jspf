@@ -1,0 +1,92 @@
+<table class="table table-striped table-hover table-responsive"
+	data-bind="if: dists().length > 0">
+	<thead>
+		<tr>
+			<th data-bind="if: category() !== 'day'">Dia</th>
+			<th data-bind="if: category() !== 'player'">Jogador</th>
+			<th>Status</th>
+			<th>Quantidade</th>
+			<th data-bind="if: category() !== 'group'">Grupo</th>
+			<th
+				data-bind="if: category() !== 'distributor' && window.edist.user.hasManagementAccess === true">Distribuidor</th>
+			<th>Requisitada em</th>
+			<th>Completada em</th>
+			<th data-bind="if: window.edist.user.hasManagementAccess === true">IP</th>
+		</tr>
+	</thead>
+	<tbody data-bind="foreach: dists">
+		<tr data-bind="attr: {id: encodedKey}">
+			<td data-bind="if: $root.category() !== 'day'"><a
+				data-bind="text: eRepDay, attr: {href : '#/reports/requests/day/'+eRepDay}"></a>
+			</td>
+			<td data-bind="if: $root.category() !== 'player'">
+				<a data-bind="attr: {href : playerInfo ? '#/reports/requests/player/' + playerInfo.erId : ''}">
+					<img class="img-thumbnail img-responsive"
+						 src="${baseUrl}/img/profile_avatar_55.cache.png"
+						 width="55px"
+						 data-bind="style: { 'background-image' : $root.avatar($data) !== null ? $root.avatar($data) :
+										 'url(${baseUrl}/img/default_male_55.cache.gif)' ,
+										 'background-size' : '55px 55px',
+										 'background-repeat' : 'no-repeat',
+										 'background-position' : 'center'},
+									attr : {'data-content' : playerInfo ? playerInfo.name : ''},
+									updatePopup:{}"
+						data-toggle="popover">
+				</a>
+			</td>
+			<td>
+				<p data-bind="if: $root.category() !== 'status'">
+					<a href="#/reports/requests/status/requested"
+						data-bind="if: status === 'REQUESTED'"> <span
+						class="label label-primary">Requisitada</span>
+					</a> <a href="#/reports/requests/status/error"
+						data-bind="if: status === 'ERROR'"> <span
+						class="label label-danger">Erro</span>
+					</a> <a href="#/reports/requests/status/sent"
+						data-bind="if: status === 'SENT'"> <span
+						class="label label-success">Enviada</span>
+					</a> <a href="#/reports/requests/status/sent_partial"
+						data-bind="if: status === 'SENT_PARTIAL'"> <span
+						class="label label-warning">Enviada Parcialmente</span>
+					</a>
+				</p>
+				<p data-bind="if: $root.category() !== 'type'">
+					<a href="#/reports/requests/type/weapons"
+						data-bind="if: type === 'WEAPONS'"> <span
+						class="label label-default">Armas</span>
+					</a> <a href="#/reports/requests/type/food"
+						data-bind="if: type === 'FOOD'"> <span
+						class="label label-default">Comida</span>
+					</a> <a href="#/reports/requests/type/weapons_food"
+						data-bind="if: type === 'WEAPONS_FOOD'"> <span
+						class="label label-default">Armas + Comida</span>
+					</a> <a href="#/reports/requests/type/rocket"
+						data-bind="if: type === 'ROCKET'"> <span
+						class="label label-info">Foguete</span>
+					</a>
+				</p>
+				<p>
+					<a href="#requestDetails" data-bind="click: $root.loadDetails">
+						Detalhes <span class="glyphicon glyphicon-new-window"></span>
+					</a>
+				</p>
+			</td>
+			<td
+				data-bind="text: rocketQuality !== null ? 'Foguete ' + rocketQuality : requestedFF + ' FF'"></td>
+			<td data-bind="if: $root.category() !== 'group'"><a
+				data-bind="text: group.groupName, attr: {href : '#/reports/requests/group/'+group.encodedKey}"></a></td>
+			<td data-bind="if: $root.category() !== 'distributor'"><a
+				data-bind="text: distributor ? distributor.name : '',
+							attr: {href : distributor ? '#/reports/requests/distributor/'+distributor.encodedKey : ''}"></a></td>
+			<td data-bind="text: $root.requestedAt($data)"></td>
+			<td data-bind="text: $root.completedAt($data)"></td>
+			<td data-bind="if: window.edist.user.hasManagementAccess === true">
+				<img data-bind="attr: { src : XAppEngineCountry ? '${baseUrl}/img/flags/' + XAppEngineCountry.toLowerCase() + '.png' : '${baseUrl}/img/flags/zz.png',
+										'data-content' : XAppEngineCity + ', ' + XAppEngineRegion + ', ' + XAppEngineCountry,
+										'data-title' : ip},
+								updatePopup:{}"
+					data-toggle="popover">
+			</td>
+		</tr>
+	</tbody>
+</table>

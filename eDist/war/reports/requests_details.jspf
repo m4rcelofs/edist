@@ -1,0 +1,46 @@
+<div class="modal fade" id="requestDetails" tabindex="-30" role="dialog"
+	aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"
+					aria-hidden="true">×</button>
+				<h3>Detalhes da Distribuição</h3>
+			</div>
+			<div class="modal-body">
+				<table class="table table-striped table-hover table-responsive"
+					data-bind="if: requestDetails().length > 0">
+					<thead>
+						<tr>
+							<th>Tipo</th>
+							<th>Qualidade</th>
+							<th>Quantidade</th>
+							<th>Status</th>
+						</tr>
+					</thead>
+
+					<tbody data-bind="foreach: requestDetails">
+						<tr>
+							<td><span data-bind="if: type === 'WEAPONS'"
+								class="label label-default">Armas</span> <span
+								data-bind="if: type === 'FOOD'" class="label label-default">Comida</span>
+							</td>
+							<td data-bind="text: quality"></td>
+							<td data-bind="text: quantity"></td>
+							<td><span data-bind="if: status === 'REQUESTED'"
+								class="label label-primary">Requisitada</span> <span
+								data-bind="if: status === 'ERROR'" class="label label-danger">Erro</span>
+								<span data-bind="if: status === 'SENT'"
+								class="label label-success">Enviada</span> <span
+								data-bind="if: status === 'SENT_PARTIAL'"
+								class="label label-warning">Enviada Parcialmente</span>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<div class="modal-footer">
+				<button class="btn btn-primary" data-dismiss="modal">Fechar</button>
+			</div>
+		</div>
+	</div>
+</div>

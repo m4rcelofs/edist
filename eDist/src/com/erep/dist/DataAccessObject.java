@@ -34,6 +34,7 @@ import com.erep.dist.data.PlayerRoot;
 import com.erep.dist.data.RegisteredUser;
 import com.erep.dist.data.Request;
 import com.erep.dist.data.ServerConfig;
+import com.erep.dist.data.enums.RequestStatus;
 import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.instances.frontend.tasks.NotifyEmailChangeTask;
 import com.google.appengine.api.datastore.Cursor;
@@ -45,6 +46,7 @@ import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.api.users.User;
 import com.google.appengine.datanucleus.query.JDOCursorHelper;
 
+@SuppressWarnings("unchecked")
 public class DataAccessObject {
 
 	private PersistenceManager	pm;
@@ -131,7 +133,6 @@ public class DataAccessObject {
 		}
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<Employer> listEmployers() {
 		Query q = pm.newQuery(Employer.class);
 		q.setFilter("root == rootParam");
@@ -139,7 +140,6 @@ public class DataAccessObject {
 		return (List<Employer>) q.execute(employerRootKey());
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<Distributor> listDistributors() {
 		Query q = pm.newQuery(Distributor.class);
 		q.setFilter("root == rootParam");
@@ -196,7 +196,6 @@ public class DataAccessObject {
 	}
 
 	@Cacheable
-	@SuppressWarnings("unchecked")
 	public List<PlayerGroup> listGroups() {
 		Query q = pm.newQuery(PlayerGroup.class);
 		q.setFilter("root == rootParam");
@@ -290,10 +289,10 @@ public class DataAccessObject {
 	}
 
 	public List<RegisteredUser> listUsers(String encodedCursor) {
-		return executeQueryWithCursor(RegisteredUser.class, null, encodedCursor);
+		Query q = queryWithCursor(RegisteredUser.class, null, encodedCursor);
+		return (List<RegisteredUser>) q.execute();
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<Player> listAllPlayers() {
 		Query q = pm.newQuery(Player.class);
 		q.setFilter("root == rootParam");
@@ -301,7 +300,6 @@ public class DataAccessObject {
 		return (List<Player>) q.execute(playerRootKey());
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<Player> listPlayers(String encodedCursor) {
 		Query q = queryWithCursor(Player.class, "root == rootParam",
 				encodedCursor);
@@ -310,79 +308,119 @@ public class DataAccessObject {
 	}
 
 	public List<Request> listRequests(String encodedCursor) {
-		return executeQueryWithCursor(Request.class, "", encodedCursor);
+		Query q = queryWithCursor(Request.class, null, encodedCursor);
+		return (List<Request>) q.execute();
 	}
 
 	public List<Request> listRequests(Integer eRepDay, String encodedCursor) {
-		String filter = "eRepDay == " + eRepDay;
-		return executeQueryWithCursor(Request.class, filter, encodedCursor);
+		Query q = queryWithCursor(Request.class, "eRepDay == eRepDayParam",
+				encodedCursor);
+		q.declareParameters(Integer.class.getName() + " eRepDayParam");
+		q.setOrdering("requestedAt desc");
+		return (List<Request>) q.execute(eRepDay);
 	}
 
 	public List<Request> listRequests(Distributor dist, String encodedCursor) {
-		String filter = "distributor == '" + dist.getKey() + "'";
-		return executeQueryWithCursor(Request.class, filter, encodedCursor);
+		Query q = queryWithCursor(Request.class,
+				"distributor == distributorParam", encodedCursor);
+		q.declareParameters(Key.class.getName() + " distributorParam");
+		q.setOrdering("requestedAt desc");
+		return (List<Request>) q.execute(dist.getKey());
 	}
 
 	public List<Request> listRequests(Player player, String encodedCursor) {
-		String filter = "player == '" + player.getKey() + "'";
-		return executeQueryWithCursor(Request.class, filter, encodedCursor);
+		Query q = queryWithCursor(Request.class, "player == playerParam",
+				encodedCursor);
+		q.declareParameters(Key.class.getName() + " playerParam");
+		q.setOrdering("requestedAt desc");
+		return (List<Request>) q.execute(player.getKey());
 	}
 
 	public List<Request> listRequests(PlayerGroup group, String encodedCursor) {
-		String filter = "group == '" + group.getKey() + "'";
-		return executeQueryWithCursor(Request.class, filter, encodedCursor);
+		Query q = queryWithCursor(Request.class, "group == groupParam",
+				encodedCursor);
+		q.declareParameters(Key.class.getName() + " groupParam");
+		q.setOrdering("requestedAt desc");
+		return (List<Request>) q.execute(group.getKey());
+	}
+
+	public List<Request> listRequests(RequestStatus status, String encodedCursor) {
+		Query q = queryWithCursor(Request.class, "status == statusParam",
+				encodedCursor);
+		q.declareParameters(RequestStatus.class.getName() + " statusParam");
+		q.setOrdering("requestedAt desc");
+		return (List<Request>) q.execute(status);
+	}
+	
+	public List<Request> listRequests(RequestType type, String encodedCursor) {
+		Query q = queryWithCursor(Request.class, "type == typeParam",
+				encodedCursor);
+		q.declareParameters(RequestType.class.getName() + " typeParam");
+		q.setOrdering("requestedAt desc");
+		return (List<Request>) q.execute(type);
 	}
 
 	public List<DailyStats> listStats(Player player, String encodedCursor) {
-		String filter = "player == '" + player.getKey() + "'";
-		return executeQueryWithCursor(DailyStats.class, filter, encodedCursor);
+		Query q = queryWithCursor(DailyStats.class, "player == playerParam",
+				encodedCursor);
+		q.declareParameters(Key.class.getName() + " playerParam");
+		return (List<DailyStats>) q.execute(player.getKey());
 	}
 
 	public List<DailyWork> listWork(Player player, String encodedCursor) {
-		String filter = "player == '" + player.getKey() + "'";
-		return executeQueryWithCursor(DailyWork.class, filter, encodedCursor);
+		Query q = queryWithCursor(DailyWork.class, "player == playerParam",
+				encodedCursor);
+		q.declareParameters(Key.class.getName() + " playerParam");
+		return (List<DailyWork>) q.execute(player.getKey());
 	}
 
 	public List<DailyWork> listWork(PlayerGroup group, String encodedCursor) {
-		String filter = "group == '" + group.getKey() + "'";
-		return executeQueryWithCursor(DailyWork.class, filter, encodedCursor);
+		Query q = queryWithCursor(DailyWork.class,
+				"groups.contains(groupParam)", encodedCursor);
+		q.declareParameters(Key.class.getName() + " groupParam");
+		return (List<DailyWork>) q.execute(group.getKey());
 	}
 
 	public List<DailyWork> listWork(Employer employer, String encodedCursor) {
-		String filter = "employer == '" + employer.getKey() + "'";
-		return executeQueryWithCursor(DailyWork.class, filter, encodedCursor);
+		Query q = queryWithCursor(DailyWork.class, "employer == employerParam",
+				encodedCursor);
+		q.declareParameters(Key.class.getName() + " employerParam");
+		return (List<DailyWork>) q.execute(employer.getKey());
 	}
 
 	public List<DailyWork> listWork(Integer day, String encodedCursor) {
-		String filter = "day == " + day;
-		return executeQueryWithCursor(DailyWork.class, filter, encodedCursor);
+		Query q = queryWithCursor(DailyWork.class, "day == dayParam",
+				encodedCursor);
+		q.declareParameters(Integer.class.getName() + " dayParam");
+		return (List<DailyWork>) q.execute(day);
 	}
 
 	public List<DailyStats> listStats(Integer day, String encodedCursor) {
-		String filter = "day == " + day;
-		return executeQueryWithCursor(DailyStats.class, filter, encodedCursor);
+		Query q = queryWithCursor(DailyStats.class, "day == dayParam",
+				encodedCursor);
+		q.declareParameters(Integer.class.getName() + " dayParam");
+		return (List<DailyStats>) q.execute(day);
 	}
 
 	public List<DailyFights> listFights(Player player, String encodedCursor) {
-		String filter = "player == '" + player.getKey() + "'";
-		return executeQueryWithCursor(DailyFights.class, filter, encodedCursor);
+		Query q = queryWithCursor(DailyFights.class, "player == playerParam",
+				encodedCursor);
+		q.declareParameters(Key.class.getName() + " playerParam");
+		return (List<DailyFights>) q.execute(player.getKey());
 	}
 
 	public List<DailyFights> listFights(Integer day, String encodedCursor) {
-		String filter = "day == " + day;
-		return executeQueryWithCursor(DailyFights.class, filter, encodedCursor);
+		Query q = queryWithCursor(DailyFights.class, "day == dayParam",
+				encodedCursor);
+		q.declareParameters(Integer.class.getName() + " dayParam");
+		return (List<DailyFights>) q.execute(day);
 	}
 
 	public List<DailyFights> listFights(PlayerGroup group, String encodedCursor) {
-		String filter = "group == '" + group.getKey() + "'";
-		return executeQueryWithCursor(DailyFights.class, filter, encodedCursor);
-	}
-
-	@SuppressWarnings("unchecked")
-	private <T> List<T> executeQueryWithCursor(Class<T> clazz, String filter,
-			String encodedCursor) {
-		Query q = queryWithCursor(clazz, filter, encodedCursor);
-		return (List<T>) q.execute();
+		Query q = queryWithCursor(DailyFights.class,
+				"groups.contains(groupParam)", encodedCursor);
+		q.declareParameters(Key.class.getName() + " groupParam");
+		return (List<DailyFights>) q.execute(group.getKey());
 	}
 
 	private <T> Query queryWithCursor(Class<T> clazz, String filter,
@@ -421,18 +459,20 @@ public class DataAccessObject {
 
 	public int getFightsFFSum(Player player, int fromDay) {
 		Query q = pm.newQuery(DailyFights.class);
-		q.setFilter("player == '" + player.getKey() + "' && day >= " + fromDay);
+		q.setFilter("player == playerParam && day >= dayParam");
+		q.declareParameters(Key.class.getName() + " playerParam, "
+				+ Integer.class.getName() + " dayParam");
 		q.setResult("sum(calculatedFfFights)");
-		Long response = ((Long) q.execute());
+		Long response = ((Long) q.execute(player.getKey(), fromDay));
 		return response != null ? response.intValue() : 0;
 	}
 
-	@SuppressWarnings("unchecked")
 	public List<DailyWork> getWork(Player dbPlayer, int fromDay) {
 		Query q = pm.newQuery(DailyWork.class);
-		q.setFilter("player == '" + dbPlayer.getKey() + "' && day >= "
-				+ fromDay);
-		return (List<DailyWork>) q.execute();
+		q.setFilter("player == playerParam && day >= dayParam");
+		q.declareParameters(Key.class.getName() + " playerParam, "
+				+ Integer.class.getName() + " dayParam");
+		return (List<DailyWork>) q.execute(dbPlayer.getKey(), fromDay);
 	}
 
 	public boolean requestedRocket(Player player, PlayerGroup group, int eRepDay) {

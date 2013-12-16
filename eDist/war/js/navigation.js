@@ -54,7 +54,12 @@ var Navigation = new function() {
 	nav.configureRoutes = function(route) {
 		$('.nav-tabs a').click(function(event) {
 			event.preventDefault();
-			History.pushState(null, '', this.hash.replace('#', ''));
+			var nav = '';
+			if (route) {
+				nav += route;
+			}
+			nav += this.hash.replace('#', '');
+			History.pushState(null, '', nav);
 		});
 
 		History.Adapter.bind(window, 'statechange', function() {
@@ -66,6 +71,7 @@ var Navigation = new function() {
 
 	nav.setCurrentLocation = function(path) {
 		History.pushState(null, '', path);
+		ga('send', 'pageview');
 	}
 
 	nav.getCurrenLocation = function() {

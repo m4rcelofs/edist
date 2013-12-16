@@ -1,12 +1,9 @@
 package com.erep.dist.dwr;
 
-import static com.erep.dist.DataAccessObject.playerRootKey;
 import static com.erep.dist.data.enums.RequestType.ROCKET;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.Transaction;
@@ -20,6 +17,7 @@ import com.erep.dist.CloseablePM;
 import com.erep.dist.ConfigHelper;
 import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
+import com.erep.dist.PlayerIdentificator;
 import com.erep.dist.RequestsHelper;
 import com.erep.dist.auth.LicensingHelper;
 import com.erep.dist.data.DistConfig;
@@ -29,17 +27,12 @@ import com.erep.dist.data.Request;
 import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.dwr.dto.RequestAttempt;
 import com.erep.dist.erep.eRepTimeCalculator;
-import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
 
 @RemoteProxy
 public class RequestService {
 
-	private static Logger	logger			= Logger.getLogger(RequestService.class
-													.getName());
-
-	private static Pattern	profilePattern	= Pattern
-													.compile("(http://|https://)?(www\\.)?erepublik\\.com/\\D{2}/citizen/profile/(?<id>\\d+)");
+	private static Logger	logger	= Logger.getLogger(RequestService.class
+											.getName());
 
 	@RemoteMethod
 	public boolean sendRequest(Player player, PlayerGroup group,
@@ -101,7 +94,8 @@ public class RequestService {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			pm.getFetchPlan().addGroup("requestIdentify");
 			DataAccessObject dao = new DataAccessObject(pm);
-			return identifyRequestString(dao, idNameOrLink.trim());
+			return new PlayerIdentificator(dao)
+					.identifyRequestString(idNameOrLink);
 		} catch (JDOObjectNotFoundException e) {
 			// no player, ignore
 		}
@@ -150,30 +144,6 @@ public class RequestService {
 
 			return dto;
 		}
-	}
-
-	private Player identifyRequestString(DataAccessObject dao,
-			String idNameOrLink) {
-		Player p = new Player();
-		try {
-			p.setKey(keyFromId(idNameOrLink));
-		} catch (NumberFormatException e) {
-			Matcher matcher = profilePattern.matcher(idNameOrLink);
-			if (matcher.matches())
-				p.setKey(keyFromId(matcher.group("id")));
-			else
-				// assume name
-				p.setKey(dao.findPlayerKey(idNameOrLink));
-		} catch (IllegalArgumentException e) {
-			return p;
-		}
-		return dao.find(p);
-	}
-
-	private Key keyFromId(String id) {
-		Integer keyValue = Integer.parseInt(id);
-		return KeyFactory.createKey(playerRootKey(),
-				Player.class.getSimpleName(), keyValue);
 	}
 
 }

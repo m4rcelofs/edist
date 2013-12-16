@@ -31,7 +31,8 @@ import com.google.appengine.datanucleus.annotations.Unowned;
 				@Persistent(name = "groups"), @Persistent(name = "config"),
 				@Persistent(name = "fightVerif"),
 				@Persistent(name = "workVerif") }),
-		@FetchGroup(name = "requestIdentify", members = { @Persistent(name = "groups") }) })
+		@FetchGroup(name = "requestIdentify", members = { @Persistent(name = "groups") })
+		})
 public class Player implements HasEncodedKey {
 
 	/**

@@ -99,8 +99,7 @@ public class CalculateDailyFightsTask implements DeferredTask {
 		Queue queue = QueueFactory.getDefaultQueue();
 		queue.add(withPayload(task).taskName(
 				"FightsVerificationTask_"
-						+ dbPlayer.getKey().toString().replace('(', '_')
-								.replace(')', '_') + "_" + today));
+						+ dbPlayer.getErId() + "_" + today));
 	}
 
 	private Key createKey(Player dbPlayer, Integer day) {

@@ -1,5 +1,6 @@
 package com.erep.dist.dwr.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.directwebremoting.annotations.DataTransferObject;
@@ -14,7 +15,7 @@ public class RequestQuery {
 	private String			encodedCursor;
 
 	@RemoteProperty
-	private List<Request>	results;
+	private List<Request>	results	= new ArrayList<>();
 
 	public String getEncodedCursor() {
 		return encodedCursor;
