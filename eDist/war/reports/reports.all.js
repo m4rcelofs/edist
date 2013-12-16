@@ -240,7 +240,8 @@ var RequestsViewModel = new function() {
 var WorkViewModel = new function() {
 	var self = this;
 
-
+	self.category = ko.observable('');
+	
 	self.workTab = function(type) {
 		console.log('work');
 		$('#workTab').tab('show');
