@@ -312,7 +312,7 @@
 	<!-- default url mapper -->
 	<servlet>
 		<servlet-name>defaultEP</servlet-name>
-		<servlet-class>com.erep.dist.instances.frontend.URLMapperServlet</servlet-class>
+		<jsp-file>/index.jsp</jsp-file>
 	</servlet>
 
 	<servlet-mapping>
@@ -384,7 +384,6 @@
 
 	<!-- Default File -->
 	<welcome-file-list>
-		<welcome-file>index.html</welcome-file>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
 
