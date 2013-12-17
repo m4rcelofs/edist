@@ -18,7 +18,7 @@
 		<max-concurrent-requests>1</max-concurrent-requests>
 		<bucket-size>1</bucket-size>
 		<retry-parameters>
-			<min-backoff-seconds>30</min-backoff-seconds>
+			<min-backoff-seconds>10</min-backoff-seconds>
 		</retry-parameters>
 	</queue>
 </queue-entries>
