@@ -35,7 +35,7 @@ public class InstallHelper {
 		distConfig.setKey(KeyFactory.createKey(
 				DistConfig.class.getSimpleName(), ServerConstants.DEFAULT_ID));
 		distConfig.setAutoSend(false);
-		distConfig.setCurrentMaxDailyFF(160);
+		distConfig.setCurrentMaxDailyFF(0);
 		distConfig.setRocketAllowed(false);
 		distConfig.setAllowedType(RequestType.WEAPONS_FOOD);
 		distConfig.setAllowedWeaponQuality(ResourceQuality.Q7);
