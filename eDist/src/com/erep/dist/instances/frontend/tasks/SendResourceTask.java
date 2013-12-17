@@ -1,6 +1,9 @@
 package com.erep.dist.instances.frontend.tasks;
 
 import static com.erep.dist.auth.SymmetricCipherUtils.decrypt;
+import static com.erep.dist.data.enums.RequestStatus.ERROR;
+import static com.erep.dist.data.enums.RequestStatus.SENT;
+import static com.erep.dist.data.enums.RequestStatus.SENT_PARTIAL;
 
 import java.util.Date;
 import java.util.logging.Level;
@@ -15,7 +18,6 @@ import com.erep.dist.data.Distributor;
 import com.erep.dist.data.Request;
 import com.erep.dist.data.ResourceDist;
 import com.erep.dist.data.enums.PlayerStatus;
-import com.erep.dist.data.enums.RequestStatus;
 import com.erep.dist.data.enums.ResourceDistStatus;
 import com.erep.dist.erep.ErepScrapper;
 import com.erep.dist.erep.dist.DistStrategy;
@@ -44,7 +46,7 @@ public class SendResourceTask implements DeferredTask {
 			Request dbRequest = dao.find(new Request(requestKey));
 
 			if (dbRequest == null
-					|| dbRequest.getStatus() == RequestStatus.SENT)
+					|| dbRequest.getStatus() == SENT)
 				return;
 
 			Transaction tx = pm.currentTransaction();
@@ -57,13 +59,13 @@ public class SendResourceTask implements DeferredTask {
 			PlayerStatus dbStatus = dbRequest.getPlayer().getDbStatus();
 			if (dbStatus == PlayerStatus.ERROR
 					|| dbStatus == PlayerStatus.DISABLED) {
-				dbRequest.setStatus(RequestStatus.ERROR);
+				dbRequest.setStatus(ERROR);
 				return;
 			}
 
 			execute(dbRequest);
 
-			dbRequest.setStatus(RequestStatus.SENT);
+			dbRequest.setStatus(SENT);
 			dbRequest.setCompletedAt(new Date());
 
 			tx = pm.currentTransaction();
@@ -104,11 +106,12 @@ public class SendResourceTask implements DeferredTask {
 						DistStrategy strategy = getStrategy(request, resource,
 								scrapper);
 						strategy.execute();
+						resource.setStatus(ResourceDistStatus.SENT);
 					} catch (Exception e) {
 						logger.log(Level.SEVERE, "Exception sending resource",
 								e);
 						resource.setStatus(ResourceDistStatus.ERROR);
-						request.setStatus(RequestStatus.SENT_PARTIAL);
+						request.setStatus(SENT_PARTIAL);
 						throw e;
 					}
 		}
