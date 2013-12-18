@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name        Controle de Funcionarios - Gestores MUs
 // @namespace   http://edist-licence.appspot.com
-// @description	Plugin para o controle de funcionários das dists por script
+// @description	Plugin para o controle de funcionarios das dists por script
 // @include		http://www.erepublik.com/*
 // @version     0.1
 // @downloadURL	https://{host}/js/dynamic/employer.user.js
