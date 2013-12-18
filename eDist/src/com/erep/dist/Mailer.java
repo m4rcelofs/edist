@@ -45,18 +45,18 @@ public class Mailer {
 			String from = "notifications@" + SystemProperty.applicationId.get()
 					+ ".appspotmail.com";
 			msg.setFrom(new InternetAddress(from, "eDist"));
+			msg.setSubject(subject);
+			msg.setContent(message, "text/html");
 
-			for (MailAddress email : emails)
+			for (MailAddress email : emails) {
 				if (email.name == null || email.name.isEmpty())
 					msg.addRecipient(Message.RecipientType.TO,
 							new InternetAddress(email.address));
 				else
 					msg.addRecipient(Message.RecipientType.TO,
 							new InternetAddress(email.address, email.name));
-
-			msg.setSubject(subject);
-			msg.setContent(message, "text/html");
-			send(msg);
+				send(msg);
+			}
 		} catch (Exception e) {
 			throw new IOException(e);
 		}
