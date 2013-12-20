@@ -45,8 +45,7 @@ public class SendResourceTask implements DeferredTask {
 			DataAccessObject dao = new DataAccessObject(pm);
 			Request dbRequest = dao.find(new Request(requestKey));
 
-			if (dbRequest == null
-					|| dbRequest.getStatus() == SENT)
+			if (dbRequest == null || dbRequest.getStatus() == SENT)
 				return;
 
 			Transaction tx = pm.currentTransaction();
@@ -107,6 +106,11 @@ public class SendResourceTask implements DeferredTask {
 								scrapper);
 						strategy.execute();
 						resource.setStatus(ResourceDistStatus.SENT);
+						throw new IllegalStateException(dist.getEmail()
+								+ " cooldown period, will retry later");
+					} catch (IllegalStateException e) {
+						request.setStatus(SENT_PARTIAL);
+						throw e;
 					} catch (Exception e) {
 						logger.log(Level.SEVERE, "Exception sending resource",
 								e);

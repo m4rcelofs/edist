@@ -44,4 +44,9 @@
 		<property name="group_key_OID" direction="asc" />
 		<property name="requestedAt" direction="desc" />
 	</datastore-index>
+
+	<datastore-index kind="Request" ancestor="true" source="manual">
+		<property name="group_key_OID" direction="asc" />
+		<property name="eRepDay" direction="asc" />
+	</datastore-index>
 </datastore-indexes>
