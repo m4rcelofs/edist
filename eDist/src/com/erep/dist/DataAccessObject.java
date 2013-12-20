@@ -239,18 +239,16 @@ public class DataAccessObject {
 		Key key = createPlayerKey(newPlayer.getErId());
 		newPlayer.setKey(key);
 
-		try {
-			pm.getObjectById(Player.class, newPlayer.getKey());
-			return false;
-		} catch (JDOObjectNotFoundException e) {
-			if (newPlayer.getGroups() != null)
-				for (PlayerGroup group : newPlayer.getGroups())
-					newPlayer.addGroup(find(group));
-			else
-				newPlayer.addGroup(defaultGroup());
+		if (newPlayer.getGroups() != null && !newPlayer.getGroups().isEmpty()) {
+			Set<PlayerGroup> groups = new HashSet<>();
+			for (PlayerGroup group : newPlayer.getGroups())
+				groups.add(find(group));
+			newPlayer.setGroups(groups);
+		} else
+			newPlayer.addGroup(defaultGroup());
 
-			pm.makePersistent(newPlayer);
-		}
+		pm.makePersistent(newPlayer);
+
 		return true;
 	}
 
@@ -351,7 +349,7 @@ public class DataAccessObject {
 		q.setOrdering("requestedAt desc");
 		return (List<Request>) q.execute(status);
 	}
-	
+
 	public List<Request> listRequests(RequestType type, String encodedCursor) {
 		Query q = queryWithCursor(Request.class, "type == typeParam",
 				encodedCursor);

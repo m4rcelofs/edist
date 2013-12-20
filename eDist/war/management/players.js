@@ -5,6 +5,8 @@ var PlayersViewModel = new function() {
 	self.groups = ko.observableArray([]);
 	self.granularity = ko.observable();
 	self.playersCursor = ko.observable();
+	
+	self.newPlayer = ko.mapping.fromJS(new Player());
 
 	self.onPlayersShow = function() {
 		if(self.players().length == 0) {
@@ -19,14 +21,12 @@ var PlayersViewModel = new function() {
 	}
 
 	self.addPlayer = function() {
-		var player = new Player();
-		player.erId = $('#new-player-id').val()
-
+		var player = ko.mapping.toJS(self.newPlayer);
+		groupIdsToGroups(player);
 		ManagementService.addPlayer(player, {
 			callback : function(response) {
 				if (response) {
 					$('#add-player-form').trigger('reset');
-
 					player.dbStatus = 'NEW';
 					self.players.push(player);
 				} else {
