@@ -24,11 +24,11 @@
 					<img class="img-thumbnail img-responsive"
 						 src="${baseUrl}/img/profile_avatar_55.cache.png"
 						 width="55px"
-						 data-bind="style: { 'background-image' : $root.avatar($data) !== null ? $root.avatar($data) :
+						 data-bind="style: { backgroundImage : $root.avatar($data) !== null ? $root.avatar($data) :
 										 'url(${baseUrl}/img/default_male_55.cache.gif)' ,
-										 'background-size' : '55px 55px',
-										 'background-repeat' : 'no-repeat',
-										 'background-position' : 'center'},
+										 backgroundSize : '55px 55px',
+										 backgroundRepeat : 'no-repeat',
+										 backgroundPosition : 'center'},
 									attr : {'data-content' : playerInfo ? playerInfo.name : ''},
 									updatePopup:{}"
 						data-toggle="popover">
