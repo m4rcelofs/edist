@@ -369,6 +369,7 @@ public class DataAccessObject {
 		Query q = queryWithCursor(DailyWork.class, "player == playerParam",
 				encodedCursor);
 		q.declareParameters(Key.class.getName() + " playerParam");
+		q.setOrdering("day desc");
 		return (List<DailyWork>) q.execute(player.getKey());
 	}
 
@@ -376,6 +377,7 @@ public class DataAccessObject {
 		Query q = queryWithCursor(DailyWork.class,
 				"groups.contains(groupParam)", encodedCursor);
 		q.declareParameters(Key.class.getName() + " groupParam");
+		q.setOrdering("day desc");
 		return (List<DailyWork>) q.execute(group.getKey());
 	}
 
@@ -383,6 +385,7 @@ public class DataAccessObject {
 		Query q = queryWithCursor(DailyWork.class, "employer == employerParam",
 				encodedCursor);
 		q.declareParameters(Key.class.getName() + " employerParam");
+		q.setOrdering("day desc");
 		return (List<DailyWork>) q.execute(employer.getKey());
 	}
 

@@ -1,46 +1,37 @@
-$(document).ready(
-		function() {
+$(document).ready(function() {
 
-			Reports.downloadFilters();
-			
-			ko.applyBindings(RequestsViewModel, document.getElementById('requests'));
-			ko.applyBindings(WorkViewModel, document.getElementById('work'));
+	Reports.downloadFilters();
 
-			$('#workTab').on('show.bs.tab', WorkViewModel.onWorkShow);
+	ko.applyBindings(RequestsViewModel, document.getElementById('requests'));
+	ko.applyBindings(WorkViewModel, document.getElementById('work'));
 
-			crossroads.addRoute('reports/requests', RequestsViewModel.initRequests);
-			crossroads.addRoute('reports/requests/date/:param:', RequestsViewModel.filterByDate);
-			crossroads.addRoute('reports/requests/day/:param:', RequestsViewModel.filterByDay);
-			crossroads.addRoute('reports/requests/distributor/:param:', RequestsViewModel.filterByDistributor);
-			crossroads.addRoute('reports/requests/group/:param:', RequestsViewModel.filterByGroup);
-			crossroads.addRoute('reports/requests/player/:param:', RequestsViewModel.filterByPlayer);
-			crossroads.addRoute('reports/requests/status/:param:', RequestsViewModel.filterByStatus);
-			crossroads.addRoute('reports/requests/type/:param:', RequestsViewModel.filterByType);
+	RequestsRoutes.addRoutes();
+	WorkRoutes.addRoutes();
 
-			crossroads.addRoute('reports/work', WorkViewModel.workTab);
+	Navigation.configureRoutes('/reports/');
 
-			Navigation.configureRoutes('/reports/');
+	if (Navigation.getCurrenLocation() === '/reports/') {
+		Navigation.setCurrentLocation('requests/day');
+	}
 
-			if (Navigation.getCurrenLocation() === '/reports/') {
-				Navigation.setCurrentLocation('requests/day');
-			}
-
-			if (Navigation.getCurrenLocation() === '/reports') {
-				Navigation.setCurrentLocation('reports/requests/day');
-			}
-		});
+	if (Navigation.getCurrenLocation() === '/reports') {
+		Navigation.setCurrentLocation('reports/requests/day');
+	}
+});
 
 var Reports = new function() {
 	var self = this;
 
 	self.groups = ko.observableArray();
 	self.distributors = ko.observableArray();
+	self.employers = ko.observableArray();
 
 	self.downloadFilters = function() {
 		ReportService.getInitialInfo({
 			callback : function(response) {
 				self.groups(response.groups);
 				self.distributors(response.distributors);
+				self.employers(response.employers);
 			}
 		});
 	}
@@ -54,5 +45,11 @@ var Reports = new function() {
 			console.log(message);
 		}
 		$('#error-alert').fadeIn();
+	}
+
+	self.avatar = function(item) {
+		return item && item.playerInfo ? 'url('
+				+ item.playerInfo.avatar.replace('142x142', '55x55') + ')'
+				: null;
 	}
 };

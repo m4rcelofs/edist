@@ -107,13 +107,7 @@ var RequestsViewModel = new function() {
 	self.completedAt = function(item) {
 		return formatDate(item.completedAt);
 	}
-
-	self.avatar = function(item) {
-		return item && item.playerInfo ? 'url('
-				+ item.playerInfo.avatar.replace('142x142', '55x55') + ')'
-				: null;
-	}
-
+	
 	function checkParam(param) {
 		return param && param !== 'undefined' && param !== 'null' ? param
 				: null;
@@ -155,4 +149,26 @@ var RequestsViewModel = new function() {
 		$('#requestsTab').tab('show');
 	}
 
+};
+
+var RequestsRoutes = new function() {
+	var self = this;
+
+	self.addRoutes = function() {
+		crossroads.addRoute('reports/requests', RequestsViewModel.initRequests);
+		crossroads.addRoute('reports/requests/date/:param:',
+				RequestsViewModel.filterByDate);
+		crossroads.addRoute('reports/requests/day/:param:',
+				RequestsViewModel.filterByDay);
+		crossroads.addRoute('reports/requests/distributor/:param:',
+				RequestsViewModel.filterByDistributor);
+		crossroads.addRoute('reports/requests/group/:param:',
+				RequestsViewModel.filterByGroup);
+		crossroads.addRoute('reports/requests/player/:param:',
+				RequestsViewModel.filterByPlayer);
+		crossroads.addRoute('reports/requests/status/:param:',
+				RequestsViewModel.filterByStatus);
+		crossroads.addRoute('reports/requests/type/:param:',
+				RequestsViewModel.filterByType);
+	}
 };

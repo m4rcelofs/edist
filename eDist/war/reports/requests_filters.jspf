@@ -26,7 +26,7 @@
 					data-bind="if: $root.category() === 'distributor'">
 					<select class="selectpicker show-menu-arrow navbar-btn show-tick"
 						data-bind=" options: filters.distributors, 
-									optionsText: function(item){ return item.name ? item.name : item.email ? item.email : item.encodedKey;},
+									optionsText: function(item){ return item.name ? item.name : item.encodedKey;},
 									optionsValue: function(item) { return item ? item.encodedKey : '' }, 
 									value: filters.searchText, 
 									enable: $root.filters.distributors().length > 0,

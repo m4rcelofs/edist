@@ -181,8 +181,10 @@
 		<init-param>
 			<param-name>classes</param-name>
 			<param-value>
+				com.erep.dist.data.DailyWork,
 				com.erep.dist.data.DistConfig,
 				com.erep.dist.data.Distributor,
+				com.erep.dist.data.Employer,
 				com.erep.dist.data.Player,
 				com.erep.dist.data.PlayerGroup,
 				com.erep.dist.data.Request,
@@ -191,10 +193,12 @@
 				com.erep.dist.dwr.ReportService,
 				
 				com.erep.dist.dwr.dto.RequestQuery,
+				com.erep.dist.dwr.dto.WorkQuery,
 				com.erep.dist.dwr.dto.FiltersInitialInfo,
 
 				com.erep.dist.data.enums.RequestType,
 				com.erep.dist.data.enums.PlayerStatus,
+				com.erep.dist.data.enums.PlayerDistStatus,
 				com.erep.dist.data.enums.RequestStatus,
 				com.erep.dist.data.enums.ResourceDistStatus,
 				com.erep.dist.data.enums.ResourceType,
