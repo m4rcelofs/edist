@@ -5,12 +5,12 @@ var PlayersViewModel = new function() {
 	self.groups = ko.observableArray([]);
 	self.granularity = ko.observable();
 	self.playersCursor = ko.observable();
-	
+
 	self.newPlayer = ko.mapping.fromJS(new Player());
 
 	self.onPlayersShow = function() {
-		if(self.players().length == 0) {
-			loadGroupNames(loadPlayers);			
+		if (self.players().length == 0) {
+			loadGroupNames(loadPlayers);
 		}
 	};
 
@@ -28,7 +28,7 @@ var PlayersViewModel = new function() {
 				if (response) {
 					$('#add-player-form').trigger('reset');
 					player.dbStatus = 'NEW';
-					self.players.push(player);
+					self.players.unshift(player);
 				} else {
 					Management.defaultError();
 				}
@@ -148,11 +148,13 @@ var PlayersViewModel = new function() {
 
 	function groupIdsToGroups(player) {
 		var groups = [];
-		player.groupIds.forEach(function(groupId) {
-			groups.push({
-				encodedKey : groupId
+		if (player.groupIds) {
+			player.groupIds.forEach(function(groupId) {
+				groups.push({
+					encodedKey : groupId
+				});
 			});
-		});
+		}
 		player.groups = groups;
 	}
 };

@@ -135,9 +135,10 @@
 
 							</div>
 							<div class="col-md-9 table-responsive">
-								<strong data-bind="if: dbStatus !== 'NEW' && dbStatus !== 'ERROR'"> <a
+								<strong> <a
 									data-bind="attr : { href: 'http://www.erepublik.com/en/citizen/profile/' + erId }"><span
-										data-bind="text: name"></span></a>
+										data-bind="text: dbStatus === 'ERROR' ? 'Jogador Inexistente' : 
+													name ? name : 'Buscando jogador no eRepublik...'"></span></a>
 								</strong>
 								<table class="table table-condensed">
 									<tbody>
