@@ -11,7 +11,7 @@
 					href="#/reports/work/day">por Dia</a></li>
 				<li data-bind="css: {active : category() === 'employer'}"><a
 					href="#/reports/work/employer">por Gestor</a></li>
-				<li data-bind="css: {active : category() === 'day'}"><a
+				<li data-bind="css: {active : category() === 'group'}"><a
 					href="#/reports/work/group">por Grupo</a></li>
 				<li data-bind="css: {active : category() === 'player'}"><a
 					href="#/reports/work/player">por Jogador</a></li>
@@ -19,15 +19,15 @@
 		</div>
 		<div class="col-md-10">
 
-<%-- 			<%@ include file="requests_filters.jspf"%> --%>
+			<%@ include file="work_filters.jspf"%>
 
-<%-- 			<%@ include file="requests_table.jspf"%> --%>
+			<%@ include file="work_table.jspf"%>
 
 			<ul class="pager">
-<!-- 				<li class="next" -->
-<!-- 					data-bind="css: {disabled: cursor() === null}, -->
-<!-- 						click: loadNextPage"><a -->
-<!-- 					href="#">Exibir próximos</a></li> -->
+				<li class="next"
+					data-bind="css: {disabled: cursor() === null || cursor() === ''},
+ 						click: loadNextPage"><a
+					href="#">Exibir próximos</a></li>
 			</ul>
 		</div>
 	</div>

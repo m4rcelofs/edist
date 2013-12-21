@@ -1,0 +1,57 @@
+<div data-bind="if: $root.category()">
+	<nav class="navbar navbar-default" role="navigation">
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle" data-toggle="collapse"
+				data-target="#requests-filter-collapse">
+				<span class="sr-only">Abrir/Fechar Filtros</span> <span
+					class="icon-bar"></span> <span class="icon-bar"></span> <span
+					class="icon-bar"></span>
+			</button>
+			<p class="navbar-text">Filtros</p>
+		</div>
+		<div class="collapse navbar-collapse" id="requests-filter-collapse">
+			<form class="navbar-form navbar-right" role="search"
+				data-bind="submit: doSearch">
+				<div class="form-group" data-bind="if: $root.category() === 'date'">
+					<input type="date" class="form-control" placeholder="aaaa-mm-dd"
+						data-bind="value: filters.searchText">
+				</div>
+				<div class="form-group" data-bind="if: $root.category() === 'day'">
+					<input type="number" class="form-control" placeholder="Dia"
+						data-bind="value: filters.searchText">
+				</div>
+				<div class="form-group"
+					data-bind="if: $root.category() === 'employer'">
+					<select class="selectpicker show-menu-arrow navbar-btn show-tick"
+						data-bind=" options: filters.employers, 
+									optionsText: function(item){ return item.name ? item.name : item.erId ? item.erId : 'Sem nome';},
+									optionsValue: function(item) { return item ? item.encodedKey : '' }, 
+									value: filters.searchText, 
+									enable: $root.filters.employers().length > 0,
+									updateSelectPicker: $root.filters.employers">
+					</select>
+				</div>
+				<div class="form-group" data-bind="if: $root.category() === 'group'">
+					<select class="selectpicker show-menu-arrow navbar-btn show-tick"
+						data-bind=" options: filters.groups, 
+									optionsText: function(item){ return item.groupName ? item.groupName : 'Sem nome' },
+									optionsValue: function(item) { return item ? item.encodedKey : '' }, 
+									value: filters.searchText, 
+									enable: $root.filters.groups().length > 0,
+									updateSelectPicker: filters.groups">
+					</select>
+				</div>
+				<div class="form-group"
+					data-bind="if: $root.category() === 'player'">
+					<input type="text" class="form-control"
+						placeholder="ID, link ou nick"
+						data-bind="value: filters.searchText">
+				</div>
+				<button type="submit" class="btn btn-default">
+					<span class="glyphicon glyphicon-search"></span> <span
+						class="sr-only">Filtrar</span>
+				</button>
+			</form>
+		</div>
+	</nav>
+</div>

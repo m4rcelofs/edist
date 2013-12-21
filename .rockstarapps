@@ -133,6 +133,8 @@
         <removeLogs>true</removeLogs>
         <oldFileNames>false</oldFileNames>
         <dependencies>
+         	<file>eDist/war/reports/dwr-engine-20131220.js</file>
+            <file>eDist/war/reports/dwr-interface20131220.js</file> 
             <file>eDist/war/reports/reports.js</file>
             <file>eDist/war/reports/requests.js</file>
             <file>eDist/war/reports/work.js</file>

@@ -103,12 +103,13 @@ public class EmployerFacadeServlet extends HttpServlet {
 		for (Object workObj : works) {
 			JSONObject workDay = (JSONObject) workObj;
 
-			DailyWork work = new DailyWork();
-			work.setDay(Integer.valueOf(workDay.get("day").toString()));
+			Integer day = Integer.valueOf(workDay.get("day").toString());
+
+			DailyWork work = new DailyWork(dao.createDailyWorkKey(player, day));
+			work.setDay(day);
 			work.setEmployer(employer);
 			work.setGroups(player.getGroups());
 			work.setPlayer(player);
-			work.setKey(dao.createDailyWorkKey(player, work.getDay()));
 
 			Object worked = workDay.get("worked");
 			work.setWorked(worked != null ? Boolean.valueOf(worked.toString())

@@ -5,9 +5,7 @@
 <t:wrapper>
 
 	<jsp:attribute name="imports">
-		<script type='text/javascript' src='${baseUrl}/reports/dwr/engine.js'></script>
-		<script type='text/javascript' src='${baseUrl}/reports/dwr/interface/ReportService.js'></script>
-		<script type='text/javascript' src='${baseUrl}/reports/reports.all.js'></script>
+		<script type='text/javascript' src='${baseUrl}/reports/reports.all.closure.js'></script>
     </jsp:attribute>
 
 	<jsp:body>
