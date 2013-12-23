@@ -2,7 +2,10 @@ package com.erep.dist.dwr;
 
 import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withPayload;
 
+import java.util.Arrays;
 import java.util.List;
+
+import javax.jdo.JDOObjectNotFoundException;
 
 import org.directwebremoting.annotations.RemoteMethod;
 import org.directwebremoting.annotations.RemoteProxy;
@@ -10,9 +13,11 @@ import org.directwebremoting.annotations.RemoteProxy;
 import com.erep.dist.CloseablePM;
 import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
+import com.erep.dist.PlayerIdentificator;
 import com.erep.dist.data.Distributor;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
+import com.erep.dist.data.enums.PlayerDistStatus;
 import com.erep.dist.dwr.dto.PlayerGroupQuery;
 import com.erep.dist.dwr.dto.PlayerQuery;
 import com.erep.dist.instances.frontend.tasks.GetUserInfoTask;
@@ -85,7 +90,7 @@ public class ManagementService {
 	}
 
 	@RemoteMethod
-	public PlayerQuery listPlayers(String cursor) {
+	public PlayerQuery listPlayers(Void param, String cursor) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 
 			pm.getFetchPlan().addGroup("playerConfigListing");
@@ -93,6 +98,92 @@ public class ManagementService {
 			PlayerQuery queryResults = new PlayerQuery();
 			DataAccessObject dao = new DataAccessObject(pm);
 			List<Player> players = dao.listPlayers(cursor);
+
+			queryResults.setResults(players);
+			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(players)
+					.toWebSafeString());
+
+			queryResults.setGranularity(dao.getServerConfig().getGranularity());
+
+			return queryResults;
+		}
+	}
+
+	@RemoteMethod
+	public PlayerQuery listPlayersByGroup(PlayerGroup param, String cursor) {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+
+			pm.getFetchPlan().addGroup("playerConfigListing");
+
+			PlayerQuery queryResults = new PlayerQuery();
+			DataAccessObject dao = new DataAccessObject(pm);
+
+			if (param != null) {
+				List<Player> players = dao.listPlayersByGroup(param, cursor);
+				queryResults.setResults(players);
+				queryResults.setEncodedCursor(JDOCursorHelper
+						.getCursor(players).toWebSafeString());
+			}
+
+			queryResults.setGranularity(dao.getServerConfig().getGranularity());
+
+			return queryResults;
+		}
+	}
+
+	@RemoteMethod
+	public PlayerQuery listPlayersByString(String param, String cursor) {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+
+			pm.getFetchPlan().addGroup("playerConfigListing");
+
+			PlayerQuery queryResults = new PlayerQuery();
+			DataAccessObject dao = new DataAccessObject(pm);
+
+			try {
+				Player player = new PlayerIdentificator(dao)
+						.identifyRequestString(param);
+				if (player != null)
+					queryResults.setResults(Arrays.asList(player));
+			} catch (JDOObjectNotFoundException e) {
+				// ignore
+			}
+
+			queryResults.setGranularity(dao.getServerConfig().getGranularity());
+
+			return queryResults;
+		}
+	}
+
+	@RemoteMethod
+	public PlayerQuery listPlayersByFight(PlayerDistStatus param, String cursor) {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+
+			pm.getFetchPlan().addGroup("playerConfigListing");
+
+			PlayerQuery queryResults = new PlayerQuery();
+			DataAccessObject dao = new DataAccessObject(pm);
+			List<Player> players = dao.listPlayersByFight(param, cursor);
+
+			queryResults.setResults(players);
+			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(players)
+					.toWebSafeString());
+
+			queryResults.setGranularity(dao.getServerConfig().getGranularity());
+
+			return queryResults;
+		}
+	}
+
+	@RemoteMethod
+	public PlayerQuery listPlayersByWork(PlayerDistStatus param, String cursor) {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+
+			pm.getFetchPlan().addGroup("playerConfigListing");
+
+			PlayerQuery queryResults = new PlayerQuery();
+			DataAccessObject dao = new DataAccessObject(pm);
+			List<Player> players = dao.listPlayersByWork(param, cursor);
 
 			queryResults.setResults(players);
 			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(players)

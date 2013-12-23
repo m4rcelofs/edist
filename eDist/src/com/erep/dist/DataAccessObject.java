@@ -34,6 +34,7 @@ import com.erep.dist.data.PlayerRoot;
 import com.erep.dist.data.RegisteredUser;
 import com.erep.dist.data.Request;
 import com.erep.dist.data.ServerConfig;
+import com.erep.dist.data.enums.PlayerDistStatus;
 import com.erep.dist.data.enums.RequestStatus;
 import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.instances.frontend.tasks.NotifyEmailChangeTask;
@@ -303,6 +304,35 @@ public class DataAccessObject {
 				encodedCursor);
 		q.declareParameters(Key.class.getName() + " rootParam");
 		return (List<Player>) q.execute(playerRootKey());
+	}
+
+	public List<Player> listPlayersByGroup(PlayerGroup group,
+			String encodedCursor) {
+		Query q = queryWithCursor(Player.class,
+				"root == rootParam && groups.contains(groupParam)",
+				encodedCursor);
+		q.declareParameters(Key.class.getName() + " rootParam, "
+				+ Key.class.getName() + " groupParam");
+		return (List<Player>) q.execute(playerRootKey(), group.getKey());
+	}
+
+	public List<Player> listPlayersByFight(PlayerDistStatus status,
+			String encodedCursor) {
+		Query q = queryWithCursor(Player.class,
+				"root == rootParam && fightStatus == statusParam",
+				encodedCursor);
+		q.declareParameters(Key.class.getName() + " rootParam, "
+				+ PlayerDistStatus.class.getName() + " statusParam");
+		return (List<Player>) q.execute(playerRootKey(), status);
+	}
+
+	public List<Player> listPlayersByWork(PlayerDistStatus status,
+			String encodedCursor) {
+		Query q = queryWithCursor(Player.class,
+				"root == rootParam && workStatus == statusParam", encodedCursor);
+		q.declareParameters(Key.class.getName() + " rootParam, "
+				+ PlayerDistStatus.class.getName() + " statusParam");
+		return (List<Player>) q.execute(playerRootKey(), status);
 	}
 
 	public List<Request> listRequests(String encodedCursor) {

@@ -24,7 +24,7 @@ public class PlayerIdentificator {
 
 		Player p = new Player();
 		if (idNameOrLink == null || idNameOrLink.isEmpty())
-			return p;
+			return null;
 
 		idNameOrLink = idNameOrLink.trim();
 		try {
@@ -37,7 +37,7 @@ public class PlayerIdentificator {
 				// assume name
 				p.setKey(dao.findPlayerKey(idNameOrLink));
 		} catch (IllegalArgumentException e) {
-			return p;
+			return null;
 		}
 		return dao.find(p);
 	}

@@ -1,276 +1,43 @@
 <div class="tab-pane" id="playersList">
+
 	<div class="form-group"></div>
-	<div class="panel-group" id="add-player-accordion">
-		<div class="panel panel-default">
-			<div class="panel-heading">
-				<a class="accordion-toggle" data-toggle="collapse"
-					data-parent="#add-player-accordion" href="#player-collapse-one"><span
-					class="glyphicon glyphicon-plus-sign"></span> Adicionar Jogador</a>
-			</div>
-			<div id="player-collapse-one" class="panel-collapse collapse">
-				<div class="panel-body">
-					<form id="add-player-form" class="form-inline" role="form"
-						data-bind="submit: addPlayer">
-						<div class="form-group">
-							<label class="sr-only" for="new-player-id">ID do jogador</label>
-							<input type="text" class="form-control" id="new-player-id"
-								placeholder="ID do jogador" data-bind="value : newPlayer.erId">
-						</div>
-						<div class="form-group">
-							<label class="sr-only" for="new-player-rocket">Fábrica de
-								Foguetes</label> <select id="new-player-rocket"
-								class="selectpicker show-menu-arrow show-tick"
-								data-bind="value: newPlayer.rocketEnabled, updateSelectPicker:{}"
-								data-container="#playersList">
-								<option value="NONE" data-subtext="):">Sem fábrica de foguetes</option>
-								<option value="Q1">Fábrica Q1</option>
-								<option value="Q2">Fábrica Q2</option>
-								<option value="Q3">Fábrica Q3</option>
-								<option value="Q4">Fábrica Q4</option>
-								<option value="Q5">Fábrica Q5</option>
-							</select>
-						</div>
-						<div class="form-group">
-							<select class="selectpicker show-menu-arrow" multiple
-								title="Selecione o(s) grupo(s)"
-								data-selected-text-format="count>3"
-								data-count-selected-text="{0} grupos selecionados"
-								data-bind="options: $root.groups, 
-											optionsText: 'groupName',
-											optionsValue: 'encodedKey', 
-											selectedOptions: newPlayer.groupIds,
-											updateSelectPicker: $root.groups"
-								data-container="#playersList">
-							</select>
-						</div>
-						<button id="save-new-player" class="btn btn-primary" type="submit">
-							<span class="glyphicon glyphicon-floppy-disk"></span> Salvar
-						</button>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
+	<%@ include file="player_new.jspf"%>
 	<div class="form-group"></div>
-	<div class="text-center" data-bind="if: players().length == 0">
-		<img id="players-loader" src="../img/loader.cache.gif" />
-	</div>
-	<div data-bind="foreach: players">
-		<div class="row">
-			<div class="col-md-10 col-md-offset-1">
-				<div class="panel panel-default"
-					data-bind="css: { 'panel-danger': dbStatus === 'ERROR' }, attr: { id: encodedKey}">
-					<div class="panel-body">
-						<div class="row">
-							<div class="col-md-3">
-								<img class="img-thumbnail img-responsive"
-									src="../img/profile_avatar.cache.png"
-									data-bind="style: { background : avatar === null ? 'url(../img/default_male.cache.gif) no-repeat center' : 'url(' + avatar + ') no-repeat center'}">
-								<div class="form-group"></div>
-								<div data-bind="if: dbStatus === 'NEW'">
-									<p>
-										<span class="label label-info">Novo</span>
-									</p>
-								</div>
-								<div data-bind="if: dbStatus === 'ERROR'">
-									<p>
-										<span class="label label-danger">Erro</span>
-									</p>
-								</div>
-								<div data-bind="if: dbStatus === 'ENABLED'">
-									<p>
-										<span class="label label-success">Habilitado</span>
-									</p>
-								</div>
-								<div data-bind="if: dbStatus === 'DISABLED'">
-									<p>
-										<span class="label label-default">Desabilitado</span>
-									</p>
-								</div>
 
-								<div data-bind="if: fightStatus === null">
-									<p>
-										<span class="label label-default">Lutas: Não verificado</span>
-									</p>
-								</div>
-								<div data-bind="if: fightStatus === 'OK'">
-									<p>
-										<span class="label label-success">Lutas: OK</span>
-									</p>
-								</div>
-								<div data-bind="if: fightStatus === 'WARNING'">
-									<p>
-										<span class="label label-warning">Lutas: Atenção!</span>
-									</p>
-								</div>
-								<div data-bind="if: fightStatus === 'TEMP_BANNED'">
-									<p>
-										<span class="label label-danger">Lutas: Suspenso
-											Temporariamente</span>
-									</p>
-								</div>
-
-								<div data-bind="if: workStatus === null">
-									<p>
-										<span class="label label-default">Trabalho: Não
-											verificado</span>
-									</p>
-								</div>
-								<div data-bind="if: workStatus === 'OK'">
-									<p>
-										<span class="label label-success">Trabalho: OK</span>
-									</p>
-								</div>
-								<div data-bind="if: workStatus === 'WARNING'">
-									<p>
-										<span class="label label-warning">Trabalho: Atenção!</span>
-									</p>
-								</div>
-								<div data-bind="if: workStatus === 'TEMP_BANNED'">
-									<p>
-										<span class="label label-danger">Trabalho: Suspenso
-											Temporariamente</span>
-									</p>
-								</div>
-
-							</div>
-							<div class="col-md-9 table-responsive">
-								<strong> <a
-									data-bind="attr : { href: 'http://www.erepublik.com/en/citizen/profile/' + erId }"><span
-										data-bind="text: dbStatus === 'ERROR' ? 'Jogador Inexistente' : 
-													name ? name : 'Buscando jogador no eRepublik...'"></span></a>
-								</strong>
-								<table class="table table-condensed">
-									<tbody>
-										<tr>
-											<td><span class="glyphicon glyphicon-tags"></span>
-												Grupos:</td>
-											<td><select class="selectpicker show-menu-arrow"
-												title="Selecione o(s) grupo(s)"
-												multiple data-selected-text-format="count>3"
-												data-count-selected-text="{0} grupos selecionados"
-												data-bind="options: $root.groups, 
-															optionsText: 'groupName',
-															optionsValue: 'encodedKey', 
-															selectedOptions: groupIds,
-															enable: dbStatus !== 'NEW' && dbStatus !== 'ERROR',
-												 	 		updateSelectPicker:{}">
-											</select></td>
-										</tr>
-										<tr>
-											<td><span class="glyphicon glyphicon-fire"></span>
-												Fábrica de Foguetes:</td>
-											<td><select
-												class="selectpicker show-menu-arrow show-tick"
-												data-bind="value: rocketEnabled,
-														   enable: dbStatus !== 'NEW' && dbStatus !== 'ERROR',
-														   updateSelectPicker:{}">
-													<option value="NONE" data-subtext="):">Sem fábrica</option>
-													<option value="Q1">Fábrica Q1</option>
-													<option value="Q2">Fábrica Q2</option>
-													<option value="Q3">Fábrica Q3</option>
-													<option value="Q4">Fábrica Q4</option>
-													<option value="Q5">Fábrica Q5</option>
-											</select> <span class="pull-right"><a href="#" class="help"
-													data-toggle="popover" title=""
-													data-content="Só é utilizada se a Distribuição de Foguetes estiver ativa"
-													data-bind="updatePopup:{}"> <span
-														class="glyphicon glyphicon-question-sign"></span>
-												</a></span></td>
-										</tr>
-										<tr data-bind="if: $root.playerConfigEnabled() === true 
-													   && dbStatus !== 'NEW' && dbStatus !== 'ERROR'">
-											<td><span class="glyphicon glyphicon-cog"></span>
-												Distribuição:</td>
-											<td><a href="javascript:void(0);"
-												class="btn btn-default"
-												data-bind="click: $root.addConfig, visible: config === null"
-												title="Adicionar Configuração"> <span
-													class="glyphicon glyphicon-new-window"></span> Adicionar
-											</a> <a href="javascript:void(0);" class="btn btn-default"
-												data-bind="click: $root.editConfig, visible: config !== null"
-												title="Editar Configuração"> <span
-													class="glyphicon glyphicon-pencil"></span> Editar
-											</a> <a href="javascript:void(0);" class="btn btn-sm btn-default"
-												data-bind="click: $root.removeConfig, visible: config !== null"
-												title="Remover Configuração"> <span
-													class="glyphicon glyphicon-remove"></span> Remover
-											</a> <span class="pull-right" data-bind="if: config === null"><a
-													href="#" class="help" data-toggle="popover" title=""
-													data-content="Será utilizada a configuração do(s) grupo(s)"
-													data-bind="updatePopup:{}"> <span
-														class="glyphicon glyphicon-question-sign"></span>
-												</a></span></td>
-										</tr>
-										<tr data-bind="if: $root.playerConfigEnabled() === true
-													   && dbStatus !== 'NEW' && dbStatus !== 'ERROR'">
-											<td><span class="glyphicon glyphicon-screenshot"></span>
-												Verificação de Lutas:</td>
-											<td><a href="javascript:void(0);"
-												class="btn btn-default"
-												data-bind="click: $root.addFightVerif, visible: fightVerif === null"
-												title="Adicionar Verificação de Lutas"> <span
-													class="glyphicon glyphicon-new-window"></span> Adicionar
-											</a> <a href="javascript:void(0);" class="btn btn-default"
-												data-bind="click: $root.editFightVerif, visible: fightVerif !== null"
-												title="Editar Verificação de Lutas"> <span
-													class="glyphicon glyphicon-pencil"></span> Editar
-											</a> <a href="javascript:void(0);" class="btn btn-sm btn-default"
-												data-bind="click: $root.removeFightVerif, visible: fightVerif !== null"
-												title="Remover Verificação de Lutas"> <span
-													class="glyphicon glyphicon-remove"></span> Remover
-											</a> <span class="pull-right" data-bind="if: fightVerif === null"><a
-													href="#" class="help" data-toggle="popover" title=""
-													data-content="Será utilizada a verificação de lutas do(s) grupo(s)"
-													data-bind="updatePopup:{}"> <span
-														class="glyphicon glyphicon-question-sign"></span>
-												</a></span></td>
-										</tr>
-										<tr data-bind="if: $root.playerConfigEnabled() === true
-													   && dbStatus !== 'NEW' && dbStatus !== 'ERROR'">
-											<td><span class="glyphicon glyphicon-wrench"></span>
-												Verificação de Trabalho:</td>
-											<td><a href="javascript:void(0);"
-												class="btn
-													btn-default"
-												data-bind="click: $root.addWorkVerif, visible:
-													workVerif === null"
-												title="Adicionar Verificação de
-													Trabalho">
-													<span class="glyphicon glyphicon-new-window"></span>
-													Adicionar
-											</a> <a href="javascript:void(0);" class="btn btn-default"
-												data-bind="click: $root.editWorkVerif, visible: workVerif !== null"
-												title="Editar Verificação de Trabalho"> <span
-													class="glyphicon glyphicon-pencil"></span> Editar
-											</a> <a href="javascript:void(0);" class="btn btn-sm btn-default"
-												data-bind="click: $root.removeWorkVerif, visible: workVerif !== null"
-												title="Remover Verificação de Trabalho"> <span
-													class="glyphicon glyphicon-remove"></span> Remover
-											</a> <span class="pull-right" data-bind="if: workVerif === null"><a
-													href="#" class="help" data-toggle="popover" title=""
-													data-content="Será utilizada a verificação de trabalho do(s) grupo(s)"
-													data-bind="updatePopup:{}"> <span
-														class="glyphicon glyphicon-question-sign"></span>
-												</a></span></td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-						</div>
-						<button class="btn btn-primary pull-right"
-							data-bind="click: $root.savePlayer, enable: dbStatus !== 'NEW' && dbStatus !== 'ERROR'" title="Salvar">
-							<span class="glyphicon glyphicon-floppy-disk"></span> Salvar
-						</button>
-					</div>
-				</div>
-			</div>
+	<div class="row">
+		<div class="col-md-2">
+			<ul id="players.horizontal.nav" class="nav nav-pills nav-stacked">
+				<li data-bind="css: {active : category() === 'all'}"><a
+					href="#/management/playersList/all">Todos</a></li>
+				<li data-bind="css: {active : category() === 'search'}"><a
+					href="#/management/playersList/search">Busca</a></li>
+				<li data-bind="css: {active : category() === 'group'}"><a
+					href="#/management/playersList/group">por Grupo</a></li>
+				<li data-bind="css: {active : category() === 'fight'}"><a
+					href="#/management/playersList/fight">por Lutas</a></li>
+				<li data-bind="css: {active : category() === 'work'}"><a
+					href="#/management/playersList/work">por Trabalho</a></li>
+			</ul>
 		</div>
-	</div>
-	<ul class="pager">
-		<li class="next"
-			data-bind="css: {disabled: playersCursor() === null},
+		<div class="col-md-10">
+
+			<%@ include file="player_filters.jspf"%>
+
+<!-- 			<div class="text-center" data-bind="if: players().length == 0"> -->
+<%-- 				<img id="players-loader" src="${baseUrl}/img/loader.cache.gif" /> --%>
+<!-- 			</div> -->
+
+			<div data-bind="foreach: players">
+				<%@ include file="player_template.jspf"%>
+			</div>
+
+			<ul class="pager">
+				<li class="next"
+					data-bind="css: {disabled: playersCursor() === null || playersCursor() === ''},
 						click: loadNextPage"><a
-			href="#">Exibir próximos</a></li>
-	</ul>
+					href="#">Exibir próximos</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="form-group"></div>
 </div>

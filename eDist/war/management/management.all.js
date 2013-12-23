@@ -1342,88 +1342,111 @@ dwr.engine._debug = function(message, stacktrace) {
 /*
  * START OF FILE - /edist/eDist/war/management/dwr-interface-20131121.js
  */
+
 if (typeof FightVerification != "function") {
-	function FightVerification() {
-		this.fightVerifPct = 0;
-		this.fightVerifDays = 0;
-		this.fightVerifAction = null;
-	}
+  function FightVerification() {
+    this.fightVerifPct = 0;
+    this.fightVerifDays = 0;
+    this.fightVerifAction = null;
+  }
 }
 
 if (typeof WorkVerification != "function") {
-	function WorkVerification() {
-		this.workVerifDays = 0;
-		this.minWorkedDaysPct = 0;
-		this.workVerifAction = null;
-	}
+  function WorkVerification() {
+    this.workVerifDays = 0;
+    this.minWorkedDaysPct = 0;
+    this.workVerifAction = null;
+  }
+}
+
+if (typeof Request != "function") {
+  function Request() {
+    this.resources = null;
+    this.status = null;
+    this.type = null;
+    this.completedAt = null;
+    this.eRepDay = null;
+    this.ip = null;
+    this.rocketQuality = null;
+    this.XAppEngineRegion = null;
+    this.requestedAt = null;
+    this.requestedFF = null;
+    this.distributor = null;
+    this.XAppEngineCity = null;
+    this.XAppEngineCountry = null;
+    this.group = null;
+    this.playerInfo = null;
+    this.encodedKey = null;
+  }
 }
 
 if (typeof DistConfig != "function") {
-	function DistConfig() {
-		this.allowedType = null;
-		this.allowedWeaponQuality = null;
-		this.autoSend = null;
-		this.rocketAllowed = null;
-		this.distributor = null;
-		this.currentMaxDailyFF = null;
-	}
+  function DistConfig() {
+    this.allowedType = null;
+    this.allowedWeaponQuality = null;
+    this.autoSend = null;
+    this.rocketAllowed = null;
+    this.distributor = null;
+    this.currentMaxDailyFF = null;
+  }
 }
 
 if (typeof Player != "function") {
-	function Player() {
-		this.groupIds = null;
-		this.fightStatus = null;
-		this.name = null;
-		this.dbStatus = null;
-		this.config = null;
-		this.workStatus = null;
-		this.fightVerif = null;
-		this.rocketEnabled = null;
-		this.avatar = null;
-		this.workVerif = null;
-		this.encodedKey = null;
-		this.erId = null;
-	}
+  function Player() {
+    this.fightStatus = null;
+    this.name = null;
+    this.dbStatus = null;
+    this.config = null;
+    this.workStatus = null;
+    this.fightVerif = null;
+    this.rocketEnabled = null;
+    this.avatar = null;
+    this.workVerif = null;
+    this.encodedKey = null;
+    this.groups = null;
+    this.erId = null;
+  }
 }
 
 // Provide a default path to dwr.engine
-if (dwr == null)
-	var dwr = {};
-if (dwr.engine == null)
-	dwr.engine = {};
-if (DWREngine == null)
-	var DWREngine = dwr.engine;
+if (dwr == null) var dwr = {};
+if (dwr.engine == null) dwr.engine = {};
+if (DWREngine == null) var DWREngine = dwr.engine;
 
-if (ManagementService == null)
-	var ManagementService = {};
+if (ManagementService == null) var ManagementService = {};
 ManagementService._path = '/management/dwr';
-ManagementService.editPlayer = function(p0, callback) {
-	dwr.engine._execute(ManagementService._path, 'ManagementService',
-			'editPlayer', p0, callback);
-}
-ManagementService.saveGroup = function(p0, callback) {
-	dwr.engine._execute(ManagementService._path, 'ManagementService',
-			'saveGroup', p0, callback);
-}
-ManagementService.listPlayers = function(p0, callback) {
-	dwr.engine._execute(ManagementService._path, 'ManagementService',
-			'listPlayers', p0, callback);
-}
 ManagementService.listGroups = function(callback) {
-	dwr.engine._execute(ManagementService._path, 'ManagementService',
-			'listGroups', callback);
+  dwr.engine._execute(ManagementService._path, 'ManagementService', 'listGroups', callback);
 }
-ManagementService.listGroupNames = function(callback) {
-	dwr.engine._execute(ManagementService._path, 'ManagementService',
-			'listGroupNames', callback);
-}
-ManagementService.addPlayer = function(p0, callback) {
-	dwr.engine._execute(ManagementService._path, 'ManagementService',
-			'addPlayer', p0, callback);
+ManagementService.listPlayers = function(p0, p1, callback) {
+  dwr.engine._execute(ManagementService._path, 'ManagementService', 'listPlayers', p0, p1, callback);
 }
 ManagementService.listDistributors = function(callback) {
-	dwr.engine._execute(ManagementService._path, 'ManagementService',
-			'listDistributors', callback);
+  dwr.engine._execute(ManagementService._path, 'ManagementService', 'listDistributors', callback);
+}
+ManagementService.editPlayer = function(p0, callback) {
+  dwr.engine._execute(ManagementService._path, 'ManagementService', 'editPlayer', p0, callback);
+}
+ManagementService.addPlayer = function(p0, callback) {
+  dwr.engine._execute(ManagementService._path, 'ManagementService', 'addPlayer', p0, callback);
+}
+ManagementService.saveGroup = function(p0, callback) {
+  dwr.engine._execute(ManagementService._path, 'ManagementService', 'saveGroup', p0, callback);
+}
+ManagementService.listGroupNames = function(callback) {
+  dwr.engine._execute(ManagementService._path, 'ManagementService', 'listGroupNames', callback);
+}
+ManagementService.listPlayersByGroup = function(p0, p1, callback) {
+  dwr.engine._execute(ManagementService._path, 'ManagementService', 'listPlayersByGroup', p0, p1, callback);
+}
+ManagementService.listPlayersByString = function(p0, p1, callback) {
+  dwr.engine._execute(ManagementService._path, 'ManagementService', 'listPlayersByString', p0, p1, callback);
+}
+ManagementService.listPlayersByFight = function(p0, p1, callback) {
+  dwr.engine._execute(ManagementService._path, 'ManagementService', 'listPlayersByFight', p0, p1, callback);
+}
+ManagementService.listPlayersByWork = function(p0, p1, callback) {
+  dwr.engine._execute(ManagementService._path, 'ManagementService', 'listPlayersByWork', p0, p1, callback);
 }
 /*
  * END OF FILE - /edist/eDist/war/management/dwr-interface-20131121.js
@@ -1563,20 +1586,22 @@ $(document).ready(function() {
 	ko.applyBindings(DistConfigViewModel, document.getElementById('distConfigDialog'));
 	ko.applyBindings(FightVerificationViewModel, document.getElementById('fightVerifDialog'));
 	ko.applyBindings(WorkVerificationViewModel, document.getElementById('workVerifDialog'));
-	ko.applyBindings(GroupsViewModel, document.getElementById('groupsList'));
+	ko.applyBindings(GroupsViewModel, document.getElementById('listGroups'));
 	ko.applyBindings(PlayersViewModel, document.getElementById('playersList'));
 		
-	$('#groupsListTab').on('show.bs.tab', GroupsViewModel.onGroupsShow);
-	$('#playersListTab').on('show.bs.tab', PlayersViewModel.onPlayersShow);
+	$('#listGroupsTab').on('show.bs.tab', GroupsViewModel.onGroupsShow);
 
-	crossroads.addRoute('management/{tab}', Management.selectTab);
-	Navigation.configureRoutes();
+	crossroads.addRoute('management/listGroups', Management.selectTab);
+	PlayersRoutes.addRoutes();
+	
+	
+	Navigation.configureRoutes('/management/');
 	
 	if (Navigation.getCurrenLocation() === '/management/') {
-		Navigation.setCurrentLocation('groupsList');
+		Navigation.setCurrentLocation('listGroups');
 	}
 	if (Navigation.getCurrenLocation() === '/management') {
-		Navigation.setCurrentLocation('management/groupsList');
+		Navigation.setCurrentLocation('management/listGroups');
 	} 
 });
 
@@ -1584,8 +1609,9 @@ var Management = new function() {
 
 	var self = this;
 
-	self.selectTab = function(tab) {
-		$('#' + tab + 'Tab').tab('show');
+	self.selectTab = function() {
+		console.log('aqui');
+		$('#listGroupsTab').tab('show');
 	}
 
 	self.defaultSuccess = function() {
@@ -1616,26 +1642,90 @@ var Management = new function() {
 /*
  * START OF FILE - /edist/eDist/war/management/players.js
  */
+function PlayersFiltersViewModel() {
+
+	var self = this;
+
+	self.searchText = ko.observable();
+	self.searchParam = ko.observable();
+	self.searchFct = null;
+
+}
+
 var PlayersViewModel = new function() {
 	var self = this;
 
 	self.players = ko.observableArray([]);
 	self.groups = ko.observableArray([]);
 	self.granularity = ko.observable();
-	self.playersCursor = ko.observable();
+	self.playersCursor = ko.observable('');
 
 	self.newPlayer = ko.mapping.fromJS(new Player());
 
-	self.onPlayersShow = function() {
-		if (self.players().length == 0) {
-			loadGroupNames(loadPlayers);
+	self.category = ko.observable();
+	self.filters = new PlayersFiltersViewModel();
+
+	ko.computed(function() {
+		if (self.category()) {
+			showTab();
 		}
-	};
+	});
+
+	self.initPlayers = function() {
+		showTab();
+	}
+
+	self.doSearch = function() {
+		var searchText = self.filters.searchText();
+		if (self.category() === 'fight' || self.category() === 'work') {
+			searchText = searchText.toLowerCase();
+		}
+		Navigation.setCurrentLocation('/management/playersList/'
+				+ self.category() + '/' + searchText);
+	}
 
 	self.loadNextPage = function() {
 		if (self.playersCursor() !== null) {
-			loadPlayers(self.playersCursor());
+			queryServer();
 		}
+	}
+
+	self.showAll = function() {
+		reset('all', ManagementService.listPlayers, '', '');
+		queryServer();
+	}
+
+	self.filterByGroup = function(param) {
+		reset('group', ManagementService.listPlayersByGroup, param,
+				checkParam(param) ? {
+					encodedKey : param
+				} : null);
+		queryServer();
+	}
+
+	self.filterByString = function(param) {
+		reset('search', ManagementService.listPlayersByString, param, param);
+		queryServer();
+	}
+
+	self.filterByFight = function(param) {
+		var searchParam = checkParam(param) ? param.toUpperCase()
+				: 'TEMP_BANNED';
+		if (searchParam == 'UNKNOWN')
+			searchParam = null;
+
+		reset('fight', ManagementService.listPlayersByFight, param, searchParam);
+		queryServer();
+	}
+
+	self.filterByWork = function(param) {
+		var searchParam = checkParam(param) ? param.toUpperCase()
+				: 'TEMP_BANNED';
+		if (searchParam == 'UNKNOWN')
+			searchParam = null;
+
+		reset('work', ManagementService.listPlayersByWork, param, searchParam);
+		queryServer();
 	}
 
 	self.addPlayer = function() {
@@ -1731,6 +1821,42 @@ var PlayersViewModel = new function() {
 		dirtyObservableArrayRefresh(self.players);
 	}
 
+	function checkParam(param) {
+		return param && param !== 'undefined' && param !== 'null' ? param
+				: null;
+	}
+
+	function reset(category, searchFct, searchText, searchParam) {
+		self.players([]);
+		self.playersCursor('');
+		self.category(category);
+		self.filters.searchFct = searchFct;
+		self.filters.searchText(searchText);
+		self.filters.searchParam(searchParam);
+	}
+
+	function queryServer() {
+		if (self.category() == 'all' || self.category() == 'fight'
+				|| self.category() == 'work' || self.filters.searchParam()) {
+			self.filters.searchFct(self.filters.searchParam(), self
+					.playersCursor(), {
+				callback : function(response) {
+					setResults(response);
+				}
+			});
+		}
+	}
+
+	function setResults(response) {
+		var cursor = response.results.length >= window.edist.server.pageSize ? response.encodedCursor
+				: null
+		self.playersCursor(cursor);
+		self.granularity(response.granularity);
+		response.results.forEach(function(item) {
+			self.players.push(item);
+		});
+	}
+
 	function dirtyObservableArrayRefresh(array) {
 		// array.valueHasMutated(); doesn't work?
 		var data = array().slice(0);
@@ -1738,30 +1864,15 @@ var PlayersViewModel = new function() {
 		array(data);
 	}
 
-	function loadGroupNames(callback) {
-		ManagementService.listGroupNames({
-			callback : function(response) {
-				response.results.sort(Management.groupSortFct);
-				self.groups(response.results);
-				callback();
-			}
-		});
-	}
-
-	function loadPlayers(cursor) {
-		ManagementService.listPlayers(cursor, {
-			callback : function(response) {
-				self.granularity(response.granularity);
-				response.results.forEach(function(item) {
-					self.players.push(item);
-				});
-				if (response.results.length >= window.edist.server.pageSize) {
-					self.playersCursor(response.encodedCursor);
-				} else {
-					self.playersCursor(null);
+	function loadGroupNames() {
+		if (self.groups().length === 0) {
+			ManagementService.listGroupNames({
+				callback : function(response) {
+					response.results.sort(Management.groupSortFct);
+					self.groups(response.results);
 				}
-			}
-		});
+			});
+		}
 	}
 
 	function groupIdsToGroups(player) {
@@ -1774,6 +1885,43 @@ var PlayersViewModel = new function() {
 			});
 		}
 		player.groups = groups;
+	}
+
+	function showTab() {
+		loadGroupNames();
+
+		if (Navigation.getCurrenLocation() === '/management/playersList') {
+			Navigation.setCurrentLocation('/management/playersList/search');
+		}
+
+		if (Navigation.getCurrenLocation() === '/management/playersList/') {
+			Navigation.setCurrentLocation('/management/playersList/search');
+		}
+
+		$('#playersListTab').tab('show');
+	}
+};
+
+var PlayersRoutes = new function() {
+	var self = this;
+
+	self.addRoutes = function() {
+		crossroads.addRoute('management/playersList',
+				PlayersViewModel.initPlayers);
+		crossroads.addRoute('management/playersList/all',
+				PlayersViewModel.showAll);
+		crossroads.addRoute('management/playersList/date/:param:',
+				PlayersViewModel.filterByDate);
+		crossroads.addRoute('management/playersList/day/:param:',
+				PlayersViewModel.filterByDay);
+		crossroads.addRoute('management/playersList/group/:param:',
+				PlayersViewModel.filterByGroup);
+		crossroads.addRoute('management/playersList/search/:param:',
+				PlayersViewModel.filterByString);
+		crossroads.addRoute('management/playersList/fight/:param:',
+				PlayersViewModel.filterByFight);
+		crossroads.addRoute('management/playersList/work/:param:',
+				PlayersViewModel.filterByWork);
 	}
 };
 /*

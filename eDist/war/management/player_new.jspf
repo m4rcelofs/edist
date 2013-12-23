@@ -1,0 +1,52 @@
+<div class="panel-group" id="add-player-accordion">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<a class="accordion-toggle" data-toggle="collapse"
+				data-parent="#add-player-accordion" href="#player-collapse-one"><span
+				class="glyphicon glyphicon-plus-sign"></span> Adicionar Jogador</a>
+		</div>
+		<div id="player-collapse-one" class="panel-collapse collapse">
+			<div class="panel-body">
+				<form id="add-player-form" class="form-inline" role="form"
+					data-bind="submit: addPlayer">
+					<div class="form-group">
+						<label class="sr-only" for="new-player-id">ID do jogador</label> <input
+							type="text" class="form-control" id="new-player-id"
+							placeholder="ID do jogador" data-bind="value : newPlayer.erId">
+					</div>
+					<div class="form-group">
+						<label class="sr-only" for="new-player-rocket">Fábrica de
+							Foguetes</label> <select id="new-player-rocket"
+							class="selectpicker show-menu-arrow show-tick"
+							data-bind="value: newPlayer.rocketEnabled, updateSelectPicker:{}"
+							data-container="#playersList">
+							<option value="NONE" data-subtext="):">Sem fábrica de
+								foguetes</option>
+							<option value="Q1">Fábrica Q1</option>
+							<option value="Q2">Fábrica Q2</option>
+							<option value="Q3">Fábrica Q3</option>
+							<option value="Q4">Fábrica Q4</option>
+							<option value="Q5">Fábrica Q5</option>
+						</select>
+					</div>
+					<div class="form-group">
+						<select class="selectpicker show-menu-arrow" multiple
+							title="Selecione o(s) grupo(s)"
+							data-selected-text-format="count>3"
+							data-count-selected-text="{0} grupos selecionados"
+							data-bind="options: $root.groups, 
+											optionsText: 'groupName',
+											optionsValue: 'encodedKey', 
+											selectedOptions: newPlayer.groupIds,
+											updateSelectPicker: $root.groups"
+							data-container="#playersList">
+						</select>
+					</div>
+					<button id="save-new-player" class="btn btn-primary" type="submit">
+						<span class="glyphicon glyphicon-floppy-disk"></span> Salvar
+					</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
