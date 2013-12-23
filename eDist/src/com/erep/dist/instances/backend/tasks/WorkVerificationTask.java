@@ -58,7 +58,7 @@ public class WorkVerificationTask implements DeferredTask {
 				}
 
 				double pctWorked = trackedTotal != 0 ? worked
-						/ (double) trackedTotal : 1;
+						/ (double) trackedTotal : 0;
 
 				if ((pctWorked * 100) < workVerif.getMinWorkedDaysPct())
 					if (workVerif.getWorkVerifAction().statusToSet.priority > statusToSet.priority)

@@ -1,5 +1,6 @@
 package com.erep.dist.instances.backend;
 
+import static com.erep.dist.data.enums.PlayerStatus.ENABLED;
 import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withPayload;
 
 import java.io.IOException;
@@ -15,7 +16,6 @@ import com.erep.dist.CloseablePM;
 import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
 import com.erep.dist.data.Player;
-import com.erep.dist.data.enums.PlayerStatus;
 import com.erep.dist.erep.eRepTimeCalculator;
 import com.erep.dist.instances.backend.tasks.PlayerStatsTask;
 import com.google.appengine.api.backends.BackendServiceFactory;
@@ -39,7 +39,7 @@ public class PlayerStatsStarterJob extends HttpServlet {
 			Integer day = eRepTimeCalculator.geteRepDay();
 			int count = 0;
 			for (Player dbPlayer : dao.listAllPlayers())
-				if (dbPlayer.getDbStatus() == PlayerStatus.ENABLED) {
+				if (dbPlayer.getDbStatus() == ENABLED) {
 					startUpdateTask(day, dbPlayer);
 					count++;
 				}

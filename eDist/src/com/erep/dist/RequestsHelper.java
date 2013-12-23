@@ -50,12 +50,12 @@ public class RequestsHelper {
 	}
 
 	public boolean verifyRocketAllowed(Player player, PlayerGroup group) {
-		if (player.getRocketEnabled() != NONE) {
-			if (config.getConfig(player, group).getRocketAllowed()) {
-				return !dao.requestedRocket(player, group,
-						eRepTimeCalculator.geteRepDay());
-			}
-		}
+		if (player.getDbStatus() == ENABLED
+				&& player.getRocketEnabled() != NONE
+				&& config.getConfig(player, group).getRocketAllowed())
+			return !dao.requestedRocket(player, group,
+					eRepTimeCalculator.geteRepDay());
+
 		return false;
 	}
 
