@@ -22,11 +22,18 @@ var DistConfigViewModel = new function() {
 		self.rootEntity = root;
 		self.currentKey(key);
 		ko.mapping.fromJS(ko.unwrap(root.config), self.currentConfig);
-		
 	}
 
 	self.updateRoot = function() {
-		self.rootEntity.config = ko.mapping.toJS(self.currentConfig);
+		var config = ko.mapping.toJS(self.currentConfig);
+		config.distributor = {
+			encodedKey : ko.unwrap(self.currentConfig.distributor)
+		};
+		if (typeof self.rootEntity.config === "function") {
+			self.rootEntity.config(config);
+		} else {
+			self.rootEntity.config = config;
+		}
 		closeModal();
 	}
 
@@ -81,7 +88,11 @@ var FightVerificationViewModel = new function() {
 	}
 	
 	self.updateRoot = function() {
-		self.rootEntity.fightVerif = ko.mapping.toJS(self.currentFightVerif);
+		if (typeof self.rootEntity.fightVerif === "function") {
+			self.rootEntity.fightVerif(ko.mapping.toJS(self.currentFightVerif));	
+		} else {
+			self.rootEntity.fightVerif = ko.mapping.toJS(self.currentFightVerif);
+		}
 		closeModal();
 	}
 	
@@ -118,7 +129,11 @@ var WorkVerificationViewModel = new function() {
 	}
 
 	self.updateRoot = function() {
-		self.rootEntity.workVerif = ko.mapping.toJS(self.currentWorkVerif);
+		if (typeof self.rootEntity.workVerif === "function") {
+			self.rootEntity.workVerif(ko.mapping.toJS(self.currentWorkVerif));
+		} else {
+			self.rootEntity.workVerif = ko.mapping.toJS(self.currentWorkVerif);
+		}
 		closeModal();
 	}
 

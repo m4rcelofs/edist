@@ -1,5 +1,6 @@
 package com.erep.dist.dwr;
 
+import static com.erep.dist.data.enums.PlayerStatus.ERROR;
 import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withPayload;
 
 import java.util.Arrays;
@@ -56,6 +57,7 @@ public class ManagementService {
 			DataAccessObject dao = new DataAccessObject(pm);
 
 			pm.getFetchPlan().addGroup("groupConfigListing");
+			pm.getFetchPlan().addGroup("configListing");
 
 			dto.setResults(dao.listGroups());
 			dto.setGranularity(dao.getServerConfig().getGranularity());
@@ -94,6 +96,7 @@ public class ManagementService {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 
 			pm.getFetchPlan().addGroup("playerConfigListing");
+			pm.getFetchPlan().addGroup("configListing");
 
 			PlayerQuery queryResults = new PlayerQuery();
 			DataAccessObject dao = new DataAccessObject(pm);
@@ -114,6 +117,7 @@ public class ManagementService {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 
 			pm.getFetchPlan().addGroup("playerConfigListing");
+			pm.getFetchPlan().addGroup("configListing");
 
 			PlayerQuery queryResults = new PlayerQuery();
 			DataAccessObject dao = new DataAccessObject(pm);
@@ -136,6 +140,7 @@ public class ManagementService {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 
 			pm.getFetchPlan().addGroup("playerConfigListing");
+			pm.getFetchPlan().addGroup("configListing");
 
 			PlayerQuery queryResults = new PlayerQuery();
 			DataAccessObject dao = new DataAccessObject(pm);
@@ -160,6 +165,7 @@ public class ManagementService {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 
 			pm.getFetchPlan().addGroup("playerConfigListing");
+			pm.getFetchPlan().addGroup("configListing");
 
 			PlayerQuery queryResults = new PlayerQuery();
 			DataAccessObject dao = new DataAccessObject(pm);
@@ -180,6 +186,7 @@ public class ManagementService {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 
 			pm.getFetchPlan().addGroup("playerConfigListing");
+			pm.getFetchPlan().addGroup("configListing");
 
 			PlayerQuery queryResults = new PlayerQuery();
 			DataAccessObject dao = new DataAccessObject(pm);
@@ -202,6 +209,24 @@ public class ManagementService {
 			List<Distributor> dists = new DataAccessObject(pm)
 					.listDistributors();
 			return dists;
+		}
+	}
+
+	@RemoteMethod
+	public boolean removePlayer(Player player) {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			DataAccessObject dao = new DataAccessObject(pm);
+
+			Player dbPlayer = dao.find(player);
+
+			if (dbPlayer.getDbStatus() != ERROR)
+				return false;
+
+			pm.deletePersistent(dbPlayer);
+			return true;
+
+		} catch (JDOObjectNotFoundException | NullPointerException e) {
+			return false;
 		}
 	}
 

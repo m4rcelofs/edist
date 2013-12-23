@@ -15,11 +15,18 @@ var DistConfigViewModel = new function() {
 		self.rootEntity = root;
 		self.currentKey(key);
 		ko.mapping.fromJS(ko.unwrap(root.config), self.currentConfig);
-		
 	}
 
 	self.updateRoot = function() {
-		self.rootEntity.config = ko.mapping.toJS(self.currentConfig);
+		var config = ko.mapping.toJS(self.currentConfig);
+		config.distributor = {
+			encodedKey : ko.unwrap(self.currentConfig.distributor)
+		};
+		if (typeof self.rootEntity.config === "function") {
+			self.rootEntity.config(config);
+		} else {
+			self.rootEntity.config = config;
+		}
 		closeModal();
 	}
 

@@ -5,7 +5,7 @@
 		<select
 			class="form-control fight-verification-group selectpicker show-menu-arrow show-tick"
 			name="fight-verification-action" id="fight-verification-action"
-			data-bind="value: currentFightVerif.fightVerifAction, updateSelectPicker: {}">
+			data-bind="value: currentFightVerif.fightVerifAction, updateSelectPicker: currentFightVerif.fightVerifAction">
 			<option value="NONE">Não fazer nada...</option>
 			<option value="WARN">Avisar...</option>
 			<option value="TEMP_BAN">Bloquear distribuição...</option>

@@ -274,6 +274,8 @@ public class DataAccessObject {
 
 		old.setRocketEnabled(newest.getRocketEnabled());
 		old.setDbStatus(newest.getDbStatus());
+		old.setFightStatus(newest.getFightStatus());
+		old.setWorkStatus(newest.getWorkStatus());
 
 		Set<PlayerGroup> groups = new HashSet<>();
 		if (newest.getGroups() == null || newest.getGroups().isEmpty()) {

@@ -78,10 +78,11 @@
 		<select class="form-control selectpicker show-menu-arrow show-tick"
 			name="dist-config-distributor" id="dist-config-distributor"
 			data-bind=" options: distributors, 
-									optionsText: function(item){ return item.name ? item.name : item.email ? item.email : item.encodedKey;}, 
-									value: currentConfig.distributor, 
-									enable: distributors() !== null,
-									updateSelectPicker: distributors">
+						optionsText: function(item){ return item.name ? item.name : item.email ? item.email : 'Sem nome';},
+						optionsValue: 'encodedKey', 
+						value: currentConfig.distributor, 
+						enable: distributors() !== null,
+						updateSelectPicker: distributors">
 		</select>
 	</div>
 </div>

@@ -1415,38 +1415,41 @@ if (DWREngine == null) var DWREngine = dwr.engine;
 
 if (ManagementService == null) var ManagementService = {};
 ManagementService._path = '/management/dwr';
+ManagementService.editPlayer = function(p0, callback) {
+  dwr.engine._execute(ManagementService._path, 'ManagementService', 'editPlayer', p0, callback);
+}
+ManagementService.removePlayer = function(p0, callback) {
+  dwr.engine._execute(ManagementService._path, 'ManagementService', 'removePlayer', p0, callback);
+}
+ManagementService.saveGroup = function(p0, callback) {
+  dwr.engine._execute(ManagementService._path, 'ManagementService', 'saveGroup', p0, callback);
+}
 ManagementService.listGroups = function(callback) {
   dwr.engine._execute(ManagementService._path, 'ManagementService', 'listGroups', callback);
 }
 ManagementService.listPlayers = function(p0, p1, callback) {
   dwr.engine._execute(ManagementService._path, 'ManagementService', 'listPlayers', p0, p1, callback);
 }
-ManagementService.listDistributors = function(callback) {
-  dwr.engine._execute(ManagementService._path, 'ManagementService', 'listDistributors', callback);
-}
-ManagementService.editPlayer = function(p0, callback) {
-  dwr.engine._execute(ManagementService._path, 'ManagementService', 'editPlayer', p0, callback);
-}
 ManagementService.addPlayer = function(p0, callback) {
   dwr.engine._execute(ManagementService._path, 'ManagementService', 'addPlayer', p0, callback);
 }
-ManagementService.saveGroup = function(p0, callback) {
-  dwr.engine._execute(ManagementService._path, 'ManagementService', 'saveGroup', p0, callback);
-}
-ManagementService.listGroupNames = function(callback) {
-  dwr.engine._execute(ManagementService._path, 'ManagementService', 'listGroupNames', callback);
+ManagementService.listDistributors = function(callback) {
+  dwr.engine._execute(ManagementService._path, 'ManagementService', 'listDistributors', callback);
 }
 ManagementService.listPlayersByGroup = function(p0, p1, callback) {
   dwr.engine._execute(ManagementService._path, 'ManagementService', 'listPlayersByGroup', p0, p1, callback);
-}
-ManagementService.listPlayersByString = function(p0, p1, callback) {
-  dwr.engine._execute(ManagementService._path, 'ManagementService', 'listPlayersByString', p0, p1, callback);
 }
 ManagementService.listPlayersByFight = function(p0, p1, callback) {
   dwr.engine._execute(ManagementService._path, 'ManagementService', 'listPlayersByFight', p0, p1, callback);
 }
 ManagementService.listPlayersByWork = function(p0, p1, callback) {
   dwr.engine._execute(ManagementService._path, 'ManagementService', 'listPlayersByWork', p0, p1, callback);
+}
+ManagementService.listGroupNames = function(callback) {
+  dwr.engine._execute(ManagementService._path, 'ManagementService', 'listGroupNames', callback);
+}
+ManagementService.listPlayersByString = function(p0, p1, callback) {
+  dwr.engine._execute(ManagementService._path, 'ManagementService', 'listPlayersByString', p0, p1, callback);
 }
 /*
  * END OF FILE - /edist/eDist/war/management/dwr-interface-20131121.js
@@ -1729,14 +1732,14 @@ var PlayersViewModel = new function() {
 	}
 
 	self.addPlayer = function() {
-		var player = ko.mapping.toJS(self.newPlayer);
-		groupIdsToGroups(player);
-		ManagementService.addPlayer(player, {
+		groupIdsToGroups(self.newPlayer);
+		var jsPlayer = ko.mapping.toJS(self.newPlayer);
+		ManagementService.addPlayer(jsPlayer, {
 			callback : function(response) {
 				if (response) {
 					$('#add-player-form').trigger('reset');
-					player.dbStatus = 'NEW';
-					self.players.unshift(player);
+					self.newPlayer.dbStatus('NEW');
+					self.players.unshift(self.newPlayer);
 				} else {
 					Management.defaultError();
 				}
@@ -1746,22 +1749,22 @@ var PlayersViewModel = new function() {
 	}
 
 	self.savePlayer = function(player) {
+		var jsPlayer = ko.mapping.toJS(player);
 		// converts back to PlayerGroup objects because of funny transforms
-		groupIdsToGroups(player);
-		ManagementService.editPlayer(player, {
+		groupIdsToGroups(jsPlayer);
+		ManagementService.editPlayer(jsPlayer, {
 			callback : function(response) {
 				if (response) {
-					$('#' + player.encodedKey).removeClass('panel-danger');
-					$('#' + player.encodedKey).addClass('panel-success');
+					$('#' + jsPlayer.encodedKey).removeClass('panel-danger');
+					$('#' + jsPlayer.encodedKey).addClass('panel-success');
 
-					setTimeout(
-							function() {
-								$('#' + player.encodedKey).removeClass(
-										'panel-success');
-							}, 3000);
+					setTimeout(function() {
+						$('#' + jsPlayer.encodedKey).removeClass(
+								'panel-success');
+					}, 3000);
 				} else {
-					$('#' + player.encodedKey).removeClass('panel-success');
-					$('#' + player.encodedKey).addClass('panel-danger');
+					$('#' + jsPlayer.encodedKey).removeClass('panel-success');
+					$('#' + jsPlayer.encodedKey).addClass('panel-danger');
 					Management.defaultError();
 				}
 			},
@@ -1779,14 +1782,12 @@ var PlayersViewModel = new function() {
 	}
 
 	self.addConfig = function(player) {
-		player.config = new DistConfig();
-		dirtyObservableArrayRefresh(self.players);
+		player.config(new DistConfig());
 		self.editConfig(player);
 	}
 
 	self.removeConfig = function(player) {
-		player.config = null;
-		dirtyObservableArrayRefresh(self.players);
+		player.config(null);
 	}
 
 	self.editFightVerif = function(player) {
@@ -1795,14 +1796,12 @@ var PlayersViewModel = new function() {
 	}
 
 	self.addFightVerif = function(player) {
-		player.fightVerif = new FightVerification();
-		dirtyObservableArrayRefresh(self.players);
+		player.fightVerif(new FightVerification());
 		self.editFightVerif(player);
 	}
 
 	self.removeFightVerif = function(player) {
-		player.fightVerif = null;
-		dirtyObservableArrayRefresh(self.players);
+		player.fightVerif(null);
 	}
 
 	self.editWorkVerif = function(player) {
@@ -1811,14 +1810,42 @@ var PlayersViewModel = new function() {
 	}
 
 	self.addWorkVerif = function(player) {
-		player.workVerif = new WorkVerification();
-		dirtyObservableArrayRefresh(self.players);
+		player.workVerif(new WorkVerification());
 		self.editWorkVerif(player);
 	}
 
 	self.removeWorkVerif = function(player) {
-		player.workVerif = null;
-		dirtyObservableArrayRefresh(self.players);
+		player.workVerif(null);
+	}
+
+	self.clearFightStatus = function(player) {
+		player.fightStatus(null);
+	}
+
+	self.clearWorkStatus = function(player) {
+		player.workStatus(null);
+	}
+
+	self.enable = function(player) {
+		player.dbStatus('ENABLED');
+	}
+
+	self.disable = function(player) {
+		player.dbStatus('DISABLED');
+	}
+
+	self.remove = function(player) {
+		var jsPlayer = ko.mapping.toJS(player);
+		ManagementService.removePlayer(jsPlayer, {
+			callback : function(response) {
+				if (response) {
+					self.players.remove(player);
+				} else {
+					Management.defaultError();
+				}
+			},
+			onError : Management.defaultError
+		});
 	}
 
 	function checkParam(param) {
@@ -1852,16 +1879,28 @@ var PlayersViewModel = new function() {
 				: null
 		self.playersCursor(cursor);
 		self.granularity(response.granularity);
-		response.results.forEach(function(item) {
-			self.players.push(item);
-		});
-	}
 
-	function dirtyObservableArrayRefresh(array) {
-		// array.valueHasMutated(); doesn't work?
-		var data = array().slice(0);
-		array([]);
-		array(data);
+		var noRecursion = function(options) {
+			// avoids recursive convertion
+			return new ko.observable(options.data);
+		};
+		var mapping = {
+			'config' : {
+				create : noRecursion
+			},
+			'fightVerif' : {
+				create : noRecursion
+			},
+			'workVerif' : {
+				create : noRecursion
+			}
+		};
+		var newArray = self.players();
+
+		response.results.forEach(function(item) {
+			newArray.push(ko.mapping.fromJS(item, mapping));
+		});
+		self.players(newArray);
 	}
 
 	function loadGroupNames() {

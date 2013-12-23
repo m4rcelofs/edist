@@ -5,7 +5,7 @@
 <t:wrapper>
 
 	<jsp:attribute name="imports">
-		<script type='text/javascript' src='${baseUrl}/management/management.all.closure.js'></script>
+		<script type='text/javascript' src='${baseUrl}/management/management.all.js'></script>
 		<script type='text/javascript' src='${baseUrl}/distconfig/distconfig.all.closure.js'></script>
     </jsp:attribute>
 
