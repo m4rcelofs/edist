@@ -27,7 +27,6 @@ var Management = new function() {
 	var self = this;
 
 	self.selectTab = function() {
-		console.log('aqui');
 		$('#listGroupsTab').tab('show');
 	}
 

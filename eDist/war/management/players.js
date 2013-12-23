@@ -33,7 +33,8 @@ var PlayersViewModel = new function() {
 
 	self.doSearch = function() {
 		var searchText = self.filters.searchText();
-		if (self.category() === 'fight' || self.category() === 'work') {
+		if (self.category() === 'fight' || self.category() === 'status'
+				|| self.category() === 'work') {
 			searchText = searchText.toLowerCase();
 		}
 		Navigation.setCurrentLocation('/management/playersList/'
@@ -71,6 +72,13 @@ var PlayersViewModel = new function() {
 			searchParam = null;
 
 		reset('fight', ManagementService.listPlayersByFight, param, searchParam);
+		queryServer();
+	}
+
+	self.filterByStatus = function(param) {
+		var searchParam = checkParam(param) ? param.toUpperCase() : 'NEW';
+		reset('status', ManagementService.listPlayersByStatus, param,
+				searchParam);
 		queryServer();
 	}
 
@@ -312,6 +320,8 @@ var PlayersRoutes = new function() {
 				PlayersViewModel.filterByString);
 		crossroads.addRoute('management/playersList/fight/:param:',
 				PlayersViewModel.filterByFight);
+		crossroads.addRoute('management/playersList/status/:param:',
+				PlayersViewModel.filterByStatus);
 		crossroads.addRoute('management/playersList/work/:param:',
 				PlayersViewModel.filterByWork);
 	}

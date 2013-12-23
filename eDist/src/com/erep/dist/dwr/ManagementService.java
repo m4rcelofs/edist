@@ -19,6 +19,7 @@ import com.erep.dist.data.Distributor;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.enums.PlayerDistStatus;
+import com.erep.dist.data.enums.PlayerStatus;
 import com.erep.dist.dwr.dto.PlayerGroupQuery;
 import com.erep.dist.dwr.dto.PlayerQuery;
 import com.erep.dist.instances.frontend.tasks.GetUserInfoTask;
@@ -153,6 +154,27 @@ public class ManagementService {
 			} catch (JDOObjectNotFoundException e) {
 				// ignore
 			}
+
+			queryResults.setGranularity(dao.getServerConfig().getGranularity());
+
+			return queryResults;
+		}
+	}
+
+	@RemoteMethod
+	public PlayerQuery listPlayersByStatus(PlayerStatus param, String cursor) {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+
+			pm.getFetchPlan().addGroup("playerConfigListing");
+			pm.getFetchPlan().addGroup("configListing");
+
+			PlayerQuery queryResults = new PlayerQuery();
+			DataAccessObject dao = new DataAccessObject(pm);
+			List<Player> players = dao.listPlayersByStatus(param, cursor);
+
+			queryResults.setResults(players);
+			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(players)
+					.toWebSafeString());
 
 			queryResults.setGranularity(dao.getServerConfig().getGranularity());
 

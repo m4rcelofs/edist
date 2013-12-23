@@ -35,6 +35,7 @@ import com.erep.dist.data.RegisteredUser;
 import com.erep.dist.data.Request;
 import com.erep.dist.data.ServerConfig;
 import com.erep.dist.data.enums.PlayerDistStatus;
+import com.erep.dist.data.enums.PlayerStatus;
 import com.erep.dist.data.enums.RequestStatus;
 import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.instances.frontend.tasks.NotifyEmailChangeTask;
@@ -325,6 +326,15 @@ public class DataAccessObject {
 				encodedCursor);
 		q.declareParameters(Key.class.getName() + " rootParam, "
 				+ PlayerDistStatus.class.getName() + " statusParam");
+		return (List<Player>) q.execute(playerRootKey(), status);
+	}
+
+	public List<Player> listPlayersByStatus(PlayerStatus status,
+			String encodedCursor) {
+		Query q = queryWithCursor(Player.class,
+				"root == rootParam && dbStatus == dbStatusParam", encodedCursor);
+		q.declareParameters(Key.class.getName() + " rootParam, "
+				+ PlayerStatus.class.getName() + " dbStatusParam");
 		return (List<Player>) q.execute(playerRootKey(), status);
 	}
 

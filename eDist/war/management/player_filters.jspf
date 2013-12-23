@@ -37,6 +37,16 @@
 						<option value="UNKNOWN">Não Verificado</option>
 					</select>
 				</div>
+				<div class="form-group"
+					data-bind="if: $root.category() === 'status'">
+					<select class="selectpicker show-menu-arrow navbar-btn show-tick"
+						data-bind="value: filters.searchText, updateSelectPicker:{}">
+						<option value="NEW">Novo</option>
+						<option value="ERROR">Com Erro</option>
+						<option value="ENABLED">Habilitado</option>
+						<option value="DISABLED">Desabilitado</option>
+					</select>
+				</div>
 				<div class="form-group" data-bind="if: $root.category() === 'work'">
 					<select class="selectpicker show-menu-arrow navbar-btn show-tick"
 						data-bind="value: filters.searchText, updateSelectPicker:{}">

@@ -71,24 +71,6 @@ if (DWREngine == null) var DWREngine = dwr.engine;
 
 if (ManagementService == null) var ManagementService = {};
 ManagementService._path = '/management/dwr';
-ManagementService.editPlayer = function(p0, callback) {
-  dwr.engine._execute(ManagementService._path, 'ManagementService', 'editPlayer', p0, callback);
-}
-ManagementService.removePlayer = function(p0, callback) {
-  dwr.engine._execute(ManagementService._path, 'ManagementService', 'removePlayer', p0, callback);
-}
-ManagementService.saveGroup = function(p0, callback) {
-  dwr.engine._execute(ManagementService._path, 'ManagementService', 'saveGroup', p0, callback);
-}
-ManagementService.listGroups = function(callback) {
-  dwr.engine._execute(ManagementService._path, 'ManagementService', 'listGroups', callback);
-}
-ManagementService.listPlayers = function(p0, p1, callback) {
-  dwr.engine._execute(ManagementService._path, 'ManagementService', 'listPlayers', p0, p1, callback);
-}
-ManagementService.addPlayer = function(p0, callback) {
-  dwr.engine._execute(ManagementService._path, 'ManagementService', 'addPlayer', p0, callback);
-}
 ManagementService.listDistributors = function(callback) {
   dwr.engine._execute(ManagementService._path, 'ManagementService', 'listDistributors', callback);
 }
@@ -98,12 +80,33 @@ ManagementService.listPlayersByGroup = function(p0, p1, callback) {
 ManagementService.listPlayersByFight = function(p0, p1, callback) {
   dwr.engine._execute(ManagementService._path, 'ManagementService', 'listPlayersByFight', p0, p1, callback);
 }
+ManagementService.listPlayersByStatus = function(p0, p1, callback) {
+  dwr.engine._execute(ManagementService._path, 'ManagementService', 'listPlayersByStatus', p0, p1, callback);
+}
 ManagementService.listPlayersByWork = function(p0, p1, callback) {
   dwr.engine._execute(ManagementService._path, 'ManagementService', 'listPlayersByWork', p0, p1, callback);
+}
+ManagementService.listPlayers = function(p0, p1, callback) {
+  dwr.engine._execute(ManagementService._path, 'ManagementService', 'listPlayers', p0, p1, callback);
+}
+ManagementService.listGroups = function(callback) {
+  dwr.engine._execute(ManagementService._path, 'ManagementService', 'listGroups', callback);
 }
 ManagementService.listGroupNames = function(callback) {
   dwr.engine._execute(ManagementService._path, 'ManagementService', 'listGroupNames', callback);
 }
 ManagementService.listPlayersByString = function(p0, p1, callback) {
   dwr.engine._execute(ManagementService._path, 'ManagementService', 'listPlayersByString', p0, p1, callback);
+}
+ManagementService.editPlayer = function(p0, callback) {
+  dwr.engine._execute(ManagementService._path, 'ManagementService', 'editPlayer', p0, callback);
+}
+ManagementService.removePlayer = function(p0, callback) {
+  dwr.engine._execute(ManagementService._path, 'ManagementService', 'removePlayer', p0, callback);
+}
+ManagementService.addPlayer = function(p0, callback) {
+  dwr.engine._execute(ManagementService._path, 'ManagementService', 'addPlayer', p0, callback);
+}
+ManagementService.saveGroup = function(p0, callback) {
+  dwr.engine._execute(ManagementService._path, 'ManagementService', 'saveGroup', p0, callback);
 }

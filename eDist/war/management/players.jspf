@@ -15,6 +15,8 @@
 					href="#/management/playersList/group">por Grupo</a></li>
 				<li data-bind="css: {active : category() === 'fight'}"><a
 					href="#/management/playersList/fight">por Lutas</a></li>
+				<li data-bind="css: {active : category() === 'status'}"><a
+					href="#/management/playersList/status">por Status</a></li>
 				<li data-bind="css: {active : category() === 'work'}"><a
 					href="#/management/playersList/work">por Trabalho</a></li>
 			</ul>
@@ -23,9 +25,9 @@
 
 			<%@ include file="player_filters.jspf"%>
 
-<!-- 			<div class="text-center" data-bind="if: players().length == 0"> -->
-<%-- 				<img id="players-loader" src="${baseUrl}/img/loader.cache.gif" /> --%>
-<!-- 			</div> -->
+			<!-- 			<div class="text-center" data-bind="if: players().length == 0"> -->
+			<%-- 				<img id="players-loader" src="${baseUrl}/img/loader.cache.gif" /> --%>
+			<!-- 			</div> -->
 
 			<div data-bind="foreach: players">
 				<%@ include file="player_template.jspf"%>

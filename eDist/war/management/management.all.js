@@ -1415,24 +1415,6 @@ if (DWREngine == null) var DWREngine = dwr.engine;
 
 if (ManagementService == null) var ManagementService = {};
 ManagementService._path = '/management/dwr';
-ManagementService.editPlayer = function(p0, callback) {
-  dwr.engine._execute(ManagementService._path, 'ManagementService', 'editPlayer', p0, callback);
-}
-ManagementService.removePlayer = function(p0, callback) {
-  dwr.engine._execute(ManagementService._path, 'ManagementService', 'removePlayer', p0, callback);
-}
-ManagementService.saveGroup = function(p0, callback) {
-  dwr.engine._execute(ManagementService._path, 'ManagementService', 'saveGroup', p0, callback);
-}
-ManagementService.listGroups = function(callback) {
-  dwr.engine._execute(ManagementService._path, 'ManagementService', 'listGroups', callback);
-}
-ManagementService.listPlayers = function(p0, p1, callback) {
-  dwr.engine._execute(ManagementService._path, 'ManagementService', 'listPlayers', p0, p1, callback);
-}
-ManagementService.addPlayer = function(p0, callback) {
-  dwr.engine._execute(ManagementService._path, 'ManagementService', 'addPlayer', p0, callback);
-}
 ManagementService.listDistributors = function(callback) {
   dwr.engine._execute(ManagementService._path, 'ManagementService', 'listDistributors', callback);
 }
@@ -1442,14 +1424,35 @@ ManagementService.listPlayersByGroup = function(p0, p1, callback) {
 ManagementService.listPlayersByFight = function(p0, p1, callback) {
   dwr.engine._execute(ManagementService._path, 'ManagementService', 'listPlayersByFight', p0, p1, callback);
 }
+ManagementService.listPlayersByStatus = function(p0, p1, callback) {
+  dwr.engine._execute(ManagementService._path, 'ManagementService', 'listPlayersByStatus', p0, p1, callback);
+}
 ManagementService.listPlayersByWork = function(p0, p1, callback) {
   dwr.engine._execute(ManagementService._path, 'ManagementService', 'listPlayersByWork', p0, p1, callback);
+}
+ManagementService.listPlayers = function(p0, p1, callback) {
+  dwr.engine._execute(ManagementService._path, 'ManagementService', 'listPlayers', p0, p1, callback);
+}
+ManagementService.listGroups = function(callback) {
+  dwr.engine._execute(ManagementService._path, 'ManagementService', 'listGroups', callback);
 }
 ManagementService.listGroupNames = function(callback) {
   dwr.engine._execute(ManagementService._path, 'ManagementService', 'listGroupNames', callback);
 }
 ManagementService.listPlayersByString = function(p0, p1, callback) {
   dwr.engine._execute(ManagementService._path, 'ManagementService', 'listPlayersByString', p0, p1, callback);
+}
+ManagementService.editPlayer = function(p0, callback) {
+  dwr.engine._execute(ManagementService._path, 'ManagementService', 'editPlayer', p0, callback);
+}
+ManagementService.removePlayer = function(p0, callback) {
+  dwr.engine._execute(ManagementService._path, 'ManagementService', 'removePlayer', p0, callback);
+}
+ManagementService.addPlayer = function(p0, callback) {
+  dwr.engine._execute(ManagementService._path, 'ManagementService', 'addPlayer', p0, callback);
+}
+ManagementService.saveGroup = function(p0, callback) {
+  dwr.engine._execute(ManagementService._path, 'ManagementService', 'saveGroup', p0, callback);
 }
 /*
  * END OF FILE - /edist/eDist/war/management/dwr-interface-20131121.js
@@ -1613,7 +1616,6 @@ var Management = new function() {
 	var self = this;
 
 	self.selectTab = function() {
-		console.log('aqui');
 		$('#listGroupsTab').tab('show');
 	}
 
@@ -1680,7 +1682,8 @@ var PlayersViewModel = new function() {
 
 	self.doSearch = function() {
 		var searchText = self.filters.searchText();
-		if (self.category() === 'fight' || self.category() === 'work') {
+		if (self.category() === 'fight' || self.category() === 'status'
+				|| self.category() === 'work') {
 			searchText = searchText.toLowerCase();
 		}
 		Navigation.setCurrentLocation('/management/playersList/'
@@ -1718,6 +1721,13 @@ var PlayersViewModel = new function() {
 			searchParam = null;
 
 		reset('fight', ManagementService.listPlayersByFight, param, searchParam);
+		queryServer();
+	}
+
+	self.filterByStatus = function(param) {
+		var searchParam = checkParam(param) ? param.toUpperCase() : 'NEW';
+		reset('status', ManagementService.listPlayersByStatus, param,
+				searchParam);
 		queryServer();
 	}
 
@@ -1959,6 +1969,8 @@ var PlayersRoutes = new function() {
 				PlayersViewModel.filterByString);
 		crossroads.addRoute('management/playersList/fight/:param:',
 				PlayersViewModel.filterByFight);
+		crossroads.addRoute('management/playersList/status/:param:',
+				PlayersViewModel.filterByStatus);
 		crossroads.addRoute('management/playersList/work/:param:',
 				PlayersViewModel.filterByWork);
 	}
