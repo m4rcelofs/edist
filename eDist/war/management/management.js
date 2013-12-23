@@ -3,20 +3,22 @@ $(document).ready(function() {
 	ko.applyBindings(DistConfigViewModel, document.getElementById('distConfigDialog'));
 	ko.applyBindings(FightVerificationViewModel, document.getElementById('fightVerifDialog'));
 	ko.applyBindings(WorkVerificationViewModel, document.getElementById('workVerifDialog'));
-	ko.applyBindings(GroupsViewModel, document.getElementById('groupsList'));
+	ko.applyBindings(GroupsViewModel, document.getElementById('listGroups'));
 	ko.applyBindings(PlayersViewModel, document.getElementById('playersList'));
 		
-	$('#groupsListTab').on('show.bs.tab', GroupsViewModel.onGroupsShow);
-	$('#playersListTab').on('show.bs.tab', PlayersViewModel.onPlayersShow);
+	$('#listGroupsTab').on('show.bs.tab', GroupsViewModel.onGroupsShow);
 
-	crossroads.addRoute('management/{tab}', Management.selectTab);
-	Navigation.configureRoutes();
+	crossroads.addRoute('management/listGroups', Management.selectTab);
+	PlayersRoutes.addRoutes();
+	
+	
+	Navigation.configureRoutes('/management/');
 	
 	if (Navigation.getCurrenLocation() === '/management/') {
-		Navigation.setCurrentLocation('groupsList');
+		Navigation.setCurrentLocation('listGroups');
 	}
 	if (Navigation.getCurrenLocation() === '/management') {
-		Navigation.setCurrentLocation('management/groupsList');
+		Navigation.setCurrentLocation('management/listGroups');
 	} 
 });
 
@@ -24,8 +26,8 @@ var Management = new function() {
 
 	var self = this;
 
-	self.selectTab = function(tab) {
-		$('#' + tab + 'Tab').tab('show');
+	self.selectTab = function() {
+		$('#listGroupsTab').tab('show');
 	}
 
 	self.defaultSuccess = function() {

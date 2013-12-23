@@ -16,7 +16,11 @@ var WorkVerificationViewModel = new function() {
 	}
 
 	self.updateRoot = function() {
-		self.rootEntity.workVerif = ko.mapping.toJS(self.currentWorkVerif);
+		if (typeof self.rootEntity.workVerif === "function") {
+			self.rootEntity.workVerif(ko.mapping.toJS(self.currentWorkVerif));
+		} else {
+			self.rootEntity.workVerif = ko.mapping.toJS(self.currentWorkVerif);
+		}
 		closeModal();
 	}
 

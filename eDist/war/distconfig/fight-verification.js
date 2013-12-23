@@ -16,7 +16,11 @@ var FightVerificationViewModel = new function() {
 	}
 	
 	self.updateRoot = function() {
-		self.rootEntity.fightVerif = ko.mapping.toJS(self.currentFightVerif);
+		if (typeof self.rootEntity.fightVerif === "function") {
+			self.rootEntity.fightVerif(ko.mapping.toJS(self.currentFightVerif));	
+		} else {
+			self.rootEntity.fightVerif = ko.mapping.toJS(self.currentFightVerif);
+		}
 		closeModal();
 	}
 	

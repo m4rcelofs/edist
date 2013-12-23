@@ -28,7 +28,7 @@ function GM_wait() {
 function start() {
 
     if(!GM_getValue('employerKey') || !GM_getValue('employerKey').trim()) {
-        var key = prompt('Por favor insira sua chave de autenticação no eDist:');
+        var key = prompt('Please enter the auth key provided by your eDist admin:');
         GM_setValue('employerKey', key);
     }
     
@@ -98,7 +98,7 @@ function getUpdateLink() {
 
     $(newLink).attr('id', 'updatedAtLink');
 	$(newLink).attr('href', 'javascript:return false;');
-	$(newLink).attr('title', 'Forçar atualização');
+	$(newLink).attr('title', 'Force update');
     
     if(GM_getValue('lastUpdatedAt', 0) !== 0){
 		var lastUpdate = new Date(GM_getValue('lastUpdatedAt'));
@@ -106,7 +106,7 @@ function getUpdateLink() {
         var lastUpdate = '---';
     }
     
-	$(newLink).text('Última atualização dos funcionários: ' + lastUpdate.toLocaleString());
+	$(newLink).text('Last employees update: ' + lastUpdate.toLocaleString());
 	return newLink;
 }
 
