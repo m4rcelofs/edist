@@ -1477,7 +1477,6 @@ var FormViewModel = new function() {
 				callback : function(response) {
 					Navigation.setCurrentLocation(response.erId ? '/request/'
 							+ response.erId : '/request');
-
 					if (response.groups) {
 						response.groups.sort(function(left, right) {
 							return left.groupName == right.groupName ? 0
@@ -1498,7 +1497,7 @@ var FormViewModel = new function() {
 
 	function fetchGroupConfig(group) {
 		if (self.player() && self.player().encodedKey() && group
-				&& group.encodedKey) {
+				&& group.encodedKey && self.player().dbStatus() === 'ENABLED') {
 			var playerDTO = {
 				encodedKey : self.player().encodedKey()
 			};

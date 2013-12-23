@@ -12,7 +12,7 @@
 	<jsp:body>
 		<div class="jumbotron" style="font-size: inherit;">
 			<div class="row">
-				<img class="img-responsive" src="../img/formtitle.cache.png"
+				<img class="img-responsive" src="${baseUrl}/img/formtitle.cache.png"
 					alt="Suprimentos"></img>
 			</div>
 			<div class="form-group"></div>
@@ -33,7 +33,7 @@
 								</div>
 							</div>
 							<div class="form-group text-center"
-							data-bind="visible: player().groups() && player().groups().length > 1">
+							data-bind="visible: player().groups() && player().groups().length > 1 && player().dbStatus() === 'ENABLED'">
 								<div data-toggle="buttons" data-bind="foreach: player().groups">
 									 <label class="btn btn-default"
 									data-bind="click: $root.selectedGroup, css: { active: $root.selectedGroup().groupName == $data.groupName() }">
@@ -90,7 +90,7 @@
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-md-12">
+								<div class="col-md-12" data-bind="if: player().dbStatus() === 'ENABLED'">
 									<button id="sendRequestBtn" type="submit"
 									class="btn btn-primary btn-lg btn-block"
 									data-loading-text="Requisitando..."
@@ -104,8 +104,34 @@
 				<div class="col-md-2">
 					<img id="citizen-avatar"
 						class="img-thumbnail img-responsive citizen-avatar"
-						src="../img/profile_avatar.cache.png"
+						src="${baseUrl}/img/profile_avatar.cache.png"
 						data-bind="style: {'background': avatarImage}"></img>
+					<div class="form-group"></div>
+					<div data-bind="if: player().dbStatus() === 'DISABLED'">
+						<p>
+							<span class="label label-default">Desabilitado</span>
+						</p>
+					</div>
+					<div data-bind="if: player().fightStatus() === 'WARNING'">
+						<p>
+							<span class="label label-warning">Lutas: Atenção!</span>
+						</p>
+					</div>
+					<div data-bind="if: player().fightStatus() === 'TEMP_BANNED'">
+						<p>
+							<span class="label label-danger">Lutas: Suspenso Temporariamente</span>
+						</p>
+					</div>
+					<div data-bind="if: player().workStatus() === 'WARNING'">
+						<p>
+							<span class="label label-warning">Trabalho: Atenção!</span>
+						</p>
+					</div>
+					<div data-bind="if: player().workStatus() === 'TEMP_BANNED'">
+						<p>
+							<span class="label label-danger">Trabalho: Suspenso Temporariamente</span>
+						</p>
+					</div>
 					<div class="form-group"></div>
 					<div class="panel panel-default"
 						data-bind="visible: refreshCountdown() !== null && refreshCountdown() > 0">
