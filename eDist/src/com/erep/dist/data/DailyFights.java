@@ -31,31 +31,41 @@ public class DailyFights {
 	 */
 	@PrimaryKey
 	@Persistent
-	private Key				key;
+	private Key					key;
 
 	@Persistent
 	@RemoteProperty
-	private Player			player;
+	private Player				player;
 
 	@Unowned
 	@Persistent
 	@RemoteProperty
-	private Set<PlayerGroup>		groups;
+	/**
+	 * Forced unowned relation to allow fetchgroup loading 
+	 */
+	private Player				playerInfo;
+
+	@Unowned
+	@Persistent
+	@RemoteProperty
+	private Set<PlayerGroup>	groups;
 
 	@Persistent
 	@RemoteProperty
-	private Integer			day;
+	private Integer				day;
+
+	// TODO calculatedRankDamage
 
 	@Persistent
 	@RemoteProperty
-	private Integer			calculatedFfFights;
+	private Integer				calculatedFfFights;
 
 	@Persistent
 	@RemoteProperty
-	private ResourceQuality	calculatedWithWeaponQuality;
-	
+	private ResourceQuality		calculatedWithWeaponQuality;
+
 	@Persistent
-	private PlayerDistStatus verificationStatus;
+	private PlayerDistStatus	verificationStatus;
 
 	public DailyFights() {}
 
@@ -77,6 +87,7 @@ public class DailyFights {
 
 	public void setPlayer(Player player) {
 		this.player = player;
+		setPlayerInfo(player);
 	}
 
 	public Integer getDay() {
@@ -118,5 +129,13 @@ public class DailyFights {
 
 	public void setGroups(Set<PlayerGroup> groups) {
 		this.groups = groups;
+	}
+
+	public Player getPlayerInfo() {
+		return playerInfo;
+	}
+
+	public void setPlayerInfo(Player playerInfo) {
+		this.playerInfo = playerInfo;
 	}
 }

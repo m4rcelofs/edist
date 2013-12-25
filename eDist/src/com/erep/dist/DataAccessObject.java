@@ -404,7 +404,24 @@ public class DataAccessObject {
 		Query q = queryWithCursor(DailyStats.class, "player == playerParam",
 				encodedCursor);
 		q.declareParameters(Key.class.getName() + " playerParam");
+		q.setOrdering("day desc");
 		return (List<DailyStats>) q.execute(player.getKey());
+	}
+	
+	public List<DailyStats> listStats(PlayerGroup group, String encodedCursor) {
+		Query q = queryWithCursor(DailyStats.class, "groups.contains(groupParam)",
+				encodedCursor);
+		q.declareParameters(Key.class.getName() + " groupParam");
+		q.setOrdering("day desc");
+		return (List<DailyStats>) q.execute(group.getKey());
+	}
+	
+	public List<DailyStats> listStats(Integer day, String encodedCursor) {
+		Query q = queryWithCursor(DailyStats.class, "day == dayParam",
+				encodedCursor);
+		q.declareParameters(Integer.class.getName() + " dayParam");
+		q.setOrdering("day desc");
+		return (List<DailyStats>) q.execute(day);
 	}
 
 	public List<DailyWork> listWork(Player player, String encodedCursor) {
@@ -436,13 +453,6 @@ public class DataAccessObject {
 				encodedCursor);
 		q.declareParameters(Integer.class.getName() + " dayParam");
 		return (List<DailyWork>) q.execute(day);
-	}
-
-	public List<DailyStats> listStats(Integer day, String encodedCursor) {
-		Query q = queryWithCursor(DailyStats.class, "day == dayParam",
-				encodedCursor);
-		q.declareParameters(Integer.class.getName() + " dayParam");
-		return (List<DailyStats>) q.execute(day);
 	}
 
 	public List<DailyFights> listFights(Player player, String encodedCursor) {

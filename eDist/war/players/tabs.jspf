@@ -1,0 +1,10 @@
+<li>
+	<a href="#history" id="historyTab">
+		<span class="glyphicon glyphicon-stats"></span> Histórico
+	</a>
+</li>
+<li>
+	<a href="#fights" id="fightTab">
+		<span class="glyphicon glyphicon-screenshot"></span> Lutas
+	</a>
+</li>

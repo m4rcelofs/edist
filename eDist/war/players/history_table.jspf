@@ -1,0 +1,48 @@
+<table class="table table-striped table-hover table-responsive"
+	data-bind="if: statsHistory().length > 0">
+	<thead>
+		<tr>
+			<th data-bind="if: category() !== 'day'">Dia</th>
+			<th data-bind="if: category() !== 'player'">Jogador</th>
+			<th data-bind="if: category() !== 'group'">Grupo(s)</th>
+			<th>Experiência</th>
+			<th>Força</th>
+			<th>Rank</th>
+			<th>Hit Máximo</th>
+			<th>Data da Coleta</th>
+		</tr>
+	</thead>
+	<tbody data-bind="foreach: statsHistory">
+		<tr>
+			<td data-bind="if: $root.category() !== 'day'"><a
+				data-bind="text: day, attr: {href : '#/players/history/day/'+day}"></a>
+			</td>
+			<td data-bind="if: $root.category() !== 'player'"><a
+				data-bind="attr: {href : playerInfo ? '#/players/history/player/' + playerInfo.erId : ''}">
+					<img class="img-thumbnail img-responsive"
+					src="${baseUrl}/img/profile_avatar_55.cache.png" width="55px"
+					data-bind="style: { backgroundImage : Players.avatar($data) !== null ? Players.avatar($data) :
+										 'url(${baseUrl}/img/default_male_55.cache.gif)' ,
+										 backgroundSize : '55px 55px',
+										 backgroundRepeat : 'no-repeat',
+										 backgroundPosition : 'center'},
+									attr : {'data-content' : playerInfo ? playerInfo.name : ''},
+									updatePopup:{}"
+					data-toggle="popover">
+			</a></td>
+			<td data-bind="if: $root.category() !== 'group'">
+				<p data-bind="foreach: groups">
+					<a
+						data-bind="text: groupName ? groupName : 'Sem nome', attr: {href : '#/players/history/group/'+encodedKey}"></a>
+					<br />
+				</p>
+			</td>
+			<td data-bind="text: xp"></td>
+			<td data-bind="text: strength"></td>
+			<td data-bind="text: rank"></td>
+			<!-- TODO rank img -->
+			<td data-bind="text: maxHit"></td>
+			<td data-bind="text: $root.collectedAt($data)"></td>
+		</tr>
+	</tbody>
+</table>
