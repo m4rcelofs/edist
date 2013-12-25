@@ -37,11 +37,35 @@
 					<br />
 				</p>
 			</td>
-			<td data-bind="text: xp"></td>
-			<td data-bind="text: strength"></td>
-			<td data-bind="text: rank"></td>
-			<!-- TODO rank img -->
-			<td data-bind="text: maxHit"></td>
+			<td>
+				<span data-bind="text: xp"></span> 
+				<span data-bind="if: $root.statsHistory().length > $index() + 1 && $root.category() === 'player'">
+					<span class="badge pull-right"
+					data-bind="text: '+' + (xp - $root.statsHistory()[$index() + 1].xp)"></span>
+				</span>
+			</td>
+			<td>
+				<span data-bind="text: strength"></span>
+				<span data-bind="if: $root.statsHistory().length > $index() + 1 && $root.category() === 'player'">
+					<span class="badge pull-right"
+					data-bind="text: '+' + (strength - $root.statsHistory()[$index() + 1].strength)"></span>
+				</span>
+			</td>
+			<td>
+				<!-- TODO rank img -->
+				<span data-bind="text: rank"></span>
+				<span data-bind="if: $root.statsHistory().length > $index() + 1 && $root.category() === 'player'">
+					<span class="badge pull-right"
+					data-bind="text: '+' + (rank - $root.statsHistory()[$index() + 1].rank)"></span>
+				</span>
+			</td>
+			<td>
+				<span data-bind="text: maxHit"></span>
+				<span data-bind="if: $root.statsHistory().length > $index() + 1 && $root.category() === 'player'">
+					<span class="badge pull-right"
+					data-bind="text: '+' + (maxHit - $root.statsHistory()[$index() + 1].maxHit)"></span>
+				</span>
+			</td>
 			<td data-bind="text: $root.collectedAt($data)"></td>
 		</tr>
 	</tbody>
