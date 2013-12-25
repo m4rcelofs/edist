@@ -52,8 +52,9 @@
 				</span>
 			</td>
 			<td>
-				<!-- TODO rank img -->
-				<span data-bind="text: rank"></span>
+				<img data-bind="attr: {'data-content': rank + ', ' + RankCalculator.getRank(rank).name, 
+										src: '${baseUrl}/img/ranks/' + RankCalculator.getRank(rank).rank + '.png'},
+								updatePopup:{}" data-toggle="popover" class="" width="">
 				<span data-bind="if: $root.statsHistory().length > $index() + 1 && $root.category() === 'player'">
 					<span class="badge pull-right"
 					data-bind="text: '+' + (rank - $root.statsHistory()[$index() + 1].rank)"></span>
@@ -62,7 +63,7 @@
 			<td>
 				<span data-bind="text: maxHit"></span>
 				<span data-bind="if: $root.statsHistory().length > $index() + 1 && $root.category() === 'player'">
-					<span class="badge pull-right"
+					<span class="badge"
 					data-bind="text: '+' + (maxHit - $root.statsHistory()[$index() + 1].maxHit)"></span>
 				</span>
 			</td>
