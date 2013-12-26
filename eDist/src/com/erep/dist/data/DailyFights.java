@@ -5,6 +5,7 @@ import java.util.Set;
 import javax.jdo.annotations.FetchGroup;
 import javax.jdo.annotations.FetchGroups;
 import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -37,13 +38,15 @@ public class DailyFights {
 	@RemoteProperty
 	private Player				player;
 
+	// v0.5
+	@Deprecated
+	@NotPersistent
+	private Player				playerInfo;
+
 	@Unowned
 	@Persistent
 	@RemoteProperty
-	/**
-	 * Forced unowned relation to allow fetchgroup loading 
-	 */
-	private Player				playerInfo;
+	private DailyStats			stats;
 
 	@Unowned
 	@Persistent
@@ -67,7 +70,10 @@ public class DailyFights {
 	@Persistent
 	private PlayerDistStatus	verificationStatus;
 
-	public DailyFights() {}
+	@Deprecated
+	public DailyFights() {
+		// DWR only
+	}
 
 	public DailyFights(Key key) {
 		this.key = key;
@@ -87,7 +93,6 @@ public class DailyFights {
 
 	public void setPlayer(Player player) {
 		this.player = player;
-		setPlayerInfo(player);
 	}
 
 	public Integer getDay() {
@@ -131,11 +136,11 @@ public class DailyFights {
 		this.groups = groups;
 	}
 
-	public Player getPlayerInfo() {
-		return playerInfo;
+	public DailyStats getStats() {
+		return stats;
 	}
 
-	public void setPlayerInfo(Player playerInfo) {
-		this.playerInfo = playerInfo;
+	public void setStats(DailyStats stats) {
+		this.stats = stats;
 	}
 }

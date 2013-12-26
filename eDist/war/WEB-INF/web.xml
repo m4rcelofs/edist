@@ -192,10 +192,9 @@
 			<param-name>classes</param-name>
 			<param-value>
 				com.erep.dist.data.DailyWork,
-				com.erep.dist.data.DistConfig,
+				com.erep.dist.data.DailyStats,
 				com.erep.dist.data.Distributor,
 				com.erep.dist.data.Employer,
-				com.erep.dist.data.Player,
 				com.erep.dist.data.PlayerGroup,
 				com.erep.dist.data.Request,
 				com.erep.dist.data.ResourceDist,
@@ -244,7 +243,6 @@
 				
 				com.erep.dist.data.DailyFights,
 				com.erep.dist.data.DailyStats,
-				com.erep.dist.data.Player,
 				com.erep.dist.data.PlayerGroup
     		</param-value>
 		</init-param>

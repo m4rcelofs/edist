@@ -20,7 +20,7 @@
 				data-bind="text: eRepDay, attr: {href : '#/reports/requests/day/'+eRepDay}"></a>
 			</td>
 			<td data-bind="if: $root.category() !== 'player'">
-				<a data-bind="attr: {href : playerInfo ? '#/reports/requests/player/' + playerInfo.erId : ''}">
+				<a data-bind="attr: {href : stats ? '#/reports/requests/player/' + stats.erId : ''}">
 					<img class="img-thumbnail img-responsive"
 						 src="${baseUrl}/img/profile_avatar_55.cache.png"
 						 width="55px"
@@ -29,7 +29,7 @@
 										 backgroundSize : '55px 55px',
 										 backgroundRepeat : 'no-repeat',
 										 backgroundPosition : 'center'},
-									attr : {'data-content' : playerInfo ? playerInfo.name : ''},
+									attr : {'data-content' : stats ? stats.name : ''},
 									updatePopup:{}"
 						data-toggle="popover">
 				</a>

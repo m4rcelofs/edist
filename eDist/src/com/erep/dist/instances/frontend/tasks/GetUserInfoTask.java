@@ -1,6 +1,7 @@
 package com.erep.dist.instances.frontend.tasks;
 
 import java.net.URL;
+import java.util.Date;
 import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
@@ -9,8 +10,10 @@ import com.erep.dist.CloseablePM;
 import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
 import com.erep.dist.cache.CacheFacade;
+import com.erep.dist.data.DailyStats;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.enums.PlayerStatus;
+import com.erep.dist.erep.eRepTimeCalculator;
 import com.erep.dist.erep.eRepURL;
 import com.erep.dist.erep.parser.CitizenParser;
 import com.google.appengine.api.datastore.Key;
@@ -55,6 +58,19 @@ public class GetUserInfoTask implements DeferredTask {
 			if (playerInfo == null || !playerInfo.containsKey("name")
 					|| !playerInfo.containsKey("avatar"))
 				throw new IllegalStateException("Info not found! ):");
+
+			DailyStats stats = new DailyStats(dbPlayer,
+					eRepTimeCalculator.geteRepDay());
+			stats.setAvatar(playerInfo.get("avatar").toString());
+			stats.setName(playerInfo.get("name").toString());
+			stats.setRank(Long.valueOf(playerInfo.get("rank").toString()));
+			stats.setStrength(Double.valueOf(playerInfo.get("strength")
+					.toString()));
+			stats.setXp(Long.valueOf(playerInfo.get("xp").toString()));
+			stats.setCollectedAt(new Date());
+			stats.setGroups(dbPlayer.getGroups());
+
+			dbPlayer.addDailyStats(stats);
 
 			dbPlayer.setName(playerInfo.get("name"));
 			dbPlayer.setAvatar(playerInfo.get("avatar"));

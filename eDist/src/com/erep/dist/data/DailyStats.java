@@ -3,9 +3,11 @@ package com.erep.dist.data;
 import java.util.Date;
 import java.util.Set;
 
+import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.FetchGroup;
 import javax.jdo.annotations.FetchGroups;
 import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -16,12 +18,16 @@ import org.directwebremoting.annotations.RemoteProperty;
 import org.directwebremoting.convert.BeanConverter;
 
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.datanucleus.annotations.Unowned;
 
 @DataTransferObject(converter = BeanConverter.class, params = @Param(name = "javascript", value = "DailyStats"))
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 @FetchGroups({ @FetchGroup(name = "statsListing", members = {
-		@Persistent(name = "playerInfo"), @Persistent(name = "groups") }) })
+		@Persistent(name = "groups"), @Persistent(name = "day"),
+		@Persistent(name = "xp"), @Persistent(name = "strength"),
+		@Persistent(name = "rank"), @Persistent(name = "maxHit"),
+		@Persistent(name = "collectedAt") }) })
 public class DailyStats {
 
 	/**
@@ -34,42 +40,63 @@ public class DailyStats {
 	@Persistent
 	private Player				player;
 
-	@Unowned
+	// v0.5
+	@Deprecated
+	@NotPersistent
+	private Player				playerInfo;
+
 	@Persistent
 	@RemoteProperty
-	/**
-	 * Forced unowned relation to allow fetchgroup loading 
-	 */
-	private Player				playerInfo;
+	private String				name;
+
+	@Persistent
+	@RemoteProperty
+	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
+	private String				avatar;
+
+	// TODO base64 55x55 image
 
 	@Unowned
 	@Persistent
 	@RemoteProperty
 	private Set<PlayerGroup>	groups;
 
-	@Persistent
+	@Persistent(defaultFetchGroup = "false")
 	@RemoteProperty
 	private Integer				day;
 
-	@Persistent
+	@Persistent(defaultFetchGroup = "false")
 	@RemoteProperty
 	private Long				xp;
 
-	@Persistent
+	@Persistent(defaultFetchGroup = "false")
 	@RemoteProperty
 	private Double				strength;
 
-	@Persistent
+	@Persistent(defaultFetchGroup = "false")
 	@RemoteProperty
 	private Long				rank;
 
-	@Persistent
+	@Persistent(defaultFetchGroup = "false")
 	@RemoteProperty
 	private Integer				maxHit;
 
-	@Persistent
+	@Persistent(defaultFetchGroup = "false")
 	@RemoteProperty
 	private Date				collectedAt;
+
+	public DailyStats() {}
+
+	public DailyStats(Player player, Integer day) {
+		this(KeyFactory.createKey(player.getKey(),
+				DailyStats.class.getSimpleName(), day));
+		setDay(day);
+		setPlayer(player);
+	}
+
+	public DailyStats(Key key) {
+		setKey(key);
+	}
 
 	public Key getKey() {
 		return key;
@@ -85,7 +112,6 @@ public class DailyStats {
 
 	public void setPlayer(Player player) {
 		this.player = player;
-		setPlayerInfo(player);
 		setGroups(player.getGroups());
 	}
 
@@ -137,20 +163,33 @@ public class DailyStats {
 		this.collectedAt = collectedAt;
 	}
 
-	public Player getPlayerInfo() {
-		return playerInfo;
-	}
-
-	public void setPlayerInfo(Player playerInfo) {
-		this.playerInfo = playerInfo;
-	}
-
 	public Set<PlayerGroup> getGroups() {
 		return groups;
 	}
 
 	public void setGroups(Set<PlayerGroup> groups) {
 		this.groups = groups;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getAvatar() {
+		return avatar;
+	}
+
+	public void setAvatar(String avatar) {
+		this.avatar = avatar;
+	}
+	
+	@RemoteProperty
+	public Integer geterId(){
+		return (int) getKey().getParent().getId();
 	}
 
 }

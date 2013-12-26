@@ -22,7 +22,6 @@ import com.erep.dist.erep.HitCalculator;
 import com.erep.dist.erep.eRepURL;
 import com.erep.dist.erep.parser.CitizenParser;
 import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.taskqueue.DeferredTask;
 import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
@@ -57,13 +56,13 @@ public class PlayerStatsTask implements DeferredTask {
 				return;
 			}
 
-			DailyStats stats = parseResponse(response);
+			DailyStats stats = new DailyStats(dbPlayer, day);
+
+			stats = parseResponse(response, stats);
+
 			calculateHit(stats);
 
-			stats.setDay(day);
 			stats.setCollectedAt(new Date());
-			stats.setKey(KeyFactory.createKey(dbPlayer.getKey(),
-					DailyStats.class.getSimpleName(), day));
 
 			dbPlayer.addDailyStats(stats);
 			startFightCalculationTask(day, dbPlayer);
@@ -86,12 +85,14 @@ public class PlayerStatsTask implements DeferredTask {
 				.getUrl(playerErId + "")));
 	}
 
-	private DailyStats parseResponse(HTTPResponse response) throws IOException {
+	private DailyStats parseResponse(HTTPResponse response, DailyStats stats)
+			throws IOException {
 		String html = IOUtils.toString(response.getContent(), "UTF-8");
 
 		Map<String, String> playerInfo = new CitizenParser().parse(html);
 
-		DailyStats stats = new DailyStats();
+		stats.setAvatar(playerInfo.get("avatar").toString());
+		stats.setName(playerInfo.get("name").toString());
 		stats.setRank(Long.valueOf(playerInfo.get("rank").toString()));
 		stats.setStrength(Double.valueOf(playerInfo.get("strength").toString()));
 		stats.setXp(Long.valueOf(playerInfo.get("xp").toString()));
@@ -103,8 +104,7 @@ public class PlayerStatsTask implements DeferredTask {
 		DeferredTask task = new CalculateDailyFightsTask(day, dbPlayer);
 		Queue queue = QueueFactory.getDefaultQueue();
 		queue.add(withPayload(task).taskName(
-				"CalculateDailyFightsTask_"
-						+ dbPlayer.getErId() + "_" + day));
+				"CalculateDailyFightsTask_" + dbPlayer.getErId() + "_" + day));
 	}
 
 }

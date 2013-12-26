@@ -5,6 +5,7 @@ import java.util.Set;
 import javax.jdo.annotations.FetchGroup;
 import javax.jdo.annotations.FetchGroups;
 import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -16,12 +17,13 @@ import org.directwebremoting.convert.BeanConverter;
 
 import com.erep.dist.data.enums.PlayerDistStatus;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.datanucleus.annotations.Unowned;
 
 @DataTransferObject(converter = BeanConverter.class, params = @Param(name = "javascript", value = "DailyWork"))
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 @FetchGroups({ @FetchGroup(name = "workListing", members = {
-		@Persistent(name = "playerInfo"), @Persistent(name = "groups"),
+		@Persistent(name = "stats"), @Persistent(name = "groups"),
 		@Persistent(name = "employer") }) })
 public class DailyWork {
 
@@ -35,13 +37,15 @@ public class DailyWork {
 	@Persistent
 	private Player				player;
 
+	// v0.5
+	@Deprecated
+	@NotPersistent
+	private Player				playerInfo;
+
 	@Unowned
 	@Persistent
 	@RemoteProperty
-	/**
-	 * Forced unowned relation to allow fetchgroup loading 
-	 */
-	private Player				playerInfo;
+	private DailyStats			stats;
 
 	@Unowned
 	@Persistent
@@ -70,7 +74,14 @@ public class DailyWork {
 
 	@Deprecated
 	public DailyWork() {
-		//DWR only
+		// DWR only
+	}
+
+	public DailyWork(Player player, Integer day) {
+		this(KeyFactory.createKey(player.getKey(),
+				DailyWork.class.getSimpleName(), day));
+		setDay(day);
+		setPlayer(player);
 	}
 
 	public DailyWork(Key key) {
@@ -91,7 +102,6 @@ public class DailyWork {
 
 	public void setPlayer(Player player) {
 		this.player = player;
-		setPlayerInfo(player);
 	}
 
 	public Employer getEmployer() {
@@ -134,12 +144,11 @@ public class DailyWork {
 		this.groups = groups;
 	}
 
-	public Player getPlayerInfo() {
-		return playerInfo;
+	public DailyStats getStats() {
+		return stats;
 	}
 
-	public void setPlayerInfo(Player playerInfo) {
-		this.playerInfo = playerInfo;
+	public void setStats(DailyStats stats) {
+		this.stats = stats;
 	}
-
 }
