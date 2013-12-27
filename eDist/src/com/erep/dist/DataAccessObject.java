@@ -740,6 +740,8 @@ public class DataAccessObject {
 		if (newConfig.getFightVerif() != null)
 			dbConfig.setFightVerif(newConfig.getFightVerif());
 
+		dbConfig.setAvatarHistory(newConfig.isAvatarHistory());
+
 		CacheFacade.remove("com.erep.dist.DataAccessObject.getServerConfig()");
 		return true;
 	}
