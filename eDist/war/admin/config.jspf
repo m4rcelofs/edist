@@ -56,6 +56,19 @@
 				</a>
 			</div>
 			<div class="form-group">
+				<label class="control-label col-md-6" for="avatarHistory">Manter
+					histórico de avatares</label>
+				<div class="col-md-5 text-center">
+					<input type="checkbox" data-bind="checked: config.avatarHistory">
+				</div>
+				<a href="#" class="help" data-toggle="popover" title
+					data-content="Armazena uma cópia de cada avatar utilizado pelo jogador"
+					data-original-title="Histórico de Avatares"
+					data-bind="updatePopup:{}"> <span
+					class="glyphicon glyphicon-question-sign"></span>
+				</a>
+			</div>
+			<div class="form-group">
 				<label class="col-md-6 control-label" for="reportsAccess">Acesso
 					aos Relatórios de Distribuição</label>
 				<div class="col-md-5">

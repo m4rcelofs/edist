@@ -70,7 +70,7 @@
 		<servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
 		<init-param>
 			<param-name>debug</param-name>
-			<param-value>true</param-value>
+			<param-value>false</param-value>
 		</init-param>
 		<init-param>
 			<param-name>classes</param-name>
@@ -102,7 +102,7 @@
 		<servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
 		<init-param>
 			<param-name>debug</param-name>
-			<param-value>true</param-value>
+			<param-value>false</param-value>
 		</init-param>
 		<init-param>
 			<param-name>classes</param-name>
@@ -147,7 +147,7 @@
 		<servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
 		<init-param>
 			<param-name>debug</param-name>
-			<param-value>true</param-value>
+			<param-value>false</param-value>
 		</init-param>
 		<init-param>
 			<param-name>classes</param-name>
@@ -186,7 +186,7 @@
 		<servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
 		<init-param>
 			<param-name>debug</param-name>
-			<param-value>true</param-value>
+			<param-value>false</param-value>
 		</init-param>
 		<init-param>
 			<param-name>classes</param-name>
@@ -230,7 +230,7 @@
 		<servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
 		<init-param>
 			<param-name>debug</param-name>
-			<param-value>true</param-value>
+			<param-value>false</param-value>
 		</init-param>
 		<init-param>
 			<param-name>classes</param-name>
@@ -323,6 +323,17 @@
 	<servlet-mapping>
 		<servlet-name>employersFacadeServlet</servlet-name>
 		<url-pattern>/employer</url-pattern>
+	</servlet-mapping>
+
+	<!-- Avatar upload callback -->
+	<servlet>
+		<servlet-name>avatarCallback</servlet-name>
+		<servlet-class>com.erep.dist.instances.backend.tasks.AvatarUploadCallbackServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>avatarCallback</servlet-name>
+		<url-pattern>/admin/avatarUploadCallback</url-pattern>
 	</servlet-mapping>
 
 	<!-- default url mapper -->

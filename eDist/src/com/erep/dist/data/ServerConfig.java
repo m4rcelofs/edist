@@ -57,6 +57,10 @@ public class ServerConfig {
 	@RemoteProperty
 	private String				contactEmail;
 
+	@Persistent
+	@RemoteProperty
+	private boolean				avatarHistory;
+
 	public String getMuName() {
 		return muName;
 	}
@@ -127,6 +131,14 @@ public class ServerConfig {
 
 	public void setWorkVerif(WorkVerification workVerif) {
 		this.workVerif = workVerif;
+	}
+
+	public boolean isAvatarHistory() {
+		return avatarHistory;
+	}
+
+	public void setAvatarHistory(boolean avatarHistory) {
+		this.avatarHistory = avatarHistory;
 	}
 
 }

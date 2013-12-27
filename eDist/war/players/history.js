@@ -47,7 +47,7 @@ var HistoryViewModel = new function() {
 	}
 
 	self.filterByDay = function(param) {
-		param = checkParam(param) ? param : edist.server.eRepDay;
+		param = checkParam(param) ? param : (edist.server.eRepDay - 1);
 		reset('day', PlayerReportService.statsByDay, param, param);
 		queryServer();
 	}
@@ -62,10 +62,6 @@ var HistoryViewModel = new function() {
 	self.filterByPlayer = function(param) {
 		reset('player', PlayerReportService.statsByPlayer, param, param);
 		queryServer();
-	}
-
-	self.collectedAt = function(item) {
-		return formatDate(item.collectedAt);
 	}
 
 	function checkParam(param) {
@@ -99,10 +95,6 @@ var HistoryViewModel = new function() {
 		response.results.forEach(function(item) {
 			self.statsHistory.push(item);
 		});
-	}
-
-	function formatDate(date) {
-		return date ? date.toLocaleString() : '';
 	}
 
 	function showTab() {

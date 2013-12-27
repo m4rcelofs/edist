@@ -38,36 +38,36 @@
 				</p>
 			</td>
 			<td>
-				<span data-bind="text: xp"></span> 
+				<span data-bind="text: $.format.number(xp, edist.format.number)"></span> 
 				<span data-bind="if: $root.statsHistory().length > $index() + 1 && $root.category() === 'player'">
 					<span class="badge pull-right"
-					data-bind="text: '+' + (xp - $root.statsHistory()[$index() + 1].xp)"></span>
+					data-bind="text: '+' +  $.format.number(xp - $root.statsHistory()[$index() + 1].xp, edist.format.number)"></span>
 				</span>
 			</td>
 			<td>
-				<span data-bind="text: strength"></span>
+				<span data-bind="text:  $.format.number(strength, edist.format.number)"></span>
 				<span data-bind="if: $root.statsHistory().length > $index() + 1 && $root.category() === 'player'">
 					<span class="badge pull-right"
-					data-bind="text: '+' + (strength - $root.statsHistory()[$index() + 1].strength)"></span>
+					data-bind="text: '+' + $.format.number(strength - $root.statsHistory()[$index() + 1].strength, edist.format.number)"></span>
 				</span>
 			</td>
 			<td>
-				<img data-bind="attr: {'data-content': rank + ', ' + RankCalculator.getRank(rank).name, 
+				<img data-bind="attr: {'data-content':  $.format.number(rank, edist.format.number) + ' pontos: ' + RankCalculator.getRank(rank).name, 
 										src: '${baseUrl}/img/ranks/' + RankCalculator.getRank(rank).rank + '.png'},
 								updatePopup:{}" data-toggle="popover">
 				<span data-bind="if: $root.statsHistory().length > $index() + 1 && $root.category() === 'player'">
 					<span class="badge pull-right"
-					data-bind="text: '+' + (rank - $root.statsHistory()[$index() + 1].rank)"></span>
+					data-bind="text: '+' +  $.format.number(rank - $root.statsHistory()[$index() + 1].rank, edist.format.number)"></span>
 				</span>
 			</td>
 			<td>
-				<span data-bind="text: maxHit"></span>
+				<span data-bind="text: $.format.number(maxHit, edist.format.number)"></span>
 				<span data-bind="if: $root.statsHistory().length > $index() + 1 && $root.category() === 'player'">
 					<span class="badge"
-					data-bind="text: '+' + (maxHit - $root.statsHistory()[$index() + 1].maxHit)"></span>
+					data-bind="text: '+' +  $.format.number(maxHit - $root.statsHistory()[$index() + 1].maxHit, edist.format.number)"></span>
 				</span>
 			</td>
-			<td data-bind="text: $root.collectedAt($data)"></td>
+			<td data-bind="text:  $.format.date(collectedAt, edist.format.date)"></td>
 		</tr>
 	</tbody>
 </table>

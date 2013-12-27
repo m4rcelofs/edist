@@ -78,8 +78,8 @@
 			<td data-bind="if: $root.category() !== 'distributor'"><a
 				data-bind="text: distributor ? distributor.name : '',
 							attr: {href : distributor ? '#/reports/requests/distributor/'+distributor.encodedKey : ''}"></a></td>
-			<td data-bind="text: $root.requestedAt($data)"></td>
-			<td data-bind="text: $root.completedAt($data)"></td>
+			<td data-bind="text: requestedAt ? $.format.date(requestedAt, edist.format.date) : ''"></td>
+			<td data-bind="text: completedAt ? $.format.date(completedAt, edist.format.date) : ''"></td>
 			<td data-bind="if: window.edist.user.hasManagementAccess === true">
 				<img data-bind="attr: { src : XAppEngineCountry ? '${baseUrl}/img/flags/' + XAppEngineCountry.toLowerCase() + '.png' : '${baseUrl}/img/flags/zz.png',
 										'data-content' : XAppEngineCity + ', ' + XAppEngineRegion + ', ' + XAppEngineCountry,

@@ -19,6 +19,7 @@ import javax.jdo.Transaction;
 
 import com.erep.dist.cache.CacheFacade;
 import com.erep.dist.cache.Cacheable;
+import com.erep.dist.data.Avatar;
 import com.erep.dist.data.DailyFights;
 import com.erep.dist.data.DailyStats;
 import com.erep.dist.data.DailyWork;
@@ -75,6 +76,11 @@ public class DataAccessObject {
 
 	public boolean save(Request request) {
 		pm.makePersistent(request);
+		return true;
+	}
+	
+	public boolean save(Avatar avatar) {
+		pm.makePersistent(avatar);
 		return true;
 	}
 
@@ -558,6 +564,10 @@ public class DataAccessObject {
 		return pm.getObjectById(Employer.class, employer.getKey());
 	}
 
+	public Avatar find(Avatar avatar) {
+		return pm.getObjectById(Avatar.class, avatar.getKey());
+	}
+
 	public Licence getLicence() {
 		return (Licence) pm.getObjectById(Licence.class, KeyFactory.createKey(
 				Licence.class.getSimpleName(), ServerConstants.DEFAULT_ID));
@@ -739,6 +749,8 @@ public class DataAccessObject {
 
 		if (newConfig.getFightVerif() != null)
 			dbConfig.setFightVerif(newConfig.getFightVerif());
+
+		dbConfig.setAvatarHistory(newConfig.isAvatarHistory());
 
 		CacheFacade.remove("com.erep.dist.DataAccessObject.getServerConfig()");
 		return true;
