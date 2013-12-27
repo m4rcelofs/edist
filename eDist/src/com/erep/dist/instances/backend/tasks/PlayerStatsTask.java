@@ -67,6 +67,9 @@ public class PlayerStatsTask implements DeferredTask {
 			dbPlayer.addDailyStats(stats);
 			startFightCalculationTask(day, dbPlayer);
 
+			if (dao.getServerConfig().isAvatarHistory())
+				startAvatarFetchTask(stats);
+
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -105,6 +108,14 @@ public class PlayerStatsTask implements DeferredTask {
 		Queue queue = QueueFactory.getDefaultQueue();
 		queue.add(withPayload(task).taskName(
 				"CalculateDailyFightsTask_" + dbPlayer.getErId() + "_" + day));
+	}
+
+	private void startAvatarFetchTask(DailyStats stats) {
+		DeferredTask task = new AvatarFetchTask(stats, stats.getAvatar());
+		Queue queue = QueueFactory.getDefaultQueue();
+		queue.add(withPayload(task).taskName(
+				"AvatarFetchTask_" + stats.geterId() + "_" + stats.getDay()));
+
 	}
 
 }

@@ -325,6 +325,17 @@
 		<url-pattern>/employer</url-pattern>
 	</servlet-mapping>
 
+	<!-- Avatar upload callback -->
+	<servlet>
+		<servlet-name>avatarCallback</servlet-name>
+		<servlet-class>com.erep.dist.instances.backend.tasks.AvatarUploadCallbackServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>avatarCallback</servlet-name>
+		<url-pattern>/admin/avatarUploadCallback</url-pattern>
+	</servlet-mapping>
+
 	<!-- default url mapper -->
 	<servlet>
 		<servlet-name>defaultEP</servlet-name>

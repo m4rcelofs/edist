@@ -16,7 +16,7 @@ public class Avatar {
 	@PrimaryKey
 	@Persistent
 	/**
-	 * CRC32
+	 * MD5
 	 */
 	private Key		key;
 
@@ -27,8 +27,8 @@ public class Avatar {
 	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	private String	servingUrl;
 
-	public Avatar(String crc32) {
-		setKey(KeyFactory.createKey(Avatar.class.getSimpleName(), crc32));
+	public Avatar(String digest) {
+		setKey(KeyFactory.createKey(Avatar.class.getSimpleName(), digest));
 	}
 
 	public Key getKey() {
