@@ -454,6 +454,7 @@ public class DataAccessObject {
 		Query q = queryWithCursor(DailyFights.class, "player == playerParam",
 				encodedCursor);
 		q.declareParameters(Key.class.getName() + " playerParam");
+		q.setOrdering("day desc");
 		return (List<DailyFights>) q.execute(player.getKey());
 	}
 
@@ -468,6 +469,7 @@ public class DataAccessObject {
 		Query q = queryWithCursor(DailyFights.class,
 				"groups.contains(groupParam)", encodedCursor);
 		q.declareParameters(Key.class.getName() + " groupParam");
+		q.setOrdering("day desc");
 		return (List<DailyFights>) q.execute(group.getKey());
 	}
 

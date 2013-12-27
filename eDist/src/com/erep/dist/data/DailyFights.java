@@ -20,11 +20,8 @@ import com.google.appengine.datanucleus.annotations.Unowned;
 
 @DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-@FetchGroups({
-		@FetchGroup(name = "fightsByPlayer", members = { @Persistent(name = "group") }),
-		@FetchGroup(name = "fightsByDay", members = {
-				@Persistent(name = "group"), @Persistent(name = "player") }),
-		@FetchGroup(name = "fightsByGroup", members = { @Persistent(name = "player") }) })
+@FetchGroups({ @FetchGroup(name = "fightsListing", members = {
+		@Persistent(name = "stats"), @Persistent(name = "groups") }) })
 public class DailyFights {
 
 	/**
@@ -35,7 +32,6 @@ public class DailyFights {
 	private Key					key;
 
 	@Persistent
-	@RemoteProperty
 	private Player				player;
 
 	// v0.5
@@ -68,6 +64,7 @@ public class DailyFights {
 	private ResourceQuality		calculatedWithWeaponQuality;
 
 	@Persistent
+	@RemoteProperty
 	private PlayerDistStatus	verificationStatus;
 
 	@Deprecated

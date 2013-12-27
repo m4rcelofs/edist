@@ -3,10 +3,10 @@ $(document).ready(function() {
 	Players.downloadFilters();
 
 	ko.applyBindings(HistoryViewModel, document.getElementById('history'));
-	// ko.applyBindings(FightsViewModel, document.getElementById('fights'));
+	ko.applyBindings(FightsViewModel, document.getElementById('fights'));
 
 	HistoryRoutes.addRoutes();
-	// FightRoutes.addRoutes();
+	FightRoutes.addRoutes();
 
 	Navigation.configureRoutes('/players/');
 

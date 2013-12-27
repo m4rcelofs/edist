@@ -54,7 +54,7 @@
 			<td>
 				<img data-bind="attr: {'data-content': rank + ', ' + RankCalculator.getRank(rank).name, 
 										src: '${baseUrl}/img/ranks/' + RankCalculator.getRank(rank).rank + '.png'},
-								updatePopup:{}" data-toggle="popover" class="" width="">
+								updatePopup:{}" data-toggle="popover">
 				<span data-bind="if: $root.statsHistory().length > $index() + 1 && $root.category() === 'player'">
 					<span class="badge pull-right"
 					data-bind="text: '+' + (rank - $root.statsHistory()[$index() + 1].rank)"></span>

@@ -243,7 +243,10 @@
 				
 				com.erep.dist.data.DailyFights,
 				com.erep.dist.data.DailyStats,
-				com.erep.dist.data.PlayerGroup
+				com.erep.dist.data.PlayerGroup,
+				
+				com.erep.dist.data.enums.ResourceQuality,
+				com.erep.dist.data.enums.PlayerDistStatus
     		</param-value>
 		</init-param>
 	</servlet>

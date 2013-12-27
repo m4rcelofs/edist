@@ -104,14 +104,23 @@ public class PlayerReportService {
 	}
 
 	@RemoteMethod
-	public FightsQuery fightsByPlayer(Player player, String encodedCursor) {
+	public FightsQuery fightsByPlayer(String idNameOrLink, String encodedCursor) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			pm.getFetchPlan().addGroup("fightsByPlayer");
 
 			FightsQuery queryResults = new FightsQuery();
+			DataAccessObject dao = new DataAccessObject(pm);
 
-			List<DailyFights> requests = new DataAccessObject(pm).listFights(
-					player, encodedCursor);
+			Player player = null;
+			try {
+				player = new PlayerIdentificator(dao)
+						.identifyRequestString(idNameOrLink);
+			} catch (JDOObjectNotFoundException e) {
+				return queryResults;
+			}
+
+			pm.getFetchPlan().addGroup("fightsListing");
+
+			List<DailyFights> requests = dao.listFights(player, encodedCursor);
 
 			queryResults.setResults(requests);
 			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(requests)
@@ -121,9 +130,15 @@ public class PlayerReportService {
 	}
 
 	@RemoteMethod
+	public FightsQuery fightsByDate(Date date, String encodedCursor) {
+		Integer day = eRepTimeCalculator.toErepDate(date);
+		return fightsByDay(day, encodedCursor);
+	}
+
+	@RemoteMethod
 	public FightsQuery fightsByDay(Integer day, String encodedCursor) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			pm.getFetchPlan().addGroup("fightsByDay");
+			pm.getFetchPlan().addGroup("fightsListing");
 
 			FightsQuery queryResults = new FightsQuery();
 
@@ -140,7 +155,7 @@ public class PlayerReportService {
 	@RemoteMethod
 	public FightsQuery fightsByGroup(PlayerGroup group, String encodedCursor) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			pm.getFetchPlan().addGroup("fightsByGroup");
+			pm.getFetchPlan().addGroup("fightsListing");
 
 			FightsQuery queryResults = new FightsQuery();
 
