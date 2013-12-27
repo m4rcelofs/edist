@@ -5,6 +5,8 @@ import static com.erep.dist.DataAccessObject.playerRootKey;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.jdo.JDOObjectNotFoundException;
+
 import com.erep.dist.data.Player;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
@@ -37,7 +39,7 @@ public class PlayerIdentificator {
 				// assume name
 				p.setKey(dao.findPlayerKey(idNameOrLink));
 		} catch (IllegalArgumentException e) {
-			return null;
+			throw new JDOObjectNotFoundException(e.getMessage(), e);
 		}
 		return dao.find(p);
 	}

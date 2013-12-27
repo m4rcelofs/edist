@@ -21,6 +21,7 @@ import org.json.simple.parser.ParseException;
 import com.erep.dist.CloseablePM;
 import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
+import com.erep.dist.data.DailyStats;
 import com.erep.dist.data.DailyWork;
 import com.erep.dist.data.Employer;
 import com.erep.dist.data.Player;
@@ -105,11 +106,11 @@ public class EmployerFacadeServlet extends HttpServlet {
 
 			Integer day = Integer.valueOf(workDay.get("day").toString());
 
-			DailyWork work = new DailyWork(dao.createDailyWorkKey(player, day));
-			work.setDay(day);
+			DailyWork work = new DailyWork(player, day);
 			work.setEmployer(employer);
 			work.setGroups(player.getGroups());
 			work.setPlayer(player);
+			work.setStats(dao.find(new DailyStats(player, day - 1)));
 
 			Object worked = workDay.get("worked");
 			work.setWorked(worked != null ? Boolean.valueOf(worked.toString())

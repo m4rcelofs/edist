@@ -52,6 +52,16 @@
 		<url-pattern>/reports/*</url-pattern>
 	</servlet-mapping>
 
+	<!-- player reports ep -->
+	<servlet>
+		<servlet-name>playersEP</servlet-name>
+		<jsp-file>/players/index.jsp</jsp-file>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>playersEP</servlet-name>
+		<url-pattern>/players/*</url-pattern>
+	</servlet-mapping>
 
 	<!-- Public DWR (requests) -->
 	<servlet>
@@ -182,10 +192,9 @@
 			<param-name>classes</param-name>
 			<param-value>
 				com.erep.dist.data.DailyWork,
-				com.erep.dist.data.DistConfig,
+				com.erep.dist.data.DailyStats,
 				com.erep.dist.data.Distributor,
 				com.erep.dist.data.Employer,
-				com.erep.dist.data.Player,
 				com.erep.dist.data.PlayerGroup,
 				com.erep.dist.data.Request,
 				com.erep.dist.data.ResourceDist,
@@ -228,13 +237,16 @@
 			<param-value>
 				com.erep.dist.dwr.dto.StatsQuery,
 				com.erep.dist.dwr.dto.FightsQuery,
+				com.erep.dist.dwr.dto.FiltersInitialInfo,
 				
 				com.erep.dist.dwr.PlayerReportService,
 				
 				com.erep.dist.data.DailyFights,
 				com.erep.dist.data.DailyStats,
-				com.erep.dist.data.Player,
-				com.erep.dist.data.PlayerGroup
+				com.erep.dist.data.PlayerGroup,
+				
+				com.erep.dist.data.enums.ResourceQuality,
+				com.erep.dist.data.enums.PlayerDistStatus
     		</param-value>
 		</init-param>
 	</servlet>

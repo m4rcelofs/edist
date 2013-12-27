@@ -28,7 +28,7 @@ import com.google.appengine.datanucleus.annotations.Unowned;
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 @FetchGroups({
 		@FetchGroup(name = "reportListing", members = {
-				@Persistent(name = "playerInfo"), @Persistent(name = "group") }),
+				@Persistent(name = "stats"), @Persistent(name = "group") }),
 		@FetchGroup(name = "managementAccess", members = {
 				@Persistent(name = "distributor"), @Persistent(name = "ip"),
 				@Persistent(name = "XAppEngineCountry"),
@@ -86,13 +86,15 @@ public class Request implements HasEncodedKey {
 	@Persistent
 	private Player				player;
 
+	// v0.5
+	@Deprecated
+	@NotPersistent
+	private Player				playerInfo;
+
 	@Unowned
 	@Persistent
 	@RemoteProperty
-	/**
-	 * Forced unowned relation to allow fetchgroup loading 
-	 */
-	private Player				playerInfo;
+	private DailyStats			stats;
 
 	@Persistent(defaultFetchGroup = "false")
 	@RemoteProperty
@@ -135,7 +137,6 @@ public class Request implements HasEncodedKey {
 
 	public void setPlayer(Player player) {
 		this.player = player;
-		setPlayerInfo(player);
 	}
 
 	public Integer geteRepDay() {
@@ -264,13 +265,12 @@ public class Request implements HasEncodedKey {
 		this.group = group;
 	}
 
-	public Player getPlayerInfo() {
-		if (playerInfo == null)
-			return getPlayer();
-		return playerInfo;
+	public DailyStats getStats() {
+		return stats;
 	}
 
-	public void setPlayerInfo(Player playerInfo) {
-		this.playerInfo = playerInfo;
+	public void setStats(DailyStats stats) {
+		this.stats = stats;
 	}
+
 }

@@ -5,6 +5,7 @@ import java.util.Set;
 import javax.jdo.annotations.FetchGroup;
 import javax.jdo.annotations.FetchGroups;
 import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
@@ -19,11 +20,8 @@ import com.google.appengine.datanucleus.annotations.Unowned;
 
 @DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-@FetchGroups({
-		@FetchGroup(name = "fightsByPlayer", members = { @Persistent(name = "group") }),
-		@FetchGroup(name = "fightsByDay", members = {
-				@Persistent(name = "group"), @Persistent(name = "player") }),
-		@FetchGroup(name = "fightsByGroup", members = { @Persistent(name = "player") }) })
+@FetchGroups({ @FetchGroup(name = "fightsListing", members = {
+		@Persistent(name = "stats"), @Persistent(name = "groups") }) })
 public class DailyFights {
 
 	/**
@@ -31,33 +29,48 @@ public class DailyFights {
 	 */
 	@PrimaryKey
 	@Persistent
-	private Key				key;
+	private Key					key;
 
 	@Persistent
-	@RemoteProperty
-	private Player			player;
+	private Player				player;
+
+	// v0.5
+	@Deprecated
+	@NotPersistent
+	private Player				playerInfo;
 
 	@Unowned
 	@Persistent
 	@RemoteProperty
-	private Set<PlayerGroup>		groups;
+	private DailyStats			stats;
+
+	@Unowned
+	@Persistent
+	@RemoteProperty
+	private Set<PlayerGroup>	groups;
 
 	@Persistent
 	@RemoteProperty
-	private Integer			day;
+	private Integer				day;
+
+	// TODO calculatedRankDamage
 
 	@Persistent
 	@RemoteProperty
-	private Integer			calculatedFfFights;
+	private Integer				calculatedFfFights;
 
 	@Persistent
 	@RemoteProperty
-	private ResourceQuality	calculatedWithWeaponQuality;
-	
-	@Persistent
-	private PlayerDistStatus verificationStatus;
+	private ResourceQuality		calculatedWithWeaponQuality;
 
-	public DailyFights() {}
+	@Persistent
+	@RemoteProperty
+	private PlayerDistStatus	verificationStatus;
+
+	@Deprecated
+	public DailyFights() {
+		// DWR only
+	}
 
 	public DailyFights(Key key) {
 		this.key = key;
@@ -118,5 +131,13 @@ public class DailyFights {
 
 	public void setGroups(Set<PlayerGroup> groups) {
 		this.groups = groups;
+	}
+
+	public DailyStats getStats() {
+		return stats;
+	}
+
+	public void setStats(DailyStats stats) {
+		this.stats = stats;
 	}
 }

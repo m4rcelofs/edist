@@ -14,9 +14,13 @@ import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withPayload
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
+import javax.jdo.JDOObjectNotFoundException;
 import javax.servlet.http.HttpServletRequest;
 
+import com.erep.dist.data.DailyStats;
 import com.erep.dist.data.DistConfig;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
@@ -36,6 +40,9 @@ public class RequestsHelper {
 	private final DataAccessObject		dao;
 	private final ConfigHelper			config;
 	private final HttpServletRequest	req;
+
+	private static Logger				logger	= Logger.getLogger(RequestsHelper.class
+														.getName());
 
 	public RequestsHelper(DataAccessObject dao) {
 		this.dao = dao;
@@ -125,6 +132,17 @@ public class RequestsHelper {
 		request.setXAppEngineCity(req.getHeader("X-AppEngine-City"));
 
 		request.setStatus(REQUESTED);
+
+		try {
+			request.setStats(dao.find(new DailyStats(player, request
+					.geteRepDay() - 1)));
+		} catch (JDOObjectNotFoundException e) {
+			// ignore
+			logger.log(
+					Level.WARNING,
+					"Could not find stats for new request for player {0}. Tomorrow things will be fine?",
+					player.getErId());
+		}
 
 		return request;
 	}

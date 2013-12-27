@@ -1,0 +1,33 @@
+<div class="tab-pane active" id="fights">
+	<div class="row">
+		<div class="form-group"></div>
+
+		<div class="col-md-2">
+
+			<ul id="fights.horizontal.nav" class="nav nav-pills nav-stacked">
+				<li data-bind="css: {active : category() === 'date'}"><a
+					href="#/players/fights/date">por Data</a></li>
+				<li data-bind="css: {active : category() === 'day'}"><a
+					href="#/players/fights/day">por Dia</a></li>
+				<li data-bind="css: {active : category() === 'group'}"><a
+					href="#/players/fights/group">por Grupo</a></li>
+				<li data-bind="css: {active : category() === 'player'}"><a
+					href="#/players/fights/player">por Jogador</a></li>
+			</ul>
+		</div>
+		<div class="col-md-10">
+
+			<%@ include file="fights_filters.jspf"%>
+
+			<%@ include file="fights_table.jspf"%>
+
+			<ul class="pager">
+				<li class="next"
+					data-bind="css: {disabled: cursor() === null || cursor() === ''},
+						click: loadNextPage"><a
+					href="#">Exibir próximos</a></li>
+			</ul>
+		</div>
+	</div>
+	<div class="form-group"></div>
+</div>
