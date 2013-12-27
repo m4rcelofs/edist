@@ -1864,14 +1864,6 @@ var RequestsViewModel = new function() {
 				checkParam(param) ? param.toUpperCase() : 'WEAPONS');
 		queryServer();
 	}
-
-	self.requestedAt = function(item) {
-		return formatDate(item.requestedAt);
-	}
-
-	self.completedAt = function(item) {
-		return formatDate(item.completedAt);
-	}
 	
 	function checkParam(param) {
 		return param && param !== 'undefined' && param !== 'null' ? param
@@ -1904,10 +1896,6 @@ var RequestsViewModel = new function() {
 		response.results.forEach(function(item) {
 			self.dists.push(item);
 		});
-	}
-
-	function formatDate(date) {
-		return date ? date.toLocaleString() : '';
 	}
 
 	function showTab() {

@@ -41,7 +41,7 @@
 					<br />
 				</p>
 			</td>
-			<td><span data-bind="text: calculatedFfFights"></span> <span
+			<td><span data-bind="text: $.format.number(calculatedFfFights, edist.format.number)"></span> <span
 				data-bind="if: $root.fightsHistory().length > $index() + 1 && $root.category() === 'player'">
 					<span class="badge"
 					data-bind="text: $root.fightDifference($data, $root.fightsHistory()[$index() + 1])"></span>

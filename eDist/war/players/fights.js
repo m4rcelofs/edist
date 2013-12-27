@@ -47,7 +47,7 @@ var FightsViewModel = new function() {
 	}
 
 	self.filterByDay = function(param) {
-		param = checkParam(param) ? param : edist.server.eRepDay;
+		param = checkParam(param) ? param : (edist.server.eRepDay - 1);
 		reset('day', PlayerReportService.fightsByDay, param, param);
 		queryServer();
 	}
@@ -67,8 +67,9 @@ var FightsViewModel = new function() {
 	self.fightDifference = function(today, yesterday) {
 		var fightDifference = today.calculatedFfFights
 				- yesterday.calculatedFfFights;
-		return fightDifference < 0 ? '-' + fightDifference : '+'
-				+ fightDifference;
+		return fightDifference <= 0 ? $.format.number(fightDifference,
+				edist.format.number) : '+'
+				+ $.format.number(fightDifference, edist.format.number);
 	}
 
 	self.weaponsUsed = function(fights) {
@@ -97,7 +98,7 @@ var FightsViewModel = new function() {
 			break;
 		}
 
-		return (fights.calculatedFfFights / durability);
+		return $.format.number(fights.calculatedFfFights / durability, edist.format.number);
 	}
 
 	function checkParam(param) {

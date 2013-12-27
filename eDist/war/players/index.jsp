@@ -5,10 +5,7 @@
 <t:wrapper>
 
 	<jsp:attribute name="imports">
-		<script type='text/javascript' src='${baseUrl}/players/players.all.js'></script>
-	
-		<script type='text/javascript' src='${baseUrl}/players/dwr/engine.js'></script>
-		<script type='text/javascript' src='${baseUrl}/players/dwr/interface/PlayerReportService.js'></script>
+		<script type='text/javascript' src='${baseUrl}/players/players.all.closure.js'></script>
     </jsp:attribute>
 
 	<jsp:body>

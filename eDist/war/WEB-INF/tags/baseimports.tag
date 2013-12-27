@@ -14,6 +14,7 @@
 
 <script type="text/javascript" src="${baseUrl}/js/jquery.history.min.cache.js"></script>
 <script type="text/javascript" src="${baseUrl}/js/jquery.validate.min.cache.js"></script>
+<script type='text/javascript' src='${baseUrl}/js/jquery.format.min.js'></script>
 
 <script type="text/javascript" src="${baseUrl}/js/signals.min.cache.js"></script>
 <script type="text/javascript" src="${baseUrl}/js/crossroads.min.cache.js"></script>
@@ -26,6 +27,20 @@
 <script type="text/javascript" src="${baseUrl}/js/dynamic/user.nocache.js"></script>
 <script type="text/javascript" src="${baseUrl}/js/dynamic/header.nocache.js"></script>
 <script type="text/javascript" src="${baseUrl}/js/dynamic/footer.nocache.js"></script>
+
+<script type='text/javascript'>
+$.format.locale({
+    number: {
+        groupingSeparator: '.',
+        decimalSeparator: ','
+    }
+});
+
+window.edist.format = {
+	number : '#,##0.##',
+	date : 'dd/MM/yyyy HH:mm:ss'
+};
+</script>
 
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
