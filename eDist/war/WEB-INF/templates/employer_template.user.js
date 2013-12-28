@@ -3,7 +3,7 @@
 // @namespace   http://edist-licence.appspot.com
 // @description	Plugin para o controle de funcionarios das dists por script
 // @include		http://www.erepublik.com/*
-// @version     0.1
+// @version     0.2
 // @downloadURL	https://{host}/js/dynamic/employer.user.js
 // @updateURL	https://{host}/js/dynamic/employer.user.js
 // @grant		GM_getValue
@@ -36,7 +36,7 @@ function start() {
 		onMainPage = true;
 		onEmployeesPage = false;
 		GM_log('Running employees script from main page');
-	} else if($('.manager_dashboard').length) {
+	} else if($('.employee_info').length) {
         onMainPage = false;
         onEmployeesPage = true;
 		GM_log('Running employees script from employees page');
@@ -97,7 +97,7 @@ function getUpdateLink() {
 	newLink.addEventListener('click', forceUpdate, false);
 
     $(newLink).attr('id', 'updatedAtLink');
-	$(newLink).attr('href', 'javascript:return false;');
+	$(newLink).attr('href', '#');
 	$(newLink).attr('title', 'Force update');
     
     if(GM_getValue('lastUpdatedAt', 0) !== 0){
@@ -190,7 +190,7 @@ function getEmployees(doc) {
 	var today = getDay();
 	var employees = [];
 
-	$('.listing', doc).each(function(index) {
+	$('.list_group > .listing', doc).each(function(index) {
 		var id = $(this).find('.employee_entry').attr('href').replace(/http:\/\/www\.erepublik\.com\/[a-z]*\/citizen\/profile\//, '');
 		
         var employee = {
@@ -214,7 +214,9 @@ function getEmployees(doc) {
 }
 
 function getServer() {
-    var server = GM_info.script.downloadURL.match(/https:\/\/[^\/]*/);
+	//this works on chrome, but stopped working on fx
+    //var server = GM_info.script.downloadURL.match(/https:\/\/[^\/]*/);
+	var server = 'https://{host}';
     GM_log('You are uploading to server ' + server);
     return server;
 }

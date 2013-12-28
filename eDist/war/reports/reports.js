@@ -48,8 +48,14 @@ var Reports = new function() {
 	}
 
 	self.avatar = function(item) {
-		return item && item.playerInfo ? 'url('
-				+ item.playerInfo.avatar.replace('142x142', '55x55') + ')'
-				: null;
+		if (item && item.stats) {
+			if (item.stats.indexOf('142x142') !== -1) {
+				// getting from eR
+				return 'url(' + item.stats.avatar.replace('142x142', '55x55')
+						+ ')';
+			} else {
+				return 'url(' + item.stats.avatar + '=s55)';
+			}
+		}
 	}
 };

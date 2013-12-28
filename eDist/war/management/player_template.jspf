@@ -9,6 +9,21 @@
 							src="${baseUrl}/img/profile_avatar.cache.png"
 							data-bind="style: { background : avatar() === null ? 'url(${baseUrl}/img/default_male.cache.gif) no-repeat center' : 'url(' + avatar() + ') no-repeat center'}">
 						<div class="form-group"></div>
+						<div data-bind="if: dbStatus() !== 'ERROR'">
+							<p>
+								<a
+									data-bind="attr : { href: 'http://www.erepublik.com/en/main/messages-compose/' + erId() }"
+									alt="Enviar mensagem"> <span
+									class="glyphicon glyphicon-comment"></span>
+								</a> <a
+									data-bind="attr : { href: 'http://www.erepublik.com/en/economy/donate-items/' + erId() }"
+									alt="Doar itens"> <span class="glyphicon glyphicon-gift"></span>
+								</a> <a
+									data-bind="attr : { href: 'http://www.erepublik.com/en/economy/donate-money/' + erId() }"
+									alt="Doar itens"> <span class="glyphicon glyphicon-usd"></span>
+								</a>
+							</p>
+						</div>
 						<div data-bind="if: dbStatus() === 'NEW'">
 							<p>
 								<span class="label label-info">Novo</span>
@@ -36,18 +51,27 @@
 						</div>
 						<div data-bind="if: fightStatus() === 'OK'">
 							<p>
-								<span class="label label-success">Lutas: OK</span>
+								<a
+									data-bind="attr: { href: '${baseUrl}/players/fights/player/' + erId() }">
+									<span class="label label-success">Lutas: OK</span>
+								</a>
 							</p>
 						</div>
 						<div data-bind="if: fightStatus() === 'WARNING'">
 							<p>
-								<span class="label label-warning">Lutas: Atenção!</span>
+								<a
+									data-bind="attr: { href: '${baseUrl}/players/fights/player/' + erId() }">
+									<span class="label label-warning">Lutas: Atenção!</span>
+								</a>
 							</p>
 						</div>
 						<div data-bind="if: fightStatus() === 'TEMP_BANNED'">
 							<p>
-								<span class="label label-danger">Lutas: Suspenso
-									Temporariamente</span>
+								<a
+									data-bind="attr: { href: '${baseUrl}/players/fights/player/' + erId() }">
+									<span class="label label-danger">Lutas: Suspenso
+										Temporariamente</span>
+								</a>
 							</p>
 						</div>
 
@@ -59,18 +83,27 @@
 						</div>
 						<div data-bind="if: workStatus() === 'OK'">
 							<p>
-								<span class="label label-success">Trabalho: OK</span>
+								<a
+									data-bind="attr: { href: '${baseUrl}/reports/work/player/' + erId() }">
+									<span class="label label-success">Trabalho: OK</span>
+								</a>
 							</p>
 						</div>
 						<div data-bind="if: workStatus() === 'WARNING'">
 							<p>
-								<span class="label label-warning">Trabalho: Atenção!</span>
+								<a
+									data-bind="attr: { href: '${baseUrl}/reports/work/player/' + erId() }">
+									<span class="label label-warning">Trabalho: Atenção!</span>
+								</a>
 							</p>
 						</div>
 						<div data-bind="if: workStatus() === 'TEMP_BANNED'">
 							<p>
-								<span class="label label-danger">Trabalho: Suspenso
-									Temporariamente</span>
+								<a
+									data-bind="attr: { href: '${baseUrl}/reports/work/player/' + erId() }">
+									<span class="label label-danger">Trabalho: Suspenso
+										Temporariamente</span>
+								</a>
 							</p>
 						</div>
 
