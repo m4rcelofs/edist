@@ -1,5 +1,7 @@
 package com.erep.dist.data;
 
+import java.io.Serializable;
+
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -16,7 +18,9 @@ import com.google.appengine.api.datastore.Key;
 
 @DataTransferObject(converter = BeanConverter.class, params = @Param(name = "javascript", value = "WorkVerification"))
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class WorkVerification {
+public class WorkVerification implements Serializable {
+
+	private static final long	serialVersionUID	= 1L;
 
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)

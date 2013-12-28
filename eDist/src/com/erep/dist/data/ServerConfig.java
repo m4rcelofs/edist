@@ -1,5 +1,7 @@
 package com.erep.dist.data;
 
+import java.io.Serializable;
+
 import javax.jdo.annotations.FetchGroup;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -19,7 +21,9 @@ import com.google.appengine.api.datastore.Key;
 @FetchGroup(name = "configListing", members = { @Persistent(name = "config"),
 		@Persistent(name = "fightVerif"), @Persistent(name = "workVerif") })
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class ServerConfig {
+public class ServerConfig implements Serializable {
+
+	private static final long	serialVersionUID	= 1L;
 
 	@PrimaryKey
 	@Persistent

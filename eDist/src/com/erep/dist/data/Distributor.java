@@ -1,5 +1,7 @@
 package com.erep.dist.data;
 
+import java.io.Serializable;
+
 import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.FetchGroup;
 import javax.jdo.annotations.FetchGroups;
@@ -23,35 +25,37 @@ import com.google.appengine.api.datastore.KeyFactory;
 				@Persistent(name = "email"),
 				@Persistent(name = "lastAccessTimestamp") }),
 		@FetchGroup(name = "configListing", members = { @Persistent(name = "email") }) })
-public class Distributor implements HasEncodedKey {
+public class Distributor implements HasEncodedKey, Serializable {
+
+	private static final long	serialVersionUID	= 1L;
 
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private Key				key;
+	private Key					key;
 
 	@Persistent
-	private DistributorRoot	root;
+	private DistributorRoot		root;
 
 	@NotPersistent
 	@RemoteProperty
-	private String			encodedKey;
+	private String				encodedKey;
 
 	@Persistent
 	@RemoteProperty
-	private String			name;
+	private String				name;
 
 	@Persistent(defaultFetchGroup = "false")
 	@RemoteProperty
-	private String			email;
+	private String				email;
 
 	@Persistent(defaultFetchGroup = "false")
 	@RemoteProperty
-	private long			lastAccessTimestamp;
+	private long				lastAccessTimestamp;
 
 	@Persistent(defaultFetchGroup = "false")
 	@RemoteProperty
 	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
-	private String			password;
+	private String				password;
 
 	public Key getKey() {
 		return key;

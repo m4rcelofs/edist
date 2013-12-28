@@ -205,6 +205,10 @@ public class DataAccessObject {
 
 	@Cacheable
 	public List<PlayerGroup> listGroups() {
+		return (List<PlayerGroup>) pm.detachCopyAll(listGroupsUncached());
+	}
+	
+	public List<PlayerGroup> listGroupsUncached() {
 		Query q = pm.newQuery(PlayerGroup.class);
 		q.setFilter("root == rootParam");
 		q.declareParameters(Key.class.getName() + " rootParam");

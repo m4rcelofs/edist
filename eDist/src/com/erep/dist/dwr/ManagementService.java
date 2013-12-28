@@ -60,7 +60,7 @@ public class ManagementService {
 			pm.getFetchPlan().addGroup("groupConfigListing");
 			pm.getFetchPlan().addGroup("configListing");
 
-			dto.setResults(dao.listGroups());
+			dto.setResults(dao.listGroupsUncached());
 			dto.setGranularity(dao.getServerConfig().getGranularity());
 
 			return dto;
