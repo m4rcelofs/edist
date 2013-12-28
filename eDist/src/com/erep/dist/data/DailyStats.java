@@ -54,8 +54,6 @@ public class DailyStats {
 	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	private String				avatar;
 
-	// TODO base64 55x55 image
-
 	@Unowned
 	@Persistent
 	@RemoteProperty

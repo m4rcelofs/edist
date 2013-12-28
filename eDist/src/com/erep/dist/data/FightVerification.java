@@ -1,5 +1,7 @@
 package com.erep.dist.data;
 
+import java.io.Serializable;
+
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -16,12 +18,14 @@ import com.google.appengine.api.datastore.Key;
 
 @DataTransferObject(converter = BeanConverter.class, params = @Param(name = "javascript", value = "FightVerification"))
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class FightVerification {
+public class FightVerification implements Serializable {
+
+	private static final long	serialVersionUID	= 1L;
 
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private Key				key;
-	
+	private Key					key;
+
 	@Persistent
 	@RemoteProperty
 	private int					fightVerifDays;
@@ -34,12 +38,12 @@ public class FightVerification {
 	@RemoteProperty
 	private VerificationAction	fightVerifAction;
 
-	public FightVerification(){}
-	
-	public FightVerification(VerificationAction action){
+	public FightVerification() {}
+
+	public FightVerification(VerificationAction action) {
 		this.fightVerifAction = action;
 	}
-	
+
 	public Key getKey() {
 		return key;
 	}

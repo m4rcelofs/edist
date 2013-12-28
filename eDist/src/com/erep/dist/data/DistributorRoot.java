@@ -1,5 +1,6 @@
 package com.erep.dist.data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,9 @@ import com.google.appengine.api.datastore.Key;
  * @author Marcelo
  */
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class DistributorRoot {
+public class DistributorRoot implements Serializable {
+
+	private static final long	serialVersionUID	= 1L;
 
 	@PrimaryKey
 	@Persistent

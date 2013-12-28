@@ -1,5 +1,6 @@
 package com.erep.dist.data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.jdo.annotations.IdentityType;
@@ -15,7 +16,9 @@ import com.google.appengine.api.users.User;
 
 @DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class RegisteredUser {
+public class RegisteredUser implements Serializable {
+
+	private static final long	serialVersionUID	= 1L;
 
 	@PrimaryKey
 	@Persistent

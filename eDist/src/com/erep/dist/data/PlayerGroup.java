@@ -1,5 +1,7 @@
 package com.erep.dist.data;
 
+import java.io.Serializable;
+
 import javax.jdo.annotations.FetchGroup;
 import javax.jdo.annotations.FetchGroups;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -20,7 +22,9 @@ import com.google.appengine.api.datastore.KeyFactory;
 @FetchGroups({ @FetchGroup(name = "groupConfigListing", members = {
 		@Persistent(name = "config"), @Persistent(name = "fightVerif"),
 		@Persistent(name = "workVerif") }) })
-public class PlayerGroup implements HasEncodedKey {
+public class PlayerGroup implements HasEncodedKey, Serializable {
+
+	private static final long	serialVersionUID	= 1L;
 
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)

@@ -1,5 +1,7 @@
 package com.erep.dist.data;
 
+import java.io.Serializable;
+
 import javax.jdo.annotations.FetchGroup;
 import javax.jdo.annotations.IdGeneratorStrategy;
 import javax.jdo.annotations.IdentityType;
@@ -20,39 +22,41 @@ import com.google.appengine.datanucleus.annotations.Unowned;
 @DataTransferObject(converter = BeanConverter.class, params = @Param(name = "javascript", value = "DistConfig"))
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 @FetchGroup(name = "configListing", members = { @Persistent(name = "distributor"), })
-public class DistConfig {
+public class DistConfig implements Serializable {
 
+	private static final long	serialVersionUID	= 1L;
+	
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private Key				key;
+	private Key					key;
 
 	@Persistent
 	@RemoteProperty
-	private Integer			currentMaxDailyFF;
+	private Integer				currentMaxDailyFF;
 
 	@Persistent
 	@RemoteProperty
-	private Boolean			rocketAllowed;
+	private Boolean				rocketAllowed;
 
 	@Persistent
 	@RemoteProperty
-	private Boolean			autoSend;
+	private Boolean				autoSend;
 
 	/**
 	 * weapon, food, or both
 	 */
 	@Persistent
 	@RemoteProperty
-	private RequestType		allowedType;
+	private RequestType			allowedType;
 
 	@Persistent
 	@RemoteProperty
-	private ResourceQuality	allowedWeaponQuality;
+	private ResourceQuality		allowedWeaponQuality;
 
 	@Unowned
 	@Persistent
 	@RemoteProperty
-	private Distributor		distributor;
+	private Distributor			distributor;
 
 	public DistConfig() {}
 

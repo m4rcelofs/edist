@@ -57,7 +57,8 @@ public class AdminService {
 			pm.getFetchPlan().setMaxFetchDepth(-1);
 			pm.getFetchPlan().addGroup("configListing");
 			ServerConfig config = new DataAccessObject(pm).getServerConfig();
-			return pm.detachCopy(config);
+//			return pm.detachCopy(config);
+			return config;
 		}
 	}
 
