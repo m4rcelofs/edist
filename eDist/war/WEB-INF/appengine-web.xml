@@ -14,8 +14,9 @@
 	<static-files>
 		<include path="**" />
 		<include path="**.nocache.*" expiration="0s" />
-<!-- 		<include path="**.cache.*" expiration="365d" /> -->
-<!-- 		<include path="**.closure.*" expiration="365d" /> -->
+		<include path="**.cache.*" expiration="365d" />
+		<include path="**.closure.*" expiration="365d" />
+		<include path="**.png" expiration="365d" />
 	</static-files>
 
 	<admin-console>
