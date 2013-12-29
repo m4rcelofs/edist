@@ -26,7 +26,7 @@ public class Avatar {
 	@Persistent
 	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	private String	servingUrl;
-
+	
 	public Avatar(String digest) {
 		setKey(KeyFactory.createKey(Avatar.class.getSimpleName(), digest));
 	}

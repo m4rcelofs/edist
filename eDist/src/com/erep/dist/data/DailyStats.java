@@ -54,6 +54,11 @@ public class DailyStats {
 	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	private String				avatar;
 
+	// keep a copy, never know when it might be useful
+	@Unowned
+	@Persistent(defaultFetchGroup = "false")
+	private Avatar				avatarKey;
+
 	@Unowned
 	@Persistent
 	@RemoteProperty
@@ -184,10 +189,18 @@ public class DailyStats {
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
 	}
-	
+
 	@RemoteProperty
-	public Integer geterId(){
+	public Integer geterId() {
 		return (int) getKey().getParent().getId();
+	}
+
+	public Avatar getAvatarKey() {
+		return avatarKey;
+	}
+
+	public void setAvatarKey(Avatar avatarKey) {
+		this.avatarKey = avatarKey;
 	}
 
 }

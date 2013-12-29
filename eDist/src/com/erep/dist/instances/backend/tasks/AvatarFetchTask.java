@@ -68,6 +68,7 @@ public class AvatarFetchTask implements DeferredTask {
 				Avatar exists = dao.find(new Avatar(digest));
 				DailyStats dbStats = dao.find(new DailyStats(statsKey));
 				dbStats.setAvatar(exists.getServingUrl());
+				dbStats.setAvatarKey(exists);
 			} catch (JDOObjectNotFoundException e) {
 				uploadToBlobstore(statsKey, digest, response);
 			}
