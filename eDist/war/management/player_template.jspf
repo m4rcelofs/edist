@@ -36,7 +36,10 @@
 						</div>
 						<div data-bind="if: dbStatus() === 'ENABLED'">
 							<p>
-								<span class="label label-success"> Habilitado </span>
+								<a
+									data-bind="attr: { href: '${baseUrl}/reports/requests/player/' + erId() }">
+									<span class="label label-success"> Habilitado </span>
+								</a>
 							</p>
 						</div>
 						<div data-bind="if: dbStatus() === 'DISABLED'">

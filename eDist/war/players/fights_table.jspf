@@ -1,3 +1,4 @@
+
 <table class="table table-striped table-hover table-responsive"
 	data-bind="if: fightsHistory().length > 0">
 	<thead>
@@ -41,28 +42,34 @@
 					<br />
 				</p>
 			</td>
-			<td><span data-bind="text: $.format.number(calculatedFfFights, edist.format.number)"></span> <span
+			<td><span
+				data-bind="text: $.format.number(calculatedFfFights, edist.format.number)"></span>
+				<span
 				data-bind="if: $root.fightsHistory().length > $index() + 1 && $root.category() === 'player'">
 					<span class="badge"
 					data-bind="text: $root.fightDifference($data, $root.fightsHistory()[$index() + 1])"></span>
 			</span></td>
-			<td>
-				<span data-bind="text: $root.weaponsUsed($data)"></span>
-				<img data-bind="attr: {alt: calculatedWithWeaponQuality, 
+			<td><span data-bind="text: $root.weaponsUsed($data)"></span> <img
+				data-bind="attr: {alt: calculatedWithWeaponQuality, 
 									   src: '${baseUrl}/img/weapons/' + calculatedWithWeaponQuality + '.png'}">
 			</td>
-			<td><span data-bind="if: verificationStatus === null"
-				class="label label-default">Desconhecido</span> <span
-				data-bind="if: verificationStatus === 'TEMP_BANNED'"
-				class="label label-danger"> <span
-					class="glyphicon glyphicon-ban-circle"></span> Bloqueada
-			</span> <span data-bind="if: verificationStatus === 'WARNING'"
-				class="label label-warning"> <span
-					class="glyphicon glyphicon-exclamation-sign"></span> Sob Aviso
-			</span> <span data-bind="if: verificationStatus === 'OK'"
-				class="label label-success"> <span
-					class="glyphicon glyphicon-ok"></span> Liberada
-			</span></td>
+			<td><a
+				data-bind="attr: { href: edist.user.hasReportsAccess === true ? 
+								'${baseUrl}/reports/requests/player/' + (stats ? stats.erId : '') 
+								: '' }">
+					<span data-bind="if: verificationStatus === null"
+					class="label label-default">Desconhecido</span> <span
+					data-bind="if: verificationStatus === 'TEMP_BANNED'"
+					class="label label-danger"> <span
+						class="glyphicon glyphicon-ban-circle"></span> Bloqueada
+				</span> <span data-bind="if: verificationStatus === 'WARNING'"
+					class="label label-warning"> <span
+						class="glyphicon glyphicon-exclamation-sign"></span> Sob Aviso
+				</span> <span data-bind="if: verificationStatus === 'OK'"
+					class="label label-success"> <span
+						class="glyphicon glyphicon-ok"></span> Liberada
+				</span>
+			</a></td>
 		</tr>
 	</tbody>
 </table>
