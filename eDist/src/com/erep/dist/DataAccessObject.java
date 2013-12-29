@@ -78,7 +78,7 @@ public class DataAccessObject {
 		pm.makePersistent(request);
 		return true;
 	}
-	
+
 	public boolean save(Avatar avatar) {
 		pm.makePersistent(avatar);
 		return true;
@@ -207,7 +207,7 @@ public class DataAccessObject {
 	public List<PlayerGroup> listGroups() {
 		return (List<PlayerGroup>) pm.detachCopyAll(listGroupsUncached());
 	}
-	
+
 	public List<PlayerGroup> listGroupsUncached() {
 		Query q = pm.newQuery(PlayerGroup.class);
 		q.setFilter("root == rootParam");
@@ -615,11 +615,11 @@ public class DataAccessObject {
 	@Cacheable
 	public Key findPlayerKey(String playerName) {
 		Query q = pm.newQuery(Player.class);
-		q.setFilter("name == nameParam");
-		q.declareParameters(String.class.getName() + " nameParam");
+		q.setFilter("nameNormalized == nameNormalizedParam");
+		q.declareParameters(String.class.getName() + " nameNormalizedParam");
 		q.setResult("key");
 		q.setUnique(true);
-		Object key = q.execute(playerName);
+		Object key = q.execute(playerName.toLowerCase());
 		if (key == null)
 			throw new JDOObjectNotFoundException();
 		return (Key) key;

@@ -31,8 +31,7 @@ import com.google.appengine.datanucleus.annotations.Unowned;
 				@Persistent(name = "groups"), @Persistent(name = "config"),
 				@Persistent(name = "fightVerif"),
 				@Persistent(name = "workVerif") }),
-		@FetchGroup(name = "requestIdentify", members = { @Persistent(name = "groups") })
-		})
+		@FetchGroup(name = "requestIdentify", members = { @Persistent(name = "groups") }) })
 public class Player implements HasEncodedKey {
 
 	/**
@@ -53,6 +52,10 @@ public class Player implements HasEncodedKey {
 	@Persistent
 	@RemoteProperty
 	private String				name;
+
+	@Persistent
+	// lower case
+	private String				nameNormalized;
 
 	@Persistent
 	@RemoteProperty
@@ -131,6 +134,8 @@ public class Player implements HasEncodedKey {
 
 	public void setName(String name) {
 		this.name = name;
+		if (name != null)
+			setNameNormalized(name.toLowerCase());
 	}
 
 	public String getAvatar() {
@@ -314,5 +319,13 @@ public class Player implements HasEncodedKey {
 				return true;
 
 		return false;
+	}
+
+	public String getNameNormalized() {
+		return nameNormalized;
+	}
+
+	public void setNameNormalized(String nameNormalized) {
+		this.nameNormalized = nameNormalized;
 	}
 }
