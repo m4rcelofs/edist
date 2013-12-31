@@ -189,6 +189,8 @@ var PlayersViewModel = new function() {
 
 	self.enable = function(player) {
 		player.dbStatus('ENABLED');
+		self.clearFightStatus(player);
+		self.clearWorkStatus(player);
 	}
 
 	self.disable = function(player) {
