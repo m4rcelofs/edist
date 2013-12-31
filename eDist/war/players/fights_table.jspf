@@ -4,7 +4,7 @@
 	<thead>
 		<tr>
 			<th data-bind="if: category() !== 'day'">Dia</th>
-			<th data-bind="if: category() !== 'player'">Jogador</th>
+			<th>Jogador</th>
 			<th data-bind="if: category() !== 'group'">Grupo(s)</th>
 			<th>Lutas calculadas <abbr title="Food Fights"
 				class="initialism">(FF)</abbr> <a href="#" class="help"
@@ -22,7 +22,7 @@
 			<td data-bind="if: $root.category() !== 'day'"><a
 				data-bind="text: day, attr: {href : '#/players/fights/day/'+day}"></a>
 			</td>
-			<td data-bind="if: $root.category() !== 'player'"><a
+			<td><a
 				data-bind="attr: {href : stats ? '#/players/fights/player/' + stats.erId : ''}">
 					<img class="img-thumbnail img-responsive"
 					src="${baseUrl}/img/profile_avatar_55.cache.png" width="55px"

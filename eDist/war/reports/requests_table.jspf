@@ -3,7 +3,7 @@
 	<thead>
 		<tr>
 			<th data-bind="if: category() !== 'day'">Dia</th>
-			<th data-bind="if: category() !== 'player'">Jogador</th>
+			<th>Jogador</th>
 			<th>Status</th>
 			<th>Quantidade</th>
 			<th data-bind="if: category() !== 'group'">Grupo</th>
@@ -19,7 +19,7 @@
 			<td data-bind="if: $root.category() !== 'day'"><a
 				data-bind="text: eRepDay, attr: {href : '#/reports/requests/day/'+eRepDay}"></a>
 			</td>
-			<td data-bind="if: $root.category() !== 'player'">
+			<td>
 				<a data-bind="attr: {href : stats ? '#/reports/requests/player/' + stats.erId : ''}">
 					<img class="img-thumbnail img-responsive"
 						 src="${baseUrl}/img/profile_avatar_55.cache.png"
