@@ -15,20 +15,34 @@
 			<td data-bind="if: $root.category() !== 'day'"><a
 				data-bind="text: day, attr: {href : '#/reports/work/day/'+day}"></a>
 			</td>
-			<td><a
-				data-bind="attr: {href : stats ? '#/reports/work/player/' + stats.erId : ''}">
-					<img class="img-thumbnail img-responsive"
-					src="${baseUrl}/img/profile_avatar_55.cache.png" width="55px"
-					data-bind="style: { backgroundImage : Reports.avatar($data) !== null ? Reports.avatar($data) :
+			<td>
+				<p class="text-center">
+					<a
+						data-bind="attr: {href : '#/reports/work/player/' + (stats ? stats.erId : '')}">
+						<img class="img-thumbnail img-responsive"
+						src="${baseUrl}/img/profile_avatar_55.cache.png" width="55px"
+						data-bind="style: { backgroundImage : Reports.avatar($data) !== null ? Reports.avatar($data) :
 										 'url(${baseUrl}/img/default_male_55.cache.gif)' ,
 										 backgroundSize : '55px 55px',
 										 backgroundRepeat : 'no-repeat',
 										 backgroundPosition : 'center'},
 									attr : {'data-content' : stats ? stats.name : ''},
 									updatePopup:{}"
-					data-toggle="popover">
-			</a></td>
-			<!-- TODO -->
+						data-toggle="popover">
+					</a>
+				</p>
+				<p class="text-center">
+					<a
+						data-bind="attr: {href: '${baseUrl}/reports/requests/player/' + (stats ? stats.erId : '') }"><span
+						class="glyphicon glyphicon-list"></span></a> <a
+						data-bind="if: edist.user.hasPlayerReportsAccess,
+								   attr: {href: '${baseUrl}/players/history/player/' + (stats ? stats.erId : '') }"><span
+						class="glyphicon glyphicon-stats"></span></a> <a
+						data-bind="if: edist.user.hasPlayerReportsAccess,
+								   attr: {href: '${baseUrl}/players/fights/player/' + (stats ? stats.erId : '') }"><span
+						class="glyphicon glyphicon-screenshot"></span></a>
+				</p>
+			</td>
 			<td data-bind="if: $root.category() !== 'group'">
 				<p data-bind="foreach: groups">
 					<a
@@ -50,7 +64,7 @@
 				</p>
 			</td>
 			<td><a
-				data-bind="attr: { href: '${baseUrl}/reports/requests/player/' + stats ? stats.erId : '' }">
+				data-bind="attr: { href: '${baseUrl}/reports/requests/player/' + (stats ? stats.erId : '') }">
 					<span data-bind="if: verificationStatus === null"
 					class="label label-default">Desconhecido</span> <span
 					data-bind="if: verificationStatus === 'TEMP_BANNED'"
