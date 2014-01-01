@@ -165,7 +165,7 @@ public class DataAccessObject {
 	private boolean add(PlayerGroup group) {
 		groupRoot().addGroup(group);
 		pm.makePersistent(group);
-		CacheFacade.remove(getClass().getName() + ".listGroups();");
+		CacheFacade.remove("com.erep.dist.DataAccessObject.listGroups();");
 		return true;
 	}
 
@@ -199,7 +199,7 @@ public class DataAccessObject {
 		old.setConfig(newest.getConfig());
 		old.setFightVerif(newest.getFightVerif());
 		old.setWorkVerif(newest.getWorkVerif());
-
+		CacheFacade.remove("com.erep.dist.DataAccessObject.listGroups();");
 		return true;
 	}
 
