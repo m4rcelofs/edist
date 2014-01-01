@@ -60,7 +60,7 @@ public class GetUserInfoTask implements DeferredTask {
 				throw new IllegalStateException("Info not found! ):");
 
 			DailyStats stats = new DailyStats(dbPlayer,
-					eRepTimeCalculator.geteRepDay());
+					eRepTimeCalculator.geteRepDay() - 1);
 			stats.setAvatar(playerInfo.get("avatar").toString());
 			stats.setName(playerInfo.get("name").toString());
 			stats.setRank(Long.valueOf(playerInfo.get("rank").toString()));
