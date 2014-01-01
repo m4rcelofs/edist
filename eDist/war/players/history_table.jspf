@@ -3,7 +3,7 @@
 	<thead>
 		<tr>
 			<th data-bind="if: category() !== 'day'">Dia</th>
-			<th data-bind="if: category() !== 'player'">Jogador</th>
+			<th>Jogador</th>
 			<th data-bind="if: category() !== 'group'">Grupo(s)</th>
 			<th>Experiência</th>
 			<th>Força</th>
@@ -17,19 +17,34 @@
 			<td data-bind="if: $root.category() !== 'day'"><a
 				data-bind="text: day, attr: {href : '#/players/history/day/'+day}"></a>
 			</td>
-			<td data-bind="if: $root.category() !== 'player'"><a
-				data-bind="attr: {href : erId ? '#/players/history/player/' + erId : ''}">
-					<img class="img-thumbnail img-responsive"
-					src="${baseUrl}/img/profile_avatar_55.cache.png" width="55px"
-					data-bind="style: { backgroundImage : Players.avatar($data) !== null ? Players.avatar($data) :
+			<td>
+				<p class="text-center">
+					<a
+						data-bind="attr: {href : '#/players/history/player/' + (erId ? erId : '')}">
+						<img class="img-thumbnail img-responsive"
+						src="${baseUrl}/img/profile_avatar_55.cache.png" width="55px"
+						data-bind="style: { backgroundImage : Players.avatar($data) !== null ? Players.avatar($data) :
 										 'url(${baseUrl}/img/default_male_55.cache.gif)' ,
 										 backgroundSize : '55px 55px',
 										 backgroundRepeat : 'no-repeat',
 										 backgroundPosition : 'center'},
 									attr : {'data-content' : name ? name : ''},
 									updatePopup:{}"
-					data-toggle="popover">
-			</a></td>
+						data-toggle="popover">
+					</a>
+				</p>
+				<p class="text-center">
+					<a
+						data-bind="if: edist.user.hasReportsAccess,
+								   attr: {href: '${baseUrl}/reports/requests/player/' + (erId ? erId : '')  }"><span
+						class="glyphicon glyphicon-list"></span></a> <a
+						data-bind="if: edist.user.hasReportsAccess,
+								   attr: {href: '${baseUrl}/reports/work/player/' + (erId ? erId : '') }"><span
+						class="glyphicon glyphicon-wrench"></span></a> <a
+						data-bind="attr: {href: '${baseUrl}/players/fights/player/' + (erId ? erId : '')  }"><span
+						class="glyphicon glyphicon-screenshot"></span></a>
+				</p>
+			</td>
 			<td data-bind="if: $root.category() !== 'group'">
 				<p data-bind="foreach: groups">
 					<a
@@ -37,36 +52,35 @@
 					<br />
 				</p>
 			</td>
-			<td>
-				<span data-bind="text: $.format.number(xp, edist.format.number)"></span> 
-				<span data-bind="if: $root.statsHistory().length > $index() + 1 && $root.category() === 'player'">
+			<td><span
+				data-bind="text: $.format.number(xp, edist.format.number)"></span> <span
+				data-bind="if: $root.statsHistory().length > $index() + 1 && $root.category() === 'player'">
 					<span class="badge pull-right"
 					data-bind="text: '+' +  $.format.number(xp - $root.statsHistory()[$index() + 1].xp, edist.format.number)"></span>
-				</span>
-			</td>
-			<td>
-				<span data-bind="text:  $.format.number(strength, edist.format.number)"></span>
-				<span data-bind="if: $root.statsHistory().length > $index() + 1 && $root.category() === 'player'">
+			</span></td>
+			<td><span
+				data-bind="text:  $.format.number(strength, edist.format.number)"></span>
+				<span
+				data-bind="if: $root.statsHistory().length > $index() + 1 && $root.category() === 'player'">
 					<span class="badge pull-right"
 					data-bind="text: '+' + $.format.number(strength - $root.statsHistory()[$index() + 1].strength, edist.format.number)"></span>
-				</span>
-			</td>
-			<td>
-				<img data-bind="attr: {'data-content':  $.format.number(rank, edist.format.number) + ' pontos: ' + RankCalculator.getRank(rank).name, 
+			</span></td>
+			<td><img
+				data-bind="attr: {'data-content':  $.format.number(rank, edist.format.number) + ' pontos: ' + RankCalculator.getRank(rank).name, 
 										src: '${baseUrl}/img/ranks/' + RankCalculator.getRank(rank).rank + '.png'},
-								updatePopup:{}" data-toggle="popover">
-				<span data-bind="if: $root.statsHistory().length > $index() + 1 && $root.category() === 'player'">
+								updatePopup:{}"
+				data-toggle="popover"> <span
+				data-bind="if: $root.statsHistory().length > $index() + 1 && $root.category() === 'player'">
 					<span class="badge pull-right"
 					data-bind="text: '+' +  $.format.number(rank - $root.statsHistory()[$index() + 1].rank, edist.format.number)"></span>
-				</span>
-			</td>
-			<td>
-				<span data-bind="text: $.format.number(maxHit, edist.format.number)"></span>
-				<span data-bind="if: $root.statsHistory().length > $index() + 1 && $root.category() === 'player'">
+			</span></td>
+			<td><span
+				data-bind="text: $.format.number(maxHit, edist.format.number)"></span>
+				<span
+				data-bind="if: $root.statsHistory().length > $index() + 1 && $root.category() === 'player'">
 					<span class="badge"
 					data-bind="text: '+' +  $.format.number(maxHit - $root.statsHistory()[$index() + 1].maxHit, edist.format.number)"></span>
-				</span>
-			</td>
+			</span></td>
 			<td data-bind="text:  $.format.date(collectedAt, edist.format.date)"></td>
 		</tr>
 	</tbody>

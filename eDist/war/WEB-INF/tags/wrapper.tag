@@ -8,7 +8,10 @@
 
 <%
 	// 1 week
+	// https://groups.google.com/forum/#!topic/google-appengine/6xAV2Q5x8AU
 	response.setDateHeader("Expires", new Date().getTime() + 604800000L);
+	response.setHeader("Cache-Control", "public, max-age=604800000");
+	response.setHeader("Pragma", "Public");
 
 	request.setAttribute("baseUrl",
 			new ServletHelper().getBaseUrl(request));
@@ -24,7 +27,8 @@
 <meta name="description"
 	content="eDist, distribution and management app for eRepublik military units">
 <meta name="author" content="Guilpas and nW0lf">
-<link rel="shortcut icon" href="${baseUrl}/favicon.ico" type="image/x-icon">
+<link rel="shortcut icon" href="${baseUrl}/favicon.ico"
+	type="image/x-icon">
 <link rel="icon" href="${baseUrl}/favicon.ico" type="image/x-icon">
 
 <title>eDist</title>

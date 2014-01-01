@@ -73,24 +73,29 @@ public class CalculateDailyFightsTask implements DeferredTask {
 		fights.setDay(today);
 		fights.setCalculatedWithWeaponQuality(quality);
 
-		int calculatedFights = calculateFights(previousDayStats, todayStats,
+		long dailyInfluence = calculateDailyInfluence(previousDayStats,
+				todayStats);
+
+		int calculatedFights = calculateFights(dailyInfluence, todayStats,
 				quality);
 
+		fights.setCalculatedRankDamage(dailyInfluence);
 		fights.setCalculatedFfFights(calculatedFights);
 
 		return fights;
 	}
 
-	private int calculateFights(DailyStats previousDayStats,
-			DailyStats todayStats, ResourceQuality quality) {
+	private long calculateDailyInfluence(DailyStats previousDayStats,
+			DailyStats todayStats) {
+		long rankChange = todayStats.getRank() - previousDayStats.getRank();
+		return rankChange * 10;
+	}
 
+	private int calculateFights(long dailyInfluence, DailyStats todayStats,
+			ResourceQuality quality) {
 		int hit = todayStats.getMaxHit();
 		if (quality != ResourceQuality.maxQuality())
 			hit = new HitCalculator().calculateHit(todayStats, quality);
-
-		long rankChange = todayStats.getRank() - previousDayStats.getRank();
-		long dailyInfluence = rankChange * 10;
-
 		return (int) (dailyInfluence / hit);
 	}
 

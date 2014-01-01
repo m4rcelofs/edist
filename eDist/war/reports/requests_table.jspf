@@ -3,7 +3,7 @@
 	<thead>
 		<tr>
 			<th data-bind="if: category() !== 'day'">Dia</th>
-			<th data-bind="if: category() !== 'player'">Jogador</th>
+			<th>Jogador</th>
 			<th>Status</th>
 			<th>Quantidade</th>
 			<th data-bind="if: category() !== 'group'">Grupo</th>
@@ -19,12 +19,13 @@
 			<td data-bind="if: $root.category() !== 'day'"><a
 				data-bind="text: eRepDay, attr: {href : '#/reports/requests/day/'+eRepDay}"></a>
 			</td>
-			<td data-bind="if: $root.category() !== 'player'">
-				<a data-bind="attr: {href : stats ? '#/reports/requests/player/' + stats.erId : ''}">
-					<img class="img-thumbnail img-responsive"
-						 src="${baseUrl}/img/profile_avatar_55.cache.png"
-						 width="55px"
-						 data-bind="style: { backgroundImage : Reports.avatar($data) !== null ? Reports.avatar($data) :
+			<td>
+				<p class="text-center">
+					<a
+						data-bind="attr: {href : stats ? '#/reports/requests/player/' + stats.erId : ''}">
+						<img class="img-thumbnail img-responsive"
+						src="${baseUrl}/img/profile_avatar_55.cache.png" width="55px"
+						data-bind="style: { backgroundImage : Reports.avatar($data) !== null ? Reports.avatar($data) :
 										 'url(${baseUrl}/img/default_male_55.cache.gif)' ,
 										 backgroundSize : '55px 55px',
 										 backgroundRepeat : 'no-repeat',
@@ -32,7 +33,19 @@
 									attr : {'data-content' : stats ? stats.name : ''},
 									updatePopup:{}"
 						data-toggle="popover">
-				</a>
+					</a>
+				</p>
+				<p class="text-center">
+					<a
+						data-bind="attr: {href: '${baseUrl}/reports/work/player/' + (stats ? stats.erId : '') }"><span
+						class="glyphicon glyphicon-wrench"></span></a> <a
+						data-bind="if: edist.user.hasPlayerReportsAccess,
+								   attr: {href: '${baseUrl}/players/history/player/' + (stats ? stats.erId : '') }"><span
+						class="glyphicon glyphicon-stats"></span></a> <a
+						data-bind="if: edist.user.hasPlayerReportsAccess,
+								   attr: {href: '${baseUrl}/players/fights/player/' + (stats ? stats.erId : '') }"><span
+						class="glyphicon glyphicon-screenshot"></span></a>
+				</p>
 			</td>
 			<td>
 				<p data-bind="if: $root.category() !== 'status'">
@@ -78,14 +91,17 @@
 			<td data-bind="if: $root.category() !== 'distributor'"><a
 				data-bind="text: distributor ? distributor.name : '',
 							attr: {href : distributor ? '#/reports/requests/distributor/'+distributor.encodedKey : ''}"></a></td>
-			<td data-bind="text: requestedAt ? $.format.date(requestedAt, edist.format.date) : ''"></td>
-			<td data-bind="text: completedAt ? $.format.date(completedAt, edist.format.date) : ''"></td>
+			<td
+				data-bind="text: requestedAt ? $.format.date(requestedAt, edist.format.date) : ''"></td>
+			<td
+				data-bind="text: completedAt ? $.format.date(completedAt, edist.format.date) : ''"></td>
 			<td data-bind="if: window.edist.user.hasManagementAccess === true">
-				<img data-bind="attr: { src : XAppEngineCountry ? '${baseUrl}/img/flags/' + XAppEngineCountry.toLowerCase() + '.png' : '${baseUrl}/img/flags/zz.png',
+				<img
+				data-bind="attr: { src : XAppEngineCountry ? '${baseUrl}/img/flags/' + XAppEngineCountry.toLowerCase() + '.png' : '${baseUrl}/img/flags/zz.png',
 										'data-content' : XAppEngineCity + ', ' + XAppEngineRegion + ', ' + XAppEngineCountry,
 										'data-title' : ip},
 								updatePopup:{}"
-					data-toggle="popover">
+				data-toggle="popover">
 			</td>
 		</tr>
 	</tbody>

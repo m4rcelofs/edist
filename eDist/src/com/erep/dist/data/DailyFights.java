@@ -53,8 +53,6 @@ public class DailyFights {
 	@RemoteProperty
 	private Integer				day;
 
-	// TODO calculatedRankDamage
-
 	@Persistent
 	@RemoteProperty
 	private Integer				calculatedFfFights;
@@ -62,6 +60,10 @@ public class DailyFights {
 	@Persistent
 	@RemoteProperty
 	private ResourceQuality		calculatedWithWeaponQuality;
+
+	@Persistent
+	@RemoteProperty
+	private Long				calculatedRankDamage;
 
 	@Persistent
 	@RemoteProperty
@@ -140,4 +142,13 @@ public class DailyFights {
 	public void setStats(DailyStats stats) {
 		this.stats = stats;
 	}
+
+	public Long getCalculatedRankDamage() {
+		return calculatedRankDamage;
+	}
+
+	public void setCalculatedRankDamage(Long calculatedRankDamage) {
+		this.calculatedRankDamage = calculatedRankDamage;
+	}
+
 }

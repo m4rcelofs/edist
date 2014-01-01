@@ -65,6 +65,7 @@ public class PlayerStatsTask implements DeferredTask {
 			stats.setCollectedAt(new Date());
 
 			dbPlayer.addDailyStats(stats);
+			dbPlayer.setName(stats.getName());
 			startFightCalculationTask(day, dbPlayer);
 
 			if (dao.getServerConfig().isAvatarHistory())

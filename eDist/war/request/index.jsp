@@ -90,7 +90,8 @@
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-md-12" data-bind="if: player().dbStatus() === 'ENABLED'">
+								<div class="col-md-12"
+								data-bind="if: player().dbStatus() === 'ENABLED'">
 									<button id="sendRequestBtn" type="submit"
 									class="btn btn-primary btn-lg btn-block"
 									data-loading-text="Requisitando..."
@@ -109,27 +110,37 @@
 					<div class="form-group"></div>
 					<div data-bind="if: player().dbStatus() === 'DISABLED'">
 						<p>
-							<span class="label label-default">Desabilitado</span>
+							<span class="label label-default" data-toggle="popover"
+								data-bind="updatePopup:{}"
+								data-content="Jogador desabilitado pela moderação">Desabilitado</span>
 						</p>
 					</div>
 					<div data-bind="if: player().fightStatus() === 'WARNING'">
 						<p>
-							<span class="label label-warning">Lutas: Atenção!</span>
+							<span class="label label-warning" data-toggle="popover"
+								data-bind="updatePopup:{}"
+								data-content="Jogador sob aviso por não lutar o suficiente">Lutas: Sob Aviso</span>
 						</p>
 					</div>
 					<div data-bind="if: player().fightStatus() === 'TEMP_BANNED'">
 						<p>
-							<span class="label label-danger">Lutas: Suspenso Temporariamente</span>
+							<span class="label label-danger" data-toggle="popover"
+								data-bind="updatePopup:{}"
+								data-content="Jogador com distribuição bloqueada por não lutar o suficiente">Lutas: Suspenso Temporariamente</span>
 						</p>
 					</div>
 					<div data-bind="if: player().workStatus() === 'WARNING'">
 						<p>
-							<span class="label label-warning">Trabalho: Atenção!</span>
+							<span class="label label-warning" data-toggle="popover"
+								data-bind="updatePopup:{}"
+								data-content="Jogador sob aviso por não trabalhar diariamente">Trabalho: Sob Aviso</span>
 						</p>
 					</div>
 					<div data-bind="if: player().workStatus() === 'TEMP_BANNED'">
 						<p>
-							<span class="label label-danger">Trabalho: Suspenso Temporariamente</span>
+							<span class="label label-danger" data-toggle="popover"
+								data-bind="updatePopup:{}"
+								data-content="Jogador com distribuição bloqueada por não trabalhar diariamente">Trabalho: Suspenso Temporariamente</span>
 						</p>
 					</div>
 					<div class="form-group"></div>

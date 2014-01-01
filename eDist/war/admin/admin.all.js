@@ -1979,14 +1979,6 @@ var ModeratorsViewModel = new function() {
 		loadModeratorsTable();
 	}
 
-	self.registeredDate = function(item) {
-		if (item.registeredAt) {
-			return item.registeredAt.toLocaleString();
-		} else {
-			return '';
-		}
-	}
-
 	self.loadNextPage = function() {
 		if (self.cursor() !== null) {
 			loadModeratorsTable(self.cursor());

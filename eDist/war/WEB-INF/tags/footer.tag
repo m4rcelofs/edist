@@ -11,7 +11,7 @@
 		No eRepublik, hoje é dia <span id="eRepDay">?</span>
 	</p>
 	<p>
-		eDist <span id="appVersion"></span> - &copy; 2013, <a
+		eDist <a id="appVersion" href="http://edist-licence.appspot.com/changelog"></a> - &copy; 2013, <a
 			href="http://www.erepublik.com/en/citizen/profile/5313713">nW0lf</a>
 		e <a href="http://www.erepublik.com/en/citizen/profile/3885795">Guilpas</a>
 	</p>

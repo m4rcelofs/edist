@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import com.erep.dist.CloseablePM;
 import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
+import com.erep.dist.auth.LicensingHelper;
 import com.erep.dist.data.Player;
 import com.erep.dist.erep.eRepTimeCalculator;
 import com.erep.dist.instances.backend.tasks.PlayerStatsTask;
@@ -36,6 +37,10 @@ public class PlayerStatsStarterJob extends HttpServlet {
 
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			DataAccessObject dao = new DataAccessObject(pm);
+			
+			if (!new LicensingHelper(dao).isValidLicence())
+				return;
+			
 			Integer day = eRepTimeCalculator.geteRepDay();
 			int count = 0;
 			for (Player dbPlayer : dao.listAllPlayers())

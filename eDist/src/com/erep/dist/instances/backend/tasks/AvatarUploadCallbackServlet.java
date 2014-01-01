@@ -51,10 +51,12 @@ public class AvatarUploadCallbackServlet extends HttpServlet {
 				avatar.setServingUrl(imgService.getServingUrl(withBlobKey(
 						blobKey).secureUrl(true)));
 
+				dao.save(avatar);
+				
 				DailyStats dbStats = dao.find(new DailyStats(statsKey));
 				dbStats.setAvatar(avatar.getServingUrl());
-
-				dao.save(avatar);
+				dbStats.setAvatarKey(avatar);
+				
 			}
 		} catch (Exception e) {
 			blobService.delete(blobKey);
