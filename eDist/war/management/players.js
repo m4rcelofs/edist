@@ -267,14 +267,12 @@ var PlayersViewModel = new function() {
 	}
 
 	function loadGroupNames() {
-		if (self.groups().length === 0) {
-			ManagementService.listGroupNames({
-				callback : function(response) {
-					response.results.sort(Management.groupSortFct);
-					self.groups(response.results);
-				}
-			});
-		}
+		ManagementService.listGroupNames({
+			callback : function(response) {
+				response.results.sort(Management.groupSortFct);
+				self.groups(response.results);
+			}
+		});
 	}
 
 	function groupIdsToGroups(player) {
