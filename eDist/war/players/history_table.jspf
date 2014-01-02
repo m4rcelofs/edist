@@ -71,8 +71,6 @@
 								updatePopup:{}"
 				data-toggle="popover"> <span
 				data-bind="if: $root.statsHistory().length > $index() + 1 && $root.category() === 'player'">
-					<span class="badge pull-right"
-					data-bind="text: '+' +  $.format.number(rank - $root.statsHistory()[$index() + 1].rank, edist.format.number)"></span>
 			</span></td>
 			<td><span
 				data-bind="text: $.format.number(maxHit, edist.format.number)"></span>
