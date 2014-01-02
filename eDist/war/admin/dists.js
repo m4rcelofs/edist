@@ -8,11 +8,6 @@ var DistributorsViewModel = new function() {
 		loadDistributorsTable();
 	}
 
-	self.lastAccessString = function(distributor) {
-		return distributor.lastAccessTimestamp ? new Date(
-				distributor.lastAccessTimestamp).toLocaleString() : null;
-	}
-
 	self.saveDistributor = function(distributor) {
 		AdminService.saveDistributor(distributor, {
 			callback : function(response) {
