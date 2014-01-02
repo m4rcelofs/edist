@@ -39,7 +39,7 @@
 </head>
 <body>
 
-	<div class="container-narrow">
+	<div class="container">
 
 		<%@ include file="header.tag"%>
 
