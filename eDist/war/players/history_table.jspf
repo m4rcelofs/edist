@@ -34,14 +34,16 @@
 					</a>
 				</p>
 				<p class="text-center">
-					<a
+					<a data-toggle="popover" data-content="Distribuições para o jogador"
 						data-bind="if: edist.user.hasReportsAccess,
-								   attr: {href: '${baseUrl}/reports/requests/player/' + (erId ? erId : '')  }"><span
-						class="glyphicon glyphicon-list"></span></a> <a
+								   attr: {href: '${baseUrl}/reports/requests/player/' + (erId ? erId : '')  }, updatePopup:{}"><span
+						class="glyphicon glyphicon-list"></span></a> 
+					<a data-toggle="popover" data-content="Trabalho do jogador"
 						data-bind="if: edist.user.hasReportsAccess,
-								   attr: {href: '${baseUrl}/reports/work/player/' + (erId ? erId : '') }"><span
-						class="glyphicon glyphicon-wrench"></span></a> <a
-						data-bind="attr: {href: '${baseUrl}/players/fights/player/' + (erId ? erId : '')  }"><span
+								   attr: {href: '${baseUrl}/reports/work/player/' + (erId ? erId : '') }, updatePopup:{}"><span
+						class="glyphicon glyphicon-wrench"></span></a> 
+					<a data-toggle="popover" data-content="Lutas do jogador"
+						data-bind="attr: {href: '${baseUrl}/players/fights/player/' + (erId ? erId : '')  }, updatePopup:{}"><span
 						class="glyphicon glyphicon-screenshot"></span></a>
 				</p>
 			</td>
