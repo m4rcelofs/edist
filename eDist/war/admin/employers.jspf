@@ -131,10 +131,13 @@
 						(Chrome)
 					</li>
 					<li>O gestor deve instalar o Script <a
-						href="../js/dynamic/employer.user.js">por esse link</a></li>
+						href="${baseUrl}/js/dynamic/employer.user.js">por esse link</a></li>
 				</ul>
 				<p>Instruções para o Administrador:</p>
 				<ul>
+					<li><a href="${baseUrl}/management/playersList/search">Cadastre</a>
+						todos os jogadores que deseja acompanhar antes do gestor instalar
+						o script</li>
 					<li>Cadastre o gestor no eDist</li>
 					<li>Forneça ao gestor a Chave de Autenticação</li>
 					<li>Configure a verificação de trabalho nas Configurações de
