@@ -9,141 +9,115 @@
 							src="${baseUrl}/img/profile_avatar.cache.png"
 							data-bind="style: { background : avatar() === null ? 'url(${baseUrl}/img/default_male.cache.gif) no-repeat center' : 'url(' + avatar() + ') no-repeat center'}">
 						<div class="form-group"></div>
-						<div data-bind="if: dbStatus() !== 'ERROR'">
-							<p>
-								<a
-									data-bind="attr : { href: 'http://www.erepublik.com/en/main/messages-compose/' + erId() }"
-									alt="Enviar mensagem"> <span
-									class="glyphicon glyphicon-comment"></span>
-								</a> <a
-									data-bind="attr : { href: 'http://www.erepublik.com/en/economy/donate-items/' + erId() }"
-									alt="Doar itens"> <span class="glyphicon glyphicon-gift"></span>
-								</a> <a
-									data-bind="attr : { href: 'http://www.erepublik.com/en/economy/donate-money/' + erId() }"
-									alt="Doar itens"> <span class="glyphicon glyphicon-usd"></span>
-								</a>
-							</p>
+						<div class="row">
+							<div class="col-md-12">
+								<p>
+									<a data-toggle="popover"
+										data-content="Distribuições para o jogador"
+										data-bind="if: dbStatus() === 'ENABLED', 
+													attr: {href: '${baseUrl}/reports/requests/player/' + erId() }, updatePopup:{}"><span
+										class="glyphicon glyphicon-list"></span></a>
+									<a data-toggle="popover" data-content="Trabalho do jogador"
+										data-bind="if: dbStatus() === 'ENABLED', 
+													attr: {href: '${baseUrl}/reports/work/player/' + erId() }, updatePopup:{}"><span
+										class="glyphicon glyphicon-wrench"></span></a>
+									<a data-toggle="popover" data-content="Estatísticas do jogador"
+										data-bind="if: dbStatus() === 'ENABLED', 
+													attr: {href: '${baseUrl}/players/history/player/' + erId() }, updatePopup:{}"><span
+										class="glyphicon glyphicon-stats"></span></a> 
+									<a data-toggle="popover" data-content="Lutas do jogador"
+										data-bind="if: dbStatus() === 'ENABLED', 
+													attr: {href: '${baseUrl}/players/fights/player/' + erId() }, updatePopup:{}"><span
+										class="glyphicon glyphicon-screenshot"></span></a>
+								</p>
+							</div>
 						</div>
-						<div data-bind="if: dbStatus() === 'NEW'">
-							<p>
-								<span class="label label-info">Novo</span>
-							</p>
+						<div class="row">
+							<div class="col-md-12">
+								<p>
+									<span data-bind="if: dbStatus() === 'NEW'" class="label label-info">Novo</span>
+									<span data-bind="if: dbStatus() === 'ERROR'" class="label label-danger">Erro</span>
+									<span data-bind="if: dbStatus() === 'ENABLED'" class="label label-success"> Habilitado </span> 
+									<span data-bind="if: dbStatus() === 'DISABLED'" class="label label-default">Desabilitado</span>
+								</p>
+							</div>
 						</div>
-						<div data-bind="if: dbStatus() === 'ERROR'">
-							<p>
-								<span class="label label-danger">Erro</span>
-							</p>
+						<div class="row">
+							<div class="col-md-12">
+								<p>
+									<span data-bind="if: fightStatus() === null" class="label label-default">Lutas: Não verificado</span>
+									<span data-bind="if: fightStatus() === 'OK'" class="label label-success">Lutas: OK</span>
+									<span data-bind="if: fightStatus() === 'WARNING'" class="label label-warning">Lutas: Atenção!</span>
+									<span data-bind="if: fightStatus() === 'TEMP_BANNED'" class="label label-danger">Lutas: Suspenso
+											Temporariamente</span>
+								</p>
+							</div>
 						</div>
-						<div data-bind="if: dbStatus() === 'ENABLED'">
-							<p>
-								<a
-									data-bind="attr: { href: '${baseUrl}/reports/requests/player/' + erId() }">
-									<span class="label label-success"> Habilitado </span>
-								</a>
-							</p>
+						<div class="row">
+							<div class="col-md-12">
+								<p>
+									<span data-bind="if: workStatus() === null" class="label label-default">Trabalho: Não verificado</span>
+									<span data-bind="if: workStatus() === 'OK'" class="label label-success">Trabalho: OK</span>
+									<span data-bind="if: workStatus() === 'WARNING'" class="label label-warning">Trabalho: Atenção!</span>
+									<span data-bind="if: workStatus() === 'TEMP_BANNED'" class="label label-danger">Trabalho: Suspenso Temporariamente</span>
+								</p>
+							</div>
 						</div>
-						<div data-bind="if: dbStatus() === 'DISABLED'">
-							<p>
-								<span class="label label-default">Desabilitado</span>
-							</p>
-						</div>
-						<div data-bind="if: fightStatus() === null">
-							<p>
-								<span class="label label-default">Lutas: Não verificado</span>
-							</p>
-						</div>
-						<div data-bind="if: fightStatus() === 'OK'">
-							<p>
-								<a
-									data-bind="attr: { href: '${baseUrl}/players/fights/player/' + erId() }">
-									<span class="label label-success">Lutas: OK</span>
-								</a>
-							</p>
-						</div>
-						<div data-bind="if: fightStatus() === 'WARNING'">
-							<p>
-								<a
-									data-bind="attr: { href: '${baseUrl}/players/fights/player/' + erId() }">
-									<span class="label label-warning">Lutas: Atenção!</span>
-								</a>
-							</p>
-						</div>
-						<div data-bind="if: fightStatus() === 'TEMP_BANNED'">
-							<p>
-								<a
-									data-bind="attr: { href: '${baseUrl}/players/fights/player/' + erId() }">
-									<span class="label label-danger">Lutas: Suspenso
-										Temporariamente</span>
-								</a>
-							</p>
-						</div>
-
-						<div data-bind="if: workStatus() === null">
-							<p>
-								<span class="label label-default">Trabalho: Não
-									verificado</span>
-							</p>
-						</div>
-						<div data-bind="if: workStatus() === 'OK'">
-							<p>
-								<a
-									data-bind="attr: { href: '${baseUrl}/reports/work/player/' + erId() }">
-									<span class="label label-success">Trabalho: OK</span>
-								</a>
-							</p>
-						</div>
-						<div data-bind="if: workStatus() === 'WARNING'">
-							<p>
-								<a
-									data-bind="attr: { href: '${baseUrl}/reports/work/player/' + erId() }">
-									<span class="label label-warning">Trabalho: Atenção!</span>
-								</a>
-							</p>
-						</div>
-						<div data-bind="if: workStatus() === 'TEMP_BANNED'">
-							<p>
-								<a
-									data-bind="attr: { href: '${baseUrl}/reports/work/player/' + erId() }">
-									<span class="label label-danger">Trabalho: Suspenso
-										Temporariamente</span>
-								</a>
-							</p>
-						</div>
-
+						
 					</div>
 					<div class="col-md-9 table-responsive">
-						<strong> <a
-							data-bind="attr : { href: 'http://www.erepublik.com/en/citizen/profile/' + erId() }"><span
-								data-bind="text: dbStatus() === 'ERROR' ? 'Jogador Inexistente' : 
-													name() ? name() : 'Buscando jogador no eRepublik...'"></span></a>
-						</strong>
-						<div class="dropdown pull-right">
-							<button class="btn btn-default" data-toggle="dropdown"
-								id="actionsDropdown" title="Ações">
-								<span class="caret"></span>
-							</button>
-							<ul class="dropdown-menu" role="menu"
-								aria-labelledby="actionsDropdown">
-								<li role="presentation"
-									data-bind="if: fightStatus() !== null && fightStatus() !== 'OK'"><a
-									data-bind="click: $root.clearFightStatus" role="menuitem"
-									tabindex="-1"><span class="glyphicon glyphicon-transfer"></span>
-										Limpar Status de Lutas </a></li>
-								<li role="presentation"
-									data-bind="if: workStatus() !== null && workStatus() !== 'OK'"><a
-									data-bind="click: $root.clearWorkStatus" role="menuitem"
-									tabindex="-1"><span class="glyphicon glyphicon-transfer"></span>
-										Limpar Status de Trabalho </a></li>
-								<li role="presentation" data-bind="if: dbStatus() == 'DISABLED'"><a
-									data-bind="click: $root.enable" role="menuitem" tabindex="-1"><span
-										class="glyphicon glyphicon-asterisk"></span> Habilitar </a></li>
-								<li role="presentation" data-bind="if: dbStatus() == 'ENABLED'"><a
-									data-bind="click: $root.disable" role="menuitem" tabindex="-1"><span
-										class="glyphicon glyphicon-ban-circle"></span> Desabilitar </a></li>
-								<li role="presentation" data-bind="if: dbStatus() == 'ERROR'"><a
-									data-bind="click: $root.remove" role="menuitem" tabindex="-1"><span
-										class="glyphicon glyphicon-remove"></span> Excluir </a></li>
-							</ul>
+						<div class="row">
+							<div class="col-md-9">
+								<strong> 
+									<a data-bind="attr : { href: 'http://www.erepublik.com/en/citizen/profile/' + erId() }"><span
+										data-bind="text: dbStatus() === 'ERROR' ? 'Jogador Inexistente' : 
+															name() ? name() : 'Buscando jogador no eRepublik...'"></span></a>
+								</strong>
+							</div>
+							<div class="col-md-2" data-bind="if: dbStatus() !== 'ERROR'">
+								<a data-toggle="popover" data-content="Enviar mensagem"
+									data-bind="attr : { href: 'http://www.erepublik.com/en/main/messages-compose/' + erId() }, updatePopup:{}">
+									<span class="glyphicon glyphicon-comment"></span>
+								</a> 
+								<a data-toggle="popover" data-content="Doar itens"
+									data-bind="attr : { href: 'http://www.erepublik.com/en/economy/donate-items/' + erId() }, updatePopup:{}">
+									<span class="glyphicon glyphicon-gift"></span>
+								</a> 
+								<a data-toggle="popover" data-content="Doar dinheiro"
+									data-bind="attr : { href: 'http://www.erepublik.com/en/economy/donate-money/' + erId() }, updatePopup:{}">
+									<span class="glyphicon glyphicon-usd"></span>
+								</a>
+							</div>
+							<div class="col-md-1">
+								<div class="dropdown pull-right">
+									<button class="btn btn-default" data-toggle="dropdown"
+										id="actionsDropdown" title="Ações">
+										<span class="caret"></span>
+									</button>
+									<ul class="dropdown-menu" role="menu"
+										aria-labelledby="actionsDropdown">
+										<li role="presentation"
+											data-bind="if: fightStatus() !== null && fightStatus() !== 'OK'"><a
+											data-bind="click: $root.clearFightStatus" role="menuitem"
+											tabindex="-1"><span class="glyphicon glyphicon-transfer"></span>
+												Limpar Status de Lutas </a></li>
+										<li role="presentation"
+											data-bind="if: workStatus() !== null && workStatus() !== 'OK'"><a
+											data-bind="click: $root.clearWorkStatus" role="menuitem"
+											tabindex="-1"><span class="glyphicon glyphicon-transfer"></span>
+												Limpar Status de Trabalho </a></li>
+										<li role="presentation" data-bind="if: dbStatus() == 'DISABLED'"><a
+											data-bind="click: $root.enable" role="menuitem" tabindex="-1"><span
+												class="glyphicon glyphicon-asterisk"></span> Habilitar </a></li>
+										<li role="presentation" data-bind="if: dbStatus() == 'ENABLED'"><a
+											data-bind="click: $root.disable" role="menuitem" tabindex="-1"><span
+												class="glyphicon glyphicon-ban-circle"></span> Desabilitar </a></li>
+										<li role="presentation" data-bind="if: dbStatus() == 'ERROR'"><a
+											data-bind="click: $root.remove" role="menuitem" tabindex="-1"><span
+												class="glyphicon glyphicon-remove"></span> Excluir </a></li>
+									</ul>
+								</div>
+							</div>
 						</div>
 						<table class="table table-condensed">
 							<tbody>
