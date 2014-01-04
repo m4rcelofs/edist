@@ -165,7 +165,7 @@ public class DataAccessObject {
 	private boolean add(PlayerGroup group) {
 		groupRoot().addGroup(group);
 		pm.makePersistent(group);
-		CacheFacade.remove(getClass().getName() + ".listGroups();");
+		CacheFacade.remove(getClass().getName() + ".listGroups()");
 		return true;
 	}
 
@@ -199,7 +199,7 @@ public class DataAccessObject {
 		old.setConfig(newest.getConfig());
 		old.setFightVerif(newest.getFightVerif());
 		old.setWorkVerif(newest.getWorkVerif());
-
+		CacheFacade.remove(getClass().getName() + ".listGroups()");
 		return true;
 	}
 
@@ -756,7 +756,7 @@ public class DataAccessObject {
 
 		dbConfig.setAvatarHistory(newConfig.isAvatarHistory());
 
-		CacheFacade.remove("com.erep.dist.DataAccessObject.getServerConfig()");
+		CacheFacade.remove(getClass().getName() + ".getServerConfig()");
 		return true;
 	}
 
@@ -773,7 +773,7 @@ public class DataAccessObject {
 		if (user.getRole() != null)
 			dbUser.setRole(user.getRole());
 
-		CacheFacade.remove("com.erep.dist.DataAccessObject.find(User="
+		CacheFacade.remove(getClass().getName() + ".find(User="
 				+ dbUser.getgEmail() + ";)");
 		return true;
 	}
