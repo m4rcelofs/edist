@@ -41,14 +41,6 @@ var EmployersViewModel = new function() {
 		});
 	}
 
-	self.lastUpdateString = function(employer) {
-		if (employer.lastUpdatedAt) {
-			return employer.lastUpdatedAt.toLocaleString();
-		} else {
-			return null;
-		}
-	}
-
 	function loadEmployersTable() {
 		self.employers([]);
 		AdminService.listEmployers({

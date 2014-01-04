@@ -130,7 +130,8 @@ public class EmployerFacadeServlet extends HttpServlet {
 				"Host",
 				BackendServiceFactory.getBackendService().getBackendAddress(
 						"edist-default-backend")).taskName(
-				"WorkVerificationTask_" + player.getErId());
+				"WorkVerificationTask_" + player.getErId() + "_"
+						+ new Date().getTime());
 		queue.add(taskOptions);
 	}
 

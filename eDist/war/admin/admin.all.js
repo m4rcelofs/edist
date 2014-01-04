@@ -1819,11 +1819,6 @@ var DistributorsViewModel = new function() {
 		loadDistributorsTable();
 	}
 
-	self.lastAccessString = function(distributor) {
-		return distributor.lastAccessTimestamp ? new Date(
-				distributor.lastAccessTimestamp).toLocaleString() : null;
-	}
-
 	self.saveDistributor = function(distributor) {
 		AdminService.saveDistributor(distributor, {
 			callback : function(response) {
@@ -1924,14 +1919,6 @@ var EmployersViewModel = new function() {
 			},
 			onError : Admin.defaultError
 		});
-	}
-
-	self.lastUpdateString = function(employer) {
-		if (employer.lastUpdatedAt) {
-			return employer.lastUpdatedAt.toLocaleString();
-		} else {
-			return null;
-		}
 	}
 
 	function loadEmployersTable() {

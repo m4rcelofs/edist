@@ -36,14 +36,16 @@
 					</a>
 				</p>
 				<p class="text-center">
-					<a
-						data-bind="attr: {href: '${baseUrl}/reports/work/player/' + (stats ? stats.erId : '') }"><span
-						class="glyphicon glyphicon-wrench"></span></a> <a
+					<a data-toggle="popover" data-content="Trabalho do jogador"
+						data-bind="attr: {href: '${baseUrl}/reports/work/player/' + (stats ? stats.erId : '') }, updatePopup:{}"><span
+						class="glyphicon glyphicon-wrench"></span></a> 
+					<a data-toggle="popover" data-content="Estatísticas do jogador"
 						data-bind="if: edist.user.hasPlayerReportsAccess,
-								   attr: {href: '${baseUrl}/players/history/player/' + (stats ? stats.erId : '') }"><span
-						class="glyphicon glyphicon-stats"></span></a> <a
+								   attr: {href: '${baseUrl}/players/history/player/' + (stats ? stats.erId : '') }, updatePopup:{}"><span
+						class="glyphicon glyphicon-stats"></span></a> 
+					<a data-toggle="popover" data-content="Lutas do jogador"
 						data-bind="if: edist.user.hasPlayerReportsAccess,
-								   attr: {href: '${baseUrl}/players/fights/player/' + (stats ? stats.erId : '') }"><span
+								   attr: {href: '${baseUrl}/players/fights/player/' + (stats ? stats.erId : '') }, updatePopup:{}"><span
 						class="glyphicon glyphicon-screenshot"></span></a>
 				</p>
 			</td>
