@@ -277,7 +277,7 @@ var PlayersViewModel = new function() {
 
 	function groupIdsToGroups(player) {
 		var groups = [];
-		if (player.groupIds) {
+		if (player.groupIds && player.groupIds.forEach) {
 			player.groupIds.forEach(function(groupId) {
 				groups.push({
 					encodedKey : groupId
