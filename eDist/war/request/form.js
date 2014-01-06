@@ -51,14 +51,11 @@ var FormViewModel = new function() {
 			encodedKey : ko.unwrap(self.selectedGroup().encodedKey)
 		};
 
-		$('#sendRequestBtn').button('loading');
 		RequestService.sendRequest(player, group, self.selectedFFs(), self
 				.selectedType(), {
 			callback : function(response) {
 				console.log(response);
 				if (response === true) {
-					$('#sendRequestBtn').button('complete');
-
 					self.requestStatus('OK');
 					self.requestAttempt().availableFF(
 							self.requestAttempt().availableFF()

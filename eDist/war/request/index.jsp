@@ -94,9 +94,9 @@
 								data-bind="if: player().dbStatus() === 'ENABLED'">
 									<button id="sendRequestBtn" type="submit"
 									class="btn btn-primary btn-lg btn-block"
-									data-loading-text="Requisitando..."
-									data-complete-text="Suprimentos na fila para envio!"
-									data-bind="css: {'btn-success' : requestStatus() == 'OK',
+									autocomplete="off"
+									data-bind="enable: (requestAttempt().availableFF() > 0 || requestAttempt().rocketAllowed() == true),
+											   css: {'btn-success' : requestStatus() == 'OK',
 													 'btn-danger' : requestStatus() == 'ERROR'}">Requisitar Suprimentos</button>
 								</div>					
 							</div>
