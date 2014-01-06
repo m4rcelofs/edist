@@ -137,7 +137,6 @@ var FormViewModel = new function() {
 	function startCounter(requestAttempt) {
 		if (!self.refreshCountdown()) {
 			setInterval(function() {
-
 				var count = self.requestAttempt().rechargeTime();
 
 				var seconds = fixIntegers(count % 60);
@@ -153,7 +152,6 @@ var FormViewModel = new function() {
 
 				self.requestAttempt().rechargeTime(
 						self.requestAttempt().rechargeTime() - 1);
-
 			}, 1000);
 		}
 	}

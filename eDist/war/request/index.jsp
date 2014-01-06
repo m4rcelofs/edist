@@ -145,9 +145,9 @@
 					</div>
 					<div class="form-group"></div>
 					<div class="panel panel-default"
-						data-bind="visible: refreshCountdown() !== null && refreshCountdown() > 0">
+						data-bind="visible: refreshCountdown() && requestAttempt().availableFF() == 0">
 						<div class="panel-body text-center">
-							Virada do Dia
+							Virada do Dia 
 						    <span class="badge" data-bind="text: refreshCountdown"></span>	
 						</div>
 					</div>
