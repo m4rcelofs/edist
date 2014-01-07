@@ -3,11 +3,13 @@
 // @namespace   http://edist-licence.appspot.com
 // @description	Plugin para o controle de funcionarios das dists por script
 // @include		http://www.erepublik.com/*
-// @version     0.2
+// @version     0.3
 // @downloadURL	https://{host}/js/dynamic/employer.user.js
 // @updateURL	https://{host}/js/dynamic/employer.user.js
 // @grant		GM_getValue
 // @grant		GM_setValue
+// @grant		GM_listValues
+// @grant		GM_deleteValue
 // @grant		GM_log
 // @grant		GM_info
 // @grant		GM_xmlhttpRequest
@@ -94,7 +96,7 @@ function addEmployeesStats() {
 
 function getUpdateLink() {
     var newLink = document.createElement('a');
-	newLink.addEventListener('click', forceUpdate, false);
+	newLink.addEventListener('click', manualUpdate, false);
 
     $(newLink).attr('id', 'updatedAtLink');
 	$(newLink).attr('href', '#');
@@ -110,7 +112,14 @@ function getUpdateLink() {
 	return newLink;
 }
 
+function manualUpdate() {
+	GM_log('Forced employees update');
+	clearCache();	
+	forceUpdate();
+}
+
 function forceUpdate(){
+	GM_log('Running update...');
     if(onEmployeesPage) {
 		//avoids sending MouseClick event to the function
 		update();    
@@ -118,6 +127,15 @@ function forceUpdate(){
 	if(onMainPage) {
         updateFromMainPage();
     }
+}
+
+function clearCache() {
+	GM_log('Clearing employees cached data...');
+	var keys = GM_listValues();
+	for (var i=0; i<keys.length; i++) {
+	  GM_deleteValue(keys[i]);
+	}
+	GM_log('Cleared employees cache.');
 }
 
 function updateFromMainPage() {
@@ -155,6 +173,7 @@ function update(doc) {
             if(response.status != 200) {
 				onErrorFct(response);
             } else {
+            	GM_log('Update successfull.')
 				GM_setValue('lastUpdatedAt', new Date().getTime());
                 cache(data);
                 refresh();
@@ -172,6 +191,7 @@ function cache(data) {
             }
         });
     });
+    GM_log('Sent data has been cached!')
 }
 
 function onErrorFct(response) {
