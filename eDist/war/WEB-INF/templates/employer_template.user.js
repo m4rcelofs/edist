@@ -153,7 +153,7 @@ function updateFromMainPage() {
 
 function update(doc) {
 	
-	if(isUpdating()) {
+	if(isUpdating() || !GM_getValue('employerKey', false)) {
 		return;
 	}
 		
