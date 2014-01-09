@@ -7,11 +7,31 @@
 <%@attribute name="imports" fragment="true"%>
 
 <%
-	// 1 week
+	// 48h
 	// https://groups.google.com/forum/#!topic/google-appengine/6xAV2Q5x8AU
-	response.setDateHeader("Expires", new Date().getTime() + 604800000L);
-	response.setHeader("Cache-Control", "public, max-age=604800000");
+	response.setDateHeader("Expires", new Date().getTime() + 172800000L);
+	response.setHeader("Cache-Control", "public, max-age=172800000");
 	response.setHeader("Pragma", "Public");
+
+	response.setHeader("X-Frame-Options", "DENY");
+	response.setHeader("Strict-Transport-Security",
+			"max-age=172800000; includeSubDomains");
+	response.setHeader("X-Content-Type-Options", "nosniff");
+	response.setHeader("X-XSS-Protection", "1; mode=block");
+	response.setHeader(
+			"X-Content-Security-Policy",
+			"default-src 'self'; options inline-script eval-script; "
+					+ "script-src 'self' 'unsafe-inline' 'unsafe-eval' http://ajax.googleapis.com https://ajax.googleapis.com "
+					+ "http://www.google-analytics.com https://www.google-analytics.com http://netdna.bootstrapcdn.com https://netdna.bootstrapcdn.com; "
+					+ "font-src 'self' http://netdna.bootstrapcdn.com https://netdna.bootstrapcdn.com "
+					+ "http://themes.googleusercontent.com https://themes.googleusercontent.com "
+					+ "http://fonts.googleapis.com https://fonts.googleapis.com; "
+					+ "media-src 'none'; object-src 'none'; xhr-src 'self'; connect-src 'self'; "
+					+ "frame-src 'none'; frame-ancestors 'none'; "
+					+ "style-src 'self' http://netdna.bootstrapcdn.com https://netdna.bootstrapcdn.com "
+					+ "http://fonts.googleapis.com https://fonts.googleapis.com; "
+					+ "img-src 'self' http://*.ggpht.com https://*.ggpht.com http://static.erepublik.net; "
+					+ "report-uri /csp");
 
 	request.setAttribute("baseUrl",
 			new ServletHelper().getBaseUrl(request));

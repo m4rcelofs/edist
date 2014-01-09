@@ -298,6 +298,12 @@ public class Player implements HasEncodedKey {
 		getGroups().add(group);
 	}
 
+	@Deprecated
+	public void setGroupIds(Set<String> ids) {
+		// this is here because otherwise DWR won't include the property on the
+		// interface file
+	}
+
 	@RemoteProperty
 	public Set<String> getGroupIds() {
 		if (getGroups() == null)
