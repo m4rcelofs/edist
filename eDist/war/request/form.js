@@ -51,14 +51,11 @@ var FormViewModel = new function() {
 			encodedKey : ko.unwrap(self.selectedGroup().encodedKey)
 		};
 
-		$('#sendRequestBtn').button('loading');
 		RequestService.sendRequest(player, group, self.selectedFFs(), self
 				.selectedType(), {
 			callback : function(response) {
 				console.log(response);
 				if (response === true) {
-					$('#sendRequestBtn').button('complete');
-
 					self.requestStatus('OK');
 					self.requestAttempt().availableFF(
 							self.requestAttempt().availableFF()
@@ -140,7 +137,6 @@ var FormViewModel = new function() {
 	function startCounter(requestAttempt) {
 		if (!self.refreshCountdown()) {
 			setInterval(function() {
-
 				var count = self.requestAttempt().rechargeTime();
 
 				var seconds = fixIntegers(count % 60);
@@ -156,7 +152,6 @@ var FormViewModel = new function() {
 
 				self.requestAttempt().rechargeTime(
 						self.requestAttempt().rechargeTime() - 1);
-
 			}, 1000);
 		}
 	}
