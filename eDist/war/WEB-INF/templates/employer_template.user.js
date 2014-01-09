@@ -3,7 +3,7 @@
 // @namespace   http://edist-licence.appspot.com
 // @description	Plugin para o controle de funcionarios das dists por script
 // @include		http://www.erepublik.com/*
-// @version     0.3
+// @version     0.4
 // @downloadURL	https://{host}/js/dynamic/employer.user.js
 // @updateURL	https://{host}/js/dynamic/employer.user.js
 // @grant		GM_getValue
@@ -13,18 +13,8 @@
 // @grant		GM_log
 // @grant		GM_info
 // @grant		GM_xmlhttpRequest
+// @require 	https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js
 // ==/UserScript==
-
-function GM_wait() {
-
-	// jQuery is already defined by eRep, waits for it to load
-	if (typeof unsafeWindow.jQuery == 'undefined') {
-		window.setTimeout(GM_wait, 100);
-	} else {
-		$ = unsafeWindow.jQuery;
-		start();
-	}
-}
 
 function start() {
 
@@ -120,7 +110,6 @@ function manualUpdate() {
 }
 
 function forceUpdate() {
-	GM_log('Running update...');
 	if (onEmployeesPage) {
 		// avoids sending MouseClick event to the function
 		update();
@@ -131,7 +120,11 @@ function forceUpdate() {
 }
 
 function isUpdating() {
-	return GM_getValue('isUpdating', false);
+	var runningUpdate = GM_getValue('isUpdating', false);
+	if(runningUpdate) {
+		GM_log('Update is already running!');
+	}
+	return runningUpdate;
 }
 
 function clearCache() {
@@ -164,6 +157,7 @@ function update(doc) {
 		return;
 	}
 		
+	GM_log('Running update...');
 	GM_setValue('isUpdating', true);
 	
 	var data = {
@@ -212,7 +206,9 @@ function cache(data) {
 
 function onErrorFct(response) {
 	GM_setValue('isUpdating', false);
-	alert('Something went wrong, data could not be uploaded to dist server! Check your logs for more info.');
+	if($('#updatedAtLink')) {
+		$('#updatedAtLink').parent().css('background-color', 'red');
+	}
 	GM_log('Something went wrong, data could not be uploaded to dist server!');
 	GM_log(JSON.stringify(response));
 }
@@ -285,4 +281,4 @@ function findWorked(listing, day) {
 	return false;
 }
 
-GM_wait();
+start();
