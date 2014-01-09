@@ -81,6 +81,7 @@
 				com.erep.dist.data.enums.PlayerStatus,
 				com.erep.dist.data.enums.RocketQuality,
 				com.erep.dist.data.enums.ResourceQuality,
+				com.erep.dist.data.enums.PlayerDistStatus,
 				
 				com.erep.dist.data.Player,
 				com.erep.dist.data.PlayerGroup,
@@ -323,6 +324,17 @@
 	<servlet-mapping>
 		<servlet-name>employersFacadeServlet</servlet-name>
 		<url-pattern>/employer</url-pattern>
+	</servlet-mapping>
+
+	<!-- CSP violation reporting -->
+	<servlet>
+		<servlet-name>cspReportServlet</servlet-name>
+		<servlet-class>com.erep.dist.instances.frontend.CSPReportServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>cspReportServlet</servlet-name>
+		<url-pattern>/csp</url-pattern>
 	</servlet-mapping>
 
 	<!-- Avatar upload callback -->

@@ -30,6 +30,7 @@ import com.google.appengine.api.backends.BackendServiceFactory;
 import com.google.appengine.api.taskqueue.DeferredTask;
 import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
+import com.google.appengine.api.taskqueue.TaskAlreadyExistsException;
 import com.google.appengine.api.taskqueue.TaskOptions;
 
 public class EmployerFacadeServlet extends HttpServlet {
@@ -132,7 +133,11 @@ public class EmployerFacadeServlet extends HttpServlet {
 						"edist-default-backend")).taskName(
 				"WorkVerificationTask_" + player.getErId() + "_"
 						+ new Date().getTime());
-		queue.add(taskOptions);
+		try {
+			queue.add(taskOptions);
+		} catch (TaskAlreadyExistsException e) {
+			// multiple requests going on, ignore
+		}
 	}
 
 	private boolean checkParams(String... params) {
