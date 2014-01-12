@@ -37,14 +37,6 @@
 
 	request.setAttribute("baseUrl",
 			new ServletHelper().getBaseUrl(request));
-
-	String lang = request.getLocale().getLanguage();
-	if (request.getParameter("lang") != null
-			&& !request.getParameter("lang").toString().trim()
-					.isEmpty()) {
-		lang = request.getParameter("lang").toString();
-	}
-	request.setAttribute("language", lang);
 %>
 
 <fmt:setLocale value="${language}" />

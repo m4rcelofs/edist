@@ -1,6 +1,27 @@
 <%@tag language="java" pageEncoding="UTF-8"%>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
+<div class="row"> 
+	<div  id="language-select" class="dropdown pull-right">
+		<button class="btn dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+		    <span class="caret"></span>
+		</button>
+		<ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+			<li role="presentation">
+				<a role="menuitem" tabindex="-1" onclick="Navigation.setLanguage('en');">
+					<img src="${baseUrl}/img/flags/us.png"> English
+				</a>
+			</li>
+			<li role="presentation">
+				<a role="menuitem" tabindex="-1" onclick="Navigation.setLanguage('pt');">
+					<img src="${baseUrl}/img/flags/br.png"> Português
+				</a>
+			</li>
+		</ul>
+	</div>
+</div>
+
+
 <div class="header">
 	<ul class="nav nav-pills pull-right">
 		<li id="request"><a href="${baseUrl}/request/"><fmt:message key="header.form"/></a></li>

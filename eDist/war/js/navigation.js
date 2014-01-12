@@ -77,4 +77,12 @@ var Navigation = new function() {
 	nav.getCurrenLocation = function() {
 		return History.getState().hash;
 	}
+
+	nav.setLanguage = function(lang) {
+		$.cookie('language', lang, {
+			expires : 14,
+			path : '/'
+		});
+		location.reload(true);
+	}
 };

@@ -16,6 +16,7 @@
 <script type="text/javascript" src="${baseUrl}/js/jquery.history.min.cache.js"></script>
 <script type="text/javascript" src="${baseUrl}/js/jquery.validate.min.cache.js"></script>
 <script type='text/javascript' src='${baseUrl}/js/jquery.format.min.cache.js'></script>
+<script type='text/javascript' src='${baseUrl}/js/jquery.cookie.min.cache.js'></script>
 
 <script type="text/javascript" src="${baseUrl}/js/signals.min.cache.js"></script>
 <script type="text/javascript" src="${baseUrl}/js/crossroads.min.cache.js"></script>
