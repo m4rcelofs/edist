@@ -1,45 +1,42 @@
 <div class="form-group">
-	<label class="control-label col-md-6" for="maxFF">Máximo de FFs</label>
+	<label class="control-label col-md-6" for="maxFF"><fmt:message key="distconfig.maxFF"/></label>
 	<div class="col-md-5">
 		<input type="number" class="form-control" id="maxFF" placeholder="FF"
 			required min="1" data-bind="value: currentConfig.currentMaxDailyFF">
 	</div>
 	<a href="#" class="help" data-toggle="popover" title
-		data-content="Uma Food Fight (FF) é igual a 10 de energia"
+		data-content="<fmt:message key="distconfig.ff.help"/>"
 		data-original-title="Food Fight" data-bind="updatePopup:{}"> <span
 		class="glyphicon glyphicon-question-sign"></span>
 	</a>
 </div>
 <div class="form-group">
-	<label class="control-label col-md-6" for="autoDist">Distribuição
-		automática ativada</label>
+	<label class="control-label col-md-6" for="autoDist"><fmt:message key="distconfig.autoDist"/></label>
 	<div class="col-md-5">
 		<input type="checkbox" class="form-control" id="autoDist"
 			data-bind="checked: currentConfig.autoSend, enable: currentConfig.currentMaxDailyFF() > 0">
 	</div>
 	<a href="#" class="help" data-toggle="popover" title
-		data-content="Ativa a distribuição automática de FFs na virada do dia (foguetes não são enviados)"
-		data-original-title="Distribuição automática"
+		data-content="<fmt:message key="distconfig.autoDist.help"/>"
+		data-original-title="<fmt:message key="distconfig.autoDist.title"/>"
 		data-bind="updatePopup:{}"> <span
 		class="glyphicon glyphicon-question-sign"></span>
 	</a>
 </div>
 <div class="form-group">
-	<label class="control-label col-md-6" for="distType">Tipo da
-		Distribuição</label>
+	<label class="control-label col-md-6" for="distType"><fmt:message key="distconfig.distType"/></label>
 	<div class="col-md-5">
 		<select class="form-control selectpicker show-menu-arrow show-tick"
 			name="distType" id="distType"
 			data-bind="value: currentConfig.allowedType, enable: currentConfig.currentMaxDailyFF() > 0, updateSelectPicker: currentConfig.currentMaxDailyFF">
-			<option value="WEAPONS_FOOD">Armas + Alimentos</option>
-			<option value="WEAPONS">Somente Armas</option>
-			<option value="FOOD">Somente Alimentos</option>
+			<option value="WEAPONS_FOOD"><fmt:message key="distconfig.distType.both"/></option>
+			<option value="WEAPONS"><fmt:message key="distconfig.distType.weapons"/></option>
+			<option value="FOOD"><fmt:message key="distconfig.distType.food"/></option>
 		</select>
 	</div>
 </div>
 <div class="form-group">
-	<label class="control-label col-md-6" for="distWeaponQuality">Qualidade
-		das Armas</label>
+	<label class="control-label col-md-6" for="distWeaponQuality"><fmt:message key="distconfig.distQuality"/></label>
 	<div class="col-md-5">
 		<select class="form-control selectpicker show-menu-arrow show-tick"
 			name="distWeaponQuality" id="distWeaponQuality"
@@ -54,31 +51,30 @@
 		</select>
 	</div>
 	<a href="#" class="help" data-toggle="popover" title
-		data-content="A qualidade dos alimentos é escolhida com base no disponível"
-		data-original-title="Qualidade" data-bind="updatePopup:{}"> <span
+		data-content="<fmt:message key="distconfig.distQuality.help"/>"
+		data-original-title="<fmt:message key="distconfig.distQuality.title"/>" data-bind="updatePopup:{}"> <span
 		class="glyphicon glyphicon-question-sign"></span>
 	</a>
 </div>
 <div class="form-group">
-	<label class="control-label col-md-6" for="rocketAllowed">Distribuição
-		de foguetes ativada</label>
+	<label class="control-label col-md-6" for="rocketAllowed"><fmt:message key="distconfig.rocket"/></label>
 	<div class="col-md-5">
 		<input type="checkbox" class="form-control" id="rocketAllowed"
 			data-bind="checked: currentConfig.rocketAllowed">
 	</div>
 	<a href="#" class="help" data-toggle="popover" title
-		data-content="Envia armas de todas as qualidades. O nível do foguete é definido no cadastro do jogador."
-		data-original-title="Foguetes" data-bind="updatePopup:{}"> <span
+		data-content="<fmt:message key="distconfig.rocket.help"/>"
+		data-original-title="<fmt:message key="distconfig.rocket.title"/>" data-bind="updatePopup:{}"> <span
 		class="glyphicon glyphicon-question-sign"></span>
 	</a>
 </div>
 <div class="form-group">
-	<label class="control-label col-md-6" for="dist-config-distributor">Distribuidor</label>
+	<label class="control-label col-md-6" for="dist-config-distributor"><fmt:message key="distconfig.distributor"/></label>
 	<div class="col-md-5">
 		<select class="form-control selectpicker show-menu-arrow show-tick"
 			name="dist-config-distributor" id="dist-config-distributor"
 			data-bind=" options: distributors, 
-						optionsText: function(item){ return item.name ? item.name : item.email ? item.email : 'Sem nome';},
+						optionsText: function(item){ return item.name ? item.name : item.email ? item.email : '<fmt:message key="distconfig.distributor.noName"/>';},
 						optionsValue: 'encodedKey', 
 						value: currentConfig.distributor, 
 						enable: distributors() !== null,
