@@ -6,13 +6,15 @@
 
 			<ul id="history.horizontal.nav" class="nav nav-pills nav-stacked">
 				<li data-bind="css: {active : category() === 'date'}"><a
-					href="#/players/history/date">por Data</a></li>
+					href="#/players/history/date"><fmt:message key="filters.byDate" /></a></li>
 				<li data-bind="css: {active : category() === 'day'}"><a
-					href="#/players/history/day">por Dia</a></li>
+					href="#/players/history/day"><fmt:message key="filters.byDay" /></a></li>
 				<li data-bind="css: {active : category() === 'group'}"><a
-					href="#/players/history/group">por Grupo</a></li>
+					href="#/players/history/group"><fmt:message
+							key="filters.byGroup" /></a></li>
 				<li data-bind="css: {active : category() === 'player'}"><a
-					href="#/players/history/player">por Jogador</a></li>
+					href="#/players/history/player"><fmt:message
+							key="filters.byPlayer" /></a></li>
 			</ul>
 		</div>
 		<div class="col-md-10">
@@ -25,7 +27,7 @@
 				<li class="next"
 					data-bind="css: {disabled: cursor() === null || cursor() === ''},
 						click: loadNextPage"><a
-					href="#">Exibir próximos</a></li>
+					href="#"><fmt:message key="shared.showNext" /></a></li>
 			</ul>
 		</div>
 	</div>

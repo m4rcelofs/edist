@@ -2,14 +2,16 @@
 	data-bind="if: statsHistory().length > 0">
 	<thead>
 		<tr>
-			<th data-bind="if: category() !== 'day'">Dia</th>
-			<th>Jogador</th>
-			<th data-bind="if: category() !== 'group'">Grupo(s)</th>
-			<th>Experiência</th>
-			<th>Força</th>
-			<th>Rank</th>
-			<th>Hit Máximo</th>
-			<th>Data da Coleta</th>
+			<th data-bind="if: category() !== 'day'"><fmt:message
+					key="players.fights.day" /></th>
+			<th><fmt:message key="players.fights.player" /></th>
+			<th data-bind="if: category() !== 'group'"><fmt:message
+					key="players.fights.groups" /></th>
+			<th><fmt:message key="players.history.xp" /></th>
+			<th><fmt:message key="players.history.str" /></th>
+			<th><fmt:message key="players.history.rank" /></th>
+			<th><fmt:message key="players.history.maxHit" /></th>
+			<th><fmt:message key="players.history.collectedDate" /></th>
 		</tr>
 	</thead>
 	<tbody data-bind="foreach: statsHistory">
@@ -34,15 +36,17 @@
 					</a>
 				</p>
 				<p class="text-center">
-					<a data-toggle="popover" data-content="Distribuições para o jogador"
+					<a data-toggle="popover"
+						data-content="<fmt:message key="management.players.template.dist"/>"
 						data-bind="if: edist.user.hasReportsAccess,
 								   attr: {href: '${baseUrl}/reports/requests/player/' + (erId ? erId : '')  }, updatePopup:{}"><span
-						class="glyphicon glyphicon-list"></span></a> 
-					<a data-toggle="popover" data-content="Trabalho do jogador"
+						class="glyphicon glyphicon-list"></span></a> <a data-toggle="popover"
+						data-content="<fmt:message key="management.players.template.work"/>"
 						data-bind="if: edist.user.hasReportsAccess,
 								   attr: {href: '${baseUrl}/reports/work/player/' + (erId ? erId : '') }, updatePopup:{}"><span
-						class="glyphicon glyphicon-wrench"></span></a> 
-					<a data-toggle="popover" data-content="Lutas do jogador"
+						class="glyphicon glyphicon-wrench"></span></a> <a
+						data-toggle="popover"
+						data-content="<fmt:message key="management.players.template.fights"/>"
 						data-bind="attr: {href: '${baseUrl}/players/fights/player/' + (erId ? erId : '')  }, updatePopup:{}"><span
 						class="glyphicon glyphicon-screenshot"></span></a>
 				</p>
@@ -50,7 +54,7 @@
 			<td data-bind="if: $root.category() !== 'group'">
 				<p data-bind="foreach: groups">
 					<a
-						data-bind="text: groupName ? groupName : 'Sem nome', attr: {href : '#/players/history/group/'+encodedKey}"></a>
+						data-bind="text: groupName ? groupName : '<fmt:message key="distconfig.distributor.noName"/>', attr: {href : '#/players/history/group/'+encodedKey}"></a>
 					<br />
 				</p>
 			</td>
