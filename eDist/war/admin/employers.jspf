@@ -3,8 +3,7 @@
 	<div class="form-group"></div>
 	<div class="alert alert-info text-center">
 		<a data-toggle="modal" href="#employerScriptInstructionsModal"> <span
-			class="glyphicon glyphicon-info-sign"></span> Instruções de Uso do
-			Script de Gestores
+			class="glyphicon glyphicon-info-sign"></span> <fmt:message key="admin.employers.instructions.title"/>
 		</a>
 	</div>
 	<div class="panel-group" id="add-employer-accordion">
@@ -12,25 +11,25 @@
 			<div class="panel-heading">
 				<a class="accordion-toggle" data-toggle="collapse"
 					data-parent="#add-employer-accordion" href="#employer-collapse-one"><span
-					class="glyphicon glyphicon-plus-sign"></span> Adicionar Gestor</a>
+					class="glyphicon glyphicon-plus-sign"></span> <fmt:message key="admin.employers.add"/></a>
 			</div>
 			<div id="employer-collapse-one" class="panel-collapse collapse">
 				<div class="panel-body">
 					<form id="add-employer-form" class="form-inline" role="form"
 						onsubmit="return false;">
 						<div class="form-group">
-							<label class="sr-only" for="new-employer-name">Nome</label> <input
+							<label class="sr-only" for="new-employer-name"><fmt:message key="admin.employers.name"/></label> <input
 								type="text" class="form-control" id="new-employer-name"
-								placeholder="Nome">
+								placeholder="<fmt:message key="admin.employers.name"/>">
 						</div>
 						<div class="form-group">
-							<label class="sr-only" for="new-employer-id">ID</label> <input
+							<label class="sr-only" for="new-employer-id"><fmt:message key="admin.employers.id"/></label> <input
 								type="number" class="form-control" id="new-employer-id"
-								placeholder="ID no eRepublik" required>
+								placeholder="<fmt:message key="admin.employers.id"/>" required>
 						</div>
 						<button class="btn btn-primary"
 							data-bind="click: $root.addEmployer">
-							<span class="glyphicon glyphicon-floppy-disk"></span> Salvar
+							<span class="glyphicon glyphicon-floppy-disk"></span> <fmt:message key="shared.save"/>
 						</button>
 					</form>
 				</div>
@@ -39,15 +38,15 @@
 	</div>
 
 	<div class="text-center" data-bind="if: employers().length == 0">
-		<img id="employers-loader" src="../img/loader.cache.gif" />
+		<img id="employers-loader" src="${baseUrl}/img/loader.cache.gif" />
 	</div>
 
 	<table class="table table-striped table-hover table-responsive"
 		data-bind="if: employers().length > 0" id="employers-table">
 		<thead>
 			<tr>
-				<th>Nome</th>
-				<th>Última Atualização</th>
+				<th><fmt:message key="admin.employers.name"/></th>
+				<th><fmt:message key="admin.employers.lastUpdate"/></th>
 				<th></th>
 			</tr>
 		</thead>
@@ -56,10 +55,10 @@
 				<td><a
 					data-bind="attr: {href: 'http://www.erepublik.com/en/citizen/profile/' + erId}, text: name"></a></td>
 				<td
-					data-bind="text: lastUpdatedAt ? $.format.date(lastUpdatedAt, edist.format.date) : 'Não atualizado'"></td>
+					data-bind="text: lastUpdatedAt ? $.format.date(lastUpdatedAt, edist.format.date) : '<fmt:message key="admin.employers.noUpdate"/>'"></td>
 				<td><a data-toggle="modal" href="#employerKeyModal"
 					data-bind="click: $root.selectedEmployer"> <span
-						class="glyphicon glyphicon-barcode"></span> Chave de Autenticação
+						class="glyphicon glyphicon-barcode"></span> <fmt:message key="admin.employers.authKey"/>
 				</a></td>
 			</tr>
 		</tbody>
@@ -73,26 +72,22 @@
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal"
 						aria-hidden="true">×</button>
-					<h3>Chave de Autenticação do Gestor</h3>
+					<h3><fmt:message key="admin.employers.authKey"/></h3>
 				</div>
 				<div class="modal-body">
-					<p>Atenção!</p>
-					<p>
-						A chave do gestor é necessária para autenticação do script. <strong>Nunca
-							torne a chave do gestor pública!</strong>
-					</p>
+					<fmt:message key="admin.employers.authKey.text"/>
 					<form class="form-horizontal" role="form" onsubmit="return false;">
 						<div class="form-group">
-							<label for="employer-modal-name" class="col-lg-2 control-label">Gestor:</label>
+							<label for="employer-modal-name" class="col-lg-2 control-label"><fmt:message key="admin.employers.name"/>:</label>
 							<div class="col-lg-10">
-								<input type="text" class="form-control "
-									id="employer-modal-name" placeholder="Gestor"
+								<input type="text" class="form-control"
+									id="employer-modal-name"
 									readonly="readonly"
 									data-bind="value: $root.selectedEmployerName">
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="employer-modal-key" class="col-lg-2 control-label">Chave:</label>
+							<label for="employer-modal-key" class="col-lg-2 control-label"><fmt:message key="admin.employers.authKey"/>:</label>
 							<div class="col-lg-10">
 								<textarea class="form-control" id="employer-modal-key" readonly
 									data-bind="value: $root.selectedEmployerKey"></textarea>
@@ -101,7 +96,7 @@
 					</form>
 				</div>
 				<div class="modal-footer">
-					<button class="btn btn-primary" data-dismiss="modal">Fechar</button>
+					<button class="btn btn-primary" data-dismiss="modal"><fmt:message key="shared.close"/></button>
 				</div>
 			</div>
 		</div>
@@ -116,36 +111,22 @@
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"
 					aria-hidden="true">×</button>
-				<h3>Instruções do Script de Gestores</h3>
+				<h3><fmt:message key="admin.employers.instructions.title"/></h3>
 			</div>
 			<div class="modal-body">
-				<p>O Script de Gestores permite o acompanhamento do trabalho
-					diário dos jogadores cadastrados, integrando-se com a validação de
-					trabalho para a distribuição.</p>
-				<p>Instruções para o Gestor:</p>
-				<ul>
-					<li>O gestor deve ter instalado o <a
-						href="https://addons.mozilla.org/firefox/addon/greasemonkey/">Greasemonkey</a>
-						(Firefox) ou <a
-						href="https://chrome.google.com/webstore/detail/tampermonkey/dhdgffkkebhmkfjojejmpbldmpobfkfo">Tampermonkey</a>
-						(Chrome)
-					</li>
-					<li>O gestor deve instalar o Script <a
-						href="${baseUrl}/js/dynamic/employer.user.js">por esse link</a></li>
-				</ul>
-				<p>Instruções para o Administrador:</p>
-				<ul>
-					<li><a href="${baseUrl}/management/playersList/search">Cadastre</a>
-						todos os jogadores que deseja acompanhar antes do gestor instalar
-						o script</li>
-					<li>Cadastre o gestor no eDist</li>
-					<li>Forneça ao gestor a Chave de Autenticação</li>
-					<li>Configure a verificação de trabalho nas Configurações de
-						Distribuição</li>
-				</ul>
+				<p>
+					<fmt:message key="admin.employers.instructions.text"/>
+				</p>
+				<fmt:message key="admin.employers.instructions.textManager"/>
+				<a href="${baseUrl}/js/dynamic/employer.user.js"><fmt:message key="admin.employers.instructions.textManager2"/></a>
+				<fmt:message key="admin.employers.instructions.textManager3"/>
+				
+				<fmt:message key="admin.employers.instructions.textAdmin"/>
+				<a href="${baseUrl}/management/playersList/search"><fmt:message key="admin.employers.instructions.textAdmin2"/></a>
+				<fmt:message key="admin.employers.instructions.textAdmin3"/>
 			</div>
 			<div class="modal-footer">
-				<button class="btn btn-primary" data-dismiss="modal">Fechar</button>
+				<button class="btn btn-primary" data-dismiss="modal"><fmt:message key="shared.close"/></button>
 			</div>
 		</div>
 	</div>
