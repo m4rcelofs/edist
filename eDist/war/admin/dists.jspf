@@ -7,35 +7,40 @@
 			<div class="panel-heading">
 				<a class="accordion-toggle" data-toggle="collapse"
 					data-parent="#add-distributor-accordion" href="#dist-collapse-one"><span
-					class="glyphicon glyphicon-plus-sign"></span> Adicionar
-					Distribuidor </a>
+					class="glyphicon glyphicon-plus-sign"></span> <fmt:message
+						key="admin.distributors.add" /> </a>
 			</div>
 			<div id="dist-collapse-one" class="panel-collapse collapse">
 				<div class="panel-body">
 					<div class="alert alert-info">
-						<strong>Atenção!</strong> Utilize somente contas de jogadores
-						Bronze+, pois captchas não são suportados.
+						<fmt:message key="admin.distributors.bronzeWarning" />
 					</div>
 					<form id="add-dist-form" class="form-inline" role="form"
 						onsubmit="return false;">
 						<div class="form-group">
-							<label class="sr-only" for="new-dist-name">Nome</label> <input
-								type="text" class="form-control" id="new-dist-name"
-								placeholder="Nome">
+							<label class="sr-only" for="new-dist-name"><fmt:message
+									key="admin.distributors.name" /></label> <input type="text"
+								class="form-control" id="new-dist-name"
+								placeholder="<fmt:message key="admin.distributors.name"/>">
 						</div>
 						<div class="form-group">
-							<label class="sr-only" for="new-dist-email">Email</label> <input
-								type="email" class="form-control" id="new-dist-email"
-								placeholder="Email" required>
+							<label class="sr-only" for="new-dist-email"><fmt:message
+									key="admin.distributors.email" /></label> <input type="email"
+								class="form-control" id="new-dist-email"
+								placeholder="<fmt:message key="admin.distributors.email"/>"
+								required>
 						</div>
 						<div class="form-group">
-							<label class="sr-only" for="new-dist-password">Senha</label> <input
-								type="password" class="form-control" id="new-dist-password"
-								placeholder="Senha" required>
+							<label class="sr-only" for="new-dist-password"><fmt:message
+									key="admin.distributors.password" /></label> <input type="password"
+								class="form-control" id="new-dist-password"
+								placeholder="<fmt:message key="admin.distributors.password"/>"
+								required>
 						</div>
 						<a id="save-new-dist" data-toggle="modal"
 							href="#addDistributorConfirmation" class="btn btn-primary"><span
-							class="glyphicon glyphicon-floppy-disk"></span> Salvar</a>
+							class="glyphicon glyphicon-floppy-disk"></span> <fmt:message
+								key="shared.save" /></a>
 					</form>
 				</div>
 			</div>
@@ -43,30 +48,33 @@
 	</div>
 
 	<div class="text-center" data-bind="if: distributors().length == 0">
-		<img id="dists-loader" src="../img/loader.cache.gif" />
+		<img id="dists-loader" src="${baseUrl}/img/loader.cache.gif" />
 	</div>
 
 	<table class="table table-striped table-hover table-responsive"
 		id="dists-table" data-bind="if: distributors().length > 0">
 		<thead>
 			<tr>
-				<th>Nome</th>
-				<th>E-mail</th>
-				<th>Senha</th>
-				<th>Último Acesso</th>
+				<th><fmt:message key="admin.distributors.name" /></th>
+				<th><fmt:message key="admin.distributors.email" /></th>
+				<th><fmt:message key="admin.distributors.password" /></th>
+				<th><fmt:message key="admin.distributors.lastAccess" /></th>
 				<th></th>
 			</tr>
 		</thead>
 		<tbody data-bind="foreach: distributors">
 			<tr data-bind="attr: {id: encodedKey}">
-				<td><input type="text" placeholder="nome/nick"
+				<td><input type="text"
+					placeholder="<fmt:message key="admin.distributors.name"/>"
 					data-bind="value: name"></td>
-				<td><input type="email" placeholder="email"
+				<td><input type="email"
+					placeholder="<fmt:message key="admin.distributors.email"/>"
 					data-bind="value: email"></td>
-				<td><input type="password" placeholder="senha"
+				<td><input type="password"
+					placeholder="<fmt:message key="admin.distributors.password"/>"
 					data-bind="value: password"></td>
 				<td
-					data-bind="text: lastAccessTimestamp ? $.format.date(new Date(lastAccessTimestamp), edist.format.date) : 'Não acessado'"></td>
+					data-bind="text: lastAccessTimestamp ? $.format.date(new Date(lastAccessTimestamp), edist.format.date) : '<fmt:message key="admin.distributors.noAccess"/>'"></td>
 				<td><a href="#saveDistributorConfirmation" role="button"
 					data-toggle="modal"><span
 						class="glyphicon glyphicon-floppy-disk"
@@ -81,31 +89,16 @@
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal"
 						aria-hidden="true">×</button>
-					<h3>Confirmar Novo Distribuidor</h3>
+					<h3><fmt:message key="admin.distributors.newConfirmation.title"/></h3>
 				</div>
 				<div class="modal-body">
-					<p>Atenção!</p>
-					<p>
-						A conta do distribuidor será acessada pelo servidor, o que <i>pode</i>
-						configurar quebra dos termos de uso.
-					</p>
-					<p>
-						<strong>Não é recomendável:</strong>
-					</p>
-					<ul>
-						<li>Doar itens diretamente entre dois distribuidores</li>
-						<li>Utilizar contas gestoras de empresas</li>
-					</ul>
-					<p>Os desenvolvedores do eDist não são responsáveis por
-						qualquer ação da moderação do jogo sobre as contas cadastradas
-						aqui.</p>
+					<fmt:message key="admin.distributors.newConfirmation.text"/>				
 				</div>
 				<div class="modal-footer">
 					<button class="btn" data-dismiss="modal"
-						data-bind="click: $root.addDistributor">Concordo,
-						cadastrar</button>
+						data-bind="click: $root.addDistributor"><fmt:message key="admin.distributors.newConfirmation.agree"/></button>
 					<button class="btn btn-danger" data-dismiss="modal"
-						aria-hidden="true">Não concordo, cancelar</button>
+						aria-hidden="true"><fmt:message key="admin.distributors.newConfirmation.doNotAgree"/></button>
 				</div>
 			</div>
 		</div>
@@ -118,27 +111,13 @@
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal"
 						aria-hidden="true">×</button>
-					<h3>Confirmar Distribuidor</h3>
+					<h3><fmt:message key="admin.distributors.newConfirmation.title"/></h3>
 				</div>
 				<div class="modal-body">
-					<p>Atenção!</p>
-					<p>
-						A conta do distribuidor será acessada pelo servidor, o que <i>pode</i>
-						configurar quebra dos termos de uso.
-					</p>
-					<p>
-						<strong>Não é recomendável:</strong>
-					</p>
-					<ul>
-						<li>Doar itens diretamente entre dois distribuidores</li>
-						<li>Utilizar contas gestoras de empresas</li>
-					</ul>
-					<p>Os desenvolvedores do eDist não são responsáveis por
-						qualquer ação da moderação do jogo sobre as contas cadastradas
-						aqui.</p>
+					<fmt:message key="admin.distributors.newConfirmation.text"/>	
 				</div>
 				<div class="modal-footer">
-					<button class="btn" data-dismiss="modal">OK</button>
+					<button class="btn" data-dismiss="modal"><fmt:message key="admin.distributors.newConfirmation.ok"/></button>
 				</div>
 			</div>
 		</div>

@@ -1,21 +1,22 @@
-
 <table class="table table-striped table-hover table-responsive"
 	data-bind="if: fightsHistory().length > 0">
 	<thead>
 		<tr>
-			<th data-bind="if: category() !== 'day'">Dia</th>
-			<th>Jogador</th>
-			<th data-bind="if: category() !== 'group'">Grupo(s)</th>
-			<th>Lutas calculadas <abbr title="Food Fights"
-				class="initialism">(FF)</abbr> <a href="#" class="help"
-				data-toggle="popover" title
-				data-content="Cálculo realizado pela diferença de rank"
+			<th data-bind="if: category() !== 'day'"><fmt:message
+					key="players.fights.day" /></th>
+			<th><fmt:message key="players.fights.player" /></th>
+			<th data-bind="if: category() !== 'group'"><fmt:message
+					key="players.fights.groups" /></th>
+			<th><fmt:message key="players.fights.calculatedFights" /> <abbr
+				title="Food Fights" class="initialism">(FF)</abbr> <a href="#"
+				class="help" data-toggle="popover" title
+				data-content="<fmt:message key="players.fights.calculatedFights.help"/>"
 				data-bind="updatePopup:{}"> <span
 					class="glyphicon glyphicon-question-sign"></span>
 			</a></th>
-			<th>Dano</th>
-			<th>Armas</th>
-			<th>Distribuição</th>
+			<th><fmt:message key="players.fights.damage" /></th>
+			<th><fmt:message key="players.fights.weapons" /></th>
+			<th><fmt:message key="players.fights.dist" /></th>
 		</tr>
 	</thead>
 	<tbody data-bind="foreach: fightsHistory">
@@ -40,15 +41,17 @@
 					</a>
 				</p>
 				<p class="text-center">
-					<a data-toggle="popover" data-content="Distribuições para o jogador"
+					<a data-toggle="popover"
+						data-content="<fmt:message key="management.players.template.dist"/>"
 						data-bind="if: edist.user.hasReportsAccess,
 								   attr: {href: '${baseUrl}/reports/requests/player/' + (stats ? stats.erId : '') }, updatePopup:{}"><span
-						class="glyphicon glyphicon-list"></span></a>
-					 <a data-toggle="popover" data-content="Trabalho do jogador"
+						class="glyphicon glyphicon-list"></span></a> <a data-toggle="popover"
+						data-content="<fmt:message key="management.players.template.work"/>"
 						data-bind="if: edist.user.hasReportsAccess,
 								   attr: {href: '${baseUrl}/reports/work/player/' + (stats ? stats.erId : '') }, updatePopup:{}"><span
-						class="glyphicon glyphicon-wrench"></span></a>
-					<a data-toggle="popover" data-content="Estatísticas do jogador"
+						class="glyphicon glyphicon-wrench"></span></a> <a
+						data-toggle="popover"
+						data-content="<fmt:message key="management.players.template.stats"/>"
 						data-bind="attr: {href: '${baseUrl}/players/history/player/' + (stats ? stats.erId : '') }, updatePopup:{}"><span
 						class="glyphicon glyphicon-stats"></span></a>
 				</p>
@@ -56,7 +59,7 @@
 			<td data-bind="if: $root.category() !== 'group'">
 				<p data-bind="foreach: groups">
 					<a
-						data-bind="text: groupName ? groupName : 'Sem nome', attr: {href : '#/players/fights/group/'+encodedKey}"></a>
+						data-bind="text: groupName ? groupName : '<fmt:message key="distconfig.distributor.noName"/>', attr: {href : '#/players/fights/group/'+encodedKey}"></a>
 					<br />
 				</p>
 			</td>
@@ -67,7 +70,8 @@
 					<span class="badge"
 					data-bind="text: $root.fightDifference($data, $root.fightsHistory()[$index() + 1])"></span>
 			</span></td>
-			<td data-bind="text: calculatedRankDamage ? $.format.number(calculatedRankDamage, edist.format.number) : ''"></td>
+			<td
+				data-bind="text: calculatedRankDamage ? $.format.number(calculatedRankDamage, edist.format.number) : ''"></td>
 			<td><span data-bind="text: $root.weaponsUsed($data)"></span> <img
 				data-bind="attr: {alt: calculatedWithWeaponQuality, 
 									   src: '${baseUrl}/img/weapons/' + calculatedWithWeaponQuality + '.png'}">
@@ -77,16 +81,20 @@
 								'${baseUrl}/reports/requests/player/' + (stats ? stats.erId : '') 
 								: '' }">
 					<span data-bind="if: verificationStatus === null"
-					class="label label-default">Desconhecido</span> <span
+					class="label label-default"><fmt:message
+							key="shared.unknown" /></span> <span
 					data-bind="if: verificationStatus === 'TEMP_BANNED'"
 					class="label label-danger"> <span
-						class="glyphicon glyphicon-ban-circle"></span> Bloqueada
+						class="glyphicon glyphicon-ban-circle"></span> <fmt:message
+							key="shared.tempBanned" />
 				</span> <span data-bind="if: verificationStatus === 'WARNING'"
 					class="label label-warning"> <span
-						class="glyphicon glyphicon-exclamation-sign"></span> Sob Aviso
+						class="glyphicon glyphicon-exclamation-sign"></span> <fmt:message
+							key="shared.warning" />
 				</span> <span data-bind="if: verificationStatus === 'OK'"
 					class="label label-success"> <span
-						class="glyphicon glyphicon-ok"></span> Liberada
+						class="glyphicon glyphicon-ok"></span> <fmt:message
+							key="shared.ok" />
 				</span>
 			</a></td>
 		</tr>

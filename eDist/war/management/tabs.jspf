@@ -1,4 +1,6 @@
 <li><a href="#listGroups" id="listGroupsTab"><span
-		class="glyphicon glyphicon-tags"></span> Grupos</a></li>
+		class="glyphicon glyphicon-tags"></span> <fmt:message
+			key="management.tabs.groups" /></a></li>
 <li><a href="#playersList" id="playersListTab"><span
-		class="glyphicon glyphicon-list"></span> Jogadores</a></li>
+		class="glyphicon glyphicon-list"></span> <fmt:message
+			key="management.tabs.players" /></a></li>

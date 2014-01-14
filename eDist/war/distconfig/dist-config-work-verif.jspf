@@ -1,20 +1,19 @@
 <div class="form-group">
 	<label class="control-label col-md-6 sr-only"
-		for="work-verification-action">Ação</label>
+		for="work-verification-action"><fmt:message key="distconfig.action"/></label>
 	<div class="col-md-5">
 		<select
 			class="form-control work-verification-group selectpicker show-menu-arrow show-tick"
 			name="work-verification-action" id="work-verification-action"
 			data-bind="value: currentWorkVerif.workVerifAction, updateSelectPicker: currentWorkVerif.workVerifAction">
-			<option value="NONE">Não fazer nada...</option>
-			<option value="WARN">Avisar...</option>
-			<option value="TEMP_BAN">Bloquear distribuição...</option>
+			<option value="NONE"><fmt:message key="distconfig.action.none"/></option>
+			<option value="WARN"><fmt:message key="distconfig.action.warn"/></option>
+			<option value="TEMP_BAN"><fmt:message key="distconfig.action.ban"/></option>
 		</select>
 	</div>
 </div>
 <div class="form-group">
-	<label class="control-label col-md-6" for="work-verification-pct">...
-		caso o jogador não trabalhe ao menos ...</label>
+	<label class="control-label col-md-6" for="work-verification-pct"><fmt:message key="distconfig.action.work"/></label>
 	<div class="col-md-5">
 		<div class="input-group">
 			<input type="number" class="form-control work-verification-group"
@@ -25,14 +24,13 @@
 	</div>
 </div>
 <div class="form-group">
-	<label class="control-label col-md-6" for="work-verification-days">...
-		dos últimos ...</label>
+	<label class="control-label col-md-6" for="work-verification-days"><fmt:message key="distconfig.action.workDays"/></label>
 	<div class="col-md-5">
 		<div class="input-group">
 			<input type="number" class="form-control work-verification-group"
 				id="work-verification-days" required
 				data-bind="value: currentWorkVerif.workVerifDays, enable: currentWorkVerif.workVerifAction() != 'NONE'"><span
-				class="input-group-addon" min="0">dias</span>
+				class="input-group-addon" min="0"> <fmt:message key="distconfig.action.days"/></span>
 		</div>
 	</div>
 </div>

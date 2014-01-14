@@ -1,115 +1,106 @@
 <div class="tab-pane" id="config">
 
 	<div class="text-center" data-bind="if: config.granularity() == null">
-		<img id="config-loader" src="../img/loader.cache.gif" />
+		<img id="config-loader" src="${baseUrl}/img/loader.cache.gif" />
 	</div>
 	<div data-bind="if: config.granularity() != null">
 		<form id="config-form" class="form-horizontal" role="form"
 			data-bind="submit: saveConfig">
 			<div class="form-group"></div>
 			<div class="form-group">
-				<label class="control-label col-md-6" for="muName">Nome da
-					Unidade Militar</label>
+				<label class="control-label col-md-6" for="muName"><fmt:message key="admin.config.muName"/></label>
 				<div class="col-md-5">
-					<input type="text" class="form-control" placeholder="nome da mu"
+					<input type="text" class="form-control" placeholder="<fmt:message key="admin.config.muPlaceholder"/>"
 						required data-bind="value: config.muName">
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-md-6 control-label" for="granularity">Granularidade
-					da Configuração de Distribuição</label>
+				<label class="col-md-6 control-label" for="granularity"><fmt:message key="admin.config.granularity"/></label>
 				<div class="col-md-5">
 					<select class="form-control selectpicker show-menu-arrow show-tick"
 						data-bind="value: config.granularity, updateSelectPicker:{}">
-						<option value="MU">Unidade Militar</option>
-						<option value="GROUP">Grupo</option>
-						<option value="PLAYER">Jogador</option>
+						<option value="MU"><fmt:message key="admin.config.granularity.mu"/></option>
+						<option value="GROUP"><fmt:message key="admin.config.granularity.group"/></option>
+						<option value="PLAYER"><fmt:message key="admin.config.granularity.player"/></option>
 					</select>
 				</div>
 				<a href="#" class="help" data-toggle="popover" title
-					data-content="Define qual o nível máximo de configuração das distribuições - você pode definir até uma configuração diferente para cada jogador! Caso essa configuração não exista, o nível superior será utilizado."
-					data-original-title="Granularidade" data-bind="updatePopup:{}">
+					data-content="<fmt:message key="admin.config.granularity.help"/>"
+					data-original-title="<fmt:message key="admin.config.granularity.title"/>" data-bind="updatePopup:{}">
 					<span class="glyphicon glyphicon-question-sign"></span>
 				</a>
 			</div>
 
 			<div class="form-group">
-				<label class="col-md-6 control-label" for="defaultConfigs">Configurações
-					Padrão</label>
+				<label class="col-md-6 control-label" for="defaultConfigs"><fmt:message key="admin.config.defaultConfig"/></label>
 				<div class="col-md-5">
 					<ul class="list-group">
 						<li class="list-group-item"><a href="#" role="button"
-							data-bind="click: editConfig">Configuração Padrão da
-								Distribuição</a></li>
+							data-bind="click: editConfig"><fmt:message key="admin.config.defaultConfig.dist"/></a></li>
 						<li class="list-group-item"><a href="#" role="button"
-							data-bind="click: editFightVerif">Verificação Padrão de Lutas</a></li>
+							data-bind="click: editFightVerif"><fmt:message key="admin.config.defaultConfig.fightVerif"/></a></li>
 						<li class="list-group-item"><a href="#" role="button"
-							data-bind="click: editWorkVerif">Verificação Padrão de
-								Trabalho</a></li>
+							data-bind="click: editWorkVerif"><fmt:message key="admin.config.defaultConfig.workVerif"/></a></li>
 					</ul>
 				</div>
 				<a href="#" class="help" data-toggle="popover" title
-					data-content="Utilizada caso você defina a granularidade como 'Unidade Militar' ou não configure os níveis abaixo"
-					data-original-title="Distribuição padrão"
+					data-content="<fmt:message key="admin.config.defaultConfig.help"/>"
+					data-original-title="<fmt:message key="admin.config.defaultConfig.title"/>"
 					data-bind="updatePopup:{}"> <span
 					class="glyphicon glyphicon-question-sign"> </span>
 				</a>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-md-6" for="avatarHistory">Manter
-					histórico de avatares</label>
+				<label class="control-label col-md-6" for="avatarHistory"><fmt:message key="admin.config.avatarHistory"/></label>
 				<div class="col-md-5 text-center">
 					<input type="checkbox" data-bind="checked: config.avatarHistory">
 				</div>
-				<a href="#" class="help" data-toggle="popover" title
-					data-content="Armazena uma cópia de cada avatar utilizado pelo jogador"
-					data-original-title="Histórico de Avatares"
+				<a href="#" class="help" data-toggle="popover" 
+					data-content="<fmt:message key="admin.config.avatarHistory.help"/>"
+					data-original-title="<fmt:message key="admin.config.avatarHistory.title"/>"
 					data-bind="updatePopup:{}"> <span
 					class="glyphicon glyphicon-question-sign"></span>
 				</a>
 			</div>
 			<div class="form-group">
-				<label class="col-md-6 control-label" for="reportsAccess">Acesso
-					aos Relatórios de Distribuição</label>
+				<label class="col-md-6 control-label" for="reportsAccess"><fmt:message key="admin.config.reportsAccess"/></label>
 				<div class="col-md-5">
 					<select class="form-control selectpicker show-menu-arrow show-tick"
 						data-bind="value: config.reportsAccess, updateSelectPicker: config.reportsAccess">
-						<option value="ADMINS">Administradores</option>
-						<option value="MODS">Moderadores</option>
-						<option value="VIEWER">Visitantes Registrados</option>
-						<option value="PUBLIC">Público</option>
+						<option value="ADMINS"><fmt:message key="admin.config.reportsAccess.admins"/></option>
+						<option value="MODS"><fmt:message key="admin.config.reportsAccess.mods"/></option>
+						<option value="VIEWER"><fmt:message key="admin.config.reportsAccess.viewer"/></option>
+						<option value="PUBLIC"><fmt:message key="admin.config.reportsAccess.public"/></option>
 					</select>
 				</div>
-				<a href="#" class="help" data-toggle="popover" title
-					data-content="Quem poderá acessar os relatórios de distribuição (FFs, itens enviados, etc)"
-					data-original-title="Nível de Acesso" data-bind="updatePopup:{}">
+				<a href="#" class="help" data-toggle="popover" 
+					data-content="<fmt:message key="admin.config.reportsAccess.help"/>"
+					data-original-title="<fmt:message key="admin.config.reportsAccess.title"/>" data-bind="updatePopup:{}">
 					<span class="glyphicon glyphicon-question-sign"></span>
 				</a>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-md-6" for="playerReportsAccess">Acesso
-					aos Relatórios de Jogadores</label>
+				<label class="control-label col-md-6" for="playerReportsAccess"><fmt:message key="admin.config.playerReportsAccess"/></label>
 				<div class="col-md-5">
 					<select class="form-control selectpicker show-menu-arrow show-tick"
 						data-bind="value: config.playerReportsAccess, updateSelectPicker:{}">
-						<option value="ADMINS">Administradores</option>
-						<option value="MODS">Moderadores</option>
-						<option value="VIEWER">Visitantes Registrados</option>
-						<option value="PUBLIC">Público</option>
+						<option value="ADMINS"><fmt:message key="admin.config.reportsAccess.admins"/></option>
+						<option value="MODS"><fmt:message key="admin.config.reportsAccess.mods"/></option>
+						<option value="VIEWER"><fmt:message key="admin.config.reportsAccess.viewer"/></option>
+						<option value="PUBLIC"><fmt:message key="admin.config.reportsAccess.public"/></option>
 					</select>
 				</div>
-				<a href="#" class="help" data-toggle="popover" title
-					data-content="Quem poderá acessar os relatórios de jogadores (lutas, força, etc)"
-					data-original-title="Nível de Acesso" data-bind="updatePopup:{}">
+				<a href="#" class="help" data-toggle="popover" 
+					data-content="<fmt:message key="admin.config.playerReportsAccess.help"/>"
+					data-original-title="<fmt:message key="admin.config.reportsAccess.title"/>" data-bind="updatePopup:{}">
 					<span class="glyphicon glyphicon-question-sign"></span>
 				</a>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-md-6" for="email">E-mail do
-					Responsável</label>
+				<label class="control-label col-md-6" for="email"><fmt:message key="admin.config.email"/></label>
 				<div class="input-group col-md-5">
 					<input type="email" class="form-control"
-						placeholder="email@exemplo.com" required
+						placeholder="<fmt:message key="admin.config.email.placeholder"/>" required
 						data-bind="value: config.contactEmail"> <span
 						class="input-group-addon"> <span
 						class="glyphicon glyphicon-envelope"></span>
@@ -119,8 +110,8 @@
 			<div class="form-group">
 				<div class="col-md-offset-6 col-md-2">
 					<button id="save-config" type="submit" class="btn btn-primary"
-						data-loading-text="Salvando..." autocomplete="off">
-						<span class="glyphicon glyphicon-floppy-disk"></span> Salvar
+						data-loading-text="<fmt:message key="shared.saving"/>" autocomplete="off">
+						<span class="glyphicon glyphicon-floppy-disk"></span> <fmt:message key="shared.save"/>
 					</button>
 				</div>
 			</div>

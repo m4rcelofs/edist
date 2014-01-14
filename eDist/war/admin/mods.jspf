@@ -2,10 +2,8 @@
 	<div class="form-group"></div>
 	<div class="alert alert-info text-center">
 		<p>
-			<span class="glyphicon glyphicon-info-sign"></span> Adicione outros
-			administradores no <a id="mods-control-panel-link"
-				data-bind="attr : {href: controlPanelLocation()}" class="alert-link">Painel
-				de Controle</a>
+			<span class="glyphicon glyphicon-info-sign"></span> <fmt:message key="admin.mods.add"/> <a id="mods-control-panel-link"
+				data-bind="attr : {href: controlPanelLocation()}" class="alert-link"><fmt:message key="admin.mods.controlPanel"/></a>
 		</p>
 	</div>
 	<div class="text-center" data-bind="if: registeredUsers().length == 0">
@@ -15,24 +13,24 @@
 		data-bind="if: registeredUsers().length > 0" id="mods-table">
 		<thead>
 			<tr>
-				<th>Nome</th>
-				<th>E-mail</th>
-				<th>Cargo</th>
-				<th>Registro</th>
+				<th><fmt:message key="admin.mods.name"/></th>
+				<th><fmt:message key="admin.mods.email"/></th>
+				<th><fmt:message key="admin.mods.role"/></th>
+				<th><fmt:message key="admin.mods.registered"/></th>
 				<th></th>
 			</tr>
 		</thead>
 		<tbody data-bind="foreach: registeredUsers">
 			<tr data-bind="attr: {id: gId}">
-				<td><input type="text" placeholder="nome/nick"
+				<td><input type="text" placeholder="<fmt:message key="admin.mods.name"/>"
 					data-bind="value: name"></td>
 				<td data-bind="text: gEmail"></td>
 				<td><select
 					class="form-control selectpicker show-menu-arrow show-tick"
 					name="role" data-bind="value: role, updateSelectPicker:{}">
-						<option value="NONE">Nenhum</option>
-						<option value="VIEWER">Visitante</option>
-						<option value="MODERATOR">Moderador</option>
+						<option value="NONE"><fmt:message key="admin.mods.role.none"/></option>
+						<option value="VIEWER"><fmt:message key="admin.mods.role.viewer"/></option>
+						<option value="MODERATOR"><fmt:message key="admin.mods.role.mod"/></option>
 				</select></td>
 				<td data-bind="text: registeredAt ? $.format.date(registeredAt, edist.format.date) : ''"></td>
 				<td><a href="#" role="button"><span
@@ -48,7 +46,7 @@
 		<li class="next"
 			data-bind="css: {disabled: cursor() === null},
 						click: loadNextPage"><a
-			href="#">Exibir próximos</a></li>
+			href="#"><fmt:message key="shared.showNext"/></a></li>
 	</ul>
 
 	<div class="modal fade" id="removeUserConfirmation" tabindex="-1"
@@ -58,18 +56,18 @@
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal"
 						aria-hidden="true">×</button>
-					<h3 id="myModalLabel">Confirmar Remoção</h3>
+					<h3 id="myModalLabel"><fmt:message key="admin.mods.remove.title"/></h3>
 				</div>
 				<div class="modal-body">
 					<p class="error-text">
-						Tem certeza que deseja remover as permissões para <span
+						<fmt:message key="admin.mods.remove.text"/> <span
 							data-bind="text: selectedUserEmail"></span>?
 					</p>
 				</div>
 				<div class="modal-footer">
 					<button class="btn btn-danger" data-dismiss="modal"
-						data-bind="click: confirmUserRemoval">Excluir</button>
-					<button class="btn" data-dismiss="modal" aria-hidden="true">Cancelar</button>
+						data-bind="click: confirmUserRemoval"><fmt:message key="admin.mods.remove.confirm"/></button>
+					<button class="btn" data-dismiss="modal" aria-hidden="true"><fmt:message key="admin.mods.remove.cancel"/></button>
 				</div>
 			</div>
 		</div>

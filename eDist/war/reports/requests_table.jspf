@@ -2,16 +2,20 @@
 	data-bind="if: dists().length > 0">
 	<thead>
 		<tr>
-			<th data-bind="if: category() !== 'day'">Dia</th>
-			<th>Jogador</th>
-			<th>Status</th>
-			<th>Quantidade</th>
-			<th data-bind="if: category() !== 'group'">Grupo</th>
+			<th data-bind="if: category() !== 'day'"><fmt:message
+					key="players.fights.day" /></th>
+			<th><fmt:message key="players.fights.player" /></th>
+			<th><fmt:message key="reports.requests.status" /></th>
+			<th><fmt:message key="reports.requests.quantity" /></th>
+			<th data-bind="if: category() !== 'group'"><fmt:message
+					key="reports.requests.group" /></th>
 			<th
-				data-bind="if: category() !== 'distributor' && window.edist.user.hasManagementAccess === true">Distribuidor</th>
-			<th>Requisitada em</th>
-			<th>Completada em</th>
-			<th data-bind="if: window.edist.user.hasManagementAccess === true">IP</th>
+				data-bind="if: category() !== 'distributor' && window.edist.user.hasManagementAccess === true"><fmt:message
+					key="reports.requests.distributor" /></th>
+			<th><fmt:message key="reports.requests.requestedAt" /></th>
+			<th><fmt:message key="reports.requests.completedAt" /></th>
+			<th data-bind="if: window.edist.user.hasManagementAccess === true"><fmt:message
+					key="reports.requests.ip" /></th>
 		</tr>
 	</thead>
 	<tbody data-bind="foreach: dists">
@@ -36,14 +40,16 @@
 					</a>
 				</p>
 				<p class="text-center">
-					<a data-toggle="popover" data-content="Trabalho do jogador"
+					<a data-toggle="popover"
+						data-content="<fmt:message key="management.players.template.work"/>"
 						data-bind="attr: {href: '${baseUrl}/reports/work/player/' + (stats ? stats.erId : '') }, updatePopup:{}"><span
-						class="glyphicon glyphicon-wrench"></span></a> 
-					<a data-toggle="popover" data-content="Estatísticas do jogador"
+						class="glyphicon glyphicon-wrench"></span></a> <a
+						data-toggle="popover"
+						data-content="<fmt:message key="management.players.template.stats"/>"
 						data-bind="if: edist.user.hasPlayerReportsAccess,
 								   attr: {href: '${baseUrl}/players/history/player/' + (stats ? stats.erId : '') }, updatePopup:{}"><span
-						class="glyphicon glyphicon-stats"></span></a> 
-					<a data-toggle="popover" data-content="Lutas do jogador"
+						class="glyphicon glyphicon-stats"></span></a> <a data-toggle="popover"
+						data-content="<fmt:message key="management.players.template.fights"/>"
 						data-bind="if: edist.user.hasPlayerReportsAccess,
 								   attr: {href: '${baseUrl}/players/fights/player/' + (stats ? stats.erId : '') }, updatePopup:{}"><span
 						class="glyphicon glyphicon-screenshot"></span></a>
@@ -53,41 +59,50 @@
 				<p data-bind="if: $root.category() !== 'status'">
 					<a href="#/reports/requests/status/requested"
 						data-bind="if: status === 'REQUESTED'"> <span
-						class="label label-primary">Requisitada</span>
+						class="label label-primary"><fmt:message
+								key="reports.requests.requested" /></span>
 					</a> <a href="#/reports/requests/status/error"
 						data-bind="if: status === 'ERROR'"> <span
-						class="label label-danger">Erro</span>
+						class="label label-danger"><fmt:message
+								key="reports.requests.error" /></span>
 					</a> <a href="#/reports/requests/status/sent"
 						data-bind="if: status === 'SENT'"> <span
-						class="label label-success">Enviada</span>
+						class="label label-success"><fmt:message
+								key="reports.requests.sent" /></span>
 					</a> <a href="#/reports/requests/status/sent_partial"
 						data-bind="if: status === 'SENT_PARTIAL'"> <span
-						class="label label-warning">Enviada Parcialmente</span>
+						class="label label-warning"><fmt:message
+								key="reports.requests.partial" /></span>
 					</a>
 				</p>
 				<p data-bind="if: $root.category() !== 'type'">
 					<a href="#/reports/requests/type/weapons"
 						data-bind="if: type === 'WEAPONS'"> <span
-						class="label label-default">Armas</span>
+						class="label label-default"><fmt:message
+								key="reports.requests.weapons" /></span>
 					</a> <a href="#/reports/requests/type/food"
 						data-bind="if: type === 'FOOD'"> <span
-						class="label label-default">Comida</span>
+						class="label label-default"><fmt:message
+								key="reports.requests.food" /></span>
 					</a> <a href="#/reports/requests/type/weapons_food"
 						data-bind="if: type === 'WEAPONS_FOOD'"> <span
-						class="label label-default">Armas + Comida</span>
+						class="label label-default"><fmt:message
+								key="reports.requests.both" /></span>
 					</a> <a href="#/reports/requests/type/rocket"
 						data-bind="if: type === 'ROCKET'"> <span
-						class="label label-info">Foguete</span>
+						class="label label-info"><fmt:message
+								key="reports.requests.rocket" /></span>
 					</a>
 				</p>
 				<p>
 					<a href="#requestDetails" data-bind="click: $root.loadDetails">
-						Detalhes <span class="glyphicon glyphicon-new-window"></span>
+						<fmt:message key="reports.requests.details.short" /> <span
+						class="glyphicon glyphicon-new-window"></span>
 					</a>
 				</p>
 			</td>
 			<td
-				data-bind="text: rocketQuality !== null ? 'Foguete ' + rocketQuality : requestedFF + ' FF'"></td>
+				data-bind="text: rocketQuality !== null ? '<fmt:message key="reports.requests.rocket"/> ' + rocketQuality : requestedFF + ' FF'"></td>
 			<td data-bind="if: $root.category() !== 'group'"><a
 				data-bind="text: group.groupName, attr: {href : '#/reports/requests/group/'+group.encodedKey}"></a></td>
 			<td data-bind="if: $root.category() !== 'distributor'"><a

@@ -1,6 +1,8 @@
 <%@tag language="java" description="Default Wrapper"
 	pageEncoding="UTF-8"%>
 
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
 <%@tag import="java.util.Date"%>
 <%@tag import="com.erep.dist.instances.frontend.ServletHelper"%>
 
@@ -37,8 +39,11 @@
 			new ServletHelper().getBaseUrl(request));
 %>
 
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="com.erep.dist.i18n.edist" />
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="pt-BR">
+<html lang="${language}">
 <head>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -58,7 +63,6 @@
 
 </head>
 <body>
-
 	<div class="container">
 
 		<%@ include file="header.tag"%>
