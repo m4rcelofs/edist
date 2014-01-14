@@ -72,7 +72,7 @@
 					data-bind="text: '+' + $.format.number(strength - $root.statsHistory()[$index() + 1].strength, edist.format.number)"></span>
 			</span></td>
 			<td><img
-				data-bind="attr: {'data-content':  $.format.number(rank, edist.format.number) + ' pontos: ' + RankCalculator.getRank(rank).name, 
+				data-bind="attr: {'data-content':  $.format.number(rank, edist.format.number) + ' <fmt:message key="players.history.points"/>: ' + RankCalculator.getRank(rank).name, 
 										src: '${baseUrl}/img/ranks/' + RankCalculator.getRank(rank).rank + '.png'},
 								updatePopup:{}"
 				data-toggle="popover"> <span

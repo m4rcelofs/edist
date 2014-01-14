@@ -48,7 +48,7 @@
 				<div class="form-group"
 					data-bind="if: $root.category() === 'player'">
 					<input type="text" class="form-control"
-						placeholder="<fmt:message key="filters.idNameOrLink"/>"
+						placeholder="<fmt:message key="filters.idNickOrLink"/>"
 						data-bind="value: filters.searchText">
 				</div>
 				<button type="submit" class="btn btn-default">

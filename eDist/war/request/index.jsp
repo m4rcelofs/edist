@@ -33,7 +33,7 @@
 										key="request.id" />:</span> 
 									<input type="text" class="form-control input-large" name="id"
 									id="id"
-									placeholder="<fmt:message key="request.supplieslinkPlaceholder"/>"
+									placeholder="<fmt:message key="request.supplies.linkPlaceholder"/>"
 									style="text-align: center;"
 									data-bind="value : selectedName, 
 											   valueUpdate: 'keyup'">

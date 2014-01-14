@@ -13,7 +13,7 @@
 							<div class="col-md-12">
 								<p>
 									<a data-toggle="popover"
-										data-content="<fmt:message key="management.players.template.dists"/>"
+										data-content="<fmt:message key="management.players.template.dist"/>"
 										data-bind="if: dbStatus() === 'ENABLED', 
 													attr: {href: '${baseUrl}/reports/requests/player/' + erId() }, updatePopup:{}"><span
 										class="glyphicon glyphicon-list"></span></a> <a
@@ -180,19 +180,19 @@
 												<fmt:message key="management.players.noRocket" />
 											</option>
 											<option value="Q1">
-												<fmt:message key="management.players.fq1" />
+												<fmt:message key="management.players.fQ1" />
 											</option>
 											<option value="Q2">
-												<fmt:message key="management.players.fq2" />
+												<fmt:message key="management.players.fQ2" />
 											</option>
 											<option value="Q3">
-												<fmt:message key="management.players.fq3" />
+												<fmt:message key="management.players.fQ3" />
 											</option>
 											<option value="Q4">
-												<fmt:message key="management.players.fq4" />
+												<fmt:message key="management.players.fQ4" />
 											</option>
 											<option value="Q5">
-												<fmt:message key="management.players.fq5" />
+												<fmt:message key="management.players.fQ5" />
 											</option>
 									</select> <span class="pull-right"><a href="#" class="help"
 											data-toggle="popover" title=""
