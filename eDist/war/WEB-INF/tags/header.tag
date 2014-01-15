@@ -14,6 +14,11 @@
 					src="${baseUrl}/img/flags/us.png"> English
 			</a></li>
 			<li role="presentation"><a role="menuitem" tabindex="-1"
+				onclick="Navigation.setLanguage('es');"
+				title="by @Zebosk"> <img
+					src="${baseUrl}/img/flags/es.png"> Español
+			</a></li>
+			<li role="presentation"><a role="menuitem" tabindex="-1"
 				onclick="Navigation.setLanguage('pt');"> <img
 					src="${baseUrl}/img/flags/br.png"> Português
 			</a></li>
