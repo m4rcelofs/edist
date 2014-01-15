@@ -11,6 +11,7 @@ import com.erep.dist.data.enums.ResourceQuality;
 import com.erep.dist.data.enums.ResourceType;
 import com.erep.dist.erep.ErepScrapper;
 import com.erep.dist.erep.parser.DonateItemsParser;
+import com.google.common.collect.Table;
 
 public class FoodStrategy extends ManufacturedStrategy {
 
@@ -22,10 +23,25 @@ public class FoodStrategy extends ManufacturedStrategy {
 		this.requestedFF = requestedFF;
 	}
 
+	public FoodStrategy(ResourceDist resource, Player player,
+			Table<ResourceType, ResourceQuality, Integer> inventory,
+			ErepScrapper scrapper, Integer requestedFF) throws Exception {
+		super(resource, player, inventory, scrapper);
+		this.requestedFF = requestedFF;
+	}
+
 	protected FoodStrategy(ResourceDist resource, Player player,
 			ErepScrapper scrapper, DonateItemsParser parser, Integer requestedFF)
 			throws Exception {
-		super(resource, player, scrapper, parser);
+		super(resource, player, null, scrapper, parser);
+		this.requestedFF = requestedFF;
+	}
+
+	protected FoodStrategy(ResourceDist resource, Player player,
+			Table<ResourceType, ResourceQuality, Integer> inventory,
+			ErepScrapper scrapper, DonateItemsParser parser, Integer requestedFF)
+			throws Exception {
+		super(resource, player, inventory, scrapper, parser);
 		this.requestedFF = requestedFF;
 	}
 

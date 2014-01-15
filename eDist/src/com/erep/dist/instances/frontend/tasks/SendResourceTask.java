@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.jdo.JDOHelper;
 import javax.jdo.Transaction;
 
 import com.erep.dist.CloseablePM;
@@ -105,6 +106,8 @@ public class SendResourceTask implements DeferredTask {
 						DistStrategy strategy = getStrategy(request, resource,
 								scrapper);
 						strategy.execute();
+						// quick hack because JDO can't see internal inventory changes
+						JDOHelper.makeDirty(request.getDistributor(), "lastInventory");
 						resource.setStatus(ResourceDistStatus.SENT);
 						throw new IllegalStateException(dist.getEmail()
 								+ " cooldown period, will retry later");
@@ -137,10 +140,11 @@ public class SendResourceTask implements DeferredTask {
 		switch (resource.getType()) {
 			case WEAPONS:
 				return new WeaponStrategy(resource, request.getPlayer(),
-						scrapper);
+						request.getDistributor().getLastInventory(), scrapper);
 			case FOOD:
-				return new FoodStrategy(resource, request.getPlayer(),
-						scrapper, request.getRequestedFF());
+				return new FoodStrategy(resource, request.getPlayer(), request
+						.getDistributor().getLastInventory(), scrapper,
+						request.getRequestedFF());
 			default:
 				logger.log(Level.WARNING,
 						"Could not find strategy to send {0}",
