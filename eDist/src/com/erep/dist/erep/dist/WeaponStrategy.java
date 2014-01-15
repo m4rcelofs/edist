@@ -7,14 +7,15 @@ import com.erep.dist.data.ResourceDist;
 import com.erep.dist.data.enums.ResourceQuality;
 import com.erep.dist.data.enums.ResourceType;
 import com.erep.dist.erep.ErepScrapper;
+import com.google.common.collect.Table;
 
 public class WeaponStrategy extends ManufacturedStrategy {
 	
 	
 
-	public WeaponStrategy(ResourceDist resource, Player player,
+	public WeaponStrategy(ResourceDist resource, Player player, Table<ResourceType, ResourceQuality, Integer> inventory,
 			ErepScrapper scrapper) throws Exception {
-		super(resource, player, scrapper);
+		super(resource, player, inventory, scrapper);
 	}
 
 	@Override

@@ -59,6 +59,7 @@
 				<th><fmt:message key="admin.distributors.email" /></th>
 				<th><fmt:message key="admin.distributors.password" /></th>
 				<th><fmt:message key="admin.distributors.lastAccess" /></th>
+				<th><fmt:message key="admin.distributors.inventory" /></th>
 				<th></th>
 			</tr>
 		</thead>
@@ -75,6 +76,11 @@
 					data-bind="value: password"></td>
 				<td
 					data-bind="text: lastAccessTimestamp ? $.format.date(new Date(lastAccessTimestamp), edist.format.date) : '<fmt:message key="admin.distributors.noAccess"/>'"></td>
+				<td><a href="#distributorInventory" data-bind="click: $root.loadInventory">
+						<fmt:message key="admin.distributors.showInventory" /> <span
+						class="glyphicon glyphicon-new-window"></span>
+					</a>
+				</td>
 				<td><a href="#saveDistributorConfirmation" role="button"
 					data-toggle="modal"><span
 						class="glyphicon glyphicon-floppy-disk"
@@ -122,4 +128,7 @@
 			</div>
 		</div>
 	</div>
+	
+	<%@ include file="dists_inventory.jspf"%> 
+	
 </div>
