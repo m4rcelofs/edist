@@ -40,6 +40,12 @@ public class EmployerFacadeServlet extends HttpServlet {
 	private static Logger		logger				= Logger.getLogger(EmployerFacadeServlet.class
 															.getName());
 
+	private int					employeesFound		= 0;
+	private int					employeesNotFound	= 0;
+
+	private int					tasksCreated		= 0;
+	private int					tasksFailed			= 0;
+
 	@Override
 	protected void doPut(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
@@ -63,6 +69,13 @@ public class EmployerFacadeServlet extends HttpServlet {
 			Employer dbEmployer = verifyEmployer(dao, encodedKey, id);
 			createWorks(dao, dbEmployer, employees);
 			dbEmployer.setLastUpdatedAt(new Date());
+
+			logger.log(Level.WARNING, "Finished employer update for "
+					+ dbEmployer.getName() + ": " + employeesFound
+					+ " employees found, " + employeesNotFound
+					+ " employees not found, " + tasksCreated
+					+ " tasks created, " + tasksFailed
+					+ " tasks failed at creation.");
 
 		} catch (NullPointerException | ParseException e) {
 			logger.log(Level.WARNING, "Something wrong on EmployerFacade", e);
@@ -91,11 +104,13 @@ public class EmployerFacadeServlet extends HttpServlet {
 			try {
 				Player dbPlayer = dao.find(new Player(dao
 						.createPlayerKey(playerId)));
-				JSONArray works = (JSONArray) employee.get("work");
+				employeesFound++;
 
+				JSONArray works = (JSONArray) employee.get("work");
 				createWorks(dao, employer, dbPlayer, works);
 			} catch (JDOObjectNotFoundException e) {
 				// some other player that works for the employer, just ignore
+				employeesNotFound++;
 			}
 		}
 	}
@@ -132,11 +147,13 @@ public class EmployerFacadeServlet extends HttpServlet {
 				BackendServiceFactory.getBackendService().getBackendAddress(
 						"edist-default-backend")).taskName(
 				"WorkVerificationTask_" + player.getErId() + "_"
-						+ new Date().getTime());
+						+ work.getDay());
 		try {
 			queue.add(taskOptions);
+			tasksCreated++;
 		} catch (TaskAlreadyExistsException e) {
 			// multiple requests going on, ignore
+			tasksFailed++;
 		}
 	}
 

@@ -25,6 +25,7 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.taskqueue.DeferredTask;
 import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
+import com.google.appengine.api.taskqueue.TaskAlreadyExistsException;
 import com.google.appengine.api.urlfetch.HTTPResponse;
 import com.google.appengine.api.urlfetch.URLFetchService;
 import com.google.appengine.api.urlfetch.URLFetchServiceFactory;
@@ -107,16 +108,26 @@ public class PlayerStatsTask implements DeferredTask {
 	private void startFightCalculationTask(Integer day, Player dbPlayer) {
 		DeferredTask task = new CalculateDailyFightsTask(day, dbPlayer);
 		Queue queue = QueueFactory.getDefaultQueue();
-		queue.add(withPayload(task).taskName(
-				"CalculateDailyFightsTask_" + dbPlayer.getErId() + "_" + day));
+		try {
+			queue.add(withPayload(task).taskName(
+					"CalculateDailyFightsTask_" + dbPlayer.getErId() + "_"
+							+ day));
+		} catch (TaskAlreadyExistsException e) {
+			// tombstoned, already run
+		}
 	}
 
 	private void startAvatarFetchTask(DailyStats stats) {
 		DeferredTask task = new AvatarFetchTask(stats, stats.getAvatar());
 		Queue queue = QueueFactory.getDefaultQueue();
-		queue.add(withPayload(task).taskName(
-				"AvatarFetchTask_" + stats.geterId() + "_" + stats.getDay()));
-
+		try {
+			queue.add(withPayload(task)
+					.taskName(
+							"AvatarFetchTask_" + stats.geterId() + "_"
+									+ stats.getDay()));
+		} catch (TaskAlreadyExistsException e) {
+			// tombstoned, already run
+		}
 	}
 
 }
