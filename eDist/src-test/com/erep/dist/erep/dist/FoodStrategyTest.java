@@ -15,7 +15,6 @@ import com.erep.dist.data.enums.ResourceType;
 import com.erep.dist.erep.ErepScrapper;
 import com.erep.dist.erep.parser.DonateItemsParser;
 import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.Table;
 
 public class FoodStrategyTest {
 
@@ -197,12 +196,12 @@ public class FoodStrategyTest {
 		strategy.execute();
 	}
 
-	private Table<ResourceType, ResourceQuality, Integer> emptyInventory() {
+	private HashBasedTable<ResourceType, ResourceQuality, Integer> emptyInventory() {
 		return HashBasedTable.create();
 	}
 
-	private Table<ResourceType, ResourceQuality, Integer> q5Inventory() {
-		Table<ResourceType, ResourceQuality, Integer> inv = HashBasedTable
+	private HashBasedTable<ResourceType, ResourceQuality, Integer> q5Inventory() {
+		HashBasedTable<ResourceType, ResourceQuality, Integer> inv = HashBasedTable
 				.create();
 
 		inv.put(ResourceType.FOOD, ResourceQuality.Q5, 1000);
@@ -210,8 +209,8 @@ public class FoodStrategyTest {
 		return inv;
 	}
 
-	private Table<ResourceType, ResourceQuality, Integer> q5q7Inventory() {
-		Table<ResourceType, ResourceQuality, Integer> inv = HashBasedTable
+	private HashBasedTable<ResourceType, ResourceQuality, Integer> q5q7Inventory() {
+		HashBasedTable<ResourceType, ResourceQuality, Integer> inv = HashBasedTable
 				.create();
 
 		inv.put(ResourceType.FOOD, ResourceQuality.Q5, 1000);
@@ -220,8 +219,8 @@ public class FoodStrategyTest {
 		return inv;
 	}
 
-	private Table<ResourceType, ResourceQuality, Integer> mixedInventory() {
-		Table<ResourceType, ResourceQuality, Integer> inv = HashBasedTable
+	private HashBasedTable<ResourceType, ResourceQuality, Integer> mixedInventory() {
+		HashBasedTable<ResourceType, ResourceQuality, Integer> inv = HashBasedTable
 				.create();
 
 		inv.put(ResourceType.FOOD, ResourceQuality.Q1, 100);

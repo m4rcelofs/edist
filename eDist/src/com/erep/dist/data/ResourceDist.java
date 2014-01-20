@@ -39,6 +39,10 @@ public class ResourceDist {
 	private ResourceDistStatus	status;
 
 	public ResourceDist() {}
+	
+	public ResourceDist(Key key) {
+		this.key = key;
+	}
 
 	public ResourceDist(ResourceType type, ResourceQuality quality,
 			Integer quantity) {

@@ -206,9 +206,11 @@ public class RequestsHelper {
 	}
 
 	public void addToQueue(Request request) {
-		DeferredTask task = new SendResourceTask(request);
 		Queue queue = QueueFactory.getQueue("erepublik-logged-in");
-		queue.add(withPayload(task));
+		for(ResourceDist resource : request.getResources()) {
+			DeferredTask task = new SendResourceTask(request, resource);
+			queue.add(withPayload(task));			
+		}
 	}
 
 }
