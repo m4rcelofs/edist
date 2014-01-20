@@ -63,17 +63,21 @@ public class SendResourceTask implements DeferredTask {
 				return;
 			}
 
-			execute(dbRequest);
-
-			dbRequest.setStatus(SENT);
-			dbRequest.setCompletedAt(new Date());
-
 			tx = pm.currentTransaction();
 			tx.begin();
 			dbRequest.getDistributor().setLastAccessTimestamp(
 					new Date().getTime());
 			tx.commit();
 
+			try {
+				execute(dbRequest);
+			} catch (Exception e) {
+				pm.flush();
+				throw e;
+			}
+
+			dbRequest.setStatus(SENT);
+			dbRequest.setCompletedAt(new Date());
 		} catch (Exception e) {
 			// meh
 			throw new RuntimeException(e);
@@ -106,9 +110,11 @@ public class SendResourceTask implements DeferredTask {
 						DistStrategy strategy = getStrategy(request, resource,
 								scrapper);
 						strategy.execute();
-						// quick hack because JDO can't see internal inventory changes
-						JDOHelper.makeDirty(request.getDistributor(), "lastInventory");
 						resource.setStatus(ResourceDistStatus.SENT);
+						// quick hack because JDO can't see internal inventory
+						// changes
+						JDOHelper.makeDirty(request.getDistributor(),
+								"lastInventory");
 						throw new IllegalStateException(dist.getEmail()
 								+ " cooldown period, will retry later");
 					} catch (IllegalStateException e) {
