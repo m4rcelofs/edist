@@ -8,17 +8,23 @@
 		<div class="col-md-2">
 			<ul id="players.horizontal.nav" class="nav nav-pills nav-stacked">
 				<li data-bind="css: {active : category() === 'all'}"><a
-					href="#/management/playersList/all">Todos</a></li>
+					href="#/management/playersList/all"><fmt:message
+							key="filters.all" /></a></li>
 				<li data-bind="css: {active : category() === 'search'}"><a
-					href="#/management/playersList/search">Busca</a></li>
+					href="#/management/playersList/search"><fmt:message
+							key="filters.search" /></a></li>
 				<li data-bind="css: {active : category() === 'group'}"><a
-					href="#/management/playersList/group">por Grupo</a></li>
+					href="#/management/playersList/group"><fmt:message
+							key="filters.byGroup" /></a></li>
 				<li data-bind="css: {active : category() === 'fight'}"><a
-					href="#/management/playersList/fight">por Lutas</a></li>
+					href="#/management/playersList/fight"><fmt:message
+							key="filters.byFight" /></a></li>
 				<li data-bind="css: {active : category() === 'status'}"><a
-					href="#/management/playersList/status">por Status</a></li>
+					href="#/management/playersList/status"><fmt:message
+							key="filters.byStatus" /></a></li>
 				<li data-bind="css: {active : category() === 'work'}"><a
-					href="#/management/playersList/work">por Trabalho</a></li>
+					href="#/management/playersList/work"><fmt:message
+							key="filters.byWork" /></a></li>
 			</ul>
 		</div>
 		<div class="col-md-10">
@@ -37,7 +43,7 @@
 				<li class="next"
 					data-bind="css: {disabled: playersCursor() === null || playersCursor() === ''},
 						click: loadNextPage"><a
-					href="#">Exibir próximos</a></li>
+					href="#"><fmt:message key="shared.showNext" /></a></li>
 			</ul>
 		</div>
 	</div>

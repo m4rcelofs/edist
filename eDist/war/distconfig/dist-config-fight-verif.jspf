@@ -1,20 +1,19 @@
 <div class="form-group">
 	<label class="control-label col-md-6 sr-only"
-		for="fight-verification-action">Ação</label>
+		for="fight-verification-action"><fmt:message key="distconfig.action"/></label>
 	<div class="col-md-5">
 		<select
 			class="form-control fight-verification-group selectpicker show-menu-arrow show-tick"
 			name="fight-verification-action" id="fight-verification-action"
 			data-bind="value: currentFightVerif.fightVerifAction, updateSelectPicker: currentFightVerif.fightVerifAction">
-			<option value="NONE">Não fazer nada...</option>
-			<option value="WARN">Avisar...</option>
-			<option value="TEMP_BAN">Bloquear distribuição...</option>
+			<option value="NONE"><fmt:message key="distconfig.action.none"/></option>
+			<option value="WARN"><fmt:message key="distconfig.action.warn"/></option>
+			<option value="TEMP_BAN"><fmt:message key="distconfig.action.ban"/></option>
 		</select>
 	</div>
 </div>
 <div class="form-group">
-	<label class="control-label col-md-6" for="fight-verification-pct">...
-		caso o jogador não lute ao menos ...</label>
+	<label class="control-label col-md-6" for="fight-verification-pct"><fmt:message key="distconfig.action.fight"/></label>
 	<div class="col-md-5">
 		<div class="input-group">
 			<input type="number" class="form-control fight-verification-group"
@@ -25,14 +24,13 @@
 	</div>
 </div>
 <div class="form-group">
-	<label class="control-label col-md-6" for="fight-verification-days">...
-		das FFs requisitadas nos últimos ...</label>
+	<label class="control-label col-md-6" for="fight-verification-days"><fmt:message key="distconfig.action.fightFF"/></label>
 	<div class="col-md-5">
 		<div class="input-group">
 			<input type="number" class="form-control fight-verification-group"
 				id="fight-verification-days" required
 				data-bind="value: currentFightVerif.fightVerifDays, enable: currentFightVerif.fightVerifAction() != 'NONE'"><span
-				class="input-group-addon" min="0"> dias</span>
+				class="input-group-addon" min="0"> <fmt:message key="distconfig.action.days"/></span>
 		</div>
 	</div>
 </div>

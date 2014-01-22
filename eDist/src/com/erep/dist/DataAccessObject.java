@@ -34,6 +34,7 @@ import com.erep.dist.data.PlayerGroupRoot;
 import com.erep.dist.data.PlayerRoot;
 import com.erep.dist.data.RegisteredUser;
 import com.erep.dist.data.Request;
+import com.erep.dist.data.ResourceDist;
 import com.erep.dist.data.ServerConfig;
 import com.erep.dist.data.enums.PlayerDistStatus;
 import com.erep.dist.data.enums.PlayerStatus;
@@ -559,6 +560,14 @@ public class DataAccessObject {
 	public Request find(Request request) {
 		try {
 			return pm.getObjectById(Request.class, request.getKey());
+		} catch (JDOObjectNotFoundException e) {
+			return null;
+		}
+	}
+
+	public ResourceDist find(ResourceDist resource) {
+		try {
+			return pm.getObjectById(ResourceDist.class, resource.getKey());
 		} catch (JDOObjectNotFoundException e) {
 			return null;
 		}

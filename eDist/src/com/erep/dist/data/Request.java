@@ -75,7 +75,6 @@ public class Request implements HasEncodedKey {
 	private Date				completedAt;
 
 	@Persistent
-	@RemoteProperty
 	private List<ResourceDist>	resources;
 
 	@Unowned

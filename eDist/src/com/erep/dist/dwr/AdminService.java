@@ -1,6 +1,7 @@
 package com.erep.dist.dwr;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.jdo.Transaction;
 
@@ -14,6 +15,8 @@ import com.erep.dist.data.Distributor;
 import com.erep.dist.data.Employer;
 import com.erep.dist.data.RegisteredUser;
 import com.erep.dist.data.ServerConfig;
+import com.erep.dist.data.enums.ResourceQuality;
+import com.erep.dist.data.enums.ResourceType;
 import com.erep.dist.dwr.dto.RegisteredUserQuery;
 import com.google.appengine.datanucleus.query.JDOCursorHelper;
 
@@ -57,7 +60,6 @@ public class AdminService {
 			pm.getFetchPlan().setMaxFetchDepth(-1);
 			pm.getFetchPlan().addGroup("configListing");
 			ServerConfig config = new DataAccessObject(pm).getServerConfig();
-//			return pm.detachCopy(config);
 			return config;
 		}
 	}
@@ -96,6 +98,15 @@ public class AdminService {
 			List<Distributor> dists = new DataAccessObject(pm)
 					.listDistributors();
 			return dists;
+		}
+	}
+	
+	@RemoteMethod 
+	public Map<ResourceType, Map<ResourceQuality, Integer>> loadInventory(Distributor dist) {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			pm.getFetchPlan().addGroup("inventoryListing");
+			Distributor dbDist = new DataAccessObject(pm).find(dist);
+			return dbDist.getLastInventory().rowMap();
 		}
 	}
 

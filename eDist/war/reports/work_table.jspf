@@ -2,12 +2,15 @@
 	data-bind="if: works().length > 0">
 	<thead>
 		<tr>
-			<th data-bind="if: category() !== 'day'">Dia</th>
-			<th>Jogador</th>
-			<th data-bind="if: category() !== 'group'">Grupo(s)</th>
-			<th data-bind="if: category() !== 'employer'">Gestor</th>
-			<th>Trabalhou?</th>
-			<th>Distribuição</th>
+			<th data-bind="if: category() !== 'day'"><fmt:message
+					key="players.fights.day" /></th>
+			<th><fmt:message key="players.fights.player" /></th>
+			<th data-bind="if: category() !== 'group'"><fmt:message
+					key="players.fights.groups" /></th>
+			<th data-bind="if: category() !== 'employer'"><fmt:message
+					key="reports.work.employer" /></th>
+			<th><fmt:message key="reports.work.worked" /></th>
+			<th><fmt:message key="management.groups.dist" /></th>
 		</tr>
 	</thead>
 	<tbody data-bind="foreach: works">
@@ -32,14 +35,15 @@
 					</a>
 				</p>
 				<p class="text-center">
-					<a data-toggle="popover" data-content="Distribuições para o jogador"
+					<a data-toggle="popover"
+						data-content="<fmt:message key="management.players.template.dist"/>"
 						data-bind="attr: {href: '${baseUrl}/reports/requests/player/' + (stats ? stats.erId : '') }, updatePopup:{}"><span
-						class="glyphicon glyphicon-list"></span></a> 
-					<a data-toggle="popover" data-content="Estatísticas do jogador"
+						class="glyphicon glyphicon-list"></span></a> <a data-toggle="popover"
+						data-content="<fmt:message key="management.players.template.stats"/>"
 						data-bind="if: edist.user.hasPlayerReportsAccess,
 								   attr: {href: '${baseUrl}/players/history/player/' + (stats ? stats.erId : '') }, updatePopup:{}"><span
-						class="glyphicon glyphicon-stats"></span></a> 
-					<a data-toggle="popover" data-content="Lutas do jogador"
+						class="glyphicon glyphicon-stats"></span></a> <a data-toggle="popover"
+						data-content="<fmt:message key="management.players.template.fights"/>"
 						data-bind="if: edist.user.hasPlayerReportsAccess,
 								   attr: {href: '${baseUrl}/players/fights/player/' + (stats ? stats.erId : '') }, updatePopup:{}"><span
 						class="glyphicon glyphicon-screenshot"></span></a>
@@ -48,36 +52,43 @@
 			<td data-bind="if: $root.category() !== 'group'">
 				<p data-bind="foreach: groups">
 					<a
-						data-bind="text: groupName ? groupName : 'Sem nome', attr: {href : '#/reports/work/group/'+encodedKey}"></a>
+						data-bind="text: groupName ? groupName : '<fmt:message key="distconfig.distributor.noName"/>', attr: {href : '#/reports/work/group/'+encodedKey}"></a>
 					<br />
 				</p>
 			</td>
 			<td data-bind="if: $root.category() !== 'employer'"><a
-				data-bind="text: employer ? employer.name ? employer.name : 'Sem nome' : '',
+				data-bind="text: employer ? employer.name ? employer.name : '<fmt:message key="distconfig.distributor.noName"/>' : '',
 							attr: {href : employer ? '#/reports/work/employer/'+employer.encodedKey : ''}"></a></td>
 			<td>
 				<p>
-					<span data-bind="if: worked === null" class="label label-default">Desconhecido</span>
-					<span data-bind="if: worked === false" class="label label-danger">
-						<span class="glyphicon glyphicon-ban-circle"></span> Não
+					<span data-bind="if: worked === null" class="label label-default"><fmt:message
+							key="shared.unknown" /></span> <span data-bind="if: worked === false"
+						class="label label-danger"> <span
+						class="glyphicon glyphicon-ban-circle"></span> <fmt:message
+							key="shared.no" />
 					</span> <span data-bind="if: worked === true" class="label label-success">
-						<span class="glyphicon glyphicon-ok"></span> Sim
+						<span class="glyphicon glyphicon-ok"></span> <fmt:message
+							key="shared.yes" />
 					</span>
 				</p>
 			</td>
 			<td><a
 				data-bind="attr: { href: '${baseUrl}/reports/requests/player/' + (stats ? stats.erId : '') }">
 					<span data-bind="if: verificationStatus === null"
-					class="label label-default">Desconhecido</span> <span
+					class="label label-default"><fmt:message
+							key="shared.unknown" /></span> <span
 					data-bind="if: verificationStatus === 'TEMP_BANNED'"
 					class="label label-danger"> <span
-						class="glyphicon glyphicon-ban-circle"></span> Bloqueada
+						class="glyphicon glyphicon-ban-circle"></span> <fmt:message
+							key="shared.tempBanned" />
 				</span> <span data-bind="if: verificationStatus === 'WARNING'"
 					class="label label-warning"> <span
-						class="glyphicon glyphicon-exclamation-sign"></span> Sob Aviso
+						class="glyphicon glyphicon-exclamation-sign"></span> <fmt:message
+							key="shared.warning" />
 				</span> <span data-bind="if: verificationStatus === 'OK'"
 					class="label label-success"> <span
-						class="glyphicon glyphicon-ok"></span> Liberada
+						class="glyphicon glyphicon-ok"></span> <fmt:message
+							key="shared.ok" />
 				</span>
 			</a></td>
 		</tr>

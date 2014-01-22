@@ -6,15 +6,15 @@
 
 			<ul id="requests.horizontal.nav" class="nav nav-pills nav-stacked">
 				<li data-bind="css: {active : category() === 'date'}"><a
-					href="#/reports/work/date">por Data</a></li>
+					href="#/reports/work/date"><fmt:message key="filters.byDate"/></a></li>
 				<li data-bind="css: {active : category() === 'day'}"><a
-					href="#/reports/work/day">por Dia</a></li>
+					href="#/reports/work/day"><fmt:message key="filters.byDay"/></a></li>
 				<li data-bind="css: {active : category() === 'employer'}"><a
-					href="#/reports/work/employer">por Gestor</a></li>
+					href="#/reports/work/employer"><fmt:message key="filters.byEmployer"/></a></li>
 				<li data-bind="css: {active : category() === 'group'}"><a
-					href="#/reports/work/group">por Grupo</a></li>
+					href="#/reports/work/group"><fmt:message key="filters.byGroup"/></a></li>
 				<li data-bind="css: {active : category() === 'player'}"><a
-					href="#/reports/work/player">por Jogador</a></li>
+					href="#/reports/work/player"><fmt:message key="filters.byPlayer"/></a></li>
 			</ul>
 		</div>
 		<div class="col-md-10">
@@ -27,7 +27,7 @@
 				<li class="next"
 					data-bind="css: {disabled: cursor() === null || cursor() === ''},
  						click: loadNextPage"><a
-					href="#">Exibir próximos</a></li>
+					href="#"><fmt:message key="shared.showNext"/></a></li>
 			</ul>
 		</div>
 	</div>

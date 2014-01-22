@@ -1646,17 +1646,20 @@ if (DWREngine == null) var DWREngine = dwr.engine;
 
 if (AdminService == null) var AdminService = {};
 AdminService._path = '/admin/dwr';
-AdminService.getServerConfig = function(callback) {
-  dwr.engine._execute(AdminService._path, 'AdminService', 'getServerConfig', callback);
+AdminService.listDistributors = function(callback) {
+  dwr.engine._execute(AdminService._path, 'AdminService', 'listDistributors', callback);
 }
-AdminService.saveEmployer = function(p0, callback) {
-  dwr.engine._execute(AdminService._path, 'AdminService', 'saveEmployer', p0, callback);
+AdminService.listEmployers = function(callback) {
+  dwr.engine._execute(AdminService._path, 'AdminService', 'listEmployers', callback);
 }
-AdminService.saveServerConfig = function(p0, callback) {
-  dwr.engine._execute(AdminService._path, 'AdminService', 'saveServerConfig', p0, callback);
+AdminService.loadInventory = function(p0, callback) {
+  dwr.engine._execute(AdminService._path, 'AdminService', 'loadInventory', p0, callback);
 }
 AdminService.saveDistributor = function(p0, callback) {
   dwr.engine._execute(AdminService._path, 'AdminService', 'saveDistributor', p0, callback);
+}
+AdminService.saveServerConfig = function(p0, callback) {
+  dwr.engine._execute(AdminService._path, 'AdminService', 'saveServerConfig', p0, callback);
 }
 AdminService.removeRegisteredUser = function(p0, callback) {
   dwr.engine._execute(AdminService._path, 'AdminService', 'removeRegisteredUser', p0, callback);
@@ -1667,11 +1670,11 @@ AdminService.saveRegisteredUser = function(p0, callback) {
 AdminService.listRegisteredUsers = function(p0, callback) {
   dwr.engine._execute(AdminService._path, 'AdminService', 'listRegisteredUsers', p0, callback);
 }
-AdminService.listDistributors = function(callback) {
-  dwr.engine._execute(AdminService._path, 'AdminService', 'listDistributors', callback);
+AdminService.getServerConfig = function(callback) {
+  dwr.engine._execute(AdminService._path, 'AdminService', 'getServerConfig', callback);
 }
-AdminService.listEmployers = function(callback) {
-  dwr.engine._execute(AdminService._path, 'AdminService', 'listEmployers', callback);
+AdminService.saveEmployer = function(p0, callback) {
+  dwr.engine._execute(AdminService._path, 'AdminService', 'saveEmployer', p0, callback);
 }
 /*
  * END OF FILE - /edist/eDist/war/admin/dwr-interface-20130921.js
@@ -1814,6 +1817,10 @@ var DistributorsViewModel = new function() {
 	var self = this;
 
 	self.distributors = ko.observableArray([]);
+	self.distributorInventory = ko.observable();
+	self.currentDistributor = ko.observable();
+
+	self.qualities = [ 'Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7' ];
 
 	self.onDistributorsShow = function() {
 		loadDistributorsTable();
@@ -1833,6 +1840,26 @@ var DistributorsViewModel = new function() {
 			},
 			onError : Admin.defaultError
 		});
+	}
+
+	self.loadInventory = function(distributor) {
+		AdminService.loadInventory({
+			encodedKey : distributor.encodedKey
+		}, {
+			callback : function(response) {
+				console.log(response);
+				self.currentDistributor(distributor);
+				self.distributorInventory(response);
+				$('#distributorInventory').modal('show');
+			}
+		});
+	}
+
+	self.inventoryContents = function(product, quality) {
+		if (self.distributorInventory() && self.distributorInventory()[product]
+				&& self.distributorInventory()[product][quality])
+			return self.distributorInventory()[product][quality];
+		return null;
 	}
 
 	self.addDistributor = function() {

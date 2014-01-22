@@ -5,20 +5,23 @@
 			<div class="panel-heading">
 				<a class="accordion-toggle" data-toggle="collapse"
 					data-parent="#add-group-accordion" href="#group-collapse-one"><span
-					class="glyphicon glyphicon-plus-sign"></span> Adicionar Grupo</a>
+					class="glyphicon glyphicon-plus-sign"></span> <fmt:message
+						key="management.groups.addGroup" /></a>
 			</div>
 			<div id="group-collapse-one" class="panel-collapse collapse">
 				<div class="panel-body">
 					<form id="add-group-form" class="form-inline" role="form"
 						onsubmit="return false;">
 						<div class="form-group">
-							<label class="sr-only" for="new-group-name">Nome</label> <input
-								type="text" class="form-control" id="new-group-name"
-								placeholder="Nome">
+							<label class="sr-only" for="new-group-name"><fmt:message
+									key="management.groups.name" /></label> <input type="text"
+								class="form-control" id="new-group-name"
+								placeholder="<fmt:message key="management.groups.name"/>">
 						</div>
 						<button id="save-new-group" class="btn btn-primary"
 							onclick="GroupsViewModel.addGroup();">
-							<span class="glyphicon glyphicon-floppy-disk"></span> Salvar
+							<span class="glyphicon glyphicon-floppy-disk"></span>
+							<fmt:message key="shared.save" />
 						</button>
 					</form>
 				</div>
@@ -27,7 +30,7 @@
 	</div>
 	<div class="form-group"></div>
 	<div class="text-center" data-bind="if: groups().length == 0">
-		<img id="groups-loader" src="../img/loader.cache.gif" />
+		<img id="groups-loader" src="${baseUrl}/img/loader.cache.gif" />
 	</div>
 	<div data-bind="foreach: groups">
 		<div class="row">
@@ -40,7 +43,7 @@
 								<table class="table table-condensed">
 									<tbody>
 										<tr>
-											<td>Nome:</td>
+											<td><fmt:message key="management.groups.name" />:</td>
 											<td>
 												<div data-bind="if: groupName !== 'Default'">
 													<input data-bind="value: groupName" />
@@ -51,70 +54,78 @@
 											</td>
 										</tr>
 										<tr data-bind="if: $root.groupConfigEnabled() === true">
-											<td><span class="glyphicon glyphicon-cog"></span>
-												Distribuição:</td>
+											<td><span class="glyphicon glyphicon-cog"></span> <fmt:message
+													key="management.groups.dist" />:</td>
 											<td><a href="javascript:void(0);"
 												class="btn btn-default"
 												data-bind="click: $root.addConfig, visible: config === null"
-												title="Adicionar Configuração"> <span
-													class="glyphicon glyphicon-new-window"></span> Adicionar
+												title="<fmt:message key="management.groups.addConfig"/>">
+													<span class="glyphicon glyphicon-new-window"></span> <fmt:message
+														key="management.groups.add" />
 											</a> <a href="javascript:void(0);" class="btn btn-default"
 												data-bind="click: $root.editConfig, visible: config !== null"
-												title="Editar Configuração"> <span
-													class="glyphicon glyphicon-pencil"></span> Editar
+												title="<fmt:message key="management.groups.editConfig"/>">
+													<span class="glyphicon glyphicon-pencil"></span> <fmt:message
+														key="management.groups.edit" />
 											</a> <a href="javascript:void(0);" class="btn btn-sm btn-default"
 												data-bind="click: $root.removeConfig, visible: config !== null"
-												title="Remover Configuração"> <span
-													class="glyphicon glyphicon-remove"></span> Remover
+												title="<fmt:message key="management.groups.removeConfig"/>">
+													<span class="glyphicon glyphicon-remove"></span> <fmt:message
+														key="management.groups.remove" />
 											</a> <span class="pull-right" data-bind="if: config === null"><a
-													href="#" class="help" data-toggle="popover" title=""
-													data-content="Será utilizada a configuração da Unidade Militar"
+													href="#" class="help" data-toggle="popover"
+													data-content="<fmt:message key="management.groups.config.help"/>"
 													data-bind="updatePopup:{}"> <span
 														class="glyphicon glyphicon-question-sign"></span>
 												</a></span></td>
 										</tr>
 										<tr data-bind="if: $root.groupConfigEnabled() === true">
 											<td><span class="glyphicon glyphicon-screenshot"></span>
-												Verificação de Lutas:</td>
+												<fmt:message key="management.groups.fightVerif" />:</td>
 											<td><a href="javascript:void(0);"
 												class="btn btn-default"
 												data-bind="click: $root.addFightVerif, visible: fightVerif === null"
-												title="Adicionar Verificação de Lutas"> <span
-													class="glyphicon glyphicon-new-window"></span> Adicionar
+												title="<fmt:message key="management.groups.add"/> <fmt:message key="management.groups.fightVerif"/>">
+													<span class="glyphicon glyphicon-new-window"></span> <fmt:message
+														key="management.groups.add" />
 											</a> <a href="javascript:void(0);" class="btn btn-default"
 												data-bind="click: $root.editFightVerif, visible:fightVerif !== null"
-												title="Editar Verificação de Lutas"> <span
-													class="glyphicon glyphicon-pencil"></span> Editar
+												title="<fmt:message key="management.groups.edit"/> <fmt:message key="management.groups.fightVerif"/>">
+													<span class="glyphicon glyphicon-pencil"></span> <fmt:message
+														key="management.groups.edit" />
 											</a> <a href="javascript:void(0);" class="btn btn-sm btn-default"
 												data-bind="click: $root.removeFightVerif, visible: fightVerif !== null"
-												title="Remover Verificação de Lutas"> <span
-													class="glyphicon glyphicon-remove"></span> Remover
+												title="<fmt:message key="management.groups.remove"/> <fmt:message key="management.groups.fightVerif"/>">
+													<span class="glyphicon glyphicon-remove"></span> <fmt:message
+														key="management.groups.remove" />
 											</a><span class="pull-right" data-bind="if: fightVerif === null"><a
-													href="#" class="help" data-toggle="popover" title=""
-													data-content="Será utilizada a verificação de lutas da Unidade Militar"
+													href="#" class="help" data-toggle="popover"
+													data-content="<fmt:message key="management.groups.fightVerif.help"/>"
 													data-bind="updatePopup:{}"> <span
 														class="glyphicon glyphicon-question-sign"></span>
 												</a></span></td>
 										</tr>
 										<tr data-bind="if: $root.groupConfigEnabled() === true">
-											<td><span class="glyphicon glyphicon-wrench"></span>
-												Verificação de Trabalho:</td>
+											<td><span class="glyphicon glyphicon-wrench"></span> <fmt:message
+													key="management.groups.workVerif" />:</td>
 											<td><a href="javascript:void(0);"
 												class="btn btn-default"
 												data-bind="click: $root.addWorkVerif, visible: workVerif === null"
-												title="Adicionar Verificação de Trabalho"> <span
-													class="glyphicon glyphicon-new-window"></span> Adicionar
+												title="<fmt:message key="management.groups.add"/> <fmt:message key="management.groups.workVerif"/>">
+													<span class="glyphicon glyphicon-new-window"></span> <fmt:message
+														key="management.groups.add" />
 											</a> <a href="javascript:void(0);" class="btn btn-default"
 												data-bind="click: $root.editWorkVerif, visible: workVerif !== null"
-												title="Editar Verificação de Trabalho"> <span
-													class="glyphicon glyphicon-pencil"></span> Editar
+												title="<fmt:message key="management.groups.edit"/> <fmt:message key="management.groups.workVerif"/>">
+													<span class="glyphicon glyphicon-pencil"></span> <fmt:message
+														key="management.groups.edit" />
 											</a> <a href="javascript:void(0);" class="btn btn-sm btn-default"
 												data-bind="click: $root.removeWorkVerif, visible: workVerif !== null"
-												title="Remover Verificação de Trabalho"> <span
-													class="glyphicon glyphicon-remove"></span> Remover
+												title="<fmt:message key="management.groups.remove"/> <fmt:message key="management.groups.workVerif"/>">
+													<span class="glyphicon glyphicon-remove"></span> <fmt:message key="management.groups.remove"/>
 											</a> <span class="pull-right" data-bind="if: workVerif === null"><a
-													href="#" class="help" data-toggle="popover" title=""
-													data-content="Será utilizada a verificação de trabalho da Unidade Militar"
+													href="#" class="help" data-toggle="popover" 
+													data-content="<fmt:message key="management.groups.workVerif.help"/>"
 													data-bind="updatePopup:{}"> <span
 														class="glyphicon glyphicon-question-sign"></span>
 												</a></span></td>
@@ -124,8 +135,8 @@
 							</div>
 						</div>
 						<button class="btn btn-primary pull-right"
-							data-bind="click: $root.saveGroup" title="Salvar">
-							<span class="glyphicon glyphicon-floppy-disk"></span> Salvar
+							data-bind="click: $root.saveGroup" title="<fmt:message key="shared.save"/>">
+							<span class="glyphicon glyphicon-floppy-disk"></span> <fmt:message key="shared.save"/>
 						</button>
 					</div>
 				</div>

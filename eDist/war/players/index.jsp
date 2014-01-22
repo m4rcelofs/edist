@@ -2,6 +2,10 @@
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="com.erep.dist.i18n.edist" />
+
 <t:wrapper>
 
 	<jsp:attribute name="imports">
@@ -13,7 +17,7 @@
 			style="display: none;">
 				<button type="button" class="close" aria-hidden="true"
 				onclick="$('#error-alert').fadeOut();">&times;</button>
-				<strong>Ops!</strong> Algo deu errado, por favor tente novamente. <strong>):</strong>
+				<fmt:message key="admin.index.error"/>
 			</div>
 	
 			<ul class="nav nav-tabs">

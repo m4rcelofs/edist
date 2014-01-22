@@ -7,6 +7,7 @@ import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 import org.directwebremoting.annotations.DataTransferObject;
+import org.directwebremoting.annotations.RemoteProperty;
 
 import com.erep.dist.data.enums.ResourceDistStatus;
 import com.erep.dist.data.enums.ResourceQuality;
@@ -22,18 +23,26 @@ public class ResourceDist {
 	private Key					key;
 
 	@Persistent
+	@RemoteProperty
 	private ResourceType		type;
 
 	@Persistent
+	@RemoteProperty
 	private ResourceQuality		quality;
 
 	@Persistent
+	@RemoteProperty
 	private Integer				quantity;
 
 	@Persistent
+	@RemoteProperty
 	private ResourceDistStatus	status;
 
 	public ResourceDist() {}
+	
+	public ResourceDist(Key key) {
+		this.key = key;
+	}
 
 	public ResourceDist(ResourceType type, ResourceQuality quality,
 			Integer quantity) {
