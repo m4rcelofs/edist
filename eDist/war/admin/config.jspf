@@ -51,18 +51,6 @@
 				</a>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-md-6" for="avatarHistory"><fmt:message key="admin.config.avatarHistory"/></label>
-				<div class="col-md-5 text-center">
-					<input type="checkbox" data-bind="checked: config.avatarHistory">
-				</div>
-				<a href="#" class="help" data-toggle="popover" 
-					data-content="<fmt:message key="admin.config.avatarHistory.help"/>"
-					data-original-title="<fmt:message key="admin.config.avatarHistory.title"/>"
-					data-bind="updatePopup:{}"> <span
-					class="glyphicon glyphicon-question-sign"></span>
-				</a>
-			</div>
-			<div class="form-group">
 				<label class="col-md-6 control-label" for="reportsAccess"><fmt:message key="admin.config.reportsAccess"/></label>
 				<div class="col-md-5">
 					<select class="form-control selectpicker show-menu-arrow show-tick"

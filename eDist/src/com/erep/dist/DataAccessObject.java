@@ -763,7 +763,10 @@ public class DataAccessObject {
 		if (newConfig.getFightVerif() != null)
 			dbConfig.setFightVerif(newConfig.getFightVerif());
 
-		dbConfig.setAvatarHistory(newConfig.isAvatarHistory());
+		// refresh the entity to create the fields if needed
+		dbConfig.setAvatarHistory(dbConfig.isAvatarHistory());
+		dbConfig.setShowDistributorInventory(dbConfig
+				.isShowDistributorInventory());
 
 		CacheFacade.remove(getClass().getName() + ".getServerConfig()");
 		return true;
