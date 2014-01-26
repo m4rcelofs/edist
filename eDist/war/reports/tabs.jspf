@@ -8,3 +8,8 @@
 		<span class="glyphicon glyphicon-wrench"></span> <fmt:message key="reports.tabs.work"/>
 	</a>
 </li>
+<li>
+	<a href="#fights" id="fightTab">
+		<span class="glyphicon glyphicon-screenshot"></span> <fmt:message key="players.fights"/>
+	</a>
+</li>

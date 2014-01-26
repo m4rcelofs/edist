@@ -22,12 +22,12 @@
 	<tbody data-bind="foreach: fightsHistory">
 		<tr>
 			<td data-bind="if: $root.category() !== 'day'"><a
-				data-bind="text: day, attr: {href : '#/players/fights/day/'+day}"></a>
+				data-bind="text: day, attr: {href : '#/reports/fights/day/'+day}"></a>
 			</td>
 			<td>
 				<p class="text-center">
 					<a
-						data-bind="attr: {href : stats ? '#/players/fights/player/' + stats.erId : ''}">
+						data-bind="attr: {href : stats ? '#/reports/fights/player/' + stats.erId : ''}">
 						<img class="img-thumbnail img-responsive"
 						src="${baseUrl}/img/profile_avatar_55.cache.png" width="55px"
 						data-bind="style: { backgroundImage : Players.avatar($data) !== null ? Players.avatar($data) :
@@ -59,7 +59,7 @@
 			<td data-bind="if: $root.category() !== 'group'">
 				<p data-bind="foreach: groups">
 					<a
-						data-bind="text: groupName ? groupName : '<fmt:message key="distconfig.distributor.noName"/>', attr: {href : '#/players/fights/group/'+encodedKey}"></a>
+						data-bind="text: groupName ? groupName : '<fmt:message key="distconfig.distributor.noName"/>', attr: {href : '#/reports/fights/group/'+encodedKey}"></a>
 					<br />
 				</p>
 			</td>

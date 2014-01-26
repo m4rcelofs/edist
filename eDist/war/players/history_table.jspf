@@ -47,7 +47,7 @@
 						class="glyphicon glyphicon-wrench"></span></a> <a
 						data-toggle="popover"
 						data-content="<fmt:message key="management.players.template.fights"/>"
-						data-bind="attr: {href: '${baseUrl}/players/fights/player/' + (erId ? erId : '')  }, updatePopup:{}"><span
+						data-bind="attr: {href: '${baseUrl}/reports/fights/player/' + (erId ? erId : '')  }, updatePopup:{}"><span
 						class="glyphicon glyphicon-screenshot"></span></a>
 				</p>
 			</td>

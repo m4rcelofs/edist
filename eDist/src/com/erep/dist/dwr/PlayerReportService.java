@@ -12,11 +12,9 @@ import com.erep.dist.CloseablePM;
 import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
 import com.erep.dist.PlayerIdentificator;
-import com.erep.dist.data.DailyFights;
 import com.erep.dist.data.DailyStats;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
-import com.erep.dist.dwr.dto.FightsQuery;
 import com.erep.dist.dwr.dto.FiltersInitialInfo;
 import com.erep.dist.dwr.dto.StatsQuery;
 import com.erep.dist.erep.eRepTimeCalculator;
@@ -102,71 +100,4 @@ public class PlayerReportService {
 			return queryResults;
 		}
 	}
-
-	@RemoteMethod
-	public FightsQuery fightsByPlayer(String idNameOrLink, String encodedCursor) {
-		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-
-			FightsQuery queryResults = new FightsQuery();
-			DataAccessObject dao = new DataAccessObject(pm);
-
-			Player player = null;
-			try {
-				player = new PlayerIdentificator(dao)
-						.identifyRequestString(idNameOrLink);
-			} catch (JDOObjectNotFoundException e) {
-				return queryResults;
-			}
-
-			pm.getFetchPlan().addGroup("fightsListing");
-
-			List<DailyFights> requests = dao.listFights(player, encodedCursor);
-
-			queryResults.setResults(requests);
-			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(requests)
-					.toWebSafeString());
-			return queryResults;
-		}
-	}
-
-	@RemoteMethod
-	public FightsQuery fightsByDate(Date date, String encodedCursor) {
-		Integer day = eRepTimeCalculator.toErepDate(date);
-		return fightsByDay(day, encodedCursor);
-	}
-
-	@RemoteMethod
-	public FightsQuery fightsByDay(Integer day, String encodedCursor) {
-		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			pm.getFetchPlan().addGroup("fightsListing");
-
-			FightsQuery queryResults = new FightsQuery();
-
-			List<DailyFights> requests = new DataAccessObject(pm).listFights(
-					day, encodedCursor);
-
-			queryResults.setResults(requests);
-			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(requests)
-					.toWebSafeString());
-			return queryResults;
-		}
-	}
-
-	@RemoteMethod
-	public FightsQuery fightsByGroup(PlayerGroup group, String encodedCursor) {
-		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			pm.getFetchPlan().addGroup("fightsListing");
-
-			FightsQuery queryResults = new FightsQuery();
-
-			List<DailyFights> requests = new DataAccessObject(pm).listFights(
-					group, encodedCursor);
-
-			queryResults.setResults(requests);
-			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(requests)
-					.toWebSafeString());
-			return queryResults;
-		}
-	}
-
 }
