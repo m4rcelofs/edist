@@ -14,11 +14,11 @@
 		<div class="collapse navbar-collapse" id="requests-filter-collapse">
 			<form class="navbar-form navbar-right" role="search"
 				data-bind="submit: doSearch">
-				<div class="form-group" data-bind="if: $root.category() === 'date'">
-					<input type="date" class="form-control"
-						placeholder="<fmt:message key="filters.dateFormat"/>"
-						data-bind="value: filters.searchText">
-				</div>
+<!-- 				<div class="form-group" data-bind="if: $root.category() === 'date'"> -->
+<!-- 					<input type="date" class="form-control" -->
+<%-- 						placeholder="<fmt:message key="filters.dateFormat"/>" --%>
+<!-- 						data-bind="value: filters.searchText"> -->
+<!-- 				</div> -->
 				<div class="form-group" data-bind="if: $root.category() === 'day'">
 					<input type="number" class="form-control"
 						placeholder="<fmt:message key="filters.dayPlaceholder"/>"

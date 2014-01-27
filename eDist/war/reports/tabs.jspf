@@ -1,6 +1,6 @@
 <li>
 	<a href="#requests" id="requestsTab">
-		<span class="glyphicon glyphicon-list"></span> <fmt:message key="reports.tabs.dist"/>
+		<span class="glyphicon glyphicon-cutlery"></span> <fmt:message key="reports.tabs.dist"/>
 	</a>
 </li>
 <li>
