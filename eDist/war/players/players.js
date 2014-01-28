@@ -45,6 +45,11 @@ var Players = new function() {
 		return item.stats ? getAvatar(item.stats) : getAvatar(item);
 	}
 
+	self.calculateDamage = function(todayRank, yesterdayRank) {
+		return $.format.number((todayRank - yesterdayRank) * 10,
+				edist.format.number);
+	}
+
 	function getAvatar(stats) {
 		if (stats && stats.avatar) {
 			if (stats.avatar.indexOf('142x142') !== -1) {

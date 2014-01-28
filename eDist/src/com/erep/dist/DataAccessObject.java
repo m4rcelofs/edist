@@ -414,12 +414,14 @@ public class DataAccessObject {
 		return (List<DailyStats>) q.execute(player.getKey());
 	}
 
-	public List<DailyStats> listStats(PlayerGroup group, String encodedCursor) {
+	public List<DailyStats> listStats(Integer day, PlayerGroup group,
+			String encodedCursor) {
 		Query q = queryWithCursor(DailyStats.class,
-				"groups.contains(groupParam)", encodedCursor);
-		q.declareParameters(Key.class.getName() + " groupParam");
+				"groups.contains(groupParam) && day == dayParam", encodedCursor);
+		q.declareParameters(Key.class.getName() + " groupParam, "
+				+ Integer.class.getName() + " dayParam");
 		q.setOrdering("day desc");
-		return (List<DailyStats>) q.execute(group.getKey());
+		return (List<DailyStats>) q.execute(group.getKey(), day);
 	}
 
 	public List<DailyStats> listStats(Integer day, String encodedCursor) {

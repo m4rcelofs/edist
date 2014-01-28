@@ -85,13 +85,14 @@ public class PlayerReportService {
 	}
 
 	@RemoteMethod
-	public StatsQuery statsByGroup(PlayerGroup group, String encodedCursor) {
+	public StatsQuery statsByGroup(Integer day, PlayerGroup group,
+			String encodedCursor) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 
 			pm.getFetchPlan().addGroup("statsListing");
 
 			StatsQuery queryResults = new StatsQuery();
-			List<DailyStats> requests = new DataAccessObject(pm).listStats(
+			List<DailyStats> requests = new DataAccessObject(pm).listStats(day,
 					group, encodedCursor);
 
 			queryResults.setResults(requests);

@@ -26,12 +26,12 @@ PlayerReportService.getInitialInfo = function(callback) {
 PlayerReportService.statsByPlayer = function(p0, p1, callback) {
   dwr.engine._execute(PlayerReportService._path, 'PlayerReportService', 'statsByPlayer', p0, p1, callback);
 }
+PlayerReportService.statsByGroup = function(p0, p1, p2, callback) {
+  dwr.engine._execute(PlayerReportService._path, 'PlayerReportService', 'statsByGroup', p0, p1, p2, callback);
+}
 PlayerReportService.statsByDate = function(p0, p1, callback) {
   dwr.engine._execute(PlayerReportService._path, 'PlayerReportService', 'statsByDate', p0, p1, callback);
 }
 PlayerReportService.statsByDay = function(p0, p1, callback) {
   dwr.engine._execute(PlayerReportService._path, 'PlayerReportService', 'statsByDay', p0, p1, callback);
-}
-PlayerReportService.statsByGroup = function(p0, p1, callback) {
-  dwr.engine._execute(PlayerReportService._path, 'PlayerReportService', 'statsByGroup', p0, p1, callback);
 }

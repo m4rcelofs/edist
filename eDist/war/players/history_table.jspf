@@ -2,23 +2,25 @@
 	data-bind="if: statsHistory().length > 0">
 	<thead>
 		<tr>
-			<th data-bind="if: category() === 'player'"><fmt:message
+			<th data-bind="visible: category() === 'player'"><fmt:message
 					key="players.fights.day" /></th>
 			<th colspan="2"><fmt:message key="players.fights.player" /></th>
-			<th data-bind="if: category() !== 'group'"><fmt:message
+			<th data-bind="visible: category() !== 'group'"><fmt:message
 					key="players.fights.groups" /></th>
 			<th><fmt:message key="players.history.xp" /></th>
 			<th><fmt:message key="players.history.str" /></th>
 			<th><fmt:message key="players.history.rank" /></th>
 			<th><fmt:message key="players.history.maxHit" /></th>
+			<th data-bind="visible: $root.category() === 'player'"><fmt:message
+					key="players.fights.damage" /></th>
 			<th
-				data-bind="if: window.edist.user.hasReportsAccess === true || edist.user.hasManagementAccess === true"></th>
+				data-bind="visible: window.edist.user.hasReportsAccess === true || edist.user.hasManagementAccess === true"></th>
 			<th></th>
 		</tr>
 	</thead>
 	<tbody data-bind="foreach: statsHistory">
 		<tr>
-			<td data-bind="if: $root.category() !== 'day'"><a
+			<td data-bind="visible: $root.category() === 'player'"><a
 				data-bind="text: day, attr: {href : '#/players/history/day/'+day}"></a>
 			</td>
 			<td class="text-center"><img
@@ -31,10 +33,10 @@
 			<td><a
 				data-bind="attr: {href : '#/players/history/player/' + (erId ? erId : '')}, text: name">
 			</a></td>
-			<td data-bind="if: $root.category() !== 'group'">
+			<td data-bind="visible: $root.category() !== 'group'">
 				<p data-bind="foreach: groups">
 					<a
-						data-bind="text: groupName ? groupName : '<fmt:message key="distconfig.distributor.noName"/>', attr: {href : '#/players/history/group/'+encodedKey}"></a>
+						data-bind="text: groupName ? groupName : '<fmt:message key="distconfig.distributor.noName"/>', attr: {href : '#/players/history/group/'+$parent.day+'/'+encodedKey}"></a>
 					<br />
 				</p>
 			</td>
@@ -66,6 +68,9 @@
 					<span class="badge"
 					data-bind="text: '+' +  $.format.number(maxHit - $root.statsHistory()[$index() + 1].maxHit, edist.format.number)"></span>
 			</span></td>
+			<td data-bind="if: $root.statsHistory().length > $index() + 1 && $root.category() === 'player'"><span
+				data-bind="text: Players.calculateDamage(rank, $root.statsHistory()[$index() + 1].rank)"></span>
+			</td>
 			<td
 				data-bind="if: window.edist.user.hasReportsAccess === true || edist.user.hasManagementAccess === true">
 				<a data-toggle="popover"
