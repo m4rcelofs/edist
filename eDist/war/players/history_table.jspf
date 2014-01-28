@@ -25,7 +25,8 @@
 				class="img-thumbnail img-responsive player-avatar-small"
 				src="${baseUrl}/img/profile_avatar_55.cache.png"
 				data-bind="style: { backgroundImage : Players.avatar($data) !== null ? Players.avatar($data) :
-										 'url(${baseUrl}/img/default_male_55.cache.gif)'}">
+									'url(${baseUrl}/img/default_male_55.cache.gif)'},
+							avatarEnhance:{}">
 			</td>
 			<td><a
 				data-bind="attr: {href : '#/players/history/player/' + (erId ? erId : '')}, text: name">
