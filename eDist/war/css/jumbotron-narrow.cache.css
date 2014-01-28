@@ -40,3 +40,7 @@ body {
 	width: 142px;
 	background-size: 142px 142px;
 }
+
+.weapon {
+	height: 30px;
+}
