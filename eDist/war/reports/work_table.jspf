@@ -38,7 +38,7 @@
 					<a data-toggle="popover"
 						data-content="<fmt:message key="header.mod"/>"
 						data-bind="if: edist.user.hasManagementAccess,
-								   attr: {href: '${baseUrl}/management/playersList/search/' + (erId ? erId : '')  }, updatePopup:{}"><span
+								   attr: {href: '${baseUrl}/management/playersList/search/' + (stats ? stats.erId : '')  }, updatePopup:{}"><span
 						class="glyphicon glyphicon-list"></span></a> <a data-toggle="popover"
 						data-content="<fmt:message key="management.players.template.dist"/>"
 						data-bind="attr: {href: '${baseUrl}/reports/requests/player/' + (stats ? stats.erId : '') }, updatePopup:{}"><span
