@@ -36,7 +36,7 @@ body {
 	background-position: center;
 }
 
-.player-avatar-small:hover {
+.player-avatar-enhanced {
 	width: 142px;
 	background-size: 142px 142px;
 }

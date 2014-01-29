@@ -58,6 +58,7 @@ $(document).ready(function() {
 					$(element).attr('style', newStyle);
 					$(element).attr('avatar-loaded', true);
 				}
+				$(element).toggleClass('player-avatar-enhanced');
 			});
 		}
 	};
