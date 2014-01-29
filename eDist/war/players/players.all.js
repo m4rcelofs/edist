@@ -1364,32 +1364,20 @@ if (DWREngine == null) var DWREngine = dwr.engine;
 
 if (PlayerReportService == null) var PlayerReportService = {};
 PlayerReportService._path = '/players/dwr';
-PlayerReportService.statsByDay = function(p0, p1, callback) {
-  dwr.engine._execute(PlayerReportService._path, 'PlayerReportService', 'statsByDay', p0, p1, callback);
-}
-PlayerReportService.statsByGroup = function(p0, p1, callback) {
-  dwr.engine._execute(PlayerReportService._path, 'PlayerReportService', 'statsByGroup', p0, p1, callback);
-}
-PlayerReportService.fightsByDate = function(p0, p1, callback) {
-  dwr.engine._execute(PlayerReportService._path, 'PlayerReportService', 'fightsByDate', p0, p1, callback);
-}
-PlayerReportService.statsByDate = function(p0, p1, callback) {
-  dwr.engine._execute(PlayerReportService._path, 'PlayerReportService', 'statsByDate', p0, p1, callback);
-}
-PlayerReportService.fightsByDay = function(p0, p1, callback) {
-  dwr.engine._execute(PlayerReportService._path, 'PlayerReportService', 'fightsByDay', p0, p1, callback);
-}
 PlayerReportService.getInitialInfo = function(callback) {
   dwr.engine._execute(PlayerReportService._path, 'PlayerReportService', 'getInitialInfo', callback);
 }
 PlayerReportService.statsByPlayer = function(p0, p1, callback) {
   dwr.engine._execute(PlayerReportService._path, 'PlayerReportService', 'statsByPlayer', p0, p1, callback);
 }
-PlayerReportService.fightsByPlayer = function(p0, p1, callback) {
-  dwr.engine._execute(PlayerReportService._path, 'PlayerReportService', 'fightsByPlayer', p0, p1, callback);
+PlayerReportService.statsByGroup = function(p0, p1, p2, callback) {
+  dwr.engine._execute(PlayerReportService._path, 'PlayerReportService', 'statsByGroup', p0, p1, p2, callback);
 }
-PlayerReportService.fightsByGroup = function(p0, p1, callback) {
-  dwr.engine._execute(PlayerReportService._path, 'PlayerReportService', 'fightsByGroup', p0, p1, callback);
+PlayerReportService.statsByDate = function(p0, p1, callback) {
+  dwr.engine._execute(PlayerReportService._path, 'PlayerReportService', 'statsByDate', p0, p1, callback);
+}
+PlayerReportService.statsByDay = function(p0, p1, callback) {
+  dwr.engine._execute(PlayerReportService._path, 'PlayerReportService', 'statsByDay', p0, p1, callback);
 }
 /*
  * END OF FILE - /edist/eDist/war/players/dwr-interface.js
@@ -1500,10 +1488,8 @@ $(document).ready(function() {
 	Players.downloadFilters();
 
 	ko.applyBindings(HistoryViewModel, document.getElementById('history'));
-	ko.applyBindings(FightsViewModel, document.getElementById('fights'));
 
 	HistoryRoutes.addRoutes();
-	FightRoutes.addRoutes();
 
 	Navigation.configureRoutes('/players/');
 
@@ -1543,13 +1529,17 @@ var Players = new function() {
 	self.avatar = function(item) {
 		return item.stats ? getAvatar(item.stats) : getAvatar(item);
 	}
-	
+
+	self.calculateDamage = function(todayRank, yesterdayRank) {
+		return $.format.number((todayRank - yesterdayRank) * 10,
+				edist.format.number);
+	}
+
 	function getAvatar(stats) {
 		if (stats && stats.avatar) {
 			if (stats.avatar.indexOf('142x142') !== -1) {
 				// from eR
-				return 'url(' + stats.avatar.replace('142x142', '55x55')
-						+ ')';
+				return 'url(' + stats.avatar.replace('142x142', '55x55') + ')';
 			} else {
 				// from blobstore
 				return 'url(' + stats.avatar + '=s55)';
@@ -1564,173 +1554,6 @@ var Players = new function() {
  */
 
 /*
- * START OF FILE - /edist/eDist/war/players/fights.js
- */
-function FightFiltersViewModel() {
-
-	var self = this;
-
-	self.searchText = ko.observable();
-	self.searchParam = ko.observable();
-	self.searchFct = null;
-
-	self.groups = Players.groups;
-}
-
-var FightsViewModel = new function() {
-	var self = this;
-
-	self.category = ko.observable('');
-
-	self.fightsHistory = ko.observableArray([]);
-	self.cursor = ko.observable(null);
-	self.filters = new HistoryFiltersViewModel();
-
-	ko.computed(function() {
-		if (self.category()) {
-			showTab();
-		}
-	});
-
-	self.initFights = function() {
-		showTab();
-	}
-
-	self.doSearch = function() {
-		var searchText = self.filters.searchText();
-		Navigation.setCurrentLocation('/players/fights/' + self.category()
-				+ '/' + searchText);
-	}
-
-	self.loadNextPage = function() {
-		if (self.cursor() !== null) {
-			queryServer();
-		}
-	}
-
-	self.filterByDate = function(param) {
-		reset('date', PlayerReportService.fightsByDate, param,
-				checkParam(param) ? new Date(param) : null);
-		queryServer();
-	}
-
-	self.filterByDay = function(param) {
-		param = checkParam(param) ? param : (edist.server.eRepDay - 1);
-		reset('day', PlayerReportService.fightsByDay, param, param);
-		queryServer();
-	}
-
-	self.filterByGroup = function(param) {
-		reset('group', PlayerReportService.fightsByGroup, param, {
-			encodedKey : param
-		});
-		queryServer();
-	}
-
-	self.filterByPlayer = function(param) {
-		reset('player', PlayerReportService.fightsByPlayer, param, param);
-		queryServer();
-	}
-
-	self.fightDifference = function(today, yesterday) {
-		var fightDifference = today.calculatedFfFights
-				- yesterday.calculatedFfFights;
-		return fightDifference <= 0 ? $.format.number(fightDifference,
-				edist.format.number) : '+'
-				+ $.format.number(fightDifference, edist.format.number);
-	}
-
-	self.weaponsUsed = function(fights) {
-		var quality = fights.calculatedWithWeaponQuality;
-		var durability = 10;
-		switch (quality) {
-		case 'Q7':
-			break;
-		case 'Q6':
-			durability = 6;
-			break;
-		case 'Q5':
-			durability = 5;
-			break;
-		case 'Q4':
-			durability = 4;
-			break;
-		case 'Q3':
-			durability = 3;
-			break;
-		case 'Q2':
-			durability = 2;
-			break;
-		case 'Q1':
-			durability = 1;
-			break;
-		}
-
-		return $.format.number(fights.calculatedFfFights / durability, edist.format.number);
-	}
-
-	function checkParam(param) {
-		return param && param !== 'undefined' && param !== 'null' ? param
-				: null;
-	}
-
-	function reset(category, searchFct, searchText, searchParam) {
-		self.fightsHistory([]);
-		self.cursor('');
-		self.category(category);
-		self.filters.searchFct = searchFct;
-		self.filters.searchText(searchText);
-		self.filters.searchParam(searchParam);
-	}
-
-	function queryServer() {
-		if (self.filters.searchParam()) {
-			self.filters.searchFct(self.filters.searchParam(), self.cursor(), {
-				callback : function(response) {
-					setResults(response);
-				}
-			});
-		}
-	}
-
-	function setResults(response) {
-		var cursor = response.results.length >= window.edist.server.pageSize ? response.encodedCursor
-				: null
-		self.cursor(cursor);
-		response.results.forEach(function(item) {
-			self.fightsHistory.push(item);
-		});
-	}
-
-	function showTab() {
-		$('#fightTab').tab('show');
-		if (Navigation.getCurrenLocation() === '/players/fights') {
-			Navigation.setCurrentLocation('/players/fights/day');
-		}
-	}
-
-};
-
-var FightRoutes = new function() {
-	var self = this;
-
-	self.addRoutes = function() {
-		crossroads.addRoute('players/fights', FightsViewModel.initFights);
-		crossroads.addRoute('players/fights/date/:param:',
-				FightsViewModel.filterByDate);
-		crossroads.addRoute('players/fights/day/:param:',
-				FightsViewModel.filterByDay);
-		crossroads.addRoute('players/fights/group/:param:',
-				FightsViewModel.filterByGroup);
-		crossroads.addRoute('players/fights/player/:param:',
-				FightsViewModel.filterByPlayer);
-	}
-};
-/*
- * END OF FILE - /edist/eDist/war/players/fights.js
- */
-
-/*
  * START OF FILE - /edist/eDist/war/players/history.js
  */
 function HistoryFiltersViewModel() {
@@ -1739,6 +1562,7 @@ function HistoryFiltersViewModel() {
 
 	self.searchText = ko.observable();
 	self.searchParam = ko.observable();
+	self.searchDay = ko.observable();
 	self.searchFct = null;
 
 	self.groups = Players.groups;
@@ -1764,7 +1588,21 @@ var HistoryViewModel = new function() {
 	}
 
 	self.doSearch = function() {
-		var searchText = self.filters.searchText();
+		var searchText = "";
+
+		switch (self.category()) {
+		case 'group':
+			searchText += self.filters.searchDay() + '/'
+					+ self.filters.searchText();
+			break;
+		case 'day':
+			searchText += self.filters.searchDay();
+			break;
+		case 'player':
+			searchText += self.filters.searchText();
+			break;
+		}
+
 		Navigation.setCurrentLocation('/players/history/' + self.category()
 				+ '/' + searchText);
 	}
@@ -1775,27 +1613,22 @@ var HistoryViewModel = new function() {
 		}
 	}
 
-	self.filterByDate = function(param) {
-		reset('date', PlayerReportService.statsByDate, param,
-				checkParam(param) ? new Date(param) : null);
-		queryServer();
-	}
-
 	self.filterByDay = function(param) {
 		param = checkParam(param) ? param : (edist.server.eRepDay - 1);
-		reset('day', PlayerReportService.statsByDay, param, param);
+		reset('day', PlayerReportService.statsByDay, param, param, param);
 		queryServer();
 	}
 
-	self.filterByGroup = function(param) {
+	self.filterByGroup = function(day, param) {
+		day = checkParam(day) ? day : (edist.server.eRepDay - 1);
 		reset('group', PlayerReportService.statsByGroup, param, {
 			encodedKey : param
-		});
+		}, day);
 		queryServer();
 	}
 
 	self.filterByPlayer = function(param) {
-		reset('player', PlayerReportService.statsByPlayer, param, param);
+		reset('player', PlayerReportService.statsByPlayer, param, param, '');
 		queryServer();
 	}
 
@@ -1804,22 +1637,33 @@ var HistoryViewModel = new function() {
 				: null;
 	}
 
-	function reset(category, searchFct, searchText, searchParam) {
+	function reset(category, searchFct, searchText, searchParam, searchDay) {
 		self.statsHistory([]);
 		self.cursor('');
 		self.category(category);
 		self.filters.searchFct = searchFct;
 		self.filters.searchText(searchText);
 		self.filters.searchParam(searchParam);
+		self.filters.searchDay(searchDay);
 	}
 
 	function queryServer() {
 		if (self.filters.searchParam()) {
-			self.filters.searchFct(self.filters.searchParam(), self.cursor(), {
-				callback : function(response) {
-					setResults(response);
-				}
-			});
+			if (self.category() === 'group' && self.filters.searchDay()) {
+				self.filters.searchFct(self.filters.searchDay(), self.filters.searchParam(), self
+						.cursor(), {
+					callback : function(response) {
+						setResults(response);
+					}
+				});
+			} else {
+				self.filters.searchFct(self.filters.searchParam(), self
+						.cursor(), {
+					callback : function(response) {
+						setResults(response);
+					}
+				});
+			}
 		}
 	}
 
@@ -1847,7 +1691,7 @@ var HistoryRoutes = new function() {
 				HistoryViewModel.filterByDate);
 		crossroads.addRoute('players/history/day/:param:',
 				HistoryViewModel.filterByDay);
-		crossroads.addRoute('players/history/group/:param:',
+		crossroads.addRoute('players/history/group/:day:/:param:',
 				HistoryViewModel.filterByGroup);
 		crossroads.addRoute('players/history/player/:param:',
 				HistoryViewModel.filterByPlayer);

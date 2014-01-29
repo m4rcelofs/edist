@@ -11,43 +11,31 @@ import com.erep.dist.erep.ErepScrapper;
 import com.erep.dist.erep.eRepURL;
 import com.erep.dist.erep.parser.DonateItemsParser;
 import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.Table;
-import com.google.common.collect.Tables;
 
 public abstract class ManufacturedStrategy implements DistStrategy {
 
-	private final ResourceDist									resource;
-	private final Player										player;
-	private final ErepScrapper									scrapper;
-	private final DonateItemsParser								parser;
+	private final ResourceDist												resource;
+	private final Player													player;
+	private final ErepScrapper												scrapper;
+	private final DonateItemsParser											parser;
 
-	private final Table<ResourceType, ResourceQuality, Integer>	inventory;
-	protected String											formToken;
+	private final HashBasedTable<ResourceType, ResourceQuality, Integer>	inventory;
+	protected String														formToken;
 
-	protected static Logger										logger	= Logger.getLogger(ManufacturedStrategy.class
-																				.getName());
+	protected static Logger													logger	= Logger.getLogger(ManufacturedStrategy.class
+																							.getName());
 
 	protected ManufacturedStrategy(ResourceDist resource, Player player,
 			ErepScrapper scrapper) throws Exception {
-		this(resource, player, null, scrapper, new DonateItemsParser());
+		this(resource, player, scrapper, new DonateItemsParser());
 	}
 
 	protected ManufacturedStrategy(ResourceDist resource, Player player,
-			Table<ResourceType, ResourceQuality, Integer> inventory,
-			ErepScrapper scrapper) throws Exception {
-		this(resource, player, inventory, scrapper, new DonateItemsParser());
-	}
-
-	protected ManufacturedStrategy(ResourceDist resource, Player player,
-			Table<ResourceType, ResourceQuality, Integer> inventory,
 			ErepScrapper scrapper, DonateItemsParser parser) {
 		this.resource = resource;
 		this.player = player;
 		this.scrapper = scrapper;
-		if (inventory != null)
-			this.inventory = inventory;
-		else
-			this.inventory = HashBasedTable.create();
+		this.inventory = HashBasedTable.create();
 		this.parser = parser;
 	}
 
@@ -75,8 +63,8 @@ public abstract class ManufacturedStrategy implements DistStrategy {
 		return scrapper.sendItem(player, resource, formToken);
 	}
 
-	public Table<ResourceType, ResourceQuality, Integer> getInventory() {
-		return Tables.unmodifiableTable(inventory);
+	public HashBasedTable<ResourceType, ResourceQuality, Integer> getInventory() {
+		return inventory;
 	}
 
 	protected ResourceDist getResource() {

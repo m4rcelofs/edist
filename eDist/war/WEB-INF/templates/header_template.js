@@ -8,6 +8,6 @@ window.edist.header = {
 
 $(document).ready(function() {
 	if(edist.header.muName) {
-		$('#muNameHeader').text('- ' + edist.header.muName);
+		$('#muNameHeader').text(edist.header.muName);
 	}
 });

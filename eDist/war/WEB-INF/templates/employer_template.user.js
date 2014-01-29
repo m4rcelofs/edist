@@ -3,7 +3,7 @@
 // @namespace   http://edist-licence.appspot.com
 // @description	Plugin para o controle de funcionarios das dists por script
 // @include		http://www.erepublik.com/*
-// @version     0.4
+// @version     0.5
 // @downloadURL	https://{host}/js/dynamic/employer.user.js
 // @updateURL	https://{host}/js/dynamic/employer.user.js
 // @grant		GM_getValue
@@ -40,18 +40,23 @@ function start() {
 }
 
 function refresh() {
+	
+	addStats();
+	
+	// forces update every 6h
+	var hasToUpdate = GM_getValue('lastUpdatedAt', 0) < (new Date().getTime() - 21600000);
+	if (hasToUpdate) {
+		forceUpdate();
+	}
+}
+
+function addStats() {
 	if (onEmployeesPage) {
 		addEmployeesStats();
 	}
 
 	if (onMainPage) {
 		addMainStats();
-	}
-
-	// forces update every 6h
-	var hasToUpdate = GM_getValue('lastUpdatedAt', 0) < (new Date().getTime() - 21600000);
-	if (hasToUpdate && !isUpdating()) {
-		forceUpdate();
 	}
 }
 
@@ -84,7 +89,7 @@ function addEmployeesStats() {
 }
 
 function getUpdateLink() {
-	var newLink = document.createElement('a');
+	newLink = document.createElement('a');
 	newLink.addEventListener('click', manualUpdate, false);
 
 	$(newLink).attr('id', 'updatedAtLink');
@@ -101,12 +106,17 @@ function getUpdateLink() {
 	return newLink;
 }
 
+function setUpdateRunning() {
+	GM_log('Running update...');
+	newLink.removeEventListener('click', manualUpdate, false);
+	$(newLink).text('Update is running, please don\'t leave this page...');
+    $(newLink).attr('title', '');
+}
+
 function manualUpdate() {
-	if (!isUpdating()) {
-		GM_log('Forced employees update');
-		clearCache();
-		forceUpdate();
-	}
+	GM_log('Forced employees update');
+	clearCache();
+	forceUpdate();
 }
 
 function forceUpdate() {
@@ -117,14 +127,6 @@ function forceUpdate() {
 	if (onMainPage) {
 		updateFromMainPage();
 	}
-}
-
-function isUpdating() {
-	var runningUpdate = GM_getValue('isUpdating', false);
-	if(runningUpdate) {
-		GM_log('Update is already running!');
-	}
-	return runningUpdate;
 }
 
 function clearCache() {
@@ -153,12 +155,11 @@ function updateFromMainPage() {
 
 function update(doc) {
 	
-	if(isUpdating() || !GM_getValue('employerKey', false)) {
+	if(!GM_getValue('employerKey', false)) {
 		return;
 	}
 		
-	GM_log('Running update...');
-	GM_setValue('isUpdating', true);
+	setUpdateRunning();
 	
 	var data = {
 		id : getEmployer(),
@@ -177,9 +178,7 @@ function update(doc) {
 		headers : {
 			"Content-Type" : "application/x-www-form-urlencoded"
 		},
-		onerror : onErrorFct,
 		onload : function(response) {
-			GM_setValue('isUpdating', false);
 			if (response.status != 200) {
 				onErrorFct(response);
 			} else {
@@ -205,9 +204,9 @@ function cache(data) {
 }
 
 function onErrorFct(response) {
-	GM_setValue('isUpdating', false);
-	if($('#updatedAtLink')) {
-		$('#updatedAtLink').parent().css('background-color', 'red');
+	if(newLink) {
+        $(newLink).text('Update failed ):');
+        $(newLink).parent().css('border', '1px solid red');
 	}
 	GM_log('Something went wrong, data could not be uploaded to dist server!');
 	GM_log(JSON.stringify(response));

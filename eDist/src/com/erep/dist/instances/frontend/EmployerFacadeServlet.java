@@ -21,11 +21,8 @@ import org.json.simple.parser.ParseException;
 import com.erep.dist.CloseablePM;
 import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
-import com.erep.dist.data.DailyStats;
-import com.erep.dist.data.DailyWork;
 import com.erep.dist.data.Employer;
-import com.erep.dist.data.Player;
-import com.erep.dist.instances.backend.tasks.WorkVerificationTask;
+import com.erep.dist.instances.backend.tasks.WorkParseTask;
 import com.google.appengine.api.backends.BackendServiceFactory;
 import com.google.appengine.api.taskqueue.DeferredTask;
 import com.google.appengine.api.taskqueue.Queue;
@@ -39,12 +36,6 @@ public class EmployerFacadeServlet extends HttpServlet {
 
 	private static Logger		logger				= Logger.getLogger(EmployerFacadeServlet.class
 															.getName());
-
-	private int					employeesFound		= 0;
-	private int					employeesNotFound	= 0;
-
-	private int					tasksCreated		= 0;
-	private int					tasksFailed			= 0;
 
 	@Override
 	protected void doPut(HttpServletRequest req, HttpServletResponse resp)
@@ -67,15 +58,10 @@ public class EmployerFacadeServlet extends HttpServlet {
 			checkParams(encodedKey, id);
 
 			Employer dbEmployer = verifyEmployer(dao, encodedKey, id);
-			createWorks(dao, dbEmployer, employees);
-			dbEmployer.setLastUpdatedAt(new Date());
 
-			logger.log(Level.WARNING, "Finished employer update for "
-					+ dbEmployer.getName() + ": " + employeesFound
-					+ " employees found, " + employeesNotFound
-					+ " employees not found, " + tasksCreated
-					+ " tasks created, " + tasksFailed
-					+ " tasks failed at creation.");
+			createWorks(dbEmployer, employees);
+
+			dbEmployer.setLastUpdatedAt(new Date());
 
 		} catch (NullPointerException | ParseException e) {
 			logger.log(Level.WARNING, "Something wrong on EmployerFacade", e);
@@ -96,64 +82,42 @@ public class EmployerFacadeServlet extends HttpServlet {
 		return emp;
 	}
 
-	private void createWorks(DataAccessObject dao, Employer employer,
-			JSONArray employees) {
+	private void createWorks(Employer dbEmployer, JSONArray employees) {
+
+		int tasksCreated = 0;
+		int tasksFailed = 0;
+
 		for (Object employeeObj : employees) {
 			JSONObject employee = (JSONObject) employeeObj;
-			String playerId = employee.get("id").toString();
-			try {
-				Player dbPlayer = dao.find(new Player(dao
-						.createPlayerKey(playerId)));
-				employeesFound++;
-
-				JSONArray works = (JSONArray) employee.get("work");
-				createWorks(dao, employer, dbPlayer, works);
-			} catch (JDOObjectNotFoundException e) {
-				// some other player that works for the employer, just ignore
-				employeesNotFound++;
-			}
+			boolean ok = startWorkParseTask(dbEmployer, employee);
+			if (ok)
+				tasksCreated++;
+			else
+				tasksFailed++;
 		}
+
+		logger.log(Level.WARNING,
+				"Finished employer update for " + dbEmployer.getName() + ": "
+						+ tasksCreated + " tasks created, " + tasksFailed
+						+ " tasks failed at creation.");
 	}
 
-	private void createWorks(DataAccessObject dao, Employer employer,
-			Player player, JSONArray works) {
-		for (Object workObj : works) {
-			JSONObject workDay = (JSONObject) workObj;
-
-			Integer day = Integer.valueOf(workDay.get("day").toString());
-
-			DailyWork work = new DailyWork(player, day);
-			work.setEmployer(employer);
-			work.setGroups(player.getGroups());
-			work.setPlayer(player);
-			work.setStats(dao.find(new DailyStats(player, day - 1)));
-
-			Object worked = workDay.get("worked");
-			work.setWorked(worked != null ? Boolean.valueOf(worked.toString())
-					: null);
-
-			dao.save(work);
-
-			if (worked != null)
-				startWorkVerificationTask(player, work);
-		}
-	}
-
-	private void startWorkVerificationTask(Player player, DailyWork work) {
-		DeferredTask task = new WorkVerificationTask(player, work);
-		Queue queue = QueueFactory.getDefaultQueue();
+	private boolean startWorkParseTask(Employer dbEmployer,
+			JSONObject employeeUpdate) {
+		DeferredTask task = new WorkParseTask(dbEmployer, employeeUpdate);
 		TaskOptions taskOptions = withPayload(task).header(
 				"Host",
 				BackendServiceFactory.getBackendService().getBackendAddress(
 						"edist-default-backend")).taskName(
-				"WorkVerificationTask_" + player.getErId() + "_"
-						+ work.getDay());
+				"WorkParseTask_" + employeeUpdate.get("id").toString() + "_"
+						+ new Date().getTime());
 		try {
+			Queue queue = QueueFactory.getDefaultQueue();
 			queue.add(taskOptions);
-			tasksCreated++;
+			return true;
 		} catch (TaskAlreadyExistsException e) {
 			// multiple requests going on, ignore
-			tasksFailed++;
+			return false;
 		}
 	}
 

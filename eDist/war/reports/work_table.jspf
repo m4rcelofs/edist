@@ -36,16 +36,21 @@
 				</p>
 				<p class="text-center">
 					<a data-toggle="popover"
+						data-content="<fmt:message key="header.mod"/>"
+						data-bind="if: edist.user.hasManagementAccess,
+								   attr: {href: '${baseUrl}/management/playersList/search/' + (erId ? erId : '')  }, updatePopup:{}"><span
+						class="glyphicon glyphicon-list"></span></a> <a data-toggle="popover"
 						data-content="<fmt:message key="management.players.template.dist"/>"
 						data-bind="attr: {href: '${baseUrl}/reports/requests/player/' + (stats ? stats.erId : '') }, updatePopup:{}"><span
-						class="glyphicon glyphicon-list"></span></a> <a data-toggle="popover"
+						class="glyphicon glyphicon-cutlery"></span></a> <a
+						data-toggle="popover"
 						data-content="<fmt:message key="management.players.template.stats"/>"
 						data-bind="if: edist.user.hasPlayerReportsAccess,
 								   attr: {href: '${baseUrl}/players/history/player/' + (stats ? stats.erId : '') }, updatePopup:{}"><span
 						class="glyphicon glyphicon-stats"></span></a> <a data-toggle="popover"
 						data-content="<fmt:message key="management.players.template.fights"/>"
 						data-bind="if: edist.user.hasPlayerReportsAccess,
-								   attr: {href: '${baseUrl}/players/fights/player/' + (stats ? stats.erId : '') }, updatePopup:{}"><span
+								   attr: {href: '${baseUrl}/reports/fights/player/' + (stats ? stats.erId : '') }, updatePopup:{}"><span
 						class="glyphicon glyphicon-screenshot"></span></a>
 				</p>
 			</td>

@@ -110,9 +110,9 @@ var PlayersViewModel = new function() {
 	}
 
 	self.savePlayer = function(player) {
-		var jsPlayer = ko.mapping.toJS(player);
 		// converts back to PlayerGroup objects because of funny transforms
-		groupIdsToGroups(jsPlayer);
+		groupIdsToGroups(player);
+		var jsPlayer = ko.mapping.toJS(player);
 		ManagementService.editPlayer(jsPlayer, {
 			callback : function(response) {
 				if (response) {
@@ -277,8 +277,8 @@ var PlayersViewModel = new function() {
 
 	function groupIdsToGroups(player) {
 		var groups = [];
-		if (player.groupIds && player.groupIds.forEach) {
-			player.groupIds.forEach(function(groupId) {
+		if (player.groupIds() && player.groupIds().forEach) {
+			player.groupIds().forEach(function(groupId) {
 				groups.push({
 					encodedKey : groupId
 				});
