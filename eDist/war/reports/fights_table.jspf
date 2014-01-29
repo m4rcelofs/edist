@@ -53,7 +53,7 @@
 				data-bind="text: calculatedRankDamage ? $.format.number(calculatedRankDamage, edist.format.number) : ''"></td>
 			<td><span data-bind="text: $root.weaponsUsed($data)"></span> <img
 				class="weapon"
-				data-bind="attr: {alt: calculatedWithWeaponQuality, 
+				data-bind="attr: {title: calculatedWithWeaponQuality, 
 									   src: '${baseUrl}/img/weapons/' + calculatedWithWeaponQuality + '.png'}">
 			</td>
 			<td><a
