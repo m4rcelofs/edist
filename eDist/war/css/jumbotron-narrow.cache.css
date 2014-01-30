@@ -5,19 +5,42 @@ body {
 }
 
 .header {
-	border-bottom: 1px solid #e5e5e5;
-	margin-bottom: 30px;
+	background-repeat: no-repeat;
+	background-image: url('../img/logo/logo2_small_opt.cache.png');
+	background-size: contain;
+	min-height: 100px;
+	padding-top: 25px;
+	margin-bottom: 20px;
 }
 
-.header h3 {
-	margin-top: 0;
-	margin-bottom: 0;
-	line-height: 40px;
-	padding-bottom: 19px;
+.header h2 {
+	margin-top: 5px;
+	padding-left: 115px;
+	font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
+}
+
+#language-select {
+	padding-right: 15px;
 }
 
 .footer {
 	padding-top: 19px;
 	color: #777;
 	border-top: 1px solid #e5e5e5;
+}
+
+.player-avatar-small {
+	width: 30px;
+	background-size: 25px 25px;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.player-avatar-enhanced {
+	width: 142px;
+	background-size: 142px 142px;
+}
+
+.weapon {
+	height: 30px;
 }

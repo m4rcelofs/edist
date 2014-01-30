@@ -1600,7 +1600,6 @@ dwr.engine._debug = function(message, stacktrace) {
 
 if (typeof Request != "function") {
   function Request() {
-    this.resources = null;
     this.status = null;
     this.stats = null;
     this.type = null;
@@ -1651,47 +1650,59 @@ if (DWREngine == null) var DWREngine = dwr.engine;
 
 if (ReportService == null) var ReportService = {};
 ReportService._path = '/reports/dwr';
-ReportService.listRequestsByPlayer = function(p0, p1, callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByPlayer', p0, p1, callback);
-}
 ReportService.listRequestsByGroup = function(p0, p1, callback) {
   dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByGroup', p0, p1, callback);
 }
-ReportService.listRequestsByStatus = function(p0, p1, callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByStatus', p0, p1, callback);
+ReportService.listRequestsByPlayer = function(p0, p1, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByPlayer', p0, p1, callback);
 }
-ReportService.listRequestsByType = function(p0, p1, callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByType', p0, p1, callback);
-}
-ReportService.listWorkByPlayer = function(p0, p1, callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'listWorkByPlayer', p0, p1, callback);
-}
-ReportService.listWorkByGroup = function(p0, p1, callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'listWorkByGroup', p0, p1, callback);
-}
-ReportService.listWorkByEmployer = function(p0, p1, callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'listWorkByEmployer', p0, p1, callback);
-}
-ReportService.listWorkByDate = function(p0, p1, callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'listWorkByDate', p0, p1, callback);
-}
-ReportService.listWorkByDay = function(p0, p1, callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'listWorkByDay', p0, p1, callback);
-}
-ReportService.getInitialInfo = function(callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'getInitialInfo', callback);
-}
-ReportService.requestDetails = function(p0, callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'requestDetails', p0, callback);
-}
-ReportService.listRequestsByDate = function(p0, p1, callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByDate', p0, p1, callback);
+ReportService.listRequestsByDistributor = function(p0, p1, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByDistributor', p0, p1, callback);
 }
 ReportService.listRequestsByDay = function(p0, p1, callback) {
   dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByDay', p0, p1, callback);
 }
-ReportService.listRequestsByDistributor = function(p0, p1, callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByDistributor', p0, p1, callback);
+ReportService.listRequestsByDate = function(p0, p1, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByDate', p0, p1, callback);
+}
+ReportService.requestDetails = function(p0, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'requestDetails', p0, callback);
+}
+ReportService.getInitialInfo = function(callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'getInitialInfo', callback);
+}
+ReportService.fightsByGroup = function(p0, p1, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'fightsByGroup', p0, p1, callback);
+}
+ReportService.fightsByPlayer = function(p0, p1, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'fightsByPlayer', p0, p1, callback);
+}
+ReportService.listWorkByDay = function(p0, p1, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'listWorkByDay', p0, p1, callback);
+}
+ReportService.listWorkByDate = function(p0, p1, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'listWorkByDate', p0, p1, callback);
+}
+ReportService.listWorkByEmployer = function(p0, p1, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'listWorkByEmployer', p0, p1, callback);
+}
+ReportService.listWorkByGroup = function(p0, p1, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'listWorkByGroup', p0, p1, callback);
+}
+ReportService.listWorkByPlayer = function(p0, p1, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'listWorkByPlayer', p0, p1, callback);
+}
+ReportService.listRequestsByType = function(p0, p1, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByType', p0, p1, callback);
+}
+ReportService.listRequestsByStatus = function(p0, p1, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByStatus', p0, p1, callback);
+}
+ReportService.fightsByDay = function(p0, p1, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'fightsByDay', p0, p1, callback);
+}
+ReportService.fightsByDate = function(p0, p1, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'fightsByDate', p0, p1, callback);
 }
 /*
  * END OF FILE - /edist/eDist/war/reports/dwr-interface20131220.js
@@ -1706,9 +1717,11 @@ $(document).ready(function() {
 
 	ko.applyBindings(RequestsViewModel, document.getElementById('requests'));
 	ko.applyBindings(WorkViewModel, document.getElementById('work'));
+	ko.applyBindings(FightsViewModel, document.getElementById('fights'));
 
 	RequestsRoutes.addRoutes();
 	WorkRoutes.addRoutes();
+	FightRoutes.addRoutes();
 
 	Navigation.configureRoutes('/reports/');
 
@@ -1752,13 +1765,12 @@ var Reports = new function() {
 	self.avatar = function(item) {
 		return item.stats ? getAvatar(item.stats) : getAvatar(item);
 	}
-	
+
 	function getAvatar(stats) {
 		if (stats && stats.avatar) {
 			if (stats.avatar.indexOf('142x142') !== -1) {
 				// from eR
-				return 'url(' + stats.avatar.replace('142x142', '55x55')
-						+ ')';
+				return 'url(' + stats.avatar.replace('142x142', '55x55') + ')';
 			} else {
 				// from blobstore
 				return 'url(' + stats.avatar + '=s55)';
@@ -2078,6 +2090,173 @@ var WorkRoutes = new function() {
 
 /*
  * END OF FILE - /edist/eDist/war/reports/work.js
+ */
+
+/*
+ * START OF FILE - /edist/eDist/war/reports/fights.js
+ */
+function FightFiltersViewModel() {
+
+	var self = this;
+
+	self.searchText = ko.observable();
+	self.searchParam = ko.observable();
+	self.searchFct = null;
+
+	self.groups = Reports.groups;
+}
+
+var FightsViewModel = new function() {
+	var self = this;
+
+	self.category = ko.observable('');
+
+	self.fightsHistory = ko.observableArray([]);
+	self.cursor = ko.observable(null);
+	self.filters = new FightFiltersViewModel();
+
+	ko.computed(function() {
+		if (self.category()) {
+			showTab();
+		}
+	});
+
+	self.initFights = function() {
+		showTab();
+	}
+
+	self.doSearch = function() {
+		var searchText = self.filters.searchText();
+		Navigation.setCurrentLocation('/reports/fights/' + self.category()
+				+ '/' + searchText);
+	}
+
+	self.loadNextPage = function() {
+		if (self.cursor() !== null) {
+			queryServer();
+		}
+	}
+
+	self.filterByDate = function(param) {
+		reset('date', ReportService.fightsByDate, param,
+				checkParam(param) ? new Date(param) : null);
+		queryServer();
+	}
+
+	self.filterByDay = function(param) {
+		param = checkParam(param) ? param : (edist.server.eRepDay - 1);
+		reset('day', ReportService.fightsByDay, param, param);
+		queryServer();
+	}
+
+	self.filterByGroup = function(param) {
+		reset('group', ReportService.fightsByGroup, param, {
+			encodedKey : param
+		});
+		queryServer();
+	}
+
+	self.filterByPlayer = function(param) {
+		reset('player', ReportService.fightsByPlayer, param, param);
+		queryServer();
+	}
+
+	self.fightDifference = function(today, yesterday) {
+		var fightDifference = today.calculatedFfFights
+				- yesterday.calculatedFfFights;
+		return fightDifference <= 0 ? $.format.number(fightDifference,
+				edist.format.number) : '+'
+				+ $.format.number(fightDifference, edist.format.number);
+	}
+
+	self.weaponsUsed = function(fights) {
+		var quality = fights.calculatedWithWeaponQuality;
+		var durability = 10;
+		switch (quality) {
+		case 'Q7':
+			break;
+		case 'Q6':
+			durability = 6;
+			break;
+		case 'Q5':
+			durability = 5;
+			break;
+		case 'Q4':
+			durability = 4;
+			break;
+		case 'Q3':
+			durability = 3;
+			break;
+		case 'Q2':
+			durability = 2;
+			break;
+		case 'Q1':
+			durability = 1;
+			break;
+		}
+
+		return $.format.number(fights.calculatedFfFights / durability, edist.format.number);
+	}
+
+	function checkParam(param) {
+		return param && param !== 'undefined' && param !== 'null' ? param
+				: null;
+	}
+
+	function reset(category, searchFct, searchText, searchParam) {
+		self.fightsHistory([]);
+		self.cursor('');
+		self.category(category);
+		self.filters.searchFct = searchFct;
+		self.filters.searchText(searchText);
+		self.filters.searchParam(searchParam);
+	}
+
+	function queryServer() {
+		if (self.filters.searchParam()) {
+			self.filters.searchFct(self.filters.searchParam(), self.cursor(), {
+				callback : function(response) {
+					setResults(response);
+				}
+			});
+		}
+	}
+
+	function setResults(response) {
+		var cursor = response.results.length >= window.edist.server.pageSize ? response.encodedCursor
+				: null
+		self.cursor(cursor);
+		response.results.forEach(function(item) {
+			self.fightsHistory.push(item);
+		});
+	}
+
+	function showTab() {
+		$('#fightTab').tab('show');
+		if (Navigation.getCurrenLocation() === '/reports/fights') {
+			Navigation.setCurrentLocation('/reports/fights/day');
+		}
+	}
+
+};
+
+var FightRoutes = new function() {
+	var self = this;
+
+	self.addRoutes = function() {
+		crossroads.addRoute('reports/fights', FightsViewModel.initFights);
+		crossroads.addRoute('reports/fights/date/:param:',
+				FightsViewModel.filterByDate);
+		crossroads.addRoute('reports/fights/day/:param:',
+				FightsViewModel.filterByDay);
+		crossroads.addRoute('reports/fights/group/:param:',
+				FightsViewModel.filterByGroup);
+		crossroads.addRoute('reports/fights/player/:param:',
+				FightsViewModel.filterByPlayer);
+	}
+};
+/*
+ * END OF FILE - /edist/eDist/war/reports/fights.js
  */
 
 /*

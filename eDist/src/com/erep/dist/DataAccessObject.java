@@ -34,6 +34,7 @@ import com.erep.dist.data.PlayerGroupRoot;
 import com.erep.dist.data.PlayerRoot;
 import com.erep.dist.data.RegisteredUser;
 import com.erep.dist.data.Request;
+import com.erep.dist.data.ResourceDist;
 import com.erep.dist.data.ServerConfig;
 import com.erep.dist.data.enums.PlayerDistStatus;
 import com.erep.dist.data.enums.PlayerStatus;
@@ -413,12 +414,14 @@ public class DataAccessObject {
 		return (List<DailyStats>) q.execute(player.getKey());
 	}
 
-	public List<DailyStats> listStats(PlayerGroup group, String encodedCursor) {
+	public List<DailyStats> listStats(Integer day, PlayerGroup group,
+			String encodedCursor) {
 		Query q = queryWithCursor(DailyStats.class,
-				"groups.contains(groupParam)", encodedCursor);
-		q.declareParameters(Key.class.getName() + " groupParam");
+				"groups.contains(groupParam) && day == dayParam", encodedCursor);
+		q.declareParameters(Key.class.getName() + " groupParam, "
+				+ Integer.class.getName() + " dayParam");
 		q.setOrdering("day desc");
-		return (List<DailyStats>) q.execute(group.getKey());
+		return (List<DailyStats>) q.execute(group.getKey(), day);
 	}
 
 	public List<DailyStats> listStats(Integer day, String encodedCursor) {
@@ -559,6 +562,14 @@ public class DataAccessObject {
 	public Request find(Request request) {
 		try {
 			return pm.getObjectById(Request.class, request.getKey());
+		} catch (JDOObjectNotFoundException e) {
+			return null;
+		}
+	}
+
+	public ResourceDist find(ResourceDist resource) {
+		try {
+			return pm.getObjectById(ResourceDist.class, resource.getKey());
 		} catch (JDOObjectNotFoundException e) {
 			return null;
 		}
@@ -754,7 +765,10 @@ public class DataAccessObject {
 		if (newConfig.getFightVerif() != null)
 			dbConfig.setFightVerif(newConfig.getFightVerif());
 
-		dbConfig.setAvatarHistory(newConfig.isAvatarHistory());
+		// refresh the entity to create the fields if needed
+		dbConfig.setAvatarHistory(dbConfig.isAvatarHistory());
+		dbConfig.setShowDistributorInventory(dbConfig
+				.isShowDistributorInventory());
 
 		CacheFacade.remove(getClass().getName() + ".getServerConfig()");
 		return true;

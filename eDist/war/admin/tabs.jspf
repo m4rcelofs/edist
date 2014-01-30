@@ -1,10 +1,10 @@
 <li><a href="#users" id="usersTab"><span
-		class="glyphicon glyphicon-user"></span> Usuários</a></li>
+		class="glyphicon glyphicon-user"></span> <fmt:message key="admin.tabs.users"/></a></li>
 <li><a href="#distributors" id="distributorsTab"><span
-		class="glyphicon glyphicon-lock"></span> Distribuidores</a></li>
+		class="glyphicon glyphicon-lock"></span> <fmt:message key="admin.tabs.distributors"/></a></li>
 <li><a href="#employers" id="employersTab"><span
-		class="glyphicon glyphicon-briefcase"></span> Gestores</a></li>
+		class="glyphicon glyphicon-briefcase"></span> <fmt:message key="admin.tabs.managers"/></a></li>
 <li><a href="#config" id="configTab"><span
-		class="glyphicon glyphicon-cog"></span> Configurações</a></li>
+		class="glyphicon glyphicon-cog"></span> <fmt:message key="admin.tabs.configs"/></a></li>
 <li><a href="#controlPanel" id="controlPanelTab"><span
-		class="glyphicon glyphicon-list-alt"></span> Painel de Controle</a></li>
+		class="glyphicon glyphicon-list-alt"></span> <fmt:message key="admin.tabs.controlPanel"/></a></li>

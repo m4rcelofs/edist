@@ -3,23 +3,25 @@
 		<div class="navbar-header">
 			<button type="button" class="navbar-toggle" data-toggle="collapse"
 				data-target="#requests-filter-collapse">
-				<span class="sr-only">Abrir/Fechar Filtros</span> <span
-					class="icon-bar"></span> <span class="icon-bar"></span> <span
+				<span class="sr-only"><fmt:message key="filters.openClose" /></span>
+				<span class="icon-bar"></span> <span class="icon-bar"></span> <span
 					class="icon-bar"></span>
 			</button>
-			<p class="navbar-text">Filtros</p>
+			<p class="navbar-text">
+				<fmt:message key="filters.title" />
+			</p>
 		</div>
 		<div class="collapse navbar-collapse" id="requests-filter-collapse">
 			<form class="navbar-form navbar-right" role="search"
 				data-bind="submit: doSearch">
-				<div class="form-group"
-					data-bind="if: $root.category() === 'date'">
-					<input type="date" class="form-control" placeholder="aaaa-mm-dd"
+				<div class="form-group" data-bind="if: $root.category() === 'date'">
+					<input type="date" class="form-control"
+						placeholder="<fmt:message key="filters.dateFormat"/>"
 						data-bind="value: filters.searchText">
 				</div>
-				<div class="form-group"
-					data-bind="if: $root.category() === 'day'">
-					<input type="number" class="form-control" placeholder="Dia"
+				<div class="form-group" data-bind="if: $root.category() === 'day'">
+					<input type="number" class="form-control"
+						placeholder="<fmt:message key="filters.dayPlaceholder"/>"
 						data-bind="value: filters.searchText">
 				</div>
 				<div class="form-group"
@@ -33,8 +35,7 @@
 									updateSelectPicker: filters.distributors">
 					</select>
 				</div>
-				<div class="form-group"
-					data-bind="if: $root.category() === 'group'">
+				<div class="form-group" data-bind="if: $root.category() === 'group'">
 					<select class="selectpicker show-menu-arrow navbar-btn show-tick"
 						data-bind=" options: filters.groups, 
 									optionsText: function(item){ return item ? item.groupName : '' },
@@ -47,32 +48,47 @@
 				<div class="form-group"
 					data-bind="if: $root.category() === 'player'">
 					<input type="text" class="form-control"
-						placeholder="ID, link ou nick"
+						placeholder="<fmt:message key="filters.idNickOrLink"/>"
 						data-bind="value: filters.searchText">
 				</div>
 				<div class="form-group"
 					data-bind="if: $root.category() === 'status'">
 					<select class="selectpicker show-menu-arrow navbar-btn show-tick"
 						data-bind="value: filters.searchText, updateSelectPicker:{}">
-						<option value="REQUESTED">Requisitada</option>
-						<option value="ERROR">Com Erro</option>
-						<option value="SENT">Enviada</option>
-						<option value="SENT_PARTIAL">Enviada Parcialmente</option>
+						<option value="REQUESTED">
+							<fmt:message key="reports.requests.requested" />
+						</option>
+						<option value="ERROR">
+							<fmt:message key="reports.requests.error" />
+						</option>
+						<option value="SENT">
+							<fmt:message key="reports.requests.sent" />
+						</option>
+						<option value="SENT_PARTIAL">
+							<fmt:message key="reports.requests.partial" />
+						</option>
 					</select>
 				</div>
-				<div class="form-group"
-					data-bind="if: $root.category() === 'type'">
+				<div class="form-group" data-bind="if: $root.category() === 'type'">
 					<select class="selectpicker show-menu-arrow navbar-btn show-tick"
 						data-bind="value: filters.searchText, updateSelectPicker:{}">
-						<option value="WEAPONS">Armas</option>
-						<option value="FOOD">Comida</option>
-						<option value="WEAPONS_FOOD">Armas + Comida</option>
-						<option value="ROCKET">Foguete</option>
+						<option value="WEAPONS">
+							<fmt:message key="reports.requests.weapons" />
+						</option>
+						<option value="FOOD">
+							<fmt:message key="reports.requests.food" />
+						</option>
+						<option value="WEAPONS_FOOD">
+							<fmt:message key="reports.requests.both" />
+						</option>
+						<option value="ROCKET">
+							<fmt:message key="reports.requests.rocket" />
+						</option>
 					</select>
 				</div>
 				<button type="submit" class="btn btn-default">
 					<span class="glyphicon glyphicon-search"></span> <span
-						class="sr-only">Filtrar</span>
+						class="sr-only"><fmt:message key="filters.filter" /></span>
 				</button>
 			</form>
 		</div>

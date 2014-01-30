@@ -46,6 +46,22 @@ $(document).ready(function() {
 			}
 		}
 	};
+
+	// loads bigger avatar on mouseover
+	ko.bindingHandlers.avatarEnhance = {
+		update : function(element, valueAccessor) {
+			$(element).mouseover(function() {
+				if(!$(element).attr('avatar-loaded')) {
+					var newStyle = $(element).attr('style');
+					newStyle = newStyle.replace('55x55', '142x142');
+					newStyle = newStyle.replace('=s55', '=s142');
+					$(element).attr('style', newStyle);
+					$(element).attr('avatar-loaded', true);
+				}
+				$(element).toggleClass('player-avatar-enhanced');
+			});
+		}
+	};
 });
 
 var Navigation = new function() {
@@ -76,5 +92,13 @@ var Navigation = new function() {
 
 	nav.getCurrenLocation = function() {
 		return History.getState().hash;
+	}
+
+	nav.setLanguage = function(lang) {
+		$.cookie('language', lang, {
+			expires : 14,
+			path : '/'
+		});
+		location.reload(true);
 	}
 };

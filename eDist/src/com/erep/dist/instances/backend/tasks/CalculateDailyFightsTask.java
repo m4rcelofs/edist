@@ -19,6 +19,7 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.taskqueue.DeferredTask;
 import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
+import com.google.appengine.api.taskqueue.TaskAlreadyExistsException;
 
 public class CalculateDailyFightsTask implements DeferredTask {
 
@@ -103,8 +104,13 @@ public class CalculateDailyFightsTask implements DeferredTask {
 			DailyFights fights) {
 		DeferredTask task = new FightsVerificationTask(today, dbPlayer, fights);
 		Queue queue = QueueFactory.getDefaultQueue();
-		queue.add(withPayload(task).taskName(
-				"FightsVerificationTask_" + dbPlayer.getErId() + "_" + today));
+		try {
+			queue.add(withPayload(task).taskName(
+					"FightsVerificationTask_" + dbPlayer.getErId() + "_"
+							+ today));
+		} catch (TaskAlreadyExistsException e) {
+			// tombstoned, already run
+		}
 	}
 
 	private Key createKey(Player dbPlayer, Integer day) {

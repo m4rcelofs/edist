@@ -6,19 +6,25 @@
 
 			<ul id="requests.horizontal.nav" class="nav nav-pills nav-stacked">
 				<li data-bind="css: {active : category() === 'date'}"><a
-					href="#/reports/requests/date">por Data</a></li>
+					href="#/reports/requests/date"><fmt:message
+							key="filters.byDate" /></a></li>
 				<li data-bind="css: {active : category() === 'day'}"><a
-					href="#/reports/requests/day">por Dia</a></li>
+					href="#/reports/requests/day"><fmt:message key="filters.byDay" /></a></li>
 				<li data-bind="css: {active : category() === 'distributor'}"><a
-					href="#/reports/requests/distributor">por Distribuidor</a></li>
+					href="#/reports/requests/distributor"><fmt:message
+							key="filters.byDistributor" /></a></li>
 				<li data-bind="css: {active : category() === 'group'}"><a
-					href="#/reports/requests/group">por Grupo</a></li>
+					href="#/reports/requests/group"><fmt:message
+							key="filters.byGroup" /></a></li>
 				<li data-bind="css: {active : category() === 'player'}"><a
-					href="#/reports/requests/player">por Jogador</a></li>
+					href="#/reports/requests/player"><fmt:message
+							key="filters.byPlayer" /></a></li>
 				<li data-bind="css: {active : category() === 'status'}"><a
-					href="#/reports/requests/status">por Status</a></li>
+					href="#/reports/requests/status"><fmt:message
+							key="filters.byStatus" /></a></li>
 				<li data-bind="css: {active : category() === 'type'}"><a
-					href="#/reports/requests/type">por Tipo</a></li>
+					href="#/reports/requests/type"><fmt:message
+							key="filters.byType" /></a></li>
 			</ul>
 		</div>
 		<div class="col-md-10">
@@ -31,12 +37,12 @@
 				<li class="next"
 					data-bind="css: {disabled: cursor() === null},
 						click: loadNextPage"><a
-					href="#">Exibir próximos</a></li>
+					href="#"><fmt:message key="shared.showNext" /></a></li>
 			</ul>
 		</div>
 	</div>
 	<div class="form-group"></div>
-	
+
 	<%@ include file="requests_details.jspf"%>
 
 </div>

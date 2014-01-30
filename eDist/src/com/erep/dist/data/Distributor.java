@@ -15,8 +15,11 @@ import javax.jdo.annotations.PrimaryKey;
 import org.directwebremoting.annotations.DataTransferObject;
 import org.directwebremoting.annotations.RemoteProperty;
 
+import com.erep.dist.data.enums.ResourceQuality;
+import com.erep.dist.data.enums.ResourceType;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.common.collect.HashBasedTable;
 
 @DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
@@ -24,7 +27,8 @@ import com.google.appengine.api.datastore.KeyFactory;
 		@FetchGroup(name = "distributorListing", members = {
 				@Persistent(name = "email"),
 				@Persistent(name = "lastAccessTimestamp") }),
-		@FetchGroup(name = "configListing", members = { @Persistent(name = "email") }) })
+		@FetchGroup(name = "configListing", members = { @Persistent(name = "email") }),
+		@FetchGroup(name = "inventoryListing", members = { @Persistent(name = "lastInventory") })})
 public class Distributor implements HasEncodedKey, Serializable {
 
 	private static final long	serialVersionUID	= 1L;
@@ -51,12 +55,15 @@ public class Distributor implements HasEncodedKey, Serializable {
 	@Persistent(defaultFetchGroup = "false")
 	@RemoteProperty
 	private long				lastAccessTimestamp;
+	
+	@Persistent(defaultFetchGroup = "false", serialized="true")
+	private HashBasedTable<ResourceType, ResourceQuality, Integer>	lastInventory;
 
 	@Persistent(defaultFetchGroup = "false")
 	@RemoteProperty
 	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	private String				password;
-
+	
 	public Key getKey() {
 		return key;
 	}
@@ -115,6 +122,17 @@ public class Distributor implements HasEncodedKey, Serializable {
 
 	public void setRoot(DistributorRoot root) {
 		this.root = root;
+	}
+
+	public HashBasedTable<ResourceType, ResourceQuality, Integer> getLastInventory() {
+		if(lastInventory == null)
+			lastInventory = HashBasedTable.create(2, 7);
+		return lastInventory;
+	}
+
+	public void setLastInventory(
+			HashBasedTable<ResourceType, ResourceQuality, Integer> lastInventory) {
+		this.lastInventory = lastInventory;
 	}
 
 }
