@@ -16,7 +16,7 @@
 										data-content="<fmt:message key="management.players.template.dist"/>"
 										data-bind="if: dbStatus() === 'ENABLED', 
 													attr: {href: '${baseUrl}/reports/requests/player/' + erId() }, updatePopup:{}"><span
-										class="glyphicon glyphicon-list"></span></a> <a
+										class="glyphicon glyphicon-cutlery"></span></a> <a
 										data-toggle="popover"
 										data-content="<fmt:message key="management.players.template.work"/>"
 										data-bind="if: dbStatus() === 'ENABLED', 
@@ -30,7 +30,7 @@
 										data-toggle="popover"
 										data-content="<fmt:message key="management.players.template.fights"/>"
 										data-bind="if: dbStatus() === 'ENABLED', 
-													attr: {href: '${baseUrl}/players/fights/player/' + erId() }, updatePopup:{}"><span
+													attr: {href: '${baseUrl}/reports/fights/player/' + erId() }, updatePopup:{}"><span
 										class="glyphicon glyphicon-screenshot"></span></a>
 								</p>
 							</div>

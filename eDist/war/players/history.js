@@ -4,6 +4,7 @@ function HistoryFiltersViewModel() {
 
 	self.searchText = ko.observable();
 	self.searchParam = ko.observable();
+	self.searchDay = ko.observable();
 	self.searchFct = null;
 
 	self.groups = Players.groups;
@@ -29,7 +30,21 @@ var HistoryViewModel = new function() {
 	}
 
 	self.doSearch = function() {
-		var searchText = self.filters.searchText();
+		var searchText = "";
+
+		switch (self.category()) {
+		case 'group':
+			searchText += self.filters.searchDay() + '/'
+					+ self.filters.searchText();
+			break;
+		case 'day':
+			searchText += self.filters.searchDay();
+			break;
+		case 'player':
+			searchText += self.filters.searchText();
+			break;
+		}
+
 		Navigation.setCurrentLocation('/players/history/' + self.category()
 				+ '/' + searchText);
 	}
@@ -40,27 +55,22 @@ var HistoryViewModel = new function() {
 		}
 	}
 
-	self.filterByDate = function(param) {
-		reset('date', PlayerReportService.statsByDate, param,
-				checkParam(param) ? new Date(param) : null);
-		queryServer();
-	}
-
 	self.filterByDay = function(param) {
 		param = checkParam(param) ? param : (edist.server.eRepDay - 1);
-		reset('day', PlayerReportService.statsByDay, param, param);
+		reset('day', PlayerReportService.statsByDay, param, param, param);
 		queryServer();
 	}
 
-	self.filterByGroup = function(param) {
+	self.filterByGroup = function(day, param) {
+		day = checkParam(day) ? day : (edist.server.eRepDay - 1);
 		reset('group', PlayerReportService.statsByGroup, param, {
 			encodedKey : param
-		});
+		}, day);
 		queryServer();
 	}
 
 	self.filterByPlayer = function(param) {
-		reset('player', PlayerReportService.statsByPlayer, param, param);
+		reset('player', PlayerReportService.statsByPlayer, param, param, '');
 		queryServer();
 	}
 
@@ -69,22 +79,33 @@ var HistoryViewModel = new function() {
 				: null;
 	}
 
-	function reset(category, searchFct, searchText, searchParam) {
+	function reset(category, searchFct, searchText, searchParam, searchDay) {
 		self.statsHistory([]);
 		self.cursor('');
 		self.category(category);
 		self.filters.searchFct = searchFct;
 		self.filters.searchText(searchText);
 		self.filters.searchParam(searchParam);
+		self.filters.searchDay(searchDay);
 	}
 
 	function queryServer() {
 		if (self.filters.searchParam()) {
-			self.filters.searchFct(self.filters.searchParam(), self.cursor(), {
-				callback : function(response) {
-					setResults(response);
-				}
-			});
+			if (self.category() === 'group' && self.filters.searchDay()) {
+				self.filters.searchFct(self.filters.searchDay(), self.filters.searchParam(), self
+						.cursor(), {
+					callback : function(response) {
+						setResults(response);
+					}
+				});
+			} else {
+				self.filters.searchFct(self.filters.searchParam(), self
+						.cursor(), {
+					callback : function(response) {
+						setResults(response);
+					}
+				});
+			}
 		}
 	}
 
@@ -112,7 +133,7 @@ var HistoryRoutes = new function() {
 				HistoryViewModel.filterByDate);
 		crossroads.addRoute('players/history/day/:param:',
 				HistoryViewModel.filterByDay);
-		crossroads.addRoute('players/history/group/:param:',
+		crossroads.addRoute('players/history/group/:day:/:param:',
 				HistoryViewModel.filterByGroup);
 		crossroads.addRoute('players/history/player/:param:',
 				HistoryViewModel.filterByPlayer);

@@ -26,7 +26,6 @@
 
 			<div class="tab-content">
 				<%@ include file="history.jspf"%>
-				<%@ include file="fights.jspf"%>
 			</div>
 	</jsp:body>
 </t:wrapper>

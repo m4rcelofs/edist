@@ -76,7 +76,7 @@ public class EmployerFacadeServlet extends HttpServlet {
 
 	private Employer verifyEmployer(DataAccessObject dao, String encodedKey,
 			String id) {
-		Employer emp = dao.find(new Employer(encodedKey));
+		Employer emp = dao.find(new Employer(encodedKey.trim()));
 		if (!emp.getErId().equals(id.trim()))
 			throw new IllegalArgumentException("Invalid employer");
 		return emp;

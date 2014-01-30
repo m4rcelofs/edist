@@ -62,8 +62,10 @@ public class ServerConfig implements Serializable {
 	private String				contactEmail;
 
 	@Persistent
-	@RemoteProperty
-	private boolean				avatarHistory;
+	private Boolean				avatarHistory;
+
+	@Persistent
+	private Boolean				showDistributorInventory;
 
 	public String getMuName() {
 		return muName;
@@ -138,11 +140,23 @@ public class ServerConfig implements Serializable {
 	}
 
 	public boolean isAvatarHistory() {
+		if (avatarHistory == null)
+			setAvatarHistory(true);
 		return avatarHistory;
 	}
 
 	public void setAvatarHistory(boolean avatarHistory) {
 		this.avatarHistory = avatarHistory;
+	}
+
+	public boolean isShowDistributorInventory() {
+		if (showDistributorInventory == null)
+			setShowDistributorInventory(true);
+		return showDistributorInventory;
+	}
+
+	public void setShowDistributorInventory(boolean showDistributorInventory) {
+		this.showDistributorInventory = showDistributorInventory;
 	}
 
 }
