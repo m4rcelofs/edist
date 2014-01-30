@@ -2,6 +2,10 @@
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="t" tagdir="/WEB-INF/tags"%>
 
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<fmt:setLocale value="${language}" />
+<fmt:setBundle basename="com.erep.dist.i18n.edist" />
+
 <t:wrapper>
 
 	<jsp:attribute name="imports">
@@ -12,8 +16,9 @@
 	<jsp:body>
 		<div class="jumbotron" style="font-size: inherit;">
 			<div class="row">
-				<img class="img-responsive" src="${baseUrl}/img/formtitle.cache.png"
-					alt="Suprimentos"></img>
+				<img class="img-responsive"
+					src="${baseUrl}/img/<fmt:message key="request.supplies.image"/>"
+					alt="<fmt:message key="request.supplies"/>"></img>
 			</div>
 			<div class="form-group"></div>
 			<div id="playerForm" class="row">
@@ -24,9 +29,11 @@
 							data-bind="css: {'has-success' : player().name() !== null,
 											 'has-error' : player().name() === null}">
 								<div class="input-group">
-									<span class="input-group-addon input-large">Id:</span> 
+									<span class="input-group-addon input-large"><fmt:message
+										key="request.id" />:</span> 
 									<input type="text" class="form-control input-large" name="id"
-									id="id" placeholder="Nick, id ou link do perfil"
+									id="id"
+									placeholder="<fmt:message key="request.supplies.linkPlaceholder"/>"
 									style="text-align: center;"
 									data-bind="value : selectedName, 
 											   valueUpdate: 'keyup'">
@@ -48,7 +55,8 @@
 									data-bind="css:{'has-success': selectedFFs() <= requestAttempt().availableFF() && selectedFFs() > 0,
 													'has-error': selectedFFs() > requestAttempt().availableFF() || selectedFFs() < 0}">
 										<div class="input-group">
-											<span class="input-group-addon">FF:</span> 
+											<span class="input-group-addon"><fmt:message
+												key="request.ff" />:</span> 
 											<input type="number" class="form-control" id="quant" min="0"
 											step="10" style="text-align: center;"
 											data-bind="enable: requestAttempt().availableFF() > 0 && selectedType() !== 'ROCKET', 
@@ -56,9 +64,11 @@
 														attr: {max: requestAttempt().availableFF()}">
 										</div>
 										<p class="help-block"
-										data-bind="visible: requestAttempt().availableFF() != null &&  requestAttempt().availableFF() > 0">Disponíveis: <span
+										data-bind="visible: requestAttempt().availableFF() != null &&  requestAttempt().availableFF() > 0">
+										<fmt:message key="request.available" />: <span
 											data-bind="text: requestAttempt().availableFF()"></span> <abbr
-											title="Food Fights">FF</abbr>
+											title="<fmt:message key="request.foodFights"/>"><fmt:message
+												key="request.ff" /></abbr>
 										</p>
 									</div>
 								</div>
@@ -74,17 +84,25 @@
 											<option value="WEAPONS"
 											data-bind="enable: (requestAttempt().allowedType() == 'WEAPONS_FOOD' 
 															|| requestAttempt().allowedType() == 'WEAPONS') 
-															&& requestAttempt().availableFF() > 0">Armas</option>
+															&& requestAttempt().availableFF() > 0">
+											<fmt:message key="reports.requests.weapons" />
+										</option>
 											<option value="FOOD"
 											data-bind="enable: (requestAttempt().allowedType() == 'WEAPONS_FOOD' 
 																|| requestAttempt().allowedType() == 'FOOD') 
-																&& requestAttempt().availableFF() > 0">Comida</option>
+																&& requestAttempt().availableFF() > 0">
+											<fmt:message key="reports.requests.food" />
+										</option>
 											<option value="WEAPONS_FOOD"
 											data-bind="enable: (requestAttempt().allowedType() == 'WEAPONS_FOOD') 
-														&& requestAttempt().availableFF() > 0">Armas + Comida</option>
+														&& requestAttempt().availableFF() > 0">
+											<fmt:message key="reports.requests.both" />
+										</option>
 											<option data-divider="true"></option>
 											<option value="ROCKET" data-icon="glyphicon-fire"
-											data-bind="enable: requestAttempt().rocketAllowed() == true">Foguete</option>
+											data-bind="enable: requestAttempt().rocketAllowed() == true">
+											<fmt:message key="reports.requests.rocket" />
+										</option>
 										</select>
 									</div>
 								</div>
@@ -93,11 +111,12 @@
 								<div class="col-md-12"
 								data-bind="if: player().dbStatus() === 'ENABLED'">
 									<button id="sendRequestBtn" type="submit"
-									class="btn btn-primary btn-lg btn-block"
-									autocomplete="off"
+									class="btn btn-primary btn-lg btn-block" autocomplete="off"
 									data-bind="enable: (requestAttempt().availableFF() > 0 || requestAttempt().rocketAllowed() == true),
 											   css: {'btn-success' : requestStatus() == 'OK',
-													 'btn-danger' : requestStatus() == 'ERROR'}">Requisitar Suprimentos</button>
+													 'btn-danger' : requestStatus() == 'ERROR'}">
+									<fmt:message key="request.doRequest" />
+								</button>
 								</div>					
 							</div>
 					</form>
@@ -112,42 +131,47 @@
 						<p>
 							<span class="label label-default" data-toggle="popover"
 								data-bind="updatePopup:{}"
-								data-content="Jogador desabilitado pela moderação">Desabilitado</span>
+								data-content="<fmt:message key="request.disabled.help"/>"><fmt:message
+									key="shared.disabled" /></span>
 						</p>
 					</div>
 					<div data-bind="if: player().fightStatus() === 'WARNING'">
 						<p>
 							<span class="label label-warning" data-toggle="popover"
 								data-bind="updatePopup:{}"
-								data-content="Jogador sob aviso por não lutar o suficiente">Lutas: Sob Aviso</span>
+								data-content="<fmt:message key="request.fights.warning"/>"><fmt:message
+									key="shared.fights" />: <fmt:message key="shared.warning" /></span>
 						</p>
 					</div>
 					<div data-bind="if: player().fightStatus() === 'TEMP_BANNED'">
 						<p>
 							<span class="label label-danger" data-toggle="popover"
 								data-bind="updatePopup:{}"
-								data-content="Jogador com distribuição bloqueada por não lutar o suficiente">Lutas: Suspenso Temporariamente</span>
+								data-content="<fmt:message key="request.fights.tempBanned"/>"><fmt:message
+									key="shared.fights" />: <fmt:message key="shared.tempBanned" /></span>
 						</p>
 					</div>
 					<div data-bind="if: player().workStatus() === 'WARNING'">
 						<p>
 							<span class="label label-warning" data-toggle="popover"
 								data-bind="updatePopup:{}"
-								data-content="Jogador sob aviso por não trabalhar diariamente">Trabalho: Sob Aviso</span>
+								data-content="<fmt:message key="request.work.warning"/>"><fmt:message
+									key="shared.work" />: <fmt:message key="shared.warning" /></span>
 						</p>
 					</div>
 					<div data-bind="if: player().workStatus() === 'TEMP_BANNED'">
 						<p>
 							<span class="label label-danger" data-toggle="popover"
 								data-bind="updatePopup:{}"
-								data-content="Jogador com distribuição bloqueada por não trabalhar diariamente">Trabalho: Suspenso Temporariamente</span>
+								data-content="<fmt:message key="request.work.tempBanned"/>"><fmt:message
+									key="shared.work" />: <fmt:message key="shared.tempBanned" /></span>
 						</p>
 					</div>
 					<div class="form-group"></div>
 					<div class="panel panel-default"
 						data-bind="visible: refreshCountdown() && requestAttempt().availableFF() == 0">
 						<div class="panel-body text-center">
-							Virada do Dia 
+							<fmt:message key="request.dayChange" /> 
 						    <span class="badge" data-bind="text: refreshCountdown"></span>	
 						</div>
 					</div>

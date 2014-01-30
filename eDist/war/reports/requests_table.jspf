@@ -2,102 +2,102 @@
 	data-bind="if: dists().length > 0">
 	<thead>
 		<tr>
-			<th data-bind="if: category() !== 'day'">Dia</th>
-			<th>Jogador</th>
-			<th>Status</th>
-			<th>Quantidade</th>
-			<th data-bind="if: category() !== 'group'">Grupo</th>
+			<th data-bind="visible: category() !== 'day'"><fmt:message
+					key="players.fights.day" /></th>
+			<th colspan="2"><fmt:message key="players.fights.player" /></th>
+			<th data-bind="visible: $root.category() !== 'status'"><fmt:message
+					key="reports.requests.status" /></th>
+			<th><fmt:message key="reports.requests.quantity" /></th>
+			<th data-bind="visible: $root.category() !== 'type'"><fmt:message
+					key="reports.requests.type" /></th>
+			<th data-bind="visible: category() !== 'group'"><fmt:message
+					key="reports.requests.group" /></th>
 			<th
-				data-bind="if: category() !== 'distributor' && window.edist.user.hasManagementAccess === true">Distribuidor</th>
-			<th>Requisitada em</th>
-			<th>Completada em</th>
-			<th data-bind="if: window.edist.user.hasManagementAccess === true">IP</th>
+				data-bind="visible: category() !== 'distributor' && window.edist.user.hasManagementAccess === true"><fmt:message
+					key="reports.requests.distributor" /></th>
+			<th></th>
+			<th></th>
+			<th></th>
+			<th
+				data-bind="visible: window.edist.user.hasManagementAccess === true"><fmt:message
+					key="reports.requests.ip" /></th>
+			<th></th>
 		</tr>
 	</thead>
 	<tbody data-bind="foreach: dists">
 		<tr data-bind="attr: {id: encodedKey}">
-			<td data-bind="if: $root.category() !== 'day'"><a
+			<td data-bind="visible: $root.category() !== 'day'"><a
 				data-bind="text: eRepDay, attr: {href : '#/reports/requests/day/'+eRepDay}"></a>
 			</td>
-			<td>
-				<p class="text-center">
-					<a
-						data-bind="attr: {href : stats ? '#/reports/requests/player/' + stats.erId : ''}">
-						<img class="img-thumbnail img-responsive"
-						src="${baseUrl}/img/profile_avatar_55.cache.png" width="55px"
-						data-bind="style: { backgroundImage : Reports.avatar($data) !== null ? Reports.avatar($data) :
-										 'url(${baseUrl}/img/default_male_55.cache.gif)' ,
-										 backgroundSize : '55px 55px',
-										 backgroundRepeat : 'no-repeat',
-										 backgroundPosition : 'center'},
-									attr : {'data-content' : stats ? stats.name : ''},
-									updatePopup:{}"
-						data-toggle="popover">
-					</a>
-				</p>
-				<p class="text-center">
-					<a data-toggle="popover" data-content="Trabalho do jogador"
-						data-bind="attr: {href: '${baseUrl}/reports/work/player/' + (stats ? stats.erId : '') }, updatePopup:{}"><span
-						class="glyphicon glyphicon-wrench"></span></a> 
-					<a data-toggle="popover" data-content="Estatísticas do jogador"
-						data-bind="if: edist.user.hasPlayerReportsAccess,
-								   attr: {href: '${baseUrl}/players/history/player/' + (stats ? stats.erId : '') }, updatePopup:{}"><span
-						class="glyphicon glyphicon-stats"></span></a> 
-					<a data-toggle="popover" data-content="Lutas do jogador"
-						data-bind="if: edist.user.hasPlayerReportsAccess,
-								   attr: {href: '${baseUrl}/players/fights/player/' + (stats ? stats.erId : '') }, updatePopup:{}"><span
-						class="glyphicon glyphicon-screenshot"></span></a>
-				</p>
+			<td class="text-center"><img
+				class="img-thumbnail img-responsive player-avatar-small"
+				src="${baseUrl}/img/profile_avatar_55.cache.png"
+				data-bind="style: { backgroundImage : Reports.avatar($data) !== null ? Reports.avatar($data) :
+									'url(${baseUrl}/img/default_male_55.cache.gif)'},
+							avatarEnhance:{}">
 			</td>
-			<td>
-				<p data-bind="if: $root.category() !== 'status'">
-					<a href="#/reports/requests/status/requested"
-						data-bind="if: status === 'REQUESTED'"> <span
-						class="label label-primary">Requisitada</span>
-					</a> <a href="#/reports/requests/status/error"
-						data-bind="if: status === 'ERROR'"> <span
-						class="label label-danger">Erro</span>
-					</a> <a href="#/reports/requests/status/sent"
-						data-bind="if: status === 'SENT'"> <span
-						class="label label-success">Enviada</span>
-					</a> <a href="#/reports/requests/status/sent_partial"
-						data-bind="if: status === 'SENT_PARTIAL'"> <span
-						class="label label-warning">Enviada Parcialmente</span>
-					</a>
-				</p>
-				<p data-bind="if: $root.category() !== 'type'">
-					<a href="#/reports/requests/type/weapons"
-						data-bind="if: type === 'WEAPONS'"> <span
-						class="label label-default">Armas</span>
-					</a> <a href="#/reports/requests/type/food"
-						data-bind="if: type === 'FOOD'"> <span
-						class="label label-default">Comida</span>
-					</a> <a href="#/reports/requests/type/weapons_food"
-						data-bind="if: type === 'WEAPONS_FOOD'"> <span
-						class="label label-default">Armas + Comida</span>
-					</a> <a href="#/reports/requests/type/rocket"
-						data-bind="if: type === 'ROCKET'"> <span
-						class="label label-info">Foguete</span>
-					</a>
-				</p>
-				<p>
-					<a href="#requestDetails" data-bind="click: $root.loadDetails">
-						Detalhes <span class="glyphicon glyphicon-new-window"></span>
-					</a>
-				</p>
-			</td>
+			<td><a
+				data-bind="attr: {href : '#/reports/requests/player/' + (stats ? stats.erId : '')}, text: stats ? stats.name : ''">
+			</a></td>
+			<td data-bind="visible: $root.category() !== 'status'"><a
+				href="#/reports/requests/status/requested"
+				data-bind="if: status === 'REQUESTED'"> <span
+					class="label label-primary"><fmt:message
+							key="reports.requests.requested" /></span>
+			</a> <a href="#/reports/requests/status/error"
+				data-bind="if: status === 'ERROR'"> <span
+					class="label label-danger"><fmt:message
+							key="reports.requests.error" /></span>
+			</a> <a href="#/reports/requests/status/sent"
+				data-bind="if: status === 'SENT'"> <span
+					class="label label-success"><fmt:message
+							key="reports.requests.sent" /></span>
+			</a> <a href="#/reports/requests/status/sent_partial"
+				data-bind="if: status === 'SENT_PARTIAL'"> <span
+					class="label label-warning"><fmt:message
+							key="reports.requests.partial" /></span>
+			</a></td>
 			<td
-				data-bind="text: rocketQuality !== null ? 'Foguete ' + rocketQuality : requestedFF + ' FF'"></td>
-			<td data-bind="if: $root.category() !== 'group'"><a
+				data-bind="text: rocketQuality !== null ? '<fmt:message key="reports.requests.rocket"/> ' + rocketQuality : requestedFF + ' FF'"></td>
+			<td data-bind="visible: $root.category() !== 'type'"><a
+				href="#/reports/requests/type/weapons"
+				data-bind="if: type === 'WEAPONS'"> <span
+					class="label label-default"><fmt:message
+							key="reports.requests.weapons" /></span>
+			</a> <a href="#/reports/requests/type/food"
+				data-bind="if: type === 'FOOD'"> <span
+					class="label label-default"><fmt:message
+							key="reports.requests.food" /></span>
+			</a> <a href="#/reports/requests/type/weapons_food"
+				data-bind="if: type === 'WEAPONS_FOOD'"> <span
+					class="label label-default"><fmt:message
+							key="reports.requests.both" /></span>
+			</a> <a href="#/reports/requests/type/rocket"
+				data-bind="if: type === 'ROCKET'"> <span
+					class="label label-info"><fmt:message
+							key="reports.requests.rocket" /></span>
+			</a></td>
+			<td data-bind="visible: $root.category() !== 'group'"><a
 				data-bind="text: group.groupName, attr: {href : '#/reports/requests/group/'+group.encodedKey}"></a></td>
-			<td data-bind="if: $root.category() !== 'distributor'"><a
-				data-bind="text: distributor ? distributor.name : '',
+			<td data-bind="visible: $root.category() !== 'distributor'"><a
+				data-bind="text: distributor && distributor.name ? distributor.name : '<fmt:message
+						key="distconfig.distributor.noName" />',
 							attr: {href : distributor ? '#/reports/requests/distributor/'+distributor.encodedKey : ''}"></a></td>
+			<td><a href="#requestDetails"
+				data-bind="click: $root.loadDetails"> <fmt:message
+						key="reports.requests.details.short" /> <span
+					class="glyphicon glyphicon-new-window"></span>
+			</a></td>
+			<td data-bind="if: requestedAt"><span
+				class="glyphicon glyphicon-time"
+				data-bind="attr: {'data-content': '<fmt:message key="reports.requests.requestedAt" />: ' + (requestedAt ? $.format.date(requestedAt, edist.format.date) : '')}, updatePopup:{}"
+				data-toggle="popover"></span></td>
+			<td data-bind="if: completedAt"><span
+				class="glyphicon glyphicon-time"
+				data-bind="attr: {'data-content': '<fmt:message key="reports.requests.completedAt" />: ' + (completedAt ? $.format.date(completedAt, edist.format.date) : '')}, updatePopup:{}"
+				data-toggle="popover"></span></td>
 			<td
-				data-bind="text: requestedAt ? $.format.date(requestedAt, edist.format.date) : ''"></td>
-			<td
-				data-bind="text: completedAt ? $.format.date(completedAt, edist.format.date) : ''"></td>
-			<td data-bind="if: window.edist.user.hasManagementAccess === true">
+				data-bind="visible: window.edist.user.hasManagementAccess === true">
 				<img
 				data-bind="attr: { src : XAppEngineCountry ? '${baseUrl}/img/flags/' + XAppEngineCountry.toLowerCase() + '.png' : '${baseUrl}/img/flags/zz.png',
 										'data-content' : XAppEngineCity + ', ' + XAppEngineRegion + ', ' + XAppEngineCountry,
@@ -105,6 +105,20 @@
 								updatePopup:{}"
 				data-toggle="popover">
 			</td>
+			<td><a data-toggle="popover"
+				data-content="<fmt:message key="header.mod"/>"
+				data-bind="if: edist.user.hasManagementAccess,
+								   attr: {href: '${baseUrl}/management/playersList/search/' + (stats ? stats.erId : '')  }, updatePopup:{}"><span
+					class="glyphicon glyphicon-list"></span></a> <a data-toggle="popover"
+				data-content="<fmt:message key="management.players.template.work"/>"
+				data-bind="attr: {href: '${baseUrl}/reports/work/player/' + (stats ? stats.erId : '') }, updatePopup:{}"><span
+					class="glyphicon glyphicon-wrench"></span></a> <a data-toggle="popover"
+				data-content="<fmt:message key="management.players.template.stats"/>"
+				data-bind="if: edist.user.hasPlayerReportsAccess, attr: {href: '${baseUrl}/players/history/player/' + (stats ? stats.erId : '') }, updatePopup:{}"><span
+					class="glyphicon glyphicon-stats"></span></a> <a data-toggle="popover"
+				data-content="<fmt:message key="management.players.template.fights"/>"
+				data-bind="attr: {href: '${baseUrl}/reports/fights/player/' + (stats ? stats.erId : '')  }, updatePopup:{}"><span
+					class="glyphicon glyphicon-screenshot"></span></a></td>
 		</tr>
 	</tbody>
 </table>

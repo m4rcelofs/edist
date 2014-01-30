@@ -13,21 +13,24 @@
 							<div class="col-md-12">
 								<p>
 									<a data-toggle="popover"
-										data-content="Distribuições para o jogador"
+										data-content="<fmt:message key="management.players.template.dist"/>"
 										data-bind="if: dbStatus() === 'ENABLED', 
 													attr: {href: '${baseUrl}/reports/requests/player/' + erId() }, updatePopup:{}"><span
-										class="glyphicon glyphicon-list"></span></a>
-									<a data-toggle="popover" data-content="Trabalho do jogador"
+										class="glyphicon glyphicon-cutlery"></span></a> <a
+										data-toggle="popover"
+										data-content="<fmt:message key="management.players.template.work"/>"
 										data-bind="if: dbStatus() === 'ENABLED', 
 													attr: {href: '${baseUrl}/reports/work/player/' + erId() }, updatePopup:{}"><span
-										class="glyphicon glyphicon-wrench"></span></a>
-									<a data-toggle="popover" data-content="Estatísticas do jogador"
+										class="glyphicon glyphicon-wrench"></span></a> <a
+										data-toggle="popover"
+										data-content="<fmt:message key="management.players.template.stats"/>"
 										data-bind="if: dbStatus() === 'ENABLED', 
 													attr: {href: '${baseUrl}/players/history/player/' + erId() }, updatePopup:{}"><span
-										class="glyphicon glyphicon-stats"></span></a> 
-									<a data-toggle="popover" data-content="Lutas do jogador"
+										class="glyphicon glyphicon-stats"></span></a> <a
+										data-toggle="popover"
+										data-content="<fmt:message key="management.players.template.fights"/>"
 										data-bind="if: dbStatus() === 'ENABLED', 
-													attr: {href: '${baseUrl}/players/fights/player/' + erId() }, updatePopup:{}"><span
+													attr: {href: '${baseUrl}/reports/fights/player/' + erId() }, updatePopup:{}"><span
 										class="glyphicon glyphicon-screenshot"></span></a>
 								</p>
 							</div>
@@ -35,55 +38,78 @@
 						<div class="row">
 							<div class="col-md-12">
 								<p>
-									<span data-bind="if: dbStatus() === 'NEW'" class="label label-info">Novo</span>
-									<span data-bind="if: dbStatus() === 'ERROR'" class="label label-danger">Erro</span>
-									<span data-bind="if: dbStatus() === 'ENABLED'" class="label label-success"> Habilitado </span> 
-									<span data-bind="if: dbStatus() === 'DISABLED'" class="label label-default">Desabilitado</span>
+									<span data-bind="if: dbStatus() === 'NEW'"
+										class="label label-info"><fmt:message key="shared.new" /></span>
+									<span data-bind="if: dbStatus() === 'ERROR'"
+										class="label label-danger"><fmt:message
+											key="shared.error" /></span> <span
+										data-bind="if: dbStatus() === 'ENABLED'"
+										class="label label-success"><fmt:message
+											key="shared.enabled" /></span> <span
+										data-bind="if: dbStatus() === 'DISABLED'"
+										class="label label-default"><fmt:message
+											key="shared.disabled" /></span>
 								</p>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-md-12">
 								<p>
-									<span data-bind="if: fightStatus() === null" class="label label-default">Lutas: Não verificado</span>
-									<span data-bind="if: fightStatus() === 'OK'" class="label label-success">Lutas: OK</span>
-									<span data-bind="if: fightStatus() === 'WARNING'" class="label label-warning">Lutas: Atenção!</span>
-									<span data-bind="if: fightStatus() === 'TEMP_BANNED'" class="label label-danger">Lutas: Suspenso
-											Temporariamente</span>
+									<span data-bind="if: fightStatus() === null"
+										class="label label-default"><fmt:message
+											key="shared.fights" />: <fmt:message key="shared.unverified" /></span>
+									<span data-bind="if: fightStatus() === 'OK'"
+										class="label label-success"><fmt:message
+											key="shared.fights" />: <fmt:message key="shared.ok" /></span> <span
+										data-bind="if: fightStatus() === 'WARNING'"
+										class="label label-warning"><fmt:message
+											key="shared.fights" />: <fmt:message key="shared.warning" /></span>
+									<span data-bind="if: fightStatus() === 'TEMP_BANNED'"
+										class="label label-danger"><fmt:message
+											key="shared.fights" />: <fmt:message key="shared.tempBanned" /></span>
 								</p>
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-md-12">
 								<p>
-									<span data-bind="if: workStatus() === null" class="label label-default">Trabalho: Não verificado</span>
-									<span data-bind="if: workStatus() === 'OK'" class="label label-success">Trabalho: OK</span>
-									<span data-bind="if: workStatus() === 'WARNING'" class="label label-warning">Trabalho: Atenção!</span>
-									<span data-bind="if: workStatus() === 'TEMP_BANNED'" class="label label-danger">Trabalho: Suspenso Temporariamente</span>
+									<span data-bind="if: workStatus() === null"
+										class="label label-default"><fmt:message
+											key="shared.work" />: <fmt:message key="shared.unverified" /></span>
+									<span data-bind="if: workStatus() === 'OK'"
+										class="label label-success"><fmt:message
+											key="shared.work" />: <fmt:message key="shared.ok" /></span> <span
+										data-bind="if: workStatus() === 'WARNING'"
+										class="label label-warning"><fmt:message
+											key="shared.work" />: <fmt:message key="shared.warning" /></span>
+									<span data-bind="if: workStatus() === 'TEMP_BANNED'"
+										class="label label-danger"><fmt:message
+											key="shared.work" />: <fmt:message key="shared.tempBanned" /></span>
 								</p>
 							</div>
 						</div>
-						
+
 					</div>
 					<div class="col-md-9 table-responsive">
 						<div class="row">
 							<div class="col-md-9">
-								<strong> 
-									<a data-bind="attr : { href: 'http://www.erepublik.com/en/citizen/profile/' + erId() }"><span
-										data-bind="text: dbStatus() === 'ERROR' ? 'Jogador Inexistente' : 
-															name() ? name() : 'Buscando jogador no eRepublik...'"></span></a>
+								<strong> <a
+									data-bind="attr : { href: 'http://www.erepublik.com/en/citizen/profile/' + erId() }"><span
+										data-bind="text: dbStatus() === 'ERROR' ? '<fmt:message key="management.players.doesNotExist"/>' : 
+															name() ? name() : '<fmt:message key="management.players.searching"/>'"></span></a>
 								</strong>
 							</div>
 							<div class="col-md-2" data-bind="if: dbStatus() !== 'ERROR'">
-								<a data-toggle="popover" data-content="Enviar mensagem"
+								<a data-toggle="popover"
+									data-content="<fmt:message key="player.sendMessage"/>"
 									data-bind="attr : { href: 'http://www.erepublik.com/en/main/messages-compose/' + erId() }, updatePopup:{}">
 									<span class="glyphicon glyphicon-comment"></span>
-								</a> 
-								<a data-toggle="popover" data-content="Doar itens"
+								</a> <a data-toggle="popover"
+									data-content="<fmt:message key="player.donate.items"/>"
 									data-bind="attr : { href: 'http://www.erepublik.com/en/economy/donate-items/' + erId() }, updatePopup:{}">
 									<span class="glyphicon glyphicon-gift"></span>
-								</a> 
-								<a data-toggle="popover" data-content="Doar dinheiro"
+								</a> <a data-toggle="popover"
+									data-content="<fmt:message key="player.donate.cc"/>"
 									data-bind="attr : { href: 'http://www.erepublik.com/en/economy/donate-money/' + erId() }, updatePopup:{}">
 									<span class="glyphicon glyphicon-usd"></span>
 								</a>
@@ -91,7 +117,8 @@
 							<div class="col-md-1">
 								<div class="dropdown pull-right">
 									<button class="btn btn-default" data-toggle="dropdown"
-										id="actionsDropdown" title="Ações">
+										id="actionsDropdown"
+										title="<fmt:message key="management.players.actions"/>">
 										<span class="caret"></span>
 									</button>
 									<ul class="dropdown-menu" role="menu"
@@ -100,21 +127,27 @@
 											data-bind="if: fightStatus() !== null && fightStatus() !== 'OK'"><a
 											data-bind="click: $root.clearFightStatus" role="menuitem"
 											tabindex="-1"><span class="glyphicon glyphicon-transfer"></span>
-												Limpar Status de Lutas </a></li>
+												<fmt:message key="management.players.clear.fights" /></a></li>
 										<li role="presentation"
 											data-bind="if: workStatus() !== null && workStatus() !== 'OK'"><a
 											data-bind="click: $root.clearWorkStatus" role="menuitem"
 											tabindex="-1"><span class="glyphicon glyphicon-transfer"></span>
-												Limpar Status de Trabalho </a></li>
-										<li role="presentation" data-bind="if: dbStatus() == 'DISABLED'"><a
+												<fmt:message key="management.players.clear.work" /></a></li>
+										<li role="presentation"
+											data-bind="if: dbStatus() == 'DISABLED'"><a
 											data-bind="click: $root.enable" role="menuitem" tabindex="-1"><span
-												class="glyphicon glyphicon-asterisk"></span> Habilitar </a></li>
-										<li role="presentation" data-bind="if: dbStatus() == 'ENABLED'"><a
-											data-bind="click: $root.disable" role="menuitem" tabindex="-1"><span
-												class="glyphicon glyphicon-ban-circle"></span> Desabilitar </a></li>
+												class="glyphicon glyphicon-asterisk"></span> <fmt:message
+													key="shared.enable" /></a></li>
+										<li role="presentation"
+											data-bind="if: dbStatus() == 'ENABLED'"><a
+											data-bind="click: $root.disable" role="menuitem"
+											tabindex="-1"><span
+												class="glyphicon glyphicon-ban-circle"></span> <fmt:message
+													key="shared.disable" /> </a></li>
 										<li role="presentation" data-bind="if: dbStatus() == 'ERROR'"><a
 											data-bind="click: $root.remove" role="menuitem" tabindex="-1"><span
-												class="glyphicon glyphicon-remove"></span> Excluir </a></li>
+												class="glyphicon glyphicon-remove"></span> <fmt:message
+													key="management.players.remove" /></a></li>
 									</ul>
 								</div>
 							</div>
@@ -122,11 +155,12 @@
 						<table class="table table-condensed">
 							<tbody>
 								<tr>
-									<td><span class="glyphicon glyphicon-tags"></span> Grupos:</td>
+									<td><span class="glyphicon glyphicon-tags"></span> <fmt:message
+											key="management.players.groups" />:</td>
 									<td><select class="selectpicker show-menu-arrow"
-										title="Selecione o(s) grupo(s)" multiple
-										data-selected-text-format="count>3"
-										data-count-selected-text="{0} grupos selecionados"
+										title="<fmt:message key="management.players.groupSelect"/>"
+										multiple data-selected-text-format="count>3"
+										data-count-selected-text="<fmt:message key="management.players.selectedText"/>"
 										data-bind="options: $root.groups, 
 															optionsText: 'groupName',
 															optionsValue: 'encodedKey', 
@@ -136,21 +170,33 @@
 									</select></td>
 								</tr>
 								<tr>
-									<td><span class="glyphicon glyphicon-fire"></span> Fábrica
-										de Foguetes:</td>
+									<td><span class="glyphicon glyphicon-fire"></span> <fmt:message
+											key="management.players.rocketFactory" />:</td>
 									<td><select class="selectpicker show-menu-arrow show-tick"
 										data-bind="value: rocketEnabled(),
 														   enable: dbStatus() === 'ENABLED',
 														   updateSelectPicker: dbStatus">
-											<option value="NONE" data-subtext="):">Sem fábrica</option>
-											<option value="Q1">Fábrica Q1</option>
-											<option value="Q2">Fábrica Q2</option>
-											<option value="Q3">Fábrica Q3</option>
-											<option value="Q4">Fábrica Q4</option>
-											<option value="Q5">Fábrica Q5</option>
+											<option value="NONE" data-subtext="):">
+												<fmt:message key="management.players.noRocket" />
+											</option>
+											<option value="Q1">
+												<fmt:message key="management.players.fQ1" />
+											</option>
+											<option value="Q2">
+												<fmt:message key="management.players.fQ2" />
+											</option>
+											<option value="Q3">
+												<fmt:message key="management.players.fQ3" />
+											</option>
+											<option value="Q4">
+												<fmt:message key="management.players.fQ4" />
+											</option>
+											<option value="Q5">
+												<fmt:message key="management.players.fQ5" />
+											</option>
 									</select> <span class="pull-right"><a href="#" class="help"
 											data-toggle="popover" title=""
-											data-content="Só é utilizada se a Distribuição de Foguetes estiver ativa"
+											data-content="<fmt:message key="management.players.rockets.help"/>"
 											data-bind="updatePopup:{}"> <span
 												class="glyphicon glyphicon-question-sign"></span>
 										</a></span></td>
@@ -158,23 +204,26 @@
 								<tr
 									data-bind="if: $root.playerConfigEnabled() === true 
 													   && dbStatus() === 'ENABLED'">
-									<td><span class="glyphicon glyphicon-cog"></span>
-										Distribuição:</td>
+									<td><span class="glyphicon glyphicon-cog"></span> <fmt:message
+											key="management.groups.dist" />:</td>
 									<td><a class="btn btn-default"
 										data-bind="click: $root.addConfig, visible: config() === null"
-										title="Adicionar Configuração"> <span
-											class="glyphicon glyphicon-new-window"></span> Adicionar
+										title="<fmt:message key="management.groups.addConfig"/>">
+											<span class="glyphicon glyphicon-new-window"></span> <fmt:message
+												key="management.groups.add" />
 									</a> <a class="btn btn-default"
 										data-bind="click: $root.editConfig, visible: config() !== null"
-										title="Editar Configuração"> <span
-											class="glyphicon glyphicon-pencil"></span> Editar
+										title="<fmt:message key="management.groups.editConfig"/>">
+											<span class="glyphicon glyphicon-pencil"></span> <fmt:message
+												key="management.groups.edit" />
 									</a> <a class="btn btn-sm btn-default"
 										data-bind="click: $root.removeConfig, visible: config() !== null"
-										title="Remover Configuração"> <span
-											class="glyphicon glyphicon-remove"></span> Remover
+										title="<fmt:message key="management.groups.removeConfig"/>">
+											<span class="glyphicon glyphicon-remove"></span> <fmt:message
+												key="management.groups.remove" />
 									</a> <span class="pull-right" data-bind="if: config() === null"><a
 											class="help" data-toggle="popover" title=""
-											data-content="Será utilizada a configuração do(s) grupo(s)"
+											data-content="<fmt:message key="management.players.config.help"/>"
 											data-bind="updatePopup:{}"> <span
 												class="glyphicon glyphicon-question-sign"></span>
 										</a></span></td>
@@ -182,23 +231,26 @@
 								<tr
 									data-bind="if: $root.playerConfigEnabled() === true
 													   && dbStatus() === 'ENABLED'">
-									<td><span class="glyphicon glyphicon-screenshot"></span>
-										Verificação de Lutas:</td>
+									<td><span class="glyphicon glyphicon-screenshot"></span> <fmt:message
+											key="management.groups.fightVerif" />:</td>
 									<td><a class="btn btn-default"
 										data-bind="click: $root.addFightVerif, visible: fightVerif() === null"
-										title="Adicionar Verificação de Lutas"> <span
-											class="glyphicon glyphicon-new-window"></span> Adicionar
+										title="<fmt:message key="management.groups.add"/> <fmt:message key="management.groups.fightVerif"/>">
+											<span class="glyphicon glyphicon-new-window"></span> <fmt:message
+												key="management.groups.add" />
 									</a> <a class="btn btn-default"
 										data-bind="click: $root.editFightVerif, visible: fightVerif() !== null"
-										title="Editar Verificação de Lutas"> <span
-											class="glyphicon glyphicon-pencil"></span> Editar
+										title="<fmt:message key="management.groups.edit"/> <fmt:message key="management.groups.fightVerif"/>">
+											<span class="glyphicon glyphicon-pencil"></span> <fmt:message
+												key="management.groups.edit" />
 									</a> <a class="btn btn-sm btn-default"
 										data-bind="click: $root.removeFightVerif, visible: fightVerif() !== null"
-										title="Remover Verificação de Lutas"> <span
-											class="glyphicon glyphicon-remove"></span> Remover
+										title="<fmt:message key="management.groups.remove"/> <fmt:message key="management.groups.fightVerif"/>">
+											<span class="glyphicon glyphicon-remove"></span> <fmt:message
+												key="management.groups.remove" />
 									</a> <span class="pull-right" data-bind="if: fightVerif() === null"><a
-											class="help" data-toggle="popover" title=""
-											data-content="Será utilizada a verificação de lutas do(s) grupo(s)"
+											class="help" data-toggle="popover"
+											data-content="<fmt:message key="management.players.fightVerif.help"/>"
 											data-bind="updatePopup:{}"> <span
 												class="glyphicon glyphicon-question-sign"></span>
 										</a></span></td>
@@ -206,24 +258,27 @@
 								<tr
 									data-bind="if: $root.playerConfigEnabled() === true
 													   && dbStatus() === 'ENABLED'">
-									<td><span class="glyphicon glyphicon-wrench"></span>
-										Verificação de Trabalho:</td>
+									<td><span class="glyphicon glyphicon-wrench"></span> <fmt:message
+											key="management.groups.workVerif" />:</td>
 									<td><a class="btn btn-default"
 										data-bind="click: $root.addWorkVerif, visible:
 													workVerif() === null"
-										title="Adicionar Verificação de Trabalho"> <span
-											class="glyphicon glyphicon-new-window"></span> Adicionar
+										title="<fmt:message key="management.groups.add"/> <fmt:message key="management.groups.workVerif"/>">
+											<span class="glyphicon glyphicon-new-window"></span> <fmt:message
+												key="management.groups.add" />
 									</a> <a class="btn btn-default"
 										data-bind="click: $root.editWorkVerif, visible: workVerif() !== null"
-										title="Editar Verificação de Trabalho"> <span
-											class="glyphicon glyphicon-pencil"></span> Editar
+										title="<fmt:message key="management.groups.edit"/> <fmt:message key="management.groups.workVerif"/>">
+											<span class="glyphicon glyphicon-pencil"></span> <fmt:message
+												key="management.groups.edit" />
 									</a> <a class="btn btn-sm btn-default"
 										data-bind="click: $root.removeWorkVerif, visible: workVerif() !== null"
-										title="Remover Verificação de Trabalho"> <span
-											class="glyphicon glyphicon-remove"></span> Remover
+										title="<fmt:message key="management.groups.remove"/> <fmt:message key="management.groups.workVerif"/>">
+											<span class="glyphicon glyphicon-remove"></span> <fmt:message
+												key="management.groups.remove" />
 									</a> <span class="pull-right" data-bind="if: workVerif() === null"><a
-											class="help" data-toggle="popover" title=""
-											data-content="Será utilizada a verificação de trabalho do(s) grupo(s)"
+											class="help" data-toggle="popover"
+											data-content="<fmt:message key="management.players.workVerif.help"/>"
 											data-bind="updatePopup:{}"> <span
 												class="glyphicon glyphicon-question-sign"></span>
 										</a></span></td>
@@ -235,7 +290,8 @@
 				<button class="btn btn-primary pull-right"
 					data-bind="click: $root.savePlayer, enable: dbStatus() !== 'NEW' && dbStatus() !== 'ERROR'"
 					title="Salvar">
-					<span class="glyphicon glyphicon-floppy-disk"></span> Salvar
+					<span class="glyphicon glyphicon-floppy-disk"></span>
+					<fmt:message key="shared.save" />
 				</button>
 			</div>
 		</div>

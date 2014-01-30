@@ -1,14 +1,12 @@
 package com.erep.dist.instances.frontend.tasks;
 
 import static com.erep.dist.auth.SymmetricCipherUtils.decrypt;
-import static com.erep.dist.data.enums.RequestStatus.ERROR;
-import static com.erep.dist.data.enums.RequestStatus.SENT;
-import static com.erep.dist.data.enums.RequestStatus.SENT_PARTIAL;
 
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.jdo.PersistenceManager;
 import javax.jdo.Transaction;
 
 import com.erep.dist.CloseablePM;
@@ -18,10 +16,11 @@ import com.erep.dist.data.Distributor;
 import com.erep.dist.data.Request;
 import com.erep.dist.data.ResourceDist;
 import com.erep.dist.data.enums.PlayerStatus;
+import com.erep.dist.data.enums.RequestStatus;
 import com.erep.dist.data.enums.ResourceDistStatus;
 import com.erep.dist.erep.ErepScrapper;
-import com.erep.dist.erep.dist.DistStrategy;
 import com.erep.dist.erep.dist.FoodStrategy;
+import com.erep.dist.erep.dist.ManufacturedStrategy;
 import com.erep.dist.erep.dist.WeaponStrategy;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.taskqueue.DeferredTask;
@@ -34,44 +33,41 @@ public class SendResourceTask implements DeferredTask {
 															.getName());
 
 	private final Key			requestKey;
+	private final Key			resourceKey;
 
-	public SendResourceTask(Request request) {
+	public SendResourceTask(Request request, ResourceDist resource) {
 		this.requestKey = request.getKey();
+		this.resourceKey = resource.getKey();
 	}
 
 	@Override
 	public void run() {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			DataAccessObject dao = new DataAccessObject(pm);
-			Request dbRequest = dao.find(new Request(requestKey));
 
-			if (dbRequest == null || dbRequest.getStatus() == SENT)
+			Request dbRequest = dao.find(new Request(requestKey));
+			ResourceDist dbResource = dao.find(new ResourceDist(resourceKey));
+
+			if (dbRequest == null || dbResource == null
+					|| dbResource.getStatus() == ResourceDistStatus.SENT)
 				return;
 
-			Transaction tx = pm.currentTransaction();
-			tx.begin();
-			checkDistributorAccess(dbRequest.getDistributor());
-			tx.commit();
-
-			new Date().getTime();
+			checkDistributorAccess(pm, dbRequest.getDistributor());
 
 			PlayerStatus dbStatus = dbRequest.getPlayer().getDbStatus();
 			if (dbStatus == PlayerStatus.ERROR
 					|| dbStatus == PlayerStatus.DISABLED) {
-				dbRequest.setStatus(ERROR);
+				dbRequest.setStatus(RequestStatus.ERROR);
+				dbResource.setStatus(ResourceDistStatus.ERROR);
 				return;
 			}
 
-			execute(dbRequest);
+			execute(dbRequest, dbResource);
 
-			dbRequest.setStatus(SENT);
+			dbRequest.setStatus(RequestStatus.SENT);
 			dbRequest.setCompletedAt(new Date());
-
-			tx = pm.currentTransaction();
-			tx.begin();
-			dbRequest.getDistributor().setLastAccessTimestamp(
-					new Date().getTime());
-			tx.commit();
+			
+			setDistributorAccess(pm, dbRequest.getDistributor());
 
 		} catch (Exception e) {
 			// meh
@@ -79,51 +75,65 @@ public class SendResourceTask implements DeferredTask {
 		}
 	}
 
-	private void checkDistributorAccess(Distributor distributor) {
-		Long lastAccess = distributor.getLastAccessTimestamp();
-		Long now = new Date().getTime();
+	private void checkDistributorAccess(PersistenceManager pm,
+			Distributor distributor) {
 
+		Transaction tx = pm.currentTransaction();
+		tx.begin();
+		Long lastAccess = distributor.getLastAccessTimestamp();
+		tx.commit();
+
+		Long now = new Date().getTime();
 		if (now < (lastAccess + 10000))
 			throw new IllegalStateException(distributor.getEmail()
 					+ " cooldown period, will retry later");
+
 	}
 
-	private void execute(Request request) throws Exception {
-		Distributor dist = request.getDistributor();
-		String passwordPlain = decryptPassword(dist);
+	private void setDistributorAccess(PersistenceManager pm,
+			Distributor distributor) {
+		Transaction tx = pm.currentTransaction();
+		tx.begin();
+		distributor.setLastAccessTimestamp(new Date().getTime());
+		tx.commit();
+	}
 
-		if (dist.getEmail() == null || dist.getEmail().isEmpty()
-				|| passwordPlain == null || passwordPlain.isEmpty())
-			throw new IllegalStateException("Distributor is not configured");
+	private void execute(Request dbRequest, ResourceDist dbResource)
+			throws Exception {
+		Distributor dist = dbRequest.getDistributor();
+		String passwordPlain = decryptPassword(dist);
 
 		try (ErepScrapper scrapper = new ErepScrapper(dist.getEmail(),
 				passwordPlain)) {
 			scrapper.login();
-			for (ResourceDist resource : request.getResources())
-				if (resource.getStatus() != ResourceDistStatus.SENT)
-					try {
-						DistStrategy strategy = getStrategy(request, resource,
-								scrapper);
-						strategy.execute();
-						resource.setStatus(ResourceDistStatus.SENT);
-						throw new IllegalStateException(dist.getEmail()
-								+ " cooldown period, will retry later");
-					} catch (IllegalStateException e) {
-						request.setStatus(SENT_PARTIAL);
-						throw e;
-					} catch (Exception e) {
-						logger.log(Level.SEVERE, "Exception sending resource",
-								e);
-						resource.setStatus(ResourceDistStatus.ERROR);
-						request.setStatus(SENT_PARTIAL);
-						throw e;
-					}
+
+			ManufacturedStrategy strategy = getStrategy(dbRequest, dbResource,
+					scrapper);
+			strategy.execute();
+
+			dbResource.setStatus(ResourceDistStatus.SENT);
+			dbRequest.getDistributor()
+					.setLastInventory(strategy.getInventory());
+
+		} catch (Exception e) {
+			logger.log(Level.SEVERE, "Exception sending resource", e);
+			dbResource.setStatus(ResourceDistStatus.ERROR);
+			dbRequest.setStatus(RequestStatus.SENT_PARTIAL);
+			throw e;
 		}
+
 	}
 
 	private String decryptPassword(Distributor distributor) throws Exception {
 		try {
-			return decrypt(distributor.getPassword());
+			String password = decrypt(distributor.getPassword());
+
+			if (distributor.getEmail() == null
+					|| distributor.getEmail().isEmpty() || password == null
+					|| password.trim().isEmpty())
+				throw new IllegalStateException("Distributor is not configured");
+
+			return password;
 		} catch (Exception e) {
 			logger.log(Level.SEVERE,
 					"Could not decrypt password for distributor {0}",
@@ -132,8 +142,8 @@ public class SendResourceTask implements DeferredTask {
 		}
 	}
 
-	private DistStrategy getStrategy(Request request, ResourceDist resource,
-			ErepScrapper scrapper) throws Exception {
+	private ManufacturedStrategy getStrategy(Request request,
+			ResourceDist resource, ErepScrapper scrapper) throws Exception {
 		switch (resource.getType()) {
 			case WEAPONS:
 				return new WeaponStrategy(resource, request.getPlayer(),

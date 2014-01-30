@@ -6,7 +6,7 @@ function FightFiltersViewModel() {
 	self.searchParam = ko.observable();
 	self.searchFct = null;
 
-	self.groups = Players.groups;
+	self.groups = Reports.groups;
 }
 
 var FightsViewModel = new function() {
@@ -16,7 +16,7 @@ var FightsViewModel = new function() {
 
 	self.fightsHistory = ko.observableArray([]);
 	self.cursor = ko.observable(null);
-	self.filters = new HistoryFiltersViewModel();
+	self.filters = new FightFiltersViewModel();
 
 	ko.computed(function() {
 		if (self.category()) {
@@ -30,7 +30,7 @@ var FightsViewModel = new function() {
 
 	self.doSearch = function() {
 		var searchText = self.filters.searchText();
-		Navigation.setCurrentLocation('/players/fights/' + self.category()
+		Navigation.setCurrentLocation('/reports/fights/' + self.category()
 				+ '/' + searchText);
 	}
 
@@ -41,26 +41,26 @@ var FightsViewModel = new function() {
 	}
 
 	self.filterByDate = function(param) {
-		reset('date', PlayerReportService.fightsByDate, param,
+		reset('date', ReportService.fightsByDate, param,
 				checkParam(param) ? new Date(param) : null);
 		queryServer();
 	}
 
 	self.filterByDay = function(param) {
 		param = checkParam(param) ? param : (edist.server.eRepDay - 1);
-		reset('day', PlayerReportService.fightsByDay, param, param);
+		reset('day', ReportService.fightsByDay, param, param);
 		queryServer();
 	}
 
 	self.filterByGroup = function(param) {
-		reset('group', PlayerReportService.fightsByGroup, param, {
+		reset('group', ReportService.fightsByGroup, param, {
 			encodedKey : param
 		});
 		queryServer();
 	}
 
 	self.filterByPlayer = function(param) {
-		reset('player', PlayerReportService.fightsByPlayer, param, param);
+		reset('player', ReportService.fightsByPlayer, param, param);
 		queryServer();
 	}
 
@@ -136,8 +136,8 @@ var FightsViewModel = new function() {
 
 	function showTab() {
 		$('#fightTab').tab('show');
-		if (Navigation.getCurrenLocation() === '/players/fights') {
-			Navigation.setCurrentLocation('/players/fights/day');
+		if (Navigation.getCurrenLocation() === '/reports/fights') {
+			Navigation.setCurrentLocation('/reports/fights/day');
 		}
 	}
 
@@ -147,14 +147,14 @@ var FightRoutes = new function() {
 	var self = this;
 
 	self.addRoutes = function() {
-		crossroads.addRoute('players/fights', FightsViewModel.initFights);
-		crossroads.addRoute('players/fights/date/:param:',
+		crossroads.addRoute('reports/fights', FightsViewModel.initFights);
+		crossroads.addRoute('reports/fights/date/:param:',
 				FightsViewModel.filterByDate);
-		crossroads.addRoute('players/fights/day/:param:',
+		crossroads.addRoute('reports/fights/day/:param:',
 				FightsViewModel.filterByDay);
-		crossroads.addRoute('players/fights/group/:param:',
+		crossroads.addRoute('reports/fights/group/:param:',
 				FightsViewModel.filterByGroup);
-		crossroads.addRoute('players/fights/player/:param:',
+		crossroads.addRoute('reports/fights/player/:param:',
 				FightsViewModel.filterByPlayer);
 	}
 };

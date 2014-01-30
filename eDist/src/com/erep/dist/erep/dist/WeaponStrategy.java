@@ -9,8 +9,6 @@ import com.erep.dist.data.enums.ResourceType;
 import com.erep.dist.erep.ErepScrapper;
 
 public class WeaponStrategy extends ManufacturedStrategy {
-	
-	
 
 	public WeaponStrategy(ResourceDist resource, Player player,
 			ErepScrapper scrapper) throws Exception {
@@ -26,8 +24,9 @@ public class WeaponStrategy extends ManufacturedStrategy {
 
 		logger.log(Level.WARNING, "Needed weapons: " + needed);
 		logger.log(Level.WARNING, "Actual weapons: " + actual);
-		logger.log(Level.WARNING, "Current inventory: " + getInventory().toString());
-		
+		logger.log(Level.WARNING, "Current inventory: "
+				+ getInventory().toString());
+
 		if (actual < needed)
 			throw new InventoryValidationException("Only " + actual + " w"
 					+ quality.name() + " in inventory, needs at least "

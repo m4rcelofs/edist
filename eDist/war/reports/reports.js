@@ -4,9 +4,11 @@ $(document).ready(function() {
 
 	ko.applyBindings(RequestsViewModel, document.getElementById('requests'));
 	ko.applyBindings(WorkViewModel, document.getElementById('work'));
+	ko.applyBindings(FightsViewModel, document.getElementById('fights'));
 
 	RequestsRoutes.addRoutes();
 	WorkRoutes.addRoutes();
+	FightRoutes.addRoutes();
 
 	Navigation.configureRoutes('/reports/');
 
@@ -50,13 +52,12 @@ var Reports = new function() {
 	self.avatar = function(item) {
 		return item.stats ? getAvatar(item.stats) : getAvatar(item);
 	}
-	
+
 	function getAvatar(stats) {
 		if (stats && stats.avatar) {
 			if (stats.avatar.indexOf('142x142') !== -1) {
 				// from eR
-				return 'url(' + stats.avatar.replace('142x142', '55x55')
-						+ ')';
+				return 'url(' + stats.avatar.replace('142x142', '55x55') + ')';
 			} else {
 				// from blobstore
 				return 'url(' + stats.avatar + '=s55)';

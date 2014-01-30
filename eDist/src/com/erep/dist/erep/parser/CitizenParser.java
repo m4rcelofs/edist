@@ -1,10 +1,12 @@
 package com.erep.dist.erep.parser;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.TextNode;
 import org.jsoup.select.Elements;
 
 public class CitizenParser {
@@ -16,9 +18,10 @@ public class CitizenParser {
 		Document doc = Jsoup.parse(html);
 
 		{
-			String name = doc.select("div .citizen_profile_header > h2").text()
-					.trim();
-			citizen.put("name", name);
+			List<TextNode> elements = doc.select("div .citizen_profile_header > h2").get(0).textNodes();
+			for(TextNode node : elements) 
+				if(node.text() != null && !node.text().trim().isEmpty())
+					citizen.put("name", node.text().trim());
 		}
 
 		{

@@ -15,7 +15,7 @@ public class CitizenParserTest {
 
 	@Test
 	public void testParse() throws IOException {
-		URL url = new URL("http://www.erepublik.com/br/citizen/profile/2808593");
+		URL url = new URL("http://www.erepublik.com/br/citizen/profile/1432558");
 		String html = IOUtils.toString(url.openConnection().getInputStream(),
 				"UTF-8");
 

@@ -192,6 +192,7 @@
 		<init-param>
 			<param-name>classes</param-name>
 			<param-value>
+				com.erep.dist.data.DailyFights,
 				com.erep.dist.data.DailyWork,
 				com.erep.dist.data.DailyStats,
 				com.erep.dist.data.Distributor,
@@ -204,6 +205,7 @@
 				
 				com.erep.dist.dwr.dto.RequestQuery,
 				com.erep.dist.dwr.dto.WorkQuery,
+				com.erep.dist.dwr.dto.FightsQuery,
 				com.erep.dist.dwr.dto.FiltersInitialInfo,
 
 				com.erep.dist.data.enums.RequestType,
@@ -237,18 +239,13 @@
 			<param-name>classes</param-name>
 			<param-value>
 				com.erep.dist.dwr.dto.StatsQuery,
-				com.erep.dist.dwr.dto.FightsQuery,
 				com.erep.dist.dwr.dto.FiltersInitialInfo,
 				
 				com.erep.dist.dwr.PlayerReportService,
 				
-				com.erep.dist.data.DailyFights,
 				com.erep.dist.data.DailyStats,
-				com.erep.dist.data.PlayerGroup,
-				
-				com.erep.dist.data.enums.ResourceQuality,
-				com.erep.dist.data.enums.PlayerDistStatus
-    		</param-value>
+				com.erep.dist.data.PlayerGroup
+			</param-value>
 		</init-param>
 	</servlet>
 
@@ -391,6 +388,16 @@
 	</security-constraint>
 
 	<!-- Filters -->
+	<filter>
+		<filter-name>languageFilter</filter-name>
+		<filter-class>com.erep.dist.i18n.LanguageFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>languageFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
 	<filter>
 		<filter-name>moderatorsFilter</filter-name>
 		<filter-class>com.erep.dist.auth.ModeratorsFilter</filter-class>

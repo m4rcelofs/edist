@@ -3,7 +3,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h3><span class="glyphicon glyphicon-cog"></span> Configuração da Distribuição</h3>
+				<h3><span class="glyphicon glyphicon-cog"></span> <fmt:message key="distconfig.title"/></h3>
 			</div>
 			<div class="modal-body">
 				<form id="dist-config-form" class="form-horizontal" role="form"
@@ -12,8 +12,8 @@
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button class="btn btn-primary" data-bind="click: updateRoot">OK</button>
-				<button class="btn" data-bind="click: cancel">Cancelar</button>
+				<button class="btn btn-primary" data-bind="click: updateRoot"><fmt:message key="shared.ok"/></button>
+				<button class="btn" data-bind="click: cancel"><fmt:message key="shared.cancel"/></button>
 			</div>
 		</div>
 	</div>
@@ -24,7 +24,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h3><span class="glyphicon glyphicon-screenshot"></span> Verificação de Lutas</h3>
+				<h3><span class="glyphicon glyphicon-screenshot"></span> <fmt:message key="distconfig.fightVerif.title"/></h3>
 			</div>
 			<div class="modal-body">
 				<form id="fight-verif-form" class="form-horizontal" role="form"
@@ -33,8 +33,8 @@
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button class="btn btn-primary" data-bind="click: updateRoot">OK</button>
-				<button class="btn" data-bind="click: cancel">Cancelar</button>
+				<button class="btn btn-primary" data-bind="click: updateRoot"><fmt:message key="shared.ok"/></button>
+				<button class="btn" data-bind="click: cancel"><fmt:message key="shared.cancel"/></button>
 			</div>
 		</div>
 	</div>
@@ -45,7 +45,7 @@
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
-				<h3><span class="glyphicon glyphicon-wrench"></span> Verificação de Trabalho</h3>
+				<h3><span class="glyphicon glyphicon-wrench"></span> <fmt:message key="distconfig.workVerif.title"/></h3>
 			</div>
 			<div class="modal-body">
 				<form id="work-verif-form" class="form-horizontal" role="form"
@@ -54,8 +54,8 @@
 				</form>
 			</div>
 			<div class="modal-footer">
-				<button class="btn btn-primary" data-bind="click: updateRoot">OK</button>
-				<button class="btn" data-bind="click: cancel">Cancelar</button>
+				<button class="btn btn-primary" data-bind="click: updateRoot"><fmt:message key="shared.ok"/></button>
+				<button class="btn" data-bind="click: cancel"><fmt:message key="shared.cancel"/></button>
 			</div>
 		</div>
 	</div>

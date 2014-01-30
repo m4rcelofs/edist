@@ -11,21 +11,19 @@ import com.erep.dist.erep.ErepScrapper;
 import com.erep.dist.erep.eRepURL;
 import com.erep.dist.erep.parser.DonateItemsParser;
 import com.google.common.collect.HashBasedTable;
-import com.google.common.collect.Table;
-import com.google.common.collect.Tables;
 
 public abstract class ManufacturedStrategy implements DistStrategy {
 
-	private final ResourceDist									resource;
-	private final Player										player;
-	private final ErepScrapper									scrapper;
-	private final DonateItemsParser								parser;
+	private final ResourceDist												resource;
+	private final Player													player;
+	private final ErepScrapper												scrapper;
+	private final DonateItemsParser											parser;
 
-	private final Table<ResourceType, ResourceQuality, Integer>	inventory;
-	protected String											formToken;
+	private final HashBasedTable<ResourceType, ResourceQuality, Integer>	inventory;
+	protected String														formToken;
 
-	protected static Logger										logger	= Logger.getLogger(ManufacturedStrategy.class
-																				.getName());
+	protected static Logger													logger	= Logger.getLogger(ManufacturedStrategy.class
+																							.getName());
 
 	protected ManufacturedStrategy(ResourceDist resource, Player player,
 			ErepScrapper scrapper) throws Exception {
@@ -33,11 +31,10 @@ public abstract class ManufacturedStrategy implements DistStrategy {
 	}
 
 	protected ManufacturedStrategy(ResourceDist resource, Player player,
-			ErepScrapper scrapper, DonateItemsParser parser) throws Exception {
+			ErepScrapper scrapper, DonateItemsParser parser) {
 		this.resource = resource;
 		this.player = player;
 		this.scrapper = scrapper;
-
 		this.inventory = HashBasedTable.create();
 		this.parser = parser;
 	}
@@ -66,8 +63,8 @@ public abstract class ManufacturedStrategy implements DistStrategy {
 		return scrapper.sendItem(player, resource, formToken);
 	}
 
-	public Table<ResourceType, ResourceQuality, Integer> getInventory() {
-		return Tables.unmodifiableTable(inventory);
+	public HashBasedTable<ResourceType, ResourceQuality, Integer> getInventory() {
+		return inventory;
 	}
 
 	protected ResourceDist getResource() {
