@@ -28,3 +28,19 @@ body {
 	color: #777;
 	border-top: 1px solid #e5e5e5;
 }
+
+.player-avatar-small {
+	width: 30px;
+	background-size: 25px 25px;
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+.player-avatar-enhanced {
+	width: 142px;
+	background-size: 142px 142px;
+}
+
+.weapon {
+	height: 30px;
+}

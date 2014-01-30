@@ -27,6 +27,7 @@
 			<div class="tab-content">
 				<%@ include file="requests.jspf"%>
 				<%@ include file="work.jspf"%>
+				<%@ include file="fights.jspf"%>
 			</div>
 	</jsp:body>
 </t:wrapper>

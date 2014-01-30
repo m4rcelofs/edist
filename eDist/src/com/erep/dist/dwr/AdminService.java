@@ -1,5 +1,6 @@
 package com.erep.dist.dwr;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -100,12 +101,19 @@ public class AdminService {
 			return dists;
 		}
 	}
-	
-	@RemoteMethod 
-	public Map<ResourceType, Map<ResourceQuality, Integer>> loadInventory(Distributor dist) {
+
+	@RemoteMethod
+	public Map<ResourceType, Map<ResourceQuality, Integer>> loadInventory(
+			Distributor dist) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+
+			DataAccessObject dao = new DataAccessObject(pm);
+
+			if (!dao.getServerConfig().isShowDistributorInventory())
+				return new HashMap<>();
+
 			pm.getFetchPlan().addGroup("inventoryListing");
-			Distributor dbDist = new DataAccessObject(pm).find(dist);
+			Distributor dbDist = dao.find(dist);
 			return dbDist.getLastInventory().rowMap();
 		}
 	}
