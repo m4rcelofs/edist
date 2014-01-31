@@ -34,6 +34,9 @@ public class WorkParseTask implements DeferredTask {
 	private final Key			employerKey;
 	private final JSONObject	employeeUpdate;
 
+	private int					tasksCreated		= 0;
+	private int					tasksFailed			= 0;
+
 	public WorkParseTask(Employer employer, JSONObject employeeUpdate) {
 		this.employerKey = employer.getKey();
 		this.employeeUpdate = employeeUpdate;
@@ -45,6 +48,10 @@ public class WorkParseTask implements DeferredTask {
 			DataAccessObject dao = new DataAccessObject(pm);
 
 			String playerId = employeeUpdate.get("id").toString();
+
+			logger.log(Level.WARNING, "Starting player work parse for "
+					+ playerId);
+
 			Employer dbEmployer = dao.find(new Employer(employerKey));
 
 			try {
@@ -53,11 +60,21 @@ public class WorkParseTask implements DeferredTask {
 						.createPlayerKey(playerId)));
 
 				JSONArray works = (JSONArray) employeeUpdate.get("work");
+
+				logger.log(Level.WARNING,
+						"Work recorded for " + dbPlayer.getName() + ": "
+								+ works.toString());
+
 				createWorks(dao, dbEmployer, dbPlayer, works);
+
+				logger.log(Level.WARNING, "Finished player work parse for "
+						+ dbPlayer.getName() + ": " + tasksCreated
+						+ " tasks created, " + tasksFailed
+						+ " tasks failed at creation");
 
 			} catch (JDOObjectNotFoundException e) {
 				// some other player that works for the employer, just ignore
-				logger.log(Level.INFO, "Player " + playerId
+				logger.log(Level.WARNING, "Player " + playerId
 						+ " is not working for " + dbEmployer.getName());
 			}
 		}
@@ -95,8 +112,10 @@ public class WorkParseTask implements DeferredTask {
 						+ work.getDay());
 		try {
 			queue.add(taskOptions);
+			tasksCreated++;
 			return true;
 		} catch (TaskAlreadyExistsException e) {
+			tasksFailed++;
 			return false;
 		}
 	}
