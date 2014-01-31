@@ -40,7 +40,8 @@ $.format.locale({
 
 window.edist.format = {
 	number : '<fmt:message key="shared.numberFormat" />', 
-	date : '<fmt:message key="shared.dateFormat" />'
+	date : '<fmt:message key="shared.dateFormat" />',
+	simpleDate : '<fmt:message key="shared.dateFormat.simple" />'
 };
 </script>
 
