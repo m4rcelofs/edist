@@ -3,7 +3,7 @@
 // @namespace   http://edist-licence.appspot.com
 // @description	Plugin para o controle de funcionarios das dists por script
 // @include		http://www.erepublik.com/*
-// @version     0.6
+// @version     0.7
 // @downloadURL	https://{host}/js/dynamic/employer.user.js
 // @updateURL	https://{host}/js/dynamic/employer.user.js
 // @grant		GM_getValue
@@ -18,9 +18,14 @@
 
 function start() {
 
-	if (!GM_getValue('employerKey') || !GM_getValue('employerKey').trim()) {
-		var key = prompt('Please enter the auth key provided by your eDist admin:');
-		GM_setValue('employerKey', key);
+	var employerId = getEmployer();
+	GM_log('You are citizen ' + employerId);
+	if (!GM_getValue('employerKey.' + employerId)
+			|| !GM_getValue('employerKey.' + employerId).trim()) {
+
+		var key = prompt('Please enter the auth key provided by your eDist admin for player '
+				+ employerId + ':');
+		GM_setValue('employerKey.' + employerId, key);
 	}
 
 	if ($('#citizen_feed').length) {
@@ -40,11 +45,12 @@ function start() {
 }
 
 function refresh() {
-	
+
 	addStats();
-	
+
 	// forces update every 6h
-	var hasToUpdate = GM_getValue('lastUpdatedAt', 0) < (new Date().getTime() - 21600000);
+	var hasToUpdate = GM_getValue('lastUpdatedAt.' + getEmployer(), 0) < (new Date()
+			.getTime() - 21600000);
 	if (hasToUpdate) {
 		forceUpdate();
 	}
@@ -96,10 +102,9 @@ function getUpdateLink() {
 	$(newLink).attr('href', '#');
 	$(newLink).attr('title', 'Force update');
 
-	if (GM_getValue('lastUpdatedAt', 0) !== 0) {
-		var lastUpdate = new Date(GM_getValue('lastUpdatedAt'));
-	} else {
-		var lastUpdate = '---';
+	var lastUpdate = '---';
+	if (GM_getValue('lastUpdatedAt.' + getEmployer(), 0) !== 0) {
+		lastUpdate = new Date(GM_getValue('lastUpdatedAt.' + getEmployer()));
 	}
 
 	$(newLink).text('Last employees update: ' + lastUpdate.toLocaleString());
@@ -110,7 +115,7 @@ function setUpdateRunning() {
 	GM_log('Running update...');
 	newLink.removeEventListener('click', manualUpdate, false);
 	$(newLink).text('Update is running, please don\'t leave this page...');
-    $(newLink).attr('title', '');
+	$(newLink).attr('title', '');
 }
 
 function manualUpdate() {
@@ -134,7 +139,8 @@ function clearCache() {
 	var keys = GM_listValues();
 	for ( var i = 0; i < keys.length; i++) {
 		var key = keys[i];
-		if (key !== 'lastUpdatedAt' && key !== 'employerKey') {
+		if (key.indexOf('lastUpdatedAt') != -1
+				&& key.indexOf('employerKey') != -1) {
 			GM_deleteValue(keys[i]);
 		}
 	}
@@ -154,16 +160,16 @@ function updateFromMainPage() {
 }
 
 function update(doc) {
-	
-	if(!GM_getValue('employerKey', false)) {
+
+	if (!GM_getValue('employerKey.' + getEmployer(), false)) {
 		return;
 	}
-		
+
 	setUpdateRunning();
-	
+
 	var data = {
 		id : getEmployer(),
-		key : GM_getValue('employerKey'),
+		key : GM_getValue('employerKey.' + getEmployer(), 'null'),
 		employees : getEmployees(doc)
 	};
 
@@ -183,7 +189,8 @@ function update(doc) {
 				onErrorFct(response);
 			} else {
 				GM_log('Update successfull.')
-				GM_setValue('lastUpdatedAt', new Date().getTime());
+				GM_setValue('lastUpdatedAt.' + getEmployer(), new Date()
+						.getTime());
 				cache(data);
 				refresh();
 			}
@@ -204,9 +211,9 @@ function cache(data) {
 }
 
 function onErrorFct(response) {
-	if(newLink) {
-        $(newLink).text('Update failed ):');
-        $(newLink).parent().css('border', '1px solid red');
+	if (newLink) {
+		$(newLink).text('Update failed ):');
+		$(newLink).parent().css('border', '1px solid red');
 	}
 	GM_log('Something went wrong, data could not be uploaded to dist server!');
 	GM_log(JSON.stringify(response));
@@ -215,7 +222,6 @@ function onErrorFct(response) {
 function getEmployer() {
 	var id = $('div.user_identity > a.user_name').attr('href').replace(
 			/\/[a-z]*\/citizen\/profile\//, '');
-	GM_log('You are citizen ' + id);
 	return id;
 }
 
