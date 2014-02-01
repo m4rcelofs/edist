@@ -273,11 +273,13 @@ public class Request implements HasEncodedKey {
 		this.stats = stats;
 	}
 
+	@RemoteProperty
 	public Date getDate() {
 		return eRepTimeCalculator.toRLDate(eRepDay).toDate();
 	}
 
 	@Deprecated
+	@RemoteProperty
 	public void setDate() {
 		// DWR filler only
 	}

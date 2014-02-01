@@ -27,7 +27,7 @@
 	<tbody data-bind="foreach: dists">
 		<tr data-bind="attr: {id: encodedKey}">
 			<td data-bind="visible: $root.category() !== 'day'"><a
-				data-bind="text: (requestedAt ? $.format.date(requestedAt, edist.format.date) : eRepDay), attr: {href : '#/reports/requests/day/'+eRepDay}"></a>
+				data-bind="text: (date ? $.format.date(date, edist.format.simpleDate) + ' (' + eRepDay + ')' : eRepDay), attr: {href : '#/reports/requests/day/'+eRepDay}"></a>
 			</td>
 			<td class="text-center"><img
 				class="img-thumbnail img-responsive player-avatar-small"
