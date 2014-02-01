@@ -35,7 +35,7 @@ public class eRepTimeCalculator {
 	}
 
 	public static LocalDate toRLDate(Integer eRepDay) {
-		return new eRepTimeCalculator().addDays(eRepLaunch, eRepDay);
+		return new eRepTimeCalculator().addDays(eRepLaunch, eRepDay + 1);
 	}
 
 	@Cacheable

@@ -3,7 +3,7 @@
 // @namespace   http://edist-licence.appspot.com
 // @description	Plugin para o controle de funcionarios das dists por script
 // @include		http://www.erepublik.com/*
-// @version     0.5
+// @version     0.6
 // @downloadURL	https://{host}/js/dynamic/employer.user.js
 // @updateURL	https://{host}/js/dynamic/employer.user.js
 // @grant		GM_getValue
@@ -194,7 +194,7 @@ function update(doc) {
 function cache(data) {
 	data.employees.forEach(function(employee) {
 		employee.work.forEach(function(work) {
-			if (work.worked != null) {
+			if (work.worked != null || work.day != getDay()) {
 				var key = employee.id + '.' + work.day;
 				GM_setValue(key, true);
 			}
