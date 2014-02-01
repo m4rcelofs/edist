@@ -28,6 +28,10 @@ public class Employer implements HasEncodedKey {
 
 	@Persistent
 	@RemoteProperty
+	private String			authKey;
+
+	@Persistent
+	@RemoteProperty
 	private String			erId;
 
 	@Persistent
@@ -101,6 +105,16 @@ public class Employer implements HasEncodedKey {
 
 	public void setLastUpdatedAt(Date lastUpdatedAt) {
 		this.lastUpdatedAt = lastUpdatedAt;
+	}
+
+	public String getAuthKey() {
+		if (authKey == null)
+			setAuthKey(getEncodedKey());
+		return authKey;
+	}
+
+	public void setAuthKey(String authKey) {
+		this.authKey = authKey;
 	}
 
 }

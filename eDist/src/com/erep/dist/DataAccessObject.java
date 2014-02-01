@@ -63,10 +63,14 @@ public class DataAccessObject {
 	}
 
 	public boolean save(Employer employer) {
-		employer.setKey(KeyFactory.createKey(employerRootKey(),
-				Employer.class.getSimpleName(), employer.getErId()));
+		employer.setKey(createEmployerKey(employer.getErId()));
 		employerRoot().addEmployers(employer);
 		return true;
+	}
+
+	public Key createEmployerKey(String erId) {
+		return KeyFactory.createKey(employerRootKey(),
+				Employer.class.getSimpleName(), erId);
 	}
 
 	public boolean save(Distributor dist) {
