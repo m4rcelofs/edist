@@ -3,6 +3,8 @@ package com.erep.dist.instances.backend.tasks;
 import static com.erep.dist.data.enums.PlayerDistStatus.OK;
 
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.erep.dist.CloseablePM;
 import com.erep.dist.ConfigHelper;
@@ -24,6 +26,9 @@ public class WorkVerificationTask implements DeferredTask {
 	private final Key			playerKey;
 	private final Key			latestWorkKey;
 
+	private static Logger		logger				= Logger.getLogger(WorkVerificationTask.class
+															.getName());
+
 	public WorkVerificationTask(Player player, DailyWork work) {
 		this.playerKey = player.getKey();
 		this.latestWorkKey = work.getKey();
@@ -36,6 +41,9 @@ public class WorkVerificationTask implements DeferredTask {
 			ConfigHelper config = new ConfigHelper(dao);
 
 			Player dbPlayer = dao.find(new Player(playerKey));
+
+			logger.log(Level.WARNING, "Starting player work verification for "
+					+ dbPlayer.getName());
 
 			int today = eRepTimeCalculator.geteRepDay();
 
@@ -68,6 +76,12 @@ public class WorkVerificationTask implements DeferredTask {
 			DailyWork dbWork = dao.find(new DailyWork(latestWorkKey));
 			dbWork.setVerificationStatus(statusToSet);
 			dbPlayer.setWorkStatus(statusToSet);
+
+			logger.log(
+					Level.WARNING,
+					"Finished player work verification for "
+							+ dbPlayer.getName() + ", setting status to "
+							+ statusToSet.toString());
 
 		}
 	}
