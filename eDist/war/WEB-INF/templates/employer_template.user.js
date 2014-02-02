@@ -19,12 +19,22 @@
 function start() {
 
 	var employerId = getEmployer();
-	GM_log('You are citizen ' + employerId);
+	var employerName = getEmployerName();
+	GM_log('You are citizen ' + employerId + ', ' + employerName);
+	
 	if (!GM_getValue('employerKey.' + employerId)
 			|| !GM_getValue('employerKey.' + employerId).trim()) {
 
 		var key = prompt('Please enter the auth key provided by your eDist admin for player '
-				+ employerId + ':');
+				+ employerName
+				+ '. \n\n Press "Cancel" to disable the script for '
+				+ employerName + ':');
+
+		// pressed Cancel
+		if (key == null) {
+			key = 'disabled';
+		}
+
 		GM_setValue('employerKey.' + employerId, key);
 	}
 
@@ -103,6 +113,10 @@ function getUpdateLink() {
 	$(newLink).attr('title', 'Force update');
 
 	var lastUpdate = '---';
+	if (GM_getValue('employerKey.' + getEmployer(), '') === 'disabled') {
+		lastUpdate = 'eDist is disabled for this player';
+	}
+
 	if (GM_getValue('lastUpdatedAt.' + getEmployer(), 0) !== 0) {
 		lastUpdate = new Date(GM_getValue('lastUpdatedAt.' + getEmployer()));
 	}
@@ -162,6 +176,12 @@ function updateFromMainPage() {
 function update(doc) {
 
 	if (!GM_getValue('employerKey.' + getEmployer(), false)) {
+		GM_log('No auth key set for this player');
+		return;
+	}
+
+	if (GM_getValue('employerKey.' + getEmployer(), '') === 'disabled') {
+		GM_log('Update is disabled for this player');
 		return;
 	}
 
@@ -223,6 +243,11 @@ function getEmployer() {
 	var id = $('div.user_identity > a.user_name').attr('href').replace(
 			/\/[a-z]*\/citizen\/profile\//, '');
 	return id;
+}
+
+function getEmployerName() {
+	var name = $('div.user_identity > a.user_name').text();
+	return name.trim();
 }
 
 function getEmployees(doc) {
