@@ -55,64 +55,74 @@ public class WorkParseTask implements DeferredTask {
 
 			Employer dbEmployer = dao.find(new Employer(employerKey));
 
+			Player dbPlayer = null;
 			try {
-
-				Player dbPlayer = dao.find(new Player(dao
-						.createPlayerKey(playerId)));
-
-				JSONArray works = (JSONArray) employeeUpdate.get("work");
-
-				logger.log(Level.WARNING,
-						"Work received for " + dbPlayer.getName() + ": "
-								+ works.toString());
-
-				createWorks(dao, dbEmployer, dbPlayer, works);
-
-				logger.log(Level.WARNING, "Finished player work parse for "
-						+ dbPlayer.getName() + ": " + tasksCreated
-						+ " tasks created, " + tasksFailed
-						+ " tasks failed at creation, " + tasksIgnored
-						+ " tasks ignored");
-
+				dbPlayer = dao.find(new Player(dao.createPlayerKey(playerId)));
 			} catch (JDOObjectNotFoundException e) {
 				// some other player that works for the employer, just ignore
 				logger.log(Level.WARNING, "Player " + playerId
 						+ " is not registered");
+				return;
 			}
+
+			JSONArray works = (JSONArray) employeeUpdate.get("work");
+
+			logger.log(Level.WARNING, "Work received for " + dbPlayer.getName()
+					+ ": " + works.toString());
+
+			createWorks(dao, dbEmployer, dbPlayer, works);
+
+			logger.log(Level.WARNING, "Finished player work parse for "
+					+ dbPlayer.getName() + ": " + tasksCreated
+					+ " tasks created, " + tasksFailed
+					+ " tasks failed at creation, " + tasksIgnored
+					+ " tasks ignored");
+
 		}
 	}
 
 	private void createWorks(DataAccessObject dao, Employer employer,
 			Player player, JSONArray works) {
-		logger.log(Level.INFO, "Work info exists for " + works.size() + " days");
+		logger.log(Level.WARNING, "Work info exists for " + works.size()
+				+ " days");
 		for (Object workObj : works) {
 			JSONObject workDay = (JSONObject) workObj;
-
-			Integer day = Integer.valueOf(workDay.get("day").toString());
-
-			logger.log(Level.INFO, "Day " + day);
-
-			DailyWork work = new DailyWork(player, day);
-			work.setEmployer(employer);
-			work.setGroups(player.getGroups());
-			work.setPlayer(player);
-			work.setStats(dao.find(new DailyStats(player, day - 1)));
-
-			Object worked = workDay.get("worked");
-			work.setWorked(worked != null ? Boolean.valueOf(worked.toString())
-					: null);
-
-			logger.log(Level.INFO, "Day " + day + ": " + worked);
-
-			dao.save(work);
-
-			logger.log(Level.INFO, "Day " + day + " saved");
-
-			if (worked != null)
-				startWorkVerificationTask(player, work);
-			else
+			try {
+				createWork(dao, employer, player, workDay);
+			} catch (JDOObjectNotFoundException e) {
+				// daily stats don't exist
+				logger.log(Level.WARNING,
+						"Could not create work for this day, ignoring task", e);
 				tasksIgnored++;
+			}
 		}
+	}
+
+	private void createWork(DataAccessObject dao, Employer employer,
+			Player player, JSONObject workDay) {
+
+		Integer day = Integer.valueOf(workDay.get("day").toString());
+
+		DailyWork work = new DailyWork(player, day);
+		work.setEmployer(employer);
+		work.setGroups(player.getGroups());
+		work.setPlayer(player);
+		work.setStats(dao.find(new DailyStats(player, day - 1)));
+
+		Object worked = workDay.get("worked");
+		work.setWorked(worked != null ? Boolean.valueOf(worked.toString())
+				: null);
+
+		dao.save(work);
+
+		logger.log(Level.WARNING,
+				"Day " + day + " saved for player " + player.getName()
+						+ ", worked: " + worked);
+
+		if (worked != null)
+			startWorkVerificationTask(player, work);
+		else
+			tasksIgnored++;
 	}
 
 	private boolean startWorkVerificationTask(Player player, DailyWork work) {
