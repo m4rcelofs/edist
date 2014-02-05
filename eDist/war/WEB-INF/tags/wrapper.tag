@@ -15,7 +15,7 @@
 	response.setHeader("Cache-Control", "public, max-age=172800000");
 	response.setHeader("Pragma", "Public");
 
-	response.setHeader("X-Frame-Options", "DENY");
+// 	response.setHeader("X-Frame-Options", "DENY");
 	response.setHeader("Strict-Transport-Security",
 			"max-age=172800000; includeSubDomains");
 	response.setHeader("X-Content-Type-Options", "nosniff");
