@@ -87,14 +87,7 @@ public class WorkParseTask implements DeferredTask {
 				+ " days");
 		for (Object workObj : works) {
 			JSONObject workDay = (JSONObject) workObj;
-			try {
-				createWork(dao, employer, player, workDay);
-			} catch (JDOObjectNotFoundException e) {
-				// daily stats don't exist
-				logger.log(Level.WARNING,
-						"Could not create work for this day, ignoring task", e);
-				tasksIgnored++;
-			}
+			createWork(dao, employer, player, workDay);
 		}
 	}
 
@@ -107,7 +100,13 @@ public class WorkParseTask implements DeferredTask {
 		work.setEmployer(employer);
 		work.setGroups(player.getGroups());
 		work.setPlayer(player);
-		work.setStats(dao.find(new DailyStats(player, day - 1)));
+
+		try {
+			work.setStats(dao.find(new DailyStats(player, day - 1)));
+		} catch (JDOObjectNotFoundException e) {
+			logger.log(Level.WARNING,
+					"Status not found for work on day " + day, e);
+		}
 
 		Object worked = workDay.get("worked");
 		work.setWorked(worked != null ? Boolean.valueOf(worked.toString())
