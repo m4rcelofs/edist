@@ -94,8 +94,15 @@ public class RequestService {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			pm.getFetchPlan().addGroup("requestIdentify");
 			DataAccessObject dao = new DataAccessObject(pm);
-			return new PlayerIdentificator(dao)
+			Player p = new PlayerIdentificator(dao)
 					.identifyRequestString(idNameOrLink);
+
+			{
+				// trying to force load to prevent form block
+				p.getGroupIds();
+			}
+
+			return p;
 		} catch (JDOObjectNotFoundException e) {
 			// no player, ignore
 		}
