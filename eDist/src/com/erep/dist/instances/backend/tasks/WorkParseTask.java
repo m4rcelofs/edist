@@ -65,6 +65,8 @@ public class WorkParseTask implements DeferredTask {
 				return;
 			}
 
+			dbEmployer.addPlayer(dbPlayer);
+
 			JSONArray works = (JSONArray) employeeUpdate.get("work");
 
 			logger.log(Level.WARNING, "Work received for " + dbPlayer.getName()
