@@ -67,10 +67,16 @@ public class RequestService {
 				if (request != null) {
 					dbPlayer.addRequest(request);
 					dao.save(request);
+				}
+
+				tx.commit();
+
+				// transactional queue limit is 5 tasks
+				// rocket requests create 6 tasks
+				if (request != null) {
 					helper.addToQueue(request);
 					response = true;
 				}
-				tx.commit();
 
 			} catch (JDOObjectNotFoundException e) {
 				return false;

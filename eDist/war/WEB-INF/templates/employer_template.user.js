@@ -3,7 +3,7 @@
 // @namespace   http://edist-licence.appspot.com
 // @description	Plugin para o controle de funcionarios das dists por script
 // @include		http://www.erepublik.com/*
-// @version     0.8
+// @version     0.8.1
 // @downloadURL	https://{host}/js/dynamic/employer.user.js
 // @updateURL	https://{host}/js/dynamic/employer.user.js
 // @grant		GM_getValue
@@ -29,11 +29,15 @@ function start() {
 	if (!GM_getValue('employerKey.' + employerId)
 			|| !GM_getValue('employerKey.' + employerId).trim()) {
 
+		GM_log('No employer key, asking the user...');
+		
 		var key = prompt('Please enter the auth key provided by your eDist admin for player '
 				+ employerName
 				+ '. \n\n Press "Cancel" to disable the script for '
 				+ employerName + ':');
 
+		GM_log('User entered key "' + key + '"');
+		
 		// pressed Cancel
 		if (key == null) {
 			key = 'disabled';
