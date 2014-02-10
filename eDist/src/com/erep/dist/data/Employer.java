@@ -49,7 +49,7 @@ public class Employer implements HasEncodedKey {
 	private Date			lastUpdatedAt;
 
 	@Unowned
-	@Persistent(mappedBy = "currentEmployer")
+	@Persistent
 	private Set<Player>		players;
 
 	@Persistent

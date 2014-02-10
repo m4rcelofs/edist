@@ -66,6 +66,7 @@ public class WorkParseTask implements DeferredTask {
 			}
 
 			dbEmployer.addPlayer(dbPlayer);
+			dbPlayer.setCurrentEmployer(dbEmployer);
 
 			JSONArray works = (JSONArray) employeeUpdate.get("work");
 

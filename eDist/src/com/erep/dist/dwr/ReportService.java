@@ -27,6 +27,7 @@ import com.erep.dist.dwr.dto.FightsQuery;
 import com.erep.dist.dwr.dto.FiltersInitialInfo;
 import com.erep.dist.dwr.dto.RequestQuery;
 import com.erep.dist.dwr.dto.WorkQuery;
+import com.erep.dist.dwr.dto.WorkWeekQuery;
 import com.erep.dist.erep.eRepTimeCalculator;
 import com.google.appengine.datanucleus.query.JDOCursorHelper;
 
@@ -44,7 +45,6 @@ public class ReportService {
 			if (auth.hasManagementAccess())
 				dto.setDistributors(dao.listDistributors());
 
-			
 			dto.setEmployers(dao.listEmployers());
 			dto.setGroups(dao.listGroups());
 		}
@@ -253,64 +253,45 @@ public class ReportService {
 	}
 
 	@RemoteMethod
-	public WorkQuery listWorkByGroup(PlayerGroup group, String cursor) {
+	public WorkWeekQuery listWorkByGroup(PlayerGroup group, String cursor) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 
-			pm.getFetchPlan().addGroup("workListing");
+			pm.getFetchPlan().addGroup("workWeekListing");
 
-			WorkQuery queryResults = new WorkQuery();
+			WorkWeekQuery queryResults = new WorkWeekQuery();
 
-			List<DailyWork> requests = new DataAccessObject(pm).listWork(group,
-					cursor);
-
-			queryResults.setResults(requests);
-			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(requests)
+			DataAccessObject dao = new DataAccessObject(pm);
+			
+			List<Player> players = dao.listPlayersByGroup(group, cursor);
+			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(players)
 					.toWebSafeString());
+
+			queryResults.setResults(dao.getWeeklyWorks(players));
+
 			return queryResults;
 		}
 	}
 
 	@RemoteMethod
-	public WorkQuery listWorkByEmployer(Employer employer, String cursor) {
+	public WorkWeekQuery listWorkByEmployer(Employer employer, String cursor) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 
-			pm.getFetchPlan().addGroup("workListing");
+			pm.getFetchPlan().addGroup("workWeekListing");
 
-			WorkQuery queryResults = new WorkQuery();
+			WorkWeekQuery queryResults = new WorkWeekQuery();
 
-			List<DailyWork> requests = new DataAccessObject(pm).listWork(
-					employer, cursor);
+			DataAccessObject dao = new DataAccessObject(pm);
 
-			queryResults.setResults(requests);
-			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(requests)
+			List<Player> players = dao.listPlayersByEmployer(employer, cursor);
+			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(players)
 					.toWebSafeString());
+
+			queryResults.setResults(dao.getWeeklyWorks(players));
+
 			return queryResults;
 		}
 	}
 
-	@RemoteMethod
-	public WorkQuery listWorkByDate(Date date, String cursor) {
-		Integer eRepDay = eRepTimeCalculator.toErepDate(date);
-		return listWorkByDay(eRepDay, cursor);
-	}
-
-	@RemoteMethod
-	public WorkQuery listWorkByDay(Integer day, String cursor) {
-		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			pm.getFetchPlan().addGroup("workListing");
-
-			WorkQuery queryResults = new WorkQuery();
-
-			List<DailyWork> requests = new DataAccessObject(pm).listWork(day,
-					cursor);
-
-			queryResults.setResults(requests);
-			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(requests)
-					.toWebSafeString());
-			return queryResults;
-		}
-	}
-	
 	@RemoteMethod
 	public FightsQuery fightsByPlayer(String idNameOrLink, String encodedCursor) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {

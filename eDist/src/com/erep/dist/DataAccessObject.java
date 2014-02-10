@@ -4,6 +4,7 @@ import static com.erep.dist.auth.SymmetricCipherUtils.encrypt;
 import static com.erep.dist.data.enums.RequestType.ROCKET;
 import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withPayload;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -40,6 +41,8 @@ import com.erep.dist.data.enums.PlayerDistStatus;
 import com.erep.dist.data.enums.PlayerStatus;
 import com.erep.dist.data.enums.RequestStatus;
 import com.erep.dist.data.enums.RequestType;
+import com.erep.dist.dwr.dto.WorkWeek;
+import com.erep.dist.erep.eRepTimeCalculator;
 import com.erep.dist.instances.frontend.tasks.NotifyEmailChangeTask;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.Key;
@@ -329,6 +332,16 @@ public class DataAccessObject {
 		return (List<Player>) q.execute(playerRootKey(), group.getKey());
 	}
 
+	public List<Player> listPlayersByEmployer(Employer employer,
+			String encodedCursor) {
+		Query q = queryWithCursor(Player.class,
+				"root == rootParam && currentEmployer == employerParam",
+				encodedCursor);
+		q.declareParameters(Key.class.getName() + " rootParam, "
+				+ Key.class.getName() + " employerParam");
+		return (List<Player>) q.execute(playerRootKey(), employer.getKey());
+	}
+
 	public List<Player> listPlayersByFight(PlayerDistStatus status,
 			String encodedCursor) {
 		Query q = queryWithCursor(Player.class,
@@ -532,6 +545,20 @@ public class DataAccessObject {
 		q.setResult("sum(calculatedFfFights)");
 		Long response = ((Long) q.execute(player.getKey(), fromDay));
 		return response != null ? response.intValue() : 0;
+	}
+
+	public List<WorkWeek> getWeeklyWorks(List<Player> players) {
+		List<WorkWeek> works = new ArrayList<>();
+
+		int fromDay = eRepTimeCalculator.geteRepDay() - 6;
+		for (Player p : players) {
+			WorkWeek week = new WorkWeek();
+			week.setPlayer(p);
+			week.setResults(getWork(p, fromDay));
+			works.add(week);
+		}
+
+		return works;
 	}
 
 	public List<DailyWork> getWork(Player dbPlayer, int fromDay) {
