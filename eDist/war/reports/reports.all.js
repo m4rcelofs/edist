@@ -1643,6 +1643,24 @@ if (typeof DailyStats != "function") {
   }
 }
 
+if (typeof Player != "function") {
+  function Player() {
+    this.fightStatus = null;
+    this.avatar = null;
+    this.rocketEnabled = null;
+    this.workVerif = null;
+    this.erId = null;
+    this.groupIds = null;
+    this.name = null;
+    this.dbStatus = null;
+    this.config = null;
+    this.fightVerif = null;
+    this.workStatus = null;
+    this.encodedKey = null;
+    this.groups = null;
+  }
+}
+
 // Provide a default path to dwr.engine
 if (dwr == null) var dwr = {};
 if (dwr.engine == null) dwr.engine = {};
@@ -1650,44 +1668,35 @@ if (DWREngine == null) var DWREngine = dwr.engine;
 
 if (ReportService == null) var ReportService = {};
 ReportService._path = '/reports/dwr';
-ReportService.listRequestsByGroup = function(p0, p1, callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByGroup', p0, p1, callback);
-}
-ReportService.listRequestsByPlayer = function(p0, p1, callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByPlayer', p0, p1, callback);
-}
-ReportService.listRequestsByDistributor = function(p0, p1, callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByDistributor', p0, p1, callback);
-}
-ReportService.listRequestsByDay = function(p0, p1, callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByDay', p0, p1, callback);
-}
-ReportService.listRequestsByDate = function(p0, p1, callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByDate', p0, p1, callback);
-}
-ReportService.requestDetails = function(p0, callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'requestDetails', p0, callback);
-}
-ReportService.getInitialInfo = function(callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'getInitialInfo', callback);
-}
 ReportService.fightsByGroup = function(p0, p1, callback) {
   dwr.engine._execute(ReportService._path, 'ReportService', 'fightsByGroup', p0, p1, callback);
 }
 ReportService.fightsByPlayer = function(p0, p1, callback) {
   dwr.engine._execute(ReportService._path, 'ReportService', 'fightsByPlayer', p0, p1, callback);
 }
-ReportService.listWorkByDay = function(p0, p1, callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'listWorkByDay', p0, p1, callback);
-}
-ReportService.listWorkByDate = function(p0, p1, callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'listWorkByDate', p0, p1, callback);
-}
 ReportService.listWorkByEmployer = function(p0, p1, callback) {
   dwr.engine._execute(ReportService._path, 'ReportService', 'listWorkByEmployer', p0, p1, callback);
 }
 ReportService.listWorkByGroup = function(p0, p1, callback) {
   dwr.engine._execute(ReportService._path, 'ReportService', 'listWorkByGroup', p0, p1, callback);
+}
+ReportService.getInitialInfo = function(callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'getInitialInfo', callback);
+}
+ReportService.requestDetails = function(p0, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'requestDetails', p0, callback);
+}
+ReportService.listRequestsByDate = function(p0, p1, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByDate', p0, p1, callback);
+}
+ReportService.listRequestsByDay = function(p0, p1, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByDay', p0, p1, callback);
+}
+ReportService.listRequestsByDistributor = function(p0, p1, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByDistributor', p0, p1, callback);
+}
+ReportService.listRequestsByPlayer = function(p0, p1, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByPlayer', p0, p1, callback);
 }
 ReportService.listWorkByPlayer = function(p0, p1, callback) {
   dwr.engine._execute(ReportService._path, 'ReportService', 'listWorkByPlayer', p0, p1, callback);
@@ -1698,11 +1707,14 @@ ReportService.listRequestsByType = function(p0, p1, callback) {
 ReportService.listRequestsByStatus = function(p0, p1, callback) {
   dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByStatus', p0, p1, callback);
 }
-ReportService.fightsByDay = function(p0, p1, callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'fightsByDay', p0, p1, callback);
+ReportService.listRequestsByGroup = function(p0, p1, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByGroup', p0, p1, callback);
 }
 ReportService.fightsByDate = function(p0, p1, callback) {
   dwr.engine._execute(ReportService._path, 'ReportService', 'fightsByDate', p0, p1, callback);
+}
+ReportService.fightsByDay = function(p0, p1, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'fightsByDay', p0, p1, callback);
 }
 /*
  * END OF FILE - /edist/eDist/war/reports/dwr-interface20131220.js
@@ -1965,9 +1977,45 @@ function WorkFiltersViewModel() {
 	self.searchText = ko.observable();
 	self.searchParam = ko.observable();
 	self.searchFct = null;
+	self.callbackFct = null;
 
 	self.groups = Reports.groups;
 	self.employers = Reports.employers;
+}
+
+function WorkTextProvider() {
+	var self = this;
+	
+	self.getWorkWeekPct = function(works) {
+		var i = 0;
+		var worked = 0;
+		works.forEach(function(item){
+			if(item.worked != null) {
+				if(item.worked == true) {
+					worked++;
+				}
+				i++;
+			}
+		});
+		
+		if(i != 0) {
+			var pct = (worked/i) * 100;
+			return $.format.number(pct, edist.format.number) + '%';
+		}
+		return '';
+	}
+	
+	self.hasCustomText = function() {
+		return false;
+	}
+	
+	self.getCustomTextTitle = function() {
+		return '';
+	}
+	
+	self.getCustomText = function(works) {
+		return '';
+	} 
 }
 
 var WorkViewModel = new function() {
@@ -1975,9 +2023,11 @@ var WorkViewModel = new function() {
 
 	self.category = ko.observable('');
 	self.works = ko.observableArray([]);
+	self.weeklyWorks = ko.observableArray([]);
 	self.cursor = ko.observable(null);
 
 	self.filters = new WorkFiltersViewModel();
+	self.textProvider = new WorkTextProvider();
 
 	ko.computed(function() {
 		if (self.category()) {
@@ -2001,35 +2051,65 @@ var WorkViewModel = new function() {
 		}
 	}
 
-	self.filterByDate = function(param) {
-		reset('date', ReportService.listWorkByDate, param,
-				checkParam(param) ? new Date(param) : null);
-		queryServer();
-	}
-
-	self.filterByDay = function(param) {
-		param = checkParam(param) ? param : edist.server.eRepDay;
-		reset('day', ReportService.listWorkByDay, param, param);
-		queryServer();
-	}
-
 	self.filterByEmployer = function(param) {
 		reset('employer', ReportService.listWorkByEmployer, param, {
 			encodedKey : param
-		});
+		}, setWeekResults);
 		queryServer();
 	}
 
 	self.filterByGroup = function(param) {
 		reset('group', ReportService.listWorkByGroup, param, {
 			encodedKey : param
-		});
+		}, setWeekResults);
 		queryServer();
 	}
 
 	self.filterByPlayer = function(param) {
-		reset('player', ReportService.listWorkByPlayer, param, param);
+		reset('player', ReportService.listWorkByPlayer, param, param,
+				setListResults);
 		queryServer();
+	}
+	
+	self.isTempBanned = function(works, days) {
+		return checkVerificationStatus(works, days, 'TEMP_BANNED');
+	}
+	
+	self.isWarning = function(works, days) {
+		return checkVerificationStatus(works, days, 'WARNING');
+	}
+	
+	self.isOk = function(works, days) {
+		return checkVerificationStatus(works, days, 'OK');
+	}
+	
+	self.hasWorked = function(works, days) {
+		return checkWorked(works, days, true);
+	}
+	
+	self.hasNotWorked = function(works, days) {
+		return checkWorked(works, days, false);
+	}
+	
+	self.noWorkInfo = function(works, days) {
+		return checkWorked(works, days, null);
+	}
+	
+	function checkWorked(works, days, status) {
+		if(works && works[edist.server.eRepDay - days]) {
+			return works[edist.server.eRepDay - days].worked === status; 
+		} else {
+			//no work info, text-muted
+			return status === null;
+		}
+	}
+	
+	function checkVerificationStatus(works, days, status) {
+		if(!works) {
+			return false;
+		}
+		
+		return works[edist.server.eRepDay - days] && works[edist.server.eRepDay - days].verificationStatus === status;
 	}
 
 	function checkParam(param) {
@@ -2037,11 +2117,13 @@ var WorkViewModel = new function() {
 				: null;
 	}
 
-	function reset(category, searchFct, searchText, searchParam) {
+	function reset(category, searchFct, searchText, searchParam, callbackFct) {
 		self.works([]);
+		self.weeklyWorks([]);
 		self.cursor('');
 		self.category(category);
 		self.filters.searchFct = searchFct;
+		self.filters.callbackFct = callbackFct;
 		self.filters.searchText(searchText);
 		self.filters.searchParam(searchParam);
 	}
@@ -2050,18 +2132,33 @@ var WorkViewModel = new function() {
 		if (self.filters.searchParam()) {
 			self.filters.searchFct(self.filters.searchParam(), self.cursor(), {
 				callback : function(response) {
-					setResults(response);
+					self.filters.callbackFct(response);
 				}
 			});
 		}
 	}
 
-	function setResults(response) {
+	function setListResults(response) {
 		var cursor = response.results.length >= window.edist.server.pageSize ? response.encodedCursor
-				: null
+				: null;
 		self.cursor(cursor);
 		response.results.forEach(function(item) {
 			self.works.push(item);
+		});
+	}
+
+	function setWeekResults(response) {
+		var cursor = response.results.length >= window.edist.server.pageSize ? response.encodedCursor
+				: null;
+		self.cursor(cursor);
+
+		response.results.forEach(function(workWeek){
+			var weekMap = {};
+			workWeek.results.forEach(function(dailyWork){
+				weekMap[dailyWork.day] = dailyWork;
+			});
+			workWeek.resultsMap = weekMap;
+			self.weeklyWorks.push(workWeek);
 		});
 	}
 
@@ -2075,10 +2172,6 @@ var WorkRoutes = new function() {
 
 	self.addRoutes = function() {
 		crossroads.addRoute('reports/work', WorkViewModel.initWork);
-		crossroads.addRoute('reports/work/date/:param:',
-				WorkViewModel.filterByDate);
-		crossroads.addRoute('reports/work/day/:param:',
-				WorkViewModel.filterByDay);
 		crossroads.addRoute('reports/work/employer/:param:',
 				WorkViewModel.filterByEmployer);
 		crossroads.addRoute('reports/work/group/:param:',
@@ -2087,7 +2180,6 @@ var WorkRoutes = new function() {
 				WorkViewModel.filterByPlayer);
 	}
 };
-
 /*
  * END OF FILE - /edist/eDist/war/reports/work.js
  */

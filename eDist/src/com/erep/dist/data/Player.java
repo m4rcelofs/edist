@@ -79,6 +79,10 @@ public class Player implements HasEncodedKey {
 	@RemoteProperty
 	private Set<PlayerGroup>	groups;
 
+	@Unowned
+	@Persistent
+	private Employer			currentEmployer;
+
 	@Persistent(dependent = "true")
 	@RemoteProperty
 	private DistConfig			config;
@@ -333,5 +337,13 @@ public class Player implements HasEncodedKey {
 
 	public void setNameNormalized(String nameNormalized) {
 		this.nameNormalized = nameNormalized;
+	}
+
+	public Employer getCurrentEmployer() {
+		return currentEmployer;
+	}
+
+	public void setCurrentEmployer(Employer currentEmployer) {
+		this.currentEmployer = currentEmployer;
 	}
 }

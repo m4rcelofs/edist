@@ -173,7 +173,7 @@
 									<td><span class="glyphicon glyphicon-fire"></span> <fmt:message
 											key="management.players.rocketFactory" />:</td>
 									<td><select class="selectpicker show-menu-arrow show-tick"
-										data-bind="value: rocketEnabled(),
+										data-bind="value: rocketEnabled,
 														   enable: dbStatus() === 'ENABLED',
 														   updateSelectPicker: dbStatus">
 											<option value="NONE" data-subtext="):">

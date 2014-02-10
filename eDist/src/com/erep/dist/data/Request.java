@@ -20,6 +20,7 @@ import org.directwebremoting.convert.BeanConverter;
 import com.erep.dist.data.enums.RequestStatus;
 import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.data.enums.RocketQuality;
+import com.erep.dist.erep.eRepTimeCalculator;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.datanucleus.annotations.Unowned;
@@ -270,6 +271,15 @@ public class Request implements HasEncodedKey {
 
 	public void setStats(DailyStats stats) {
 		this.stats = stats;
+	}
+
+	public Date getDate() {
+		return eRepTimeCalculator.toRLDate(eRepDay).toDate();
+	}
+
+	@Deprecated
+	public void setDate() {
+		// DWR filler only
 	}
 
 }

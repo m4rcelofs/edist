@@ -34,6 +34,15 @@ public class eRepTimeCalculator {
 				.toLocalDate());
 	}
 
+	public static LocalDate toRLDate(Integer eRepDay) {
+		return new eRepTimeCalculator().addDays(eRepLaunch, eRepDay + 1);
+	}
+
+	@Cacheable
+	private LocalDate addDays(LocalDate original, Integer toAdd) {
+		return original.plusDays(toAdd);
+	}
+
 	@Cacheable
 	private Integer daysBetween(LocalDate first, LocalDate last) {
 		return Days.daysBetween(first, last).getDays();
