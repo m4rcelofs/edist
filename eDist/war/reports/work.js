@@ -34,15 +34,28 @@ function WorkTextProvider() {
 	}
 	
 	self.hasCustomText = function() {
-		return false;
+		return true;
 	}
 	
 	self.getCustomTextTitle = function() {
-		return '';
+		return 'SuperHUE';
 	}
 	
 	self.getCustomText = function(works) {
-		return '';
+		var worked = 0;
+		works.forEach(function(item){
+			if(item.worked != null) {
+				if(item.worked == true) {
+					worked++;
+				}
+			}
+		});
+		
+		if(worked < 4) {
+			return '';
+		} else {
+			return worked * 100 + ' BRL';
+		}
 	} 
 }
 
