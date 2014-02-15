@@ -66,16 +66,9 @@
 		<property name="day" direction="desc" />
 	</datastore-index>
 
-	<datastore-index kind="DailyWork" ancestor="false"
+	<datastore-index kind="DailyWork" ancestor="true"
 		source="manual">
-		<property name="groups" direction="asc" />
-		<property name="day" direction="desc" />
-	</datastore-index>
-
-	<datastore-index kind="DailyWork" ancestor="false"
-		source="manual">
-		<property name="employer_key_OID" direction="asc" />
-		<property name="day" direction="desc" />
+		<property name="day" direction="asc" />
 	</datastore-index>
 
 	<datastore-index kind="DailyStats" ancestor="true"

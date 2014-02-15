@@ -2,66 +2,34 @@
 	data-bind="if: works().length > 0">
 	<thead>
 		<tr>
-			<th data-bind="if: category() !== 'day'"><fmt:message
-					key="players.fights.day" /></th>
-			<th><fmt:message key="players.fights.player" /></th>
-			<th data-bind="if: category() !== 'group'"><fmt:message
-					key="players.fights.groups" /></th>
-			<th data-bind="if: category() !== 'employer'"><fmt:message
-					key="reports.work.employer" /></th>
+			<th><fmt:message key="players.fights.day" /></th>
+			<th colspan="2"><fmt:message key="players.fights.player" /></th>
+			<th><fmt:message key="players.fights.groups" /></th>
+			<th><fmt:message key="reports.work.employer" /></th>
 			<th><fmt:message key="reports.work.worked" /></th>
 			<th><fmt:message key="management.groups.dist" /></th>
+			<th></th>
 		</tr>
 	</thead>
 	<tbody data-bind="foreach: works">
 		<tr>
-			<td data-bind="if: $root.category() !== 'day'"><a
-				data-bind="text: day, attr: {href : '#/reports/work/day/'+day}"></a>
+			<td data-bind="text: day"></td>
+			<td class="text-center"><img
+				class="img-thumbnail img-responsive player-avatar-small"
+				src="${baseUrl}/img/profile_avatar_55.cache.png"
+				data-bind="style: { backgroundImage : Reports.avatar($data) !== null ? Reports.avatar($data) :
+									'url(${baseUrl}/img/default_male_55.cache.gif)'},
+							avatarEnhance:{}">
 			</td>
+			<td data-bind="text: stats ? stats.name : ''"></td>
 			<td>
-				<p class="text-center">
-					<a
-						data-bind="attr: {href : '#/reports/work/player/' + (stats ? stats.erId : '')}">
-						<img class="img-thumbnail img-responsive"
-						src="${baseUrl}/img/profile_avatar_55.cache.png" width="55px"
-						data-bind="style: { backgroundImage : Reports.avatar($data) !== null ? Reports.avatar($data) :
-										 'url(${baseUrl}/img/default_male_55.cache.gif)' ,
-										 backgroundSize : '55px 55px',
-										 backgroundRepeat : 'no-repeat',
-										 backgroundPosition : 'center'},
-									attr : {'data-content' : stats ? stats.name : ''},
-									updatePopup:{}"
-						data-toggle="popover">
-					</a>
-				</p>
-				<p class="text-center">
-					<a data-toggle="popover"
-						data-content="<fmt:message key="header.mod"/>"
-						data-bind="if: edist.user.hasManagementAccess,
-								   attr: {href: '${baseUrl}/management/playersList/search/' + (stats ? stats.erId : '')  }, updatePopup:{}"><span
-						class="glyphicon glyphicon-list"></span></a> <a data-toggle="popover"
-						data-content="<fmt:message key="management.players.template.dist"/>"
-						data-bind="attr: {href: '${baseUrl}/reports/requests/player/' + (stats ? stats.erId : '') }, updatePopup:{}"><span
-						class="glyphicon glyphicon-cutlery"></span></a> <a
-						data-toggle="popover"
-						data-content="<fmt:message key="management.players.template.stats"/>"
-						data-bind="if: edist.user.hasPlayerReportsAccess,
-								   attr: {href: '${baseUrl}/players/history/player/' + (stats ? stats.erId : '') }, updatePopup:{}"><span
-						class="glyphicon glyphicon-stats"></span></a> <a data-toggle="popover"
-						data-content="<fmt:message key="management.players.template.fights"/>"
-						data-bind="if: edist.user.hasPlayerReportsAccess,
-								   attr: {href: '${baseUrl}/reports/fights/player/' + (stats ? stats.erId : '') }, updatePopup:{}"><span
-						class="glyphicon glyphicon-screenshot"></span></a>
-				</p>
-			</td>
-			<td data-bind="if: $root.category() !== 'group'">
 				<p data-bind="foreach: groups">
 					<a
 						data-bind="text: groupName ? groupName : '<fmt:message key="distconfig.distributor.noName"/>', attr: {href : '#/reports/work/group/'+encodedKey}"></a>
 					<br />
 				</p>
 			</td>
-			<td data-bind="if: $root.category() !== 'employer'"><a
+			<td><a
 				data-bind="text: employer ? employer.name ? employer.name : '<fmt:message key="distconfig.distributor.noName"/>' : '',
 							attr: {href : employer ? '#/reports/work/employer/'+employer.encodedKey : ''}"></a></td>
 			<td>
@@ -96,6 +64,22 @@
 							key="shared.ok" />
 				</span>
 			</a></td>
+			<td><a data-toggle="popover"
+				data-content="<fmt:message key="header.mod"/>"
+				data-bind="if: edist.user.hasManagementAccess,
+								   attr: {href: '${baseUrl}/management/playersList/search/' + (stats ? stats.erId : '')  }, updatePopup:{}"><span
+					class="glyphicon glyphicon-list"></span></a> <a data-toggle="popover"
+				data-content="<fmt:message key="management.players.template.dist"/>"
+				data-bind="attr: {href: '${baseUrl}/reports/requests/player/' + (stats ? stats.erId : '')  }, updatePopup:{}"><span
+					class="glyphicon glyphicon-cutlery"></span></a> <a
+				data-toggle="popover"
+				data-content="<fmt:message key="management.players.template.stats"/>"
+				data-bind="attr: {href: '${baseUrl}/players/history/player/' + (stats ? stats.erId : '') }, updatePopup:{}"><span
+					class="glyphicon glyphicon-stats"></span></a> <a data-toggle="popover"
+				data-content="<fmt:message key="management.players.template.fights"/>"
+				data-bind="attr: {href: '${baseUrl}/reports/fights/player/' + (stats ? stats.erId : '')  }, updatePopup:{}"><span
+					class="glyphicon glyphicon-screenshot"></span></a></td>
+			</td>
 		</tr>
 	</tbody>
 </table>
