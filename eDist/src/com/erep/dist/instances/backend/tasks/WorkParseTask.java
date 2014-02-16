@@ -65,6 +65,9 @@ public class WorkParseTask implements DeferredTask {
 				return;
 			}
 
+			dbEmployer.addPlayer(dbPlayer);
+			dbPlayer.setCurrentEmployer(dbEmployer);
+
 			JSONArray works = (JSONArray) employeeUpdate.get("work");
 
 			logger.log(Level.WARNING, "Work received for " + dbPlayer.getName()
@@ -87,14 +90,7 @@ public class WorkParseTask implements DeferredTask {
 				+ " days");
 		for (Object workObj : works) {
 			JSONObject workDay = (JSONObject) workObj;
-			try {
-				createWork(dao, employer, player, workDay);
-			} catch (JDOObjectNotFoundException e) {
-				// daily stats don't exist
-				logger.log(Level.WARNING,
-						"Could not create work for this day, ignoring task", e);
-				tasksIgnored++;
-			}
+			createWork(dao, employer, player, workDay);
 		}
 	}
 
@@ -104,10 +100,30 @@ public class WorkParseTask implements DeferredTask {
 		Integer day = Integer.valueOf(workDay.get("day").toString());
 
 		DailyWork work = new DailyWork(player, day);
+
+		try {
+			DailyWork dbWork = dao.find(work);
+			if (dbWork.getWorked() != null) {
+				logger.log(Level.WARNING,
+						"Work parse for player " + player.getName()
+								+ " on day " + day
+								+ " already exists, ignoring");
+				return;
+			}
+		} catch (JDOObjectNotFoundException ignore) {
+			// not run yet, go ahead
+		}
+
 		work.setEmployer(employer);
 		work.setGroups(player.getGroups());
 		work.setPlayer(player);
-		work.setStats(dao.find(new DailyStats(player, day - 1)));
+
+		try {
+			work.setStats(dao.find(new DailyStats(player, day - 1)));
+		} catch (JDOObjectNotFoundException e) {
+			logger.log(Level.WARNING,
+					"Status not found for work on day " + day, e);
+		}
 
 		Object worked = workDay.get("worked");
 		work.setWorked(worked != null ? Boolean.valueOf(worked.toString())
@@ -140,5 +156,4 @@ public class WorkParseTask implements DeferredTask {
 			return false;
 		}
 	}
-
 }

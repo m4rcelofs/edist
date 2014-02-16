@@ -30,7 +30,8 @@ import com.google.appengine.datanucleus.annotations.Unowned;
 		@FetchGroup(name = "playerConfigListing", members = {
 				@Persistent(name = "groups"), @Persistent(name = "config"),
 				@Persistent(name = "fightVerif"),
-				@Persistent(name = "workVerif") }),
+				@Persistent(name = "workVerif"),
+				@Persistent(name = "currentEmployer") }),
 		@FetchGroup(name = "requestIdentify", members = { @Persistent(name = "groups") }) })
 public class Player implements HasEncodedKey {
 
@@ -78,6 +79,10 @@ public class Player implements HasEncodedKey {
 	@Persistent
 	@RemoteProperty
 	private Set<PlayerGroup>	groups;
+
+	@Unowned
+	@Persistent
+	private Employer			currentEmployer;
 
 	@Persistent(dependent = "true")
 	@RemoteProperty
@@ -333,5 +338,26 @@ public class Player implements HasEncodedKey {
 
 	public void setNameNormalized(String nameNormalized) {
 		this.nameNormalized = nameNormalized;
+	}
+
+	public Employer getCurrentEmployer() {
+		return currentEmployer;
+	}
+
+	public void setCurrentEmployer(Employer currentEmployer) {
+		this.currentEmployer = currentEmployer;
+	}
+
+	@RemoteProperty
+	public String getCurrentEmployerName() {
+		if (getCurrentEmployer() != null)
+			return getCurrentEmployer().getName();
+		else
+			return null;
+	}
+
+	@Deprecated
+	public void setCurrentEmployerName(String name) {
+		// DWR only
 	}
 }

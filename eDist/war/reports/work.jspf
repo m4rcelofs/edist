@@ -5,10 +5,6 @@
 		<div class="col-md-2">
 
 			<ul id="requests.horizontal.nav" class="nav nav-pills nav-stacked">
-				<li data-bind="css: {active : category() === 'date'}"><a
-					href="#/reports/work/date"><fmt:message key="filters.byDate"/></a></li>
-				<li data-bind="css: {active : category() === 'day'}"><a
-					href="#/reports/work/day"><fmt:message key="filters.byDay"/></a></li>
 				<li data-bind="css: {active : category() === 'employer'}"><a
 					href="#/reports/work/employer"><fmt:message key="filters.byEmployer"/></a></li>
 				<li data-bind="css: {active : category() === 'group'}"><a
@@ -22,6 +18,7 @@
 			<%@ include file="work_filters.jspf"%>
 
 			<%@ include file="work_table.jspf"%>
+			<%@ include file="work_week_table.jspf"%>
 
 			<ul class="pager">
 				<li class="next"

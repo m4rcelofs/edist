@@ -55,6 +55,19 @@
 						<div class="row">
 							<div class="col-md-12">
 								<p>
+									<span data-bind="visible: currentEmployerName() === null"
+										class="label label-default"><fmt:message
+											key="reports.work.employer" />: <fmt:message
+											key="shared.unknown" /></span> <span
+										data-bind="visible: currentEmployerName() !== null, text: '<fmt:message
+											key="reports.work.employer" />: ' + currentEmployerName()"
+										class="label label-success"></span>
+								</p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-md-12">
+								<p>
 									<span data-bind="if: fightStatus() === null"
 										class="label label-default"><fmt:message
 											key="shared.fights" />: <fmt:message key="shared.unverified" /></span>
@@ -88,7 +101,6 @@
 								</p>
 							</div>
 						</div>
-
 					</div>
 					<div class="col-md-9 table-responsive">
 						<div class="row">
@@ -133,6 +145,11 @@
 											data-bind="click: $root.clearWorkStatus" role="menuitem"
 											tabindex="-1"><span class="glyphicon glyphicon-transfer"></span>
 												<fmt:message key="management.players.clear.work" /></a></li>
+												<li role="presentation"
+											data-bind="if: currentEmployerName() !== null"><a
+											data-bind="click: $root.clearCurrentEmployer" role="menuitem"
+											tabindex="-1"><span class="glyphicon glyphicon-transfer"></span>
+												<fmt:message key="management.players.clear.employer" /></a></li>
 										<li role="presentation"
 											data-bind="if: dbStatus() == 'DISABLED'"><a
 											data-bind="click: $root.enable" role="menuitem" tabindex="-1"><span
@@ -173,7 +190,7 @@
 									<td><span class="glyphicon glyphicon-fire"></span> <fmt:message
 											key="management.players.rocketFactory" />:</td>
 									<td><select class="selectpicker show-menu-arrow show-tick"
-										data-bind="value: rocketEnabled(),
+										data-bind="value: rocketEnabled,
 														   enable: dbStatus() === 'ENABLED',
 														   updateSelectPicker: dbStatus">
 											<option value="NONE" data-subtext="):">
