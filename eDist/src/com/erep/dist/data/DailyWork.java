@@ -22,9 +22,12 @@ import com.google.appengine.datanucleus.annotations.Unowned;
 
 @DataTransferObject(converter = BeanConverter.class, params = @Param(name = "javascript", value = "DailyWork"))
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-@FetchGroups({ @FetchGroup(name = "workListing", members = {
-		@Persistent(name = "stats"), @Persistent(name = "groups"),
-		@Persistent(name = "employer") }) })
+@FetchGroups({
+		@FetchGroup(name = "workListing", members = {
+				@Persistent(name = "stats"), @Persistent(name = "groups"),
+				@Persistent(name = "employer") }),
+
+		@FetchGroup(name = "workWeekListing", members = {}) })
 public class DailyWork {
 
 	/**

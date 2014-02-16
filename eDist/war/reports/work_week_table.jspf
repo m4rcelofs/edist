@@ -1,0 +1,109 @@
+<div class="alert alert-info text-center"
+	data-bind="visible: category() !== 'player'">
+	<p>
+		<span class="glyphicon glyphicon-info-sign"></span> <span
+			data-bind="if: category() === 'employer'"><fmt:message
+				key="reports.work.employerOnly" /></span> <span
+			data-bind="if: category() === 'group'"><fmt:message
+				key="reports.work.employerOnly" /></span> <span><fmt:message
+				key="reports.work.history" /></span>
+	</p>
+</div>
+
+<table class="table table-responsive"
+	data-bind="if: weeklyWorks().length > 0">
+	<thead>
+		<tr>
+			<th colspan="2"><fmt:message key="players.fights.player" /></th>
+			<th data-bind="text: edist.server.eRepDay - 6" class="text-center"></th>
+			<th data-bind="text: edist.server.eRepDay - 5" class="text-center"></th>
+			<th data-bind="text: edist.server.eRepDay - 4" class="text-center"></th>
+			<th data-bind="text: edist.server.eRepDay - 3" class="text-center"></th>
+			<th data-bind="text: edist.server.eRepDay - 2" class="text-center"></th>
+			<th data-bind="text: edist.server.eRepDay - 1" class="text-center"></th>
+			<th data-bind="text: edist.server.eRepDay" class="text-center"></th>
+			<th></th>
+			<th
+				data-bind="visible: $root.textProvider.hasCustomText(), text: $root.textProvider.getCustomTextTitle()"></th>
+		</tr>
+	</thead>
+	<tbody data-bind="foreach: weeklyWorks">
+		<tr data-bind="attr: {id: player.encodedKey}">
+			<td class="text-center"><img
+				class="img-thumbnail img-responsive player-avatar-small"
+				src="${baseUrl}/img/profile_avatar_55.cache.png"
+				data-bind="style: { backgroundImage : Reports.avatar(player) !== null ? Reports.avatar(player) :
+									'url(${baseUrl}/img/default_male_55.cache.gif)'}, avatarEnhance:{}">
+			</td>
+			<td><a
+				data-bind="text: player.name, attr:{href: '${baseUrl}/reports/work/player/' + player.erId}"></a></td>
+			<td class="text-center vertical-center"
+				data-bind="css: {'bg-danger': $root.isTempBanned(resultsMap, 6), 
+								'bg-warning': $root.isWarning(resultsMap, 6), 
+								'bg-success': $root.isOk(resultsMap, 6)}">
+				<span class="glyphicon glyphicon-user"
+				data-bind="css: {'text-muted': $root.noWorkInfo(resultsMap, 6),
+										'text-success': $root.hasWorked(resultsMap, 6),
+										'text-danger': $root.hasNotWorked(resultsMap, 6) }"></span>
+			</td>
+			<td class="text-center vertical-center"
+				data-bind="css: {'bg-danger': $root.isTempBanned(resultsMap, 5), 
+								'bg-warning': $root.isWarning(resultsMap, 5), 
+								'bg-success': $root.isOk(resultsMap, 5)}">
+				<span class="glyphicon glyphicon-user"
+				data-bind="css: {'text-muted': $root.noWorkInfo(resultsMap, 5),
+										'text-success': $root.hasWorked(resultsMap, 5),
+										'text-danger': $root.hasNotWorked(resultsMap, 5) }"></span>
+			</td>
+			<td class="text-center vertical-center"
+				data-bind="css: {'bg-danger': $root.isTempBanned(resultsMap, 4), 
+								'bg-warning': $root.isWarning(resultsMap, 4), 
+								'bg-success': $root.isOk(resultsMap, 4)}">
+				<span class="glyphicon glyphicon-user"
+				data-bind="css: {'text-muted': $root.noWorkInfo(resultsMap, 4),
+										'text-success': $root.hasWorked(resultsMap, 4),
+										'text-danger': $root.hasNotWorked(resultsMap, 4) }"></span>
+			</td>
+			<td class="text-center vertical-center"
+				data-bind="css: {'bg-danger': $root.isTempBanned(resultsMap, 3), 
+								'bg-warning': $root.isWarning(resultsMap, 3), 
+								'bg-success': $root.isOk(resultsMap, 3)}">
+				<span class="glyphicon glyphicon-user"
+				data-bind="css: {'text-muted': $root.noWorkInfo(resultsMap, 3),
+										'text-success': $root.hasWorked(resultsMap, 3),
+										'text-danger': $root.hasNotWorked(resultsMap, 3) }"></span>
+			</td>
+			<td class="text-center vertical-center"
+				data-bind="css: {'bg-danger': $root.isTempBanned(resultsMap, 2), 
+								'bg-warning': $root.isWarning(resultsMap, 2), 
+								'bg-success': $root.isOk(resultsMap, 2)}">
+				<span class="glyphicon glyphicon-user"
+				data-bind="css: {'text-muted': $root.noWorkInfo(resultsMap, 2),
+										'text-success': $root.hasWorked(resultsMap, 2),
+										'text-danger': $root.hasNotWorked(resultsMap, 2) }"></span>
+			</td>
+			<td class="text-center vertical-center"
+				data-bind="css: {'bg-danger': $root.isTempBanned(resultsMap, 1), 
+								'bg-warning': $root.isWarning(resultsMap, 1), 
+								'bg-success': $root.isOk(resultsMap, 1)}">
+				<span class="glyphicon glyphicon-user"
+				data-bind="css: {'text-muted': $root.noWorkInfo(resultsMap, 1),
+										'text-success': $root.hasWorked(resultsMap, 1),
+										'text-danger': $root.hasNotWorked(resultsMap, 1) }"></span>
+			</td>
+			<td class="text-center vertical-center"
+				data-bind="css: {'bg-danger': $root.isTempBanned(resultsMap, 0), 
+								'bg-warning': $root.isWarning(resultsMap, 0), 
+								'bg-success': $root.isOk(resultsMap, 0)}">
+				<span class="glyphicon glyphicon-user"
+				data-bind="css: {'text-muted': $root.noWorkInfo(resultsMap, 0),
+										'text-success': $root.hasWorked(resultsMap, 0),
+										'text-danger': $root.hasNotWorked(resultsMap, 0) }"></span>
+			</td>
+			<td data-bind="text: $root.textProvider.getWorkWeekPct(results)"></td>
+			<td
+				data-bind="visible: $root.textProvider.hasCustomText(), text: $root.textProvider.getCustomText(results)">
+			</td>
+		</tr>
+	</tbody>
+</table>

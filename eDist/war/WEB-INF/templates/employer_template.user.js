@@ -3,7 +3,7 @@
 // @namespace   http://edist-licence.appspot.com
 // @description	Plugin para o controle de funcionarios das dists por script
 // @include		http://www.erepublik.com/*
-// @version     0.7
+// @version     0.8.1
 // @downloadURL	https://{host}/js/dynamic/employer.user.js
 // @updateURL	https://{host}/js/dynamic/employer.user.js
 // @grant		GM_getValue
@@ -16,8 +16,12 @@
 // @require 	https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js
 // ==/UserScript==
 
+clearKeyPressed = false;
+
 function start() {
 
+	addShiftHandler();
+	
 	var employerId = getEmployer();
 	var employerName = getEmployerName();
 	GM_log('You are citizen ' + employerId + ', ' + employerName);
@@ -25,11 +29,15 @@ function start() {
 	if (!GM_getValue('employerKey.' + employerId)
 			|| !GM_getValue('employerKey.' + employerId).trim()) {
 
+		GM_log('No employer key, asking the user...');
+		
 		var key = prompt('Please enter the auth key provided by your eDist admin for player '
 				+ employerName
 				+ '. \n\n Press "Cancel" to disable the script for '
 				+ employerName + ':');
 
+		GM_log('User entered key "' + key + '"');
+		
 		// pressed Cancel
 		if (key == null) {
 			key = 'disabled';
@@ -52,6 +60,15 @@ function start() {
 	}
 
 	refresh();
+}
+
+function addShiftHandler() {
+	$(document).on('keydown', function(e){
+		clearKeyPressed = String.fromCharCode(e.which) === 'C';
+	});
+    $(document).on('keyup', function(e){
+    	clearKeyPressed = false;
+	});
 }
 
 function refresh() {
@@ -133,6 +150,12 @@ function setUpdateRunning() {
 }
 
 function manualUpdate() {
+	
+	if(clearKeyPressed) {
+		clearKey();
+		location.reload();
+	}
+	
 	GM_log('Forced employees update');
 	clearCache();
 	forceUpdate();
@@ -147,6 +170,13 @@ function forceUpdate() {
 		updateFromMainPage();
 	}
 }
+
+function clearKey() {
+	GM_log('Clearing player key...');
+	GM_deleteValue('employerKey.' + getEmployer());
+	GM_log('Cleared player key.');
+}
+
 
 function clearCache() {
 	GM_log('Clearing employees cached data...');
@@ -234,6 +264,7 @@ function onErrorFct(response) {
 	if (newLink) {
 		$(newLink).text('Update failed ):');
 		$(newLink).parent().css('border', '1px solid red');
+		newLink.addEventListener('click', manualUpdate, false);
 	}
 	GM_log('Something went wrong, data could not be uploaded to dist server!');
 	GM_log(JSON.stringify(response));
