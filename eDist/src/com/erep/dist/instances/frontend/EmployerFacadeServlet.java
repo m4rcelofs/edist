@@ -51,13 +51,14 @@ public class EmployerFacadeServlet extends HttpServlet {
 			JSONParser parser = new JSONParser();
 			JSONObject jsObj = (JSONObject) parser.parse(param);
 
-			String encodedKey = jsObj.get("key").toString();
+			String authKey = jsObj.get("key").toString();
 			String id = jsObj.get("id").toString();
 			JSONArray employees = (JSONArray) jsObj.get("employees");
 
-			checkParams(encodedKey, id);
+			checkParams(authKey, id);
 
-			Employer dbEmployer = verifyEmployer(dao, encodedKey, id);
+			Employer dbEmployer = verifyEmployer(dao, authKey, id);
+			dbEmployer.resetPlayers();
 
 			createWorks(dbEmployer, employees);
 
@@ -74,10 +75,11 @@ public class EmployerFacadeServlet extends HttpServlet {
 		}
 	}
 
-	private Employer verifyEmployer(DataAccessObject dao, String encodedKey,
+	private Employer verifyEmployer(DataAccessObject dao, String authKey,
 			String id) {
-		Employer emp = dao.find(new Employer(encodedKey.trim()));
-		if (!emp.getErId().equals(id.trim()))
+		Employer emp = dao.find(new Employer(dao.createEmployerKey(id)));
+		if (!emp.getErId().equals(id.trim())
+				|| !emp.getAuthKey().equals(authKey.trim()))
 			throw new IllegalArgumentException("Invalid employer");
 		return emp;
 	}

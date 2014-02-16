@@ -19,7 +19,7 @@
 					class="glyphicon glyphicon-question-sign"></span>
 			</a></th>
 			<th
-				data-bind="visible: window.edist.user.hasReportsAccess === true || edist.user.hasManagementAccess === true"></th>
+				data-bind="visible: edist.user.hasReportsAccess || edist.user.hasManagementAccess"></th>
 			<th></th>
 		</tr>
 	</thead>
@@ -81,21 +81,21 @@
 			<td><span class="glyphicon glyphicon-time"
 				data-bind="attr: {'data-content': '<fmt:message key="players.history.collectedDate" />: ' + $.format.date(collectedAt, edist.format.date)}, updatePopup:{}"
 				data-toggle="popover"></span></td>
-			<td data-bind="visible: edist.user.hasManagementAccess || edist.user.hasPlayerReportsAccess">
+			<td data-bind="visible: edist.user.hasManagementAccess || edist.user.hasReportsAccess">
 				<a data-toggle="popover" data-content="<fmt:message key="header.mod"/>"
 					data-bind="if: edist.user.hasManagementAccess,
 							attr: {href: '${baseUrl}/management/playersList/search/' + (erId ? erId : '')  }, updatePopup:{}"><span
 					class="glyphicon glyphicon-list"></span></a> 
 				<a data-toggle="popover" data-content="<fmt:message key="management.players.template.dist"/>"
-					data-bind="if: edist.user.hasPlayerReportsAccess, 
+					data-bind="if: edist.user.hasReportsAccess, 
 							attr: {href: '${baseUrl}/reports/requests/player/' + (erId ? erId : '')  }, updatePopup:{}"><span
 					class="glyphicon glyphicon-cutlery"></span></a> 
 				<a data-toggle="popover" data-content="<fmt:message key="management.players.template.work"/>"
-					data-bind="if: edist.user.hasPlayerReportsAccess, 
+					data-bind="if: edist.user.hasReportsAccess, 
 							attr: {href: '${baseUrl}/reports/work/player/' + (erId ? erId : '') }, updatePopup:{}"><span
 					class="glyphicon glyphicon-wrench"></span></a> 
 				<a data-toggle="popover" data-content="<fmt:message key="management.players.template.fights"/>"
-					data-bind="if: edist.user.hasPlayerReportsAccess, 
+					data-bind="if: edist.user.hasReportsAccess, 
 								attr: {href: '${baseUrl}/reports/fights/player/' + (erId ? erId : '')  }, updatePopup:{}"><span
 					class="glyphicon glyphicon-screenshot"></span></a></td>
 		</tr>

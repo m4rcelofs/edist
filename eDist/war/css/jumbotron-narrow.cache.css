@@ -44,3 +44,7 @@ body {
 .weapon {
 	height: 30px;
 }
+
+.vertical-center {
+	vertical-align: middle !important;	
+}

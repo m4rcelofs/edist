@@ -4,6 +4,7 @@ import static com.erep.dist.auth.SymmetricCipherUtils.encrypt;
 import static com.erep.dist.data.enums.RequestType.ROCKET;
 import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withPayload;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -40,6 +41,8 @@ import com.erep.dist.data.enums.PlayerDistStatus;
 import com.erep.dist.data.enums.PlayerStatus;
 import com.erep.dist.data.enums.RequestStatus;
 import com.erep.dist.data.enums.RequestType;
+import com.erep.dist.dwr.dto.WorkWeek;
+import com.erep.dist.erep.eRepTimeCalculator;
 import com.erep.dist.instances.frontend.tasks.NotifyEmailChangeTask;
 import com.google.appengine.api.datastore.Cursor;
 import com.google.appengine.api.datastore.Key;
@@ -63,10 +66,14 @@ public class DataAccessObject {
 	}
 
 	public boolean save(Employer employer) {
-		employer.setKey(KeyFactory.createKey(employerRootKey(),
-				Employer.class.getSimpleName(), employer.getErId()));
+		employer.setKey(createEmployerKey(employer.getErId()));
 		employerRoot().addEmployers(employer);
 		return true;
+	}
+
+	public Key createEmployerKey(String erId) {
+		return KeyFactory.createKey(employerRootKey(),
+				Employer.class.getSimpleName(), erId);
 	}
 
 	public boolean save(Distributor dist) {
@@ -284,6 +291,11 @@ public class DataAccessObject {
 		old.setFightStatus(newest.getFightStatus());
 		old.setWorkStatus(newest.getWorkStatus());
 
+		if (newest.getCurrentEmployerName() == null) {
+			old.getCurrentEmployer().getPlayers().remove(old);
+			old.setCurrentEmployer(null);
+		}
+
 		Set<PlayerGroup> groups = new HashSet<>();
 		if (newest.getGroups() == null || newest.getGroups().isEmpty()) {
 			groups.add(defaultGroup());
@@ -323,6 +335,16 @@ public class DataAccessObject {
 		q.declareParameters(Key.class.getName() + " rootParam, "
 				+ Key.class.getName() + " groupParam");
 		return (List<Player>) q.execute(playerRootKey(), group.getKey());
+	}
+
+	public List<Player> listPlayersByEmployer(Employer employer,
+			String encodedCursor) {
+		Query q = queryWithCursor(Player.class,
+				"root == rootParam && currentEmployer == employerParam",
+				encodedCursor);
+		q.declareParameters(Key.class.getName() + " rootParam, "
+				+ Key.class.getName() + " employerParam");
+		return (List<Player>) q.execute(playerRootKey(), employer.getKey());
 	}
 
 	public List<Player> listPlayersByFight(PlayerDistStatus status,
@@ -528,6 +550,20 @@ public class DataAccessObject {
 		q.setResult("sum(calculatedFfFights)");
 		Long response = ((Long) q.execute(player.getKey(), fromDay));
 		return response != null ? response.intValue() : 0;
+	}
+
+	public List<WorkWeek> getWeeklyWorks(List<Player> players) {
+		List<WorkWeek> works = new ArrayList<>();
+
+		int fromDay = eRepTimeCalculator.geteRepDay() - 6;
+		for (Player p : players) {
+			WorkWeek week = new WorkWeek();
+			week.setPlayer(p);
+			week.setResults(getWork(p, fromDay));
+			works.add(week);
+		}
+
+		return works;
 	}
 
 	public List<DailyWork> getWork(Player dbPlayer, int fromDay) {
