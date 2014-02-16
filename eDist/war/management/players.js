@@ -186,6 +186,10 @@ var PlayersViewModel = new function() {
 	self.clearWorkStatus = function(player) {
 		player.workStatus(null);
 	}
+	
+	self.clearCurrentEmployer = function(player) {
+		player.currentEmployerName(null);
+	}
 
 	self.enable = function(player) {
 		player.dbStatus('ENABLED');

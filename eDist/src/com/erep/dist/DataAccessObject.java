@@ -291,6 +291,11 @@ public class DataAccessObject {
 		old.setFightStatus(newest.getFightStatus());
 		old.setWorkStatus(newest.getWorkStatus());
 
+		if (newest.getCurrentEmployerName() == null) {
+			old.getCurrentEmployer().getPlayers().remove(old);
+			old.setCurrentEmployer(null);
+		}
+
 		Set<PlayerGroup> groups = new HashSet<>();
 		if (newest.getGroups() == null || newest.getGroups().isEmpty()) {
 			groups.add(defaultGroup());

@@ -67,6 +67,14 @@
 
 		<%@ include file="header.tag"%>
 
+		<noscript>
+			<div class="alert alert-danger text-center">
+				<span class="glyphicon glyphicon-warning-sign"></span> 
+				<strong> <fmt:message key="header.noscript" />
+				</strong>
+			</div>
+		</noscript>
+
 		<jsp:doBody />
 
 		<%@ include file="footer.tag"%>
