@@ -135,6 +135,7 @@ public class AdminService {
 	@RemoteMethod
 	public List<Employer> listEmployers() {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			pm.getFetchPlan().addGroup("employerListing");
 			return new DataAccessObject(pm).listEmployers();
 		}
 	}

@@ -65,6 +65,9 @@ public class WorkParseTask implements DeferredTask {
 				return;
 			}
 
+			dbEmployer.addPlayer(dbPlayer);
+			dbPlayer.setCurrentEmployer(dbEmployer);
+
 			JSONArray works = (JSONArray) employeeUpdate.get("work");
 
 			logger.log(Level.WARNING, "Work received for " + dbPlayer.getName()
@@ -97,6 +100,20 @@ public class WorkParseTask implements DeferredTask {
 		Integer day = Integer.valueOf(workDay.get("day").toString());
 
 		DailyWork work = new DailyWork(player, day);
+
+		try {
+			DailyWork dbWork = dao.find(work);
+			if (dbWork.getWorked() != null) {
+				logger.log(Level.WARNING,
+						"Work parse for player " + player.getName()
+								+ " on day " + day
+								+ " already exists, ignoring");
+				return;
+			}
+		} catch (JDOObjectNotFoundException ignore) {
+			// not run yet, go ahead
+		}
+
 		work.setEmployer(employer);
 		work.setGroups(player.getGroups());
 		work.setPlayer(player);
@@ -139,5 +156,4 @@ public class WorkParseTask implements DeferredTask {
 			return false;
 		}
 	}
-
 }

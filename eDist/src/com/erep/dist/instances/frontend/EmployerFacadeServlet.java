@@ -58,6 +58,7 @@ public class EmployerFacadeServlet extends HttpServlet {
 			checkParams(authKey, id);
 
 			Employer dbEmployer = verifyEmployer(dao, authKey, id);
+			dbEmployer.resetPlayers();
 
 			createWorks(dbEmployer, employees);
 

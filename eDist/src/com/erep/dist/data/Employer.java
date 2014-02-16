@@ -1,7 +1,11 @@
 package com.erep.dist.data;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.jdo.annotations.FetchGroup;
+import javax.jdo.annotations.FetchGroups;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
@@ -13,7 +17,9 @@ import org.directwebremoting.annotations.RemoteProperty;
 
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
+import com.google.appengine.datanucleus.annotations.Unowned;
 
+@FetchGroups({ @FetchGroup(name = "employerListing", members = { @Persistent(name = "players") }) })
 @DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class Employer implements HasEncodedKey {
@@ -41,6 +47,10 @@ public class Employer implements HasEncodedKey {
 	@Persistent
 	@RemoteProperty
 	private Date			lastUpdatedAt;
+
+	@Unowned
+	@Persistent
+	private Set<Player>		players;
 
 	@Persistent
 	private EmployerRoot	root;
@@ -115,6 +125,35 @@ public class Employer implements HasEncodedKey {
 
 	public void setAuthKey(String authKey) {
 		this.authKey = authKey;
+	}
+
+	public Set<Player> getPlayers() {
+		if (players == null)
+			resetPlayers();
+		return players;
+	}
+
+	public void resetPlayers() {
+		setPlayers(new HashSet<Player>());
+	}
+
+	@RemoteProperty
+	public int getPlayersCount() {
+		return getPlayers().size();
+	}
+
+	@Deprecated
+	@RemoteProperty
+	public void setPlayersCount() {
+		// DWR only
+	}
+
+	public void addPlayer(Player player) {
+		getPlayers().add(player);
+	}
+
+	public void setPlayers(Set<Player> players) {
+		this.players = players;
 	}
 
 }
