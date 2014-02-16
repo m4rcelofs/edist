@@ -197,6 +197,7 @@
 				com.erep.dist.data.DailyStats,
 				com.erep.dist.data.Distributor,
 				com.erep.dist.data.Employer,
+				com.erep.dist.data.Player,
 				com.erep.dist.data.PlayerGroup,
 				com.erep.dist.data.Request,
 				com.erep.dist.data.ResourceDist,
@@ -205,6 +206,8 @@
 				
 				com.erep.dist.dwr.dto.RequestQuery,
 				com.erep.dist.dwr.dto.WorkQuery,
+				com.erep.dist.dwr.dto.WorkWeek,
+				com.erep.dist.dwr.dto.WorkWeekQuery,
 				com.erep.dist.dwr.dto.FightsQuery,
 				com.erep.dist.dwr.dto.FiltersInitialInfo,
 

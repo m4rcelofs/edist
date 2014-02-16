@@ -54,11 +54,22 @@ public class SendResourceTask implements DeferredTask {
 
 			checkDistributorAccess(pm, dbRequest.getDistributor());
 
+			if (dbRequest.getPlayer().getNameNormalized()
+					.equalsIgnoreCase(dbRequest.getDistributor().getName())) {
+				dbRequest.setStatus(RequestStatus.ERROR);
+				dbResource.setStatus(ResourceDistStatus.ERROR);
+				logger.log(Level.WARNING,
+						"Distributor is trying to send resources to itself, aborting");
+				return;
+			}
+
 			PlayerStatus dbStatus = dbRequest.getPlayer().getDbStatus();
 			if (dbStatus == PlayerStatus.ERROR
 					|| dbStatus == PlayerStatus.DISABLED) {
 				dbRequest.setStatus(RequestStatus.ERROR);
 				dbResource.setStatus(ResourceDistStatus.ERROR);
+				logger.log(Level.WARNING,
+						"Player has errors or is disabled, aborting");
 				return;
 			}
 
@@ -66,7 +77,7 @@ public class SendResourceTask implements DeferredTask {
 
 			dbRequest.setStatus(RequestStatus.SENT);
 			dbRequest.setCompletedAt(new Date());
-			
+
 			setDistributorAccess(pm, dbRequest.getDistributor());
 
 		} catch (Exception e) {

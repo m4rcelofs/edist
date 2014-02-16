@@ -50,7 +50,7 @@ $(document).ready(function() {
 	// loads bigger avatar on mouseover
 	ko.bindingHandlers.avatarEnhance = {
 		update : function(element, valueAccessor) {
-			$(element).mouseover(function() {
+			$(element).click(function() {
 				if(!$(element).attr('avatar-loaded')) {
 					var newStyle = $(element).attr('style');
 					newStyle = newStyle.replace('55x55', '142x142');
