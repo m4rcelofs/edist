@@ -150,7 +150,7 @@ public class ErepScrapper implements Closeable {
 
 		read(postResponse);
 
-		log.warning("Final response");
+		log.warning("Final login response");
 
 		HttpResponse finalResponse = client.execute(httpGet);
 		printHeaders(finalResponse);
