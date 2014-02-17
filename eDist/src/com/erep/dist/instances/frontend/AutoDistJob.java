@@ -36,42 +36,42 @@ public class AutoDistJob extends HttpServlet {
 
 		int autoDist = 0;
 
-		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			DataAccessObject dao = new DataAccessObject(pm);
-
-			if (!new LicensingHelper(dao).isValidLicence())
-				return;
-
-			ConfigHelper config = new ConfigHelper(dao);
-			RequestsHelper requests = new RequestsHelper(dao);
-
-			List<Player> players = dao.listAllPlayers();
-
-			for (Player player : players) {
-				for (PlayerGroup group : player.getGroups())
-					if (config.getConfig(player, group).getAutoSend()) {
-						Transaction tx = pm.currentTransaction();
-						try {
-							tx.begin();
-							Request request = requests.createRequest(player,
-									group);
-							player.addRequest(request);
-							dao.save(request);
-							requests.addToQueue(request);
-							tx.commit();
-							autoDist++;
-						} finally {
-							if (tx.isActive()) {
-								tx.rollback();
-								logger.log(Level.SEVERE,
-										"Request for player {0} failed",
-										player.getName());
-							}
-						}
-					}
-			}
-
-		}
+//		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+//			DataAccessObject dao = new DataAccessObject(pm);
+//
+//			if (!new LicensingHelper(dao).isValidLicence())
+//				return;
+//
+//			ConfigHelper config = new ConfigHelper(dao);
+//			RequestsHelper requests = new RequestsHelper(dao);
+//
+//			List<Player> players = dao.listAllPlayers();
+//
+//			for (Player player : players) {
+//				for (PlayerGroup group : player.getGroups())
+//					if (config.getConfig(player, group).getAutoSend()) {
+//						Transaction tx = pm.currentTransaction();
+//						try {
+//							tx.begin();
+//							Request request = requests.createRequest(player,
+//									group);
+//							player.addRequest(request);
+//							dao.save(request);
+//							requests.addToQueue(request);
+//							tx.commit();
+//							autoDist++;
+//						} finally {
+//							if (tx.isActive()) {
+//								tx.rollback();
+//								logger.log(Level.SEVERE,
+//										"Request for player {0} failed",
+//										player.getName());
+//							}
+//						}
+//					}
+//			}
+//
+//		}
 
 		logger.log(Level.WARNING, "AutoDist requested for {0} players",
 				autoDist);

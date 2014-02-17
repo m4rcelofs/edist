@@ -84,6 +84,10 @@ public class Player implements HasEncodedKey {
 	@Persistent
 	private Employer			currentEmployer;
 
+	@NotPersistent
+	@RemoteProperty
+	private String				currentEmployerName;
+
 	@Persistent(dependent = "true")
 	@RemoteProperty
 	private DistConfig			config;
@@ -348,16 +352,14 @@ public class Player implements HasEncodedKey {
 		this.currentEmployer = currentEmployer;
 	}
 
-	@RemoteProperty
 	public String getCurrentEmployerName() {
 		if (getCurrentEmployer() != null)
 			return getCurrentEmployer().getName();
 		else
-			return null;
+			return currentEmployerName;
 	}
 
-	@Deprecated
 	public void setCurrentEmployerName(String name) {
-		// DWR only
+		this.currentEmployerName = name;
 	}
 }

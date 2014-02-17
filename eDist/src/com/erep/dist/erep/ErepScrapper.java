@@ -3,6 +3,7 @@ package com.erep.dist.erep;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,8 +34,8 @@ import com.erep.dist.erep.dist.ResourcesSendingException;
 
 public class ErepScrapper implements Closeable {
 
-	private static final Logger		log	= Logger.getLogger(ErepScrapper.class
-												.getName());
+	private static final Logger		logger	= Logger.getLogger(ErepScrapper.class
+													.getName());
 	private final DefaultHttpClient	client;
 	private final String			email;
 	private final String			password;
@@ -48,7 +49,7 @@ public class ErepScrapper implements Closeable {
 	public String scrape(String url) throws IOException {
 		HttpGet httpGet = new HttpGet(url);
 		HttpResponse response = client.execute(httpGet);
-		log.warning("main response");
+		logger.warning("main response");
 		printHeaders(response);
 		printCookies(client.getCookieStore().getCookies());
 		return read(response);
@@ -68,6 +69,8 @@ public class ErepScrapper implements Closeable {
 					.formValue()));
 			nvps.add(new BasicNameValuePair("_token", formToken));
 			httpPost.setEntity(new UrlEncodedFormEntity(nvps, Consts.UTF_8));
+			
+			logger.log(Level.WARNING, "POST parameters: " + Arrays.toString(nvps.toArray()));
 		}
 		httpPost.setHeader(
 				"Referer",
@@ -83,12 +86,15 @@ public class ErepScrapper implements Closeable {
 		if (htmlResponse.contains("error"))
 			throw new ResourcesSendingException(htmlResponse);
 
+		logger.log(Level.WARNING, "Items sent successfully, game returned \""
+				+ htmlResponse + "\" as response");
+
 		return true;
 	}
 
 	public void login() throws IOException, ErepLoginException {
 
-		log.warning("GET response");
+		logger.warning("GET response");
 		HttpGet httpGet = new HttpGet("http://www.erepublik.com/en");
 
 		HttpResponse getResponse = client.execute(httpGet);
@@ -101,9 +107,9 @@ public class ErepScrapper implements Closeable {
 						html.indexOf("<input type=\"hidden\" id=\"_token\" name=\"_token\" value=\"") + 54,
 						html.indexOf("<div class=\"visible_form\">") - 6);
 
-		log.log(Level.WARNING, "Hidden token: " + hiddenToken);
+		logger.log(Level.WARNING, "Hidden token: " + hiddenToken);
 
-		log.warning("Post response");
+		logger.warning("Post response");
 		HttpPost httpPost = new HttpPost("http://www.erepublik.com/en/login");
 
 		List<NameValuePair> nvps = new ArrayList<>(4);
@@ -150,7 +156,7 @@ public class ErepScrapper implements Closeable {
 
 		read(postResponse);
 
-		log.warning("Final response");
+		logger.warning("Final login response");
 
 		HttpResponse finalResponse = client.execute(httpGet);
 		printHeaders(finalResponse);
@@ -172,13 +178,15 @@ public class ErepScrapper implements Closeable {
 	}
 
 	private void printCookies(List<Cookie> cookies) {
-		log.log(Level.WARNING,
+		logger.log(
+				Level.WARNING,
 				"Set of cookies:"
 						+ StringUtils.join(cookies.iterator(), " ||| "));
 	}
 
 	private void printHeaders(HttpResponse response) {
-		log.log(Level.WARNING,
+		logger.log(
+				Level.WARNING,
 				"Set of headers:"
 						+ StringUtils.join(response.getAllHeaders(), " ||| "));
 	}
