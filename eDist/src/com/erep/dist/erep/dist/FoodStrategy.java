@@ -32,6 +32,10 @@ public class FoodStrategy extends ManufacturedStrategy {
 	@Override
 	protected boolean validateInventory() throws InventoryValidationException {
 
+		if (hasCaptcha)
+			throw new InventoryValidationException(
+					"Distributor has captcha enabled, aborting");
+
 		ResourceDist resource = getResource();
 
 		Map<ResourceQuality, Integer> foodInventory = getInventory().row(
