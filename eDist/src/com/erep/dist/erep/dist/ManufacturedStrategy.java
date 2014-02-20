@@ -21,7 +21,8 @@ public abstract class ManufacturedStrategy implements DistStrategy {
 
 	private final HashBasedTable<ResourceType, ResourceQuality, Integer>	inventory;
 	protected String														formToken;
-
+	protected boolean														hasCaptcha;
+	
 	protected static Logger													logger	= Logger.getLogger(ManufacturedStrategy.class
 																							.getName());
 
@@ -47,9 +48,13 @@ public abstract class ManufacturedStrategy implements DistStrategy {
 		sendResource();
 	}
 
-	protected String scanInventory() throws IOException {
+	protected String scanInventory() throws IOException,
+			InventoryValidationException {
 		String donateHtml = scrapper
 				.scrape(eRepURL.DONATE_ITEMS.getUrl(player));
+
+		if (donateHtml.contains("var has_captcha = 1;"))
+			hasCaptcha = true;
 
 		formToken = parser.parse(donateHtml, inventory);
 		return formToken;

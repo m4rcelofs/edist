@@ -10,19 +10,19 @@
 		class="glyphicon glyphicon-question-sign"></span>
 	</a>
 </div>
-<div class="form-group">
-	<label class="control-label col-md-6" for="autoDist"><fmt:message key="distconfig.autoDist"/></label>
-	<div class="col-md-5">
-		<input type="checkbox" class="form-control" id="autoDist"
-			data-bind="checked: currentConfig.autoSend, enable: currentConfig.currentMaxDailyFF() > 0">
-	</div>
-	<a href="#" class="help" data-toggle="popover" title
-		data-content="<fmt:message key="distconfig.autoDist.help"/>"
-		data-original-title="<fmt:message key="distconfig.autoDist.title"/>"
-		data-bind="updatePopup:{}"> <span
-		class="glyphicon glyphicon-question-sign"></span>
-	</a>
-</div>
+<!-- <div class="form-group"> -->
+<!-- 	<label class="control-label col-md-6" for="autoDist"><fmt:message key="distconfig.autoDist"/></label> -->
+<!-- 	<div class="col-md-5"> -->
+<!-- 		<input type="checkbox" class="form-control" id="autoDist" -->
+<!-- 			data-bind="checked: currentConfig.autoSend, enable: currentConfig.currentMaxDailyFF() > 0"> -->
+<!-- 	</div> -->
+<!-- 	<a href="#" class="help" data-toggle="popover" title -->
+<%-- 		data-content="<fmt:message key="distconfig.autoDist.help"/>" --%>
+<%-- 		data-original-title="<fmt:message key="distconfig.autoDist.title"/>" --%>
+<!-- 		data-bind="updatePopup:{}"> <span -->
+<!-- 		class="glyphicon glyphicon-question-sign"></span> -->
+<!-- 	</a> -->
+<!-- </div> -->
 <div class="form-group">
 	<label class="control-label col-md-6" for="distType"><fmt:message key="distconfig.distType"/></label>
 	<div class="col-md-5">
