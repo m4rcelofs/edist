@@ -39,16 +39,20 @@ public class RequestService {
 			Integer requestedFF, RequestType type) {
 
 		if (player == null || player.getKey() == null || requestedFF == null
-				|| (requestedFF <= 0 && type != ROCKET) || type == null)
+				|| (requestedFF <= 0 && type != ROCKET) || type == null) {
+			logger.log(Level.SEVERE, "Dist request denied because there's something wrong with it");
 			return false;
+		}
 
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			boolean response = false;
 
 			DataAccessObject dao = new DataAccessObject(pm);
 
-			if (!new LicensingHelper(dao).isValidLicence())
+			if (!new LicensingHelper(dao).isValidLicence()) {
+				logger.log(Level.SEVERE, "Dist request denied because licence has expired");
 				return false;
+			}
 
 			Transaction tx = pm.currentTransaction();
 			try {
@@ -79,6 +83,7 @@ public class RequestService {
 				}
 
 			} catch (JDOObjectNotFoundException e) {
+				logger.log(Level.SEVERE, "Dist request denied", e);
 				return false;
 			} finally {
 				if (tx.isActive()) {

@@ -45,12 +45,17 @@ public class SendResourceTask implements DeferredTask {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			DataAccessObject dao = new DataAccessObject(pm);
 
+			logger.log(Level.WARNING, "Starting SendResourceTask");
+
 			Request dbRequest = dao.find(new Request(requestKey));
 			ResourceDist dbResource = dao.find(new ResourceDist(resourceKey));
 
 			if (dbRequest == null || dbResource == null
-					|| dbResource.getStatus() == ResourceDistStatus.SENT)
+					|| dbResource.getStatus() == ResourceDistStatus.SENT) {
+				logger.log(Level.WARNING,
+						"Request not found or resource already sent, aborting");
 				return;
+			}
 
 			checkDistributorAccess(pm, dbRequest.getDistributor());
 
@@ -78,6 +83,8 @@ public class SendResourceTask implements DeferredTask {
 			dbRequest.setStatus(RequestStatus.SENT);
 			dbRequest.setCompletedAt(new Date());
 
+			logger.log(Level.WARNING, "SendResourceTask completed successfully");
+
 			setDistributorAccess(pm, dbRequest.getDistributor());
 
 		} catch (Exception e) {
@@ -99,6 +106,9 @@ public class SendResourceTask implements DeferredTask {
 			throw new IllegalStateException(distributor.getEmail()
 					+ " cooldown period, will retry later");
 
+		// other requests might start while sending this one!
+		setDistributorAccess(pm, distributor);
+
 	}
 
 	private void setDistributorAccess(PersistenceManager pm,
@@ -116,11 +126,16 @@ public class SendResourceTask implements DeferredTask {
 
 		try (ErepScrapper scrapper = new ErepScrapper(dist.getEmail(),
 				passwordPlain)) {
-			scrapper.login();
 
+			logger.log(Level.WARNING, "Logging in");
+			scrapper.login();
+			logger.log(Level.WARNING, "Logged in");
+
+			logger.log(Level.WARNING, "Sending resource...");
 			ManufacturedStrategy strategy = getStrategy(dbRequest, dbResource,
 					scrapper);
 			strategy.execute();
+			logger.log(Level.WARNING, "Resource sent");
 
 			dbResource.setStatus(ResourceDistStatus.SENT);
 			dbRequest.getDistributor()
