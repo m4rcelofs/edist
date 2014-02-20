@@ -63,13 +63,13 @@
 														value: selectedFFs, 
 														attr: {max: requestAttempt().availableFF()}">
 										</div>
-										<p class="help-block"
+										<span class="help-block"
 										data-bind="visible: requestAttempt().availableFF() != null &&  requestAttempt().availableFF() > 0">
 										<fmt:message key="request.available" />: <span
 											data-bind="text: requestAttempt().availableFF()"></span> <abbr
 											title="<fmt:message key="request.foodFights"/>"><fmt:message
 												key="request.ff" /></abbr>
-										</p>
+										</span>
 									</div>
 								</div>
 								<div class="col-md-offset-1 col-md-4">
