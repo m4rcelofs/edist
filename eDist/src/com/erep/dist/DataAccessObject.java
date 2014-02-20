@@ -292,7 +292,8 @@ public class DataAccessObject {
 		old.setWorkStatus(newest.getWorkStatus());
 
 		if (newest.getCurrentEmployerName() == null) {
-			old.getCurrentEmployer().getPlayers().remove(old);
+			if (old.getCurrentEmployer() != null)
+				old.getCurrentEmployer().getPlayers().remove(old);
 			old.setCurrentEmployer(null);
 		}
 

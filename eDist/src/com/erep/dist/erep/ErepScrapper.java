@@ -3,6 +3,7 @@ package com.erep.dist.erep;
 import java.io.Closeable;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -33,8 +34,8 @@ import com.erep.dist.erep.dist.ResourcesSendingException;
 
 public class ErepScrapper implements Closeable {
 
-	private static final Logger		log	= Logger.getLogger(ErepScrapper.class
-												.getName());
+	private static final Logger		logger	= Logger.getLogger(ErepScrapper.class
+													.getName());
 	private final DefaultHttpClient	client;
 	private final String			email;
 	private final String			password;
@@ -48,7 +49,7 @@ public class ErepScrapper implements Closeable {
 	public String scrape(String url) throws IOException {
 		HttpGet httpGet = new HttpGet(url);
 		HttpResponse response = client.execute(httpGet);
-		log.warning("main response");
+		logger.log(Level.INFO, "main response");
 		printHeaders(response);
 		printCookies(client.getCookieStore().getCookies());
 		return read(response);
@@ -56,6 +57,7 @@ public class ErepScrapper implements Closeable {
 
 	public boolean sendItem(Player player, ResourceDist resource,
 			String formToken) throws IOException, ResourcesSendingException {
+
 		HttpPost httpPost = new HttpPost(eRepURL.DONATE_ITEMS_ACTION.getUrl(""));
 		{
 			List<NameValuePair> nvps = new ArrayList<>(5);
@@ -68,27 +70,63 @@ public class ErepScrapper implements Closeable {
 					.formValue()));
 			nvps.add(new BasicNameValuePair("_token", formToken));
 			httpPost.setEntity(new UrlEncodedFormEntity(nvps, Consts.UTF_8));
+
+			logger.log(Level.WARNING,
+					"POST parameters: " + Arrays.toString(nvps.toArray()));
 		}
+
 		httpPost.setHeader(
 				"Referer",
 				"http://www.erepublik.com/en/economy/donate-items/"
 						+ player.getErId());
 
 		printCookies(client.getCookieStore().getCookies());
+		
 		HttpResponse postResponse = client.execute(httpPost);
 		printHeaders(postResponse);
 
-		String htmlResponse = read(postResponse);
+		String postHtmlResponse = read(postResponse);
 
-		if (htmlResponse.contains("error"))
-			throw new ResourcesSendingException(htmlResponse);
+		if (postHtmlResponse.contains("error"))
+			throw new ResourcesSendingException(postHtmlResponse);
 
-		return true;
+		logger.log(Level.WARNING, "POST sent successfully, game returned \""
+				+ postHtmlResponse + "\" as response");
+
+		if (postResponse.getStatusLine().getStatusCode() != 301
+				|| postResponse.getHeaders("Location").length == 0) {
+			printHeaders(postResponse);
+			throw new ResourcesSendingException("Redirection failed?");
+		} else {
+			String redirect = postResponse.getHeaders("Location")[0].getValue();
+
+			logger.log(Level.WARNING, "Game redirected to \"" + redirect + "\"");
+
+			HttpGet redirectGet = new HttpGet(redirect);
+			HttpResponse redirectResponse = client.execute(redirectGet);
+
+			String redirectHtmlResponse = read(redirectResponse);
+			String successMessage = "Successfully transferred "
+					+ resource.getQuantity() + " item(s) to "
+					+ player.getName() + ".";
+
+			if (redirectHtmlResponse.contains(successMessage)) {
+				logger.log(Level.WARNING,
+						"Redirection had success message, marking as sent");
+				return true;
+			} else {
+				logger.log(Level.INFO, "Success message should be: \""
+						+ successMessage + "\"");
+				logger.log(Level.INFO, redirectHtmlResponse);
+				throw new ResourcesSendingException(
+						"Redirection DID NOT have success message, marking as NOT sent");
+			}
+		}
 	}
 
 	public void login() throws IOException, ErepLoginException {
 
-		log.warning("GET response");
+		logger.log(Level.INFO, "GET response");
 		HttpGet httpGet = new HttpGet("http://www.erepublik.com/en");
 
 		HttpResponse getResponse = client.execute(httpGet);
@@ -101,9 +139,9 @@ public class ErepScrapper implements Closeable {
 						html.indexOf("<input type=\"hidden\" id=\"_token\" name=\"_token\" value=\"") + 54,
 						html.indexOf("<div class=\"visible_form\">") - 6);
 
-		log.log(Level.WARNING, "Hidden token: " + hiddenToken);
+		logger.log(Level.WARNING, "Hidden token: " + hiddenToken);
 
-		log.warning("Post response");
+		logger.log(Level.INFO, "Post response");
 		HttpPost httpPost = new HttpPost("http://www.erepublik.com/en/login");
 
 		List<NameValuePair> nvps = new ArrayList<>(4);
@@ -150,7 +188,7 @@ public class ErepScrapper implements Closeable {
 
 		read(postResponse);
 
-		log.warning("Final response");
+		logger.log(Level.INFO, "Final login response");
 
 		HttpResponse finalResponse = client.execute(httpGet);
 		printHeaders(finalResponse);
@@ -172,13 +210,15 @@ public class ErepScrapper implements Closeable {
 	}
 
 	private void printCookies(List<Cookie> cookies) {
-		log.log(Level.WARNING,
+		logger.log(
+				Level.INFO,
 				"Set of cookies:"
 						+ StringUtils.join(cookies.iterator(), " ||| "));
 	}
 
 	private void printHeaders(HttpResponse response) {
-		log.log(Level.WARNING,
+		logger.log(
+				Level.INFO,
 				"Set of headers:"
 						+ StringUtils.join(response.getAllHeaders(), " ||| "));
 	}
