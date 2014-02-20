@@ -8,39 +8,53 @@
 			data-bind="submit: saveConfig">
 			<div class="form-group"></div>
 			<div class="form-group">
-				<label class="control-label col-md-6" for="muName"><fmt:message key="admin.config.muName"/></label>
+				<label class="control-label col-md-6" for="muName"><fmt:message
+						key="admin.config.muName" /></label>
 				<div class="col-md-5">
-					<input type="text" class="form-control" placeholder="<fmt:message key="admin.config.muPlaceholder"/>"
+					<input type="text" class="form-control"
+						placeholder="<fmt:message key="admin.config.muPlaceholder"/>"
 						required data-bind="value: config.muName">
 				</div>
 			</div>
 			<div class="form-group">
-				<label class="col-md-6 control-label" for="granularity"><fmt:message key="admin.config.granularity"/></label>
+				<label class="col-md-6 control-label" for="granularity"><fmt:message
+						key="admin.config.granularity" /></label>
 				<div class="col-md-5">
 					<select class="form-control selectpicker show-menu-arrow show-tick"
 						data-bind="value: config.granularity, updateSelectPicker:{}">
-						<option value="MU"><fmt:message key="admin.config.granularity.mu"/></option>
-						<option value="GROUP"><fmt:message key="admin.config.granularity.group"/></option>
-						<option value="PLAYER"><fmt:message key="admin.config.granularity.player"/></option>
+						<option value="MU">
+							<fmt:message key="admin.config.granularity.mu" />
+						</option>
+						<option value="GROUP">
+							<fmt:message key="admin.config.granularity.group" />
+						</option>
+						<option value="PLAYER">
+							<fmt:message key="admin.config.granularity.player" />
+						</option>
 					</select>
 				</div>
 				<a href="#" class="help" data-toggle="popover" title
 					data-content="<fmt:message key="admin.config.granularity.help"/>"
-					data-original-title="<fmt:message key="admin.config.granularity.title"/>" data-bind="updatePopup:{}">
-					<span class="glyphicon glyphicon-question-sign"></span>
+					data-original-title="<fmt:message key="admin.config.granularity.title"/>"
+					data-bind="updatePopup:{}"> <span
+					class="glyphicon glyphicon-question-sign"></span>
 				</a>
 			</div>
 
 			<div class="form-group">
-				<label class="col-md-6 control-label" for="defaultConfigs"><fmt:message key="admin.config.defaultConfig"/></label>
+				<label class="col-md-6 control-label" for="defaultConfigs"><fmt:message
+						key="admin.config.defaultConfig" /></label>
 				<div class="col-md-5">
 					<ul class="list-group">
 						<li class="list-group-item"><a href="#" role="button"
-							data-bind="click: editConfig"><fmt:message key="admin.config.defaultConfig.dist"/></a></li>
+							data-bind="click: editConfig"><fmt:message
+									key="admin.config.defaultConfig.dist" /></a></li>
 						<li class="list-group-item"><a href="#" role="button"
-							data-bind="click: editFightVerif"><fmt:message key="admin.config.defaultConfig.fightVerif"/></a></li>
+							data-bind="click: editFightVerif"><fmt:message
+									key="admin.config.defaultConfig.fightVerif" /></a></li>
 						<li class="list-group-item"><a href="#" role="button"
-							data-bind="click: editWorkVerif"><fmt:message key="admin.config.defaultConfig.workVerif"/></a></li>
+							data-bind="click: editWorkVerif"><fmt:message
+									key="admin.config.defaultConfig.workVerif" /></a></li>
 					</ul>
 				</div>
 				<a href="#" class="help" data-toggle="popover" title
@@ -51,55 +65,80 @@
 				</a>
 			</div>
 			<div class="form-group">
-				<label class="col-md-6 control-label" for="reportsAccess"><fmt:message key="admin.config.reportsAccess"/></label>
+				<label class="col-md-6 control-label" for="reportsAccess"><fmt:message
+						key="admin.config.reportsAccess" /></label>
 				<div class="col-md-5">
 					<select class="form-control selectpicker show-menu-arrow show-tick"
 						data-bind="value: config.reportsAccess, updateSelectPicker: config.reportsAccess">
-						<option value="ADMINS"><fmt:message key="admin.config.reportsAccess.admins"/></option>
-						<option value="MODS"><fmt:message key="admin.config.reportsAccess.mods"/></option>
-						<option value="VIEWER"><fmt:message key="admin.config.reportsAccess.viewer"/></option>
-						<option value="PUBLIC"><fmt:message key="admin.config.reportsAccess.public"/></option>
+						<option value="ADMINS">
+							<fmt:message key="admin.config.reportsAccess.admins" />
+						</option>
+						<option value="MODS">
+							<fmt:message key="admin.config.reportsAccess.mods" />
+						</option>
+						<option value="VIEWER">
+							<fmt:message key="admin.config.reportsAccess.viewer" />
+						</option>
+						<option value="PUBLIC">
+							<fmt:message key="admin.config.reportsAccess.public" />
+						</option>
 					</select>
 				</div>
-				<a href="#" class="help" data-toggle="popover" 
+				<a href="#" class="help" data-toggle="popover"
 					data-content="<fmt:message key="admin.config.reportsAccess.help"/>"
-					data-original-title="<fmt:message key="admin.config.reportsAccess.title"/>" data-bind="updatePopup:{}">
-					<span class="glyphicon glyphicon-question-sign"></span>
+					data-original-title="<fmt:message key="admin.config.reportsAccess.title"/>"
+					data-bind="updatePopup:{}"> <span
+					class="glyphicon glyphicon-question-sign"></span>
 				</a>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-md-6" for="playerReportsAccess"><fmt:message key="admin.config.playerReportsAccess"/></label>
+				<label class="control-label col-md-6" for="playerReportsAccess"><fmt:message
+						key="admin.config.playerReportsAccess" /></label>
 				<div class="col-md-5">
 					<select class="form-control selectpicker show-menu-arrow show-tick"
 						data-bind="value: config.playerReportsAccess, updateSelectPicker:{}">
-						<option value="ADMINS"><fmt:message key="admin.config.reportsAccess.admins"/></option>
-						<option value="MODS"><fmt:message key="admin.config.reportsAccess.mods"/></option>
-						<option value="VIEWER"><fmt:message key="admin.config.reportsAccess.viewer"/></option>
-						<option value="PUBLIC"><fmt:message key="admin.config.reportsAccess.public"/></option>
+						<option value="ADMINS">
+							<fmt:message key="admin.config.reportsAccess.admins" />
+						</option>
+						<option value="MODS">
+							<fmt:message key="admin.config.reportsAccess.mods" />
+						</option>
+						<option value="VIEWER">
+							<fmt:message key="admin.config.reportsAccess.viewer" />
+						</option>
+						<option value="PUBLIC">
+							<fmt:message key="admin.config.reportsAccess.public" />
+						</option>
 					</select>
 				</div>
-				<a href="#" class="help" data-toggle="popover" 
+				<a href="#" class="help" data-toggle="popover"
 					data-content="<fmt:message key="admin.config.playerReportsAccess.help"/>"
-					data-original-title="<fmt:message key="admin.config.reportsAccess.title"/>" data-bind="updatePopup:{}">
-					<span class="glyphicon glyphicon-question-sign"></span>
+					data-original-title="<fmt:message key="admin.config.reportsAccess.title"/>"
+					data-bind="updatePopup:{}"> <span
+					class="glyphicon glyphicon-question-sign"></span>
 				</a>
 			</div>
 			<div class="form-group">
-				<label class="control-label col-md-6" for="email"><fmt:message key="admin.config.email"/></label>
-				<div class="input-group col-md-5">
-					<input type="email" class="form-control"
-						placeholder="<fmt:message key="admin.config.email.placeholder"/>" required
-						data-bind="value: config.contactEmail"> <span
-						class="input-group-addon"> <span
-						class="glyphicon glyphicon-envelope"></span>
-					</span>
+				<label class="control-label col-md-6" for="email"><fmt:message
+						key="admin.config.email" /></label>
+				<div class="col-md-5">
+					<div class="input-group">
+						<input type="email" class="form-control"
+							placeholder="<fmt:message key="admin.config.email.placeholder"/>"
+							required data-bind="value: config.contactEmail"> <span
+							class="input-group-addon"> <span
+							class="glyphicon glyphicon-envelope"></span>
+						</span>
+					</div>
 				</div>
 			</div>
 			<div class="form-group">
 				<div class="col-md-offset-6 col-md-2">
 					<button id="save-config" type="submit" class="btn btn-primary"
-						data-loading-text="<fmt:message key="shared.saving"/>" autocomplete="off">
-						<span class="glyphicon glyphicon-floppy-disk"></span> <fmt:message key="shared.save"/>
+						data-loading-text="<fmt:message key="shared.saving"/>"
+						autocomplete="off">
+						<span class="glyphicon glyphicon-floppy-disk"></span>
+						<fmt:message key="shared.save" />
 					</button>
 				</div>
 			</div>
