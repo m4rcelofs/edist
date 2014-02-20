@@ -22,7 +22,8 @@
 									optionsValue: function(item) { return item ? item.encodedKey : '' }, 
 									value: filters.searchText, 
 									enable: $root.filters.employers().length > 0,
-									updateSelectPicker: $root.filters.employers">
+									updateSelectPicker: $root.filters.employers,
+									optionsAfterRender: $root.setEmployerOptionText">
 					</select>
 				</div>
 				<div class="form-group" data-bind="if: $root.category() === 'group'">
