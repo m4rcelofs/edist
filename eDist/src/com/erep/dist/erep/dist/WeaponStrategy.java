@@ -18,6 +18,10 @@ public class WeaponStrategy extends ManufacturedStrategy {
 	@Override
 	protected boolean validateInventory() throws InventoryValidationException {
 
+		if (hasCaptcha)
+			throw new InventoryValidationException(
+					"Distributor has captcha enabled, aborting");
+
 		ResourceQuality quality = getResource().getQuality();
 		Integer needed = getResource().getQuantity();
 		Integer actual = getInventory().get(ResourceType.WEAPONS, quality);

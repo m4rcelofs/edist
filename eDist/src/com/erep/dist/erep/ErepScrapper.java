@@ -49,7 +49,7 @@ public class ErepScrapper implements Closeable {
 	public String scrape(String url) throws IOException {
 		HttpGet httpGet = new HttpGet(url);
 		HttpResponse response = client.execute(httpGet);
-		logger.warning("main response");
+		logger.log(Level.INFO, "main response");
 		printHeaders(response);
 		printCookies(client.getCookieStore().getCookies());
 		return read(response);
@@ -57,6 +57,7 @@ public class ErepScrapper implements Closeable {
 
 	public boolean sendItem(Player player, ResourceDist resource,
 			String formToken) throws IOException, ResourcesSendingException {
+
 		HttpPost httpPost = new HttpPost(eRepURL.DONATE_ITEMS_ACTION.getUrl(""));
 		{
 			List<NameValuePair> nvps = new ArrayList<>(5);
@@ -69,32 +70,63 @@ public class ErepScrapper implements Closeable {
 					.formValue()));
 			nvps.add(new BasicNameValuePair("_token", formToken));
 			httpPost.setEntity(new UrlEncodedFormEntity(nvps, Consts.UTF_8));
-			
-			logger.log(Level.WARNING, "POST parameters: " + Arrays.toString(nvps.toArray()));
+
+			logger.log(Level.WARNING,
+					"POST parameters: " + Arrays.toString(nvps.toArray()));
 		}
+
 		httpPost.setHeader(
 				"Referer",
 				"http://www.erepublik.com/en/economy/donate-items/"
 						+ player.getErId());
 
 		printCookies(client.getCookieStore().getCookies());
+		
 		HttpResponse postResponse = client.execute(httpPost);
 		printHeaders(postResponse);
 
-		String htmlResponse = read(postResponse);
+		String postHtmlResponse = read(postResponse);
 
-		if (htmlResponse.contains("error"))
-			throw new ResourcesSendingException(htmlResponse);
+		if (postHtmlResponse.contains("error"))
+			throw new ResourcesSendingException(postHtmlResponse);
 
-		logger.log(Level.WARNING, "Items sent successfully, game returned \""
-				+ htmlResponse + "\" as response");
+		logger.log(Level.WARNING, "POST sent successfully, game returned \""
+				+ postHtmlResponse + "\" as response");
 
-		return true;
+		if (postResponse.getStatusLine().getStatusCode() != 301
+				|| postResponse.getHeaders("Location").length == 0) {
+			printHeaders(postResponse);
+			throw new ResourcesSendingException("Redirection failed?");
+		} else {
+			String redirect = postResponse.getHeaders("Location")[0].getValue();
+
+			logger.log(Level.WARNING, "Game redirected to \"" + redirect + "\"");
+
+			HttpGet redirectGet = new HttpGet(redirect);
+			HttpResponse redirectResponse = client.execute(redirectGet);
+
+			String redirectHtmlResponse = read(redirectResponse);
+			String successMessage = "Successfully transferred "
+					+ resource.getQuantity() + " item(s) to "
+					+ player.getName() + ".";
+
+			if (redirectHtmlResponse.contains(successMessage)) {
+				logger.log(Level.WARNING,
+						"Redirection had success message, marking as sent");
+				return true;
+			} else {
+				logger.log(Level.INFO, "Success message should be: \""
+						+ successMessage + "\"");
+				logger.log(Level.INFO, redirectHtmlResponse);
+				throw new ResourcesSendingException(
+						"Redirection DID NOT have success message, marking as NOT sent");
+			}
+		}
 	}
 
 	public void login() throws IOException, ErepLoginException {
 
-		logger.warning("GET response");
+		logger.log(Level.INFO, "GET response");
 		HttpGet httpGet = new HttpGet("http://www.erepublik.com/en");
 
 		HttpResponse getResponse = client.execute(httpGet);
@@ -109,7 +141,7 @@ public class ErepScrapper implements Closeable {
 
 		logger.log(Level.WARNING, "Hidden token: " + hiddenToken);
 
-		logger.warning("Post response");
+		logger.log(Level.INFO, "Post response");
 		HttpPost httpPost = new HttpPost("http://www.erepublik.com/en/login");
 
 		List<NameValuePair> nvps = new ArrayList<>(4);
@@ -156,7 +188,7 @@ public class ErepScrapper implements Closeable {
 
 		read(postResponse);
 
-		logger.warning("Final login response");
+		logger.log(Level.INFO, "Final login response");
 
 		HttpResponse finalResponse = client.execute(httpGet);
 		printHeaders(finalResponse);
@@ -179,14 +211,14 @@ public class ErepScrapper implements Closeable {
 
 	private void printCookies(List<Cookie> cookies) {
 		logger.log(
-				Level.WARNING,
+				Level.INFO,
 				"Set of cookies:"
 						+ StringUtils.join(cookies.iterator(), " ||| "));
 	}
 
 	private void printHeaders(HttpResponse response) {
 		logger.log(
-				Level.WARNING,
+				Level.INFO,
 				"Set of headers:"
 						+ StringUtils.join(response.getAllHeaders(), " ||| "));
 	}
