@@ -44,6 +44,9 @@ public class ManagementService {
 
 			PlayerGroupQuery dto = new PlayerGroupQuery();
 			DataAccessObject dao = new DataAccessObject(pm);
+			
+			dto.setGroupsCount(dao.groupRoot().getGroupsCount());
+			dto.setPlayersCount(dao.playerRoot().getPlayersCount());
 			dto.setResults(dao.listGroups());
 
 			return dto;
@@ -60,6 +63,9 @@ public class ManagementService {
 			pm.getFetchPlan().addGroup("groupConfigListing");
 			pm.getFetchPlan().addGroup("configListing");
 
+			dto.setGroupsCount(dao.groupRoot().getGroupsCount());
+			dto.setPlayersCount(dao.playerRoot().getPlayersCount());
+			
 			dto.setResults(dao.listGroupsUncached());
 			dto.setGranularity(dao.getServerConfig().getGranularity());
 

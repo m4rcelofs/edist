@@ -244,6 +244,8 @@ public class DataAccessObject {
 			tx.begin();
 			Player oldPlayer = pm.getObjectById(Player.class, player.getKey());
 			result = edit(oldPlayer, player);
+			//legacy code to migrate old players not in the count
+			playerRoot().addPlayer(oldPlayer);
 			tx.commit();
 		} finally {
 			if (tx.isActive()) {
@@ -267,7 +269,7 @@ public class DataAccessObject {
 		} else
 			newPlayer.addGroup(defaultGroup());
 
-		pm.makePersistent(newPlayer);
+		playerRoot().addPlayer(newPlayer);
 
 		return true;
 	}
@@ -740,12 +742,16 @@ public class DataAccessObject {
 				ServerConstants.DEFAULT_ID);
 	}
 
+	public PlayerRoot playerRoot() {
+		return pm.getObjectById(PlayerRoot.class, playerRootKey());
+	}
+
 	public static Key playerRootKey() {
 		return KeyFactory.createKey(PlayerRoot.class.getSimpleName(),
 				ServerConstants.DEFAULT_ID);
 	}
 
-	private PlayerGroupRoot groupRoot() {
+	public PlayerGroupRoot groupRoot() {
 		return pm.getObjectById(PlayerGroupRoot.class, groupRootKey());
 	}
 
