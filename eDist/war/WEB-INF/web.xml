@@ -303,6 +303,16 @@
 		<url-pattern>/admin/install</url-pattern>
 	</servlet-mapping>
 
+	<!-- Player migration -->
+	<servlet>
+		<servlet-name>playerRefreshServlet</servlet-name>
+		<servlet-class>com.erep.dist.instances.frontend.install.PlayerRefreshServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>playerRefreshServlet</servlet-name>
+		<url-pattern>/admin/playerRefresh</url-pattern>
+	</servlet-mapping>
 
 	<!-- Dynamic javascript generation -->
 	<servlet>

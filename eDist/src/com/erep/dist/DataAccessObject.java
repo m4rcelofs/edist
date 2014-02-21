@@ -244,8 +244,6 @@ public class DataAccessObject {
 			tx.begin();
 			Player oldPlayer = pm.getObjectById(Player.class, player.getKey());
 			result = edit(oldPlayer, player);
-			//legacy code to migrate old players not in the count
-			playerRoot().addPlayer(oldPlayer);
 			tx.commit();
 		} finally {
 			if (tx.isActive()) {
