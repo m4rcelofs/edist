@@ -1,4 +1,9 @@
 $(document).ready(function() {
+	
+	if(edist.licence && edist.licence.hasExpired) {
+		$('#licence-warning').css("display", "");
+	}
+	
 	if (edist.user.loggedIn) {
 		$('#logout').css("display", "");
 		$('#logout > a').attr('href', edist.user.logoutURL);
