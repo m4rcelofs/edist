@@ -13,7 +13,7 @@ var EmployersViewModel = new function() {
 	self.selectedEmployerKey = ko
 			.computed(function() {
 				return self.selectedEmployer().authKey ? self
-						.selectedEmployer().authKey : '';
+						.selectedEmployer().authKey : self.selectedEmployer().encodedKey;
 			});
 
 	self.onEmployersShow = function() {

@@ -21,7 +21,7 @@
 				<fmt:message key="admin.index.error"/>
 			</div>
 	
-			<ul class="nav nav-tabs">
+			<ul id="management-tabs" class="nav nav-tabs nav-justified">
 				<%@ include file="tabs.jspf"%>
 			</ul>
 
