@@ -24,11 +24,7 @@ import com.google.appengine.datanucleus.annotations.Unowned;
 
 @DataTransferObject(converter = BeanConverter.class, params = @Param(name = "javascript", value = "DailyStats"))
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-@FetchGroups({ @FetchGroup(name = "statsListing", members = {
-		@Persistent(name = "groups"), @Persistent(name = "day"),
-		@Persistent(name = "xp"), @Persistent(name = "strength"),
-		@Persistent(name = "rank"), @Persistent(name = "maxHit"),
-		@Persistent(name = "collectedAt") }) })
+@FetchGroups({ @FetchGroup(name = "statsListing", members = { @Persistent(name = "groups") }) })
 public class DailyStats {
 
 	/**
@@ -65,27 +61,27 @@ public class DailyStats {
 	@RemoteProperty
 	private Set<PlayerGroup>	groups;
 
-	@Persistent(defaultFetchGroup = "false")
+	@Persistent
 	@RemoteProperty
 	private Integer				day;
 
-	@Persistent(defaultFetchGroup = "false")
+	@Persistent
 	@RemoteProperty
 	private Long				xp;
 
-	@Persistent(defaultFetchGroup = "false")
+	@Persistent
 	@RemoteProperty
 	private Double				strength;
 
-	@Persistent(defaultFetchGroup = "false")
+	@Persistent
 	@RemoteProperty
 	private Long				rank;
 
-	@Persistent(defaultFetchGroup = "false")
+	@Persistent
 	@RemoteProperty
 	private Integer				maxHit;
 
-	@Persistent(defaultFetchGroup = "false")
+	@Persistent
 	@RemoteProperty
 	private Date				collectedAt;
 
@@ -228,27 +224,27 @@ public class DailyStats {
 		this.avatarKey = avatarKey;
 	}
 
-	public boolean isDead() {
+	public boolean getIsDead() {
 		return isDead;
 	}
 
-	public void setDead(boolean isDead) {
+	public void setIsDead(boolean isDead) {
 		this.isDead = isDead;
 	}
 
-	public boolean isPermaBan() {
+	public boolean getIsPermaBan() {
 		return isPermaBan;
 	}
 
-	public void setPermaBan(boolean isPermaBan) {
+	public void setIsPermaBan(boolean isPermaBan) {
 		this.isPermaBan = isPermaBan;
 	}
 
-	public boolean isTempBan() {
+	public boolean getIsTempBan() {
 		return isTempBan;
 	}
 
-	public void setTempBan(boolean isTempBan) {
+	public void setIsTempBan(boolean isTempBan) {
 		this.isTempBan = isTempBan;
 	}
 

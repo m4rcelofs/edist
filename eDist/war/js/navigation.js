@@ -47,7 +47,7 @@ $(document).ready(function() {
 		}
 	};
 
-	// loads bigger avatar on mouseover
+	// loads bigger avatar
 	ko.bindingHandlers.avatarEnhance = {
 		update : function(element, valueAccessor) {
 			$(element).click(function() {

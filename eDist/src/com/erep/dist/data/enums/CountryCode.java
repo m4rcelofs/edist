@@ -3,6 +3,10 @@ package com.erep.dist.data.enums;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.directwebremoting.annotations.DataTransferObject;
+import org.directwebremoting.convert.EnumConverter;
+
+@DataTransferObject(converter = EnumConverter.class)
 public enum CountryCode
 {
 	AL("Albania"),

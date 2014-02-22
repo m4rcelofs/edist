@@ -245,9 +245,11 @@
 				com.erep.dist.dwr.dto.FiltersInitialInfo,
 				
 				com.erep.dist.dwr.PlayerReportService,
-				
+								
 				com.erep.dist.data.DailyStats,
-				com.erep.dist.data.PlayerGroup
+				com.erep.dist.data.PlayerGroup,
+				
+				com.erep.dist.data.enums.CountryCode
 			</param-value>
 		</init-param>
 	</servlet>

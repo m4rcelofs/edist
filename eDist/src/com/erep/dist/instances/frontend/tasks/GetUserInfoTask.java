@@ -73,7 +73,7 @@ public class GetUserInfoTask implements DeferredTask {
 			dbPlayer.setName(stats.getName());
 			dbPlayer.setAvatar(stats.getAvatar());
 
-			if (stats.isDead() || stats.isPermaBan())
+			if (stats.getIsDead() || stats.getIsPermaBan())
 				dbPlayer.setDbStatus(PlayerStatus.DISABLED);
 			else
 				dbPlayer.setDbStatus(PlayerStatus.ENABLED);
@@ -113,9 +113,9 @@ public class GetUserInfoTask implements DeferredTask {
 		stats.setRank(Long.valueOf(playerInfo.get("rank")));
 		stats.setStrength(Double.valueOf(playerInfo.get("strength")));
 		stats.setXp(Long.valueOf(playerInfo.get("xp")));
-		stats.setDead(Boolean.valueOf(playerInfo.get("dead")));
-		stats.setPermaBan(Boolean.valueOf(playerInfo.get("permaBanned")));
-		stats.setTempBan(Boolean.valueOf(playerInfo.get("tempBanned")));
+		stats.setIsDead(Boolean.valueOf(playerInfo.get("dead")));
+		stats.setIsPermaBan(Boolean.valueOf(playerInfo.get("permaBanned")));
+		stats.setIsTempBan(Boolean.valueOf(playerInfo.get("tempBanned")));
 		stats.setBanTip(playerInfo.get("banTip"));
 		stats.setMilitaryUnit(playerInfo.get("mu"));
 		stats.setCitizenship(CountryCode.getCode(playerInfo.get("citizenship")));

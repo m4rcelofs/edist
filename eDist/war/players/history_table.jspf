@@ -24,16 +24,20 @@
 		</tr>
 	</thead>
 	<tbody data-bind="foreach: statsHistory">
-		<tr>
+		<tr data-bind="css:{danger: isDead || isPermaBan, warning: isTempBan}">
 			<td data-bind="visible: $root.category() === 'player'"><a
 				data-bind="text: day, attr: {href : '#/players/history/day/'+day}"></a>
 			</td>
-			<td class="text-center"><img
-				class="img-thumbnail img-responsive player-avatar-small"
-				src="${baseUrl}/img/profile_avatar_55.cache.png"
-				data-bind="style: { backgroundImage : Players.avatar($data) !== null ? Players.avatar($data) :
-									'url(${baseUrl}/img/default_male_55.cache.gif)'},
-							avatarEnhance:{}">
+			<td class="text-center">
+				<img class="img-thumbnail img-responsive player-avatar-small"
+					src="${baseUrl}/img/profile_avatar_55.cache.png"
+					data-bind="style: {backgroundImage : Players.avatar($data) !== null ? Players.avatar($data) :
+								'url(${baseUrl}/img/default_male_55.cache.gif)'},
+							avatarEnhance:{},
+							attr:{'data-toggle': 'popover', 
+								'data-content': (isDead ? 'Dead Citizen' : '') + (isDead && banTip ? ' | ' : '') + (banTip ? banTip : '')},
+							updatePopup:{}">
+				<img height="15px" data-bind="attr:{src: '${baseUrl}/img/flags-round/' + (citizenship ? citizenship.toLowerCase() : 'zz') + '.png'}">
 			</td>
 			<td><a
 				data-bind="attr: {href : '#/players/history/player/' + (erId ? erId : '')}, text: name">
@@ -73,31 +77,37 @@
 					<span class="badge"
 					data-bind="text: '+' +  $.format.number(maxHit - $root.statsHistory()[$index() + 1].maxHit, edist.format.number)"></span>
 			</span></td>
-			<td
-				data-bind="if: $root.statsHistory().length > $index() + 1 && $root.category() === 'player'">
-				<span
-				data-bind="text: Players.calculateDamage(rank, $root.statsHistory()[$index() + 1].rank)"></span>
+			<td data-bind="visible: $root.category() === 'player'">
+				<span data-bind="if: $root.statsHistory().length > $index() + 1 && $root.category() === 'player'">
+					<span
+					data-bind="text: Players.calculateDamage(rank, $root.statsHistory()[$index() + 1].rank)"></span>
+				</span>
 			</td>
-			<td><span class="glyphicon glyphicon-time"
+			<td>
+				<span class="glyphicon glyphicon-time"
 				data-bind="attr: {'data-content': '<fmt:message key="players.history.collectedDate" />: ' + $.format.date(collectedAt, edist.format.date)}, updatePopup:{}"
 				data-toggle="popover"></span></td>
-			<td data-bind="visible: edist.user.hasManagementAccess || edist.user.hasReportsAccess">
-				<a data-toggle="popover" data-content="<fmt:message key="header.mod"/>"
-					data-bind="if: edist.user.hasManagementAccess,
+			<td
+				data-bind="visible: edist.user.hasManagementAccess || edist.user.hasReportsAccess">
+				<a data-toggle="popover"
+				data-content="<fmt:message key="header.mod"/>"
+				data-bind="if: edist.user.hasManagementAccess,
 							attr: {href: '${baseUrl}/management/playersList/search/' + (erId ? erId : '')  }, updatePopup:{}"><span
-					class="glyphicon glyphicon-list"></span></a> 
-				<a data-toggle="popover" data-content="<fmt:message key="management.players.template.dist"/>"
-					data-bind="if: edist.user.hasReportsAccess, 
+					class="glyphicon glyphicon-list"></span></a> <a data-toggle="popover"
+				data-content="<fmt:message key="management.players.template.dist"/>"
+				data-bind="if: edist.user.hasReportsAccess, 
 							attr: {href: '${baseUrl}/reports/requests/player/' + (erId ? erId : '')  }, updatePopup:{}"><span
-					class="glyphicon glyphicon-cutlery"></span></a> 
-				<a data-toggle="popover" data-content="<fmt:message key="management.players.template.work"/>"
-					data-bind="if: edist.user.hasReportsAccess, 
+					class="glyphicon glyphicon-cutlery"></span></a> <a
+				data-toggle="popover"
+				data-content="<fmt:message key="management.players.template.work"/>"
+				data-bind="if: edist.user.hasReportsAccess, 
 							attr: {href: '${baseUrl}/reports/work/player/' + (erId ? erId : '') }, updatePopup:{}"><span
-					class="glyphicon glyphicon-wrench"></span></a> 
-				<a data-toggle="popover" data-content="<fmt:message key="management.players.template.fights"/>"
-					data-bind="if: edist.user.hasReportsAccess, 
+					class="glyphicon glyphicon-wrench"></span></a> <a data-toggle="popover"
+				data-content="<fmt:message key="management.players.template.fights"/>"
+				data-bind="if: edist.user.hasReportsAccess, 
 								attr: {href: '${baseUrl}/reports/fights/player/' + (erId ? erId : '')  }, updatePopup:{}"><span
-					class="glyphicon glyphicon-screenshot"></span></a></td>
+					class="glyphicon glyphicon-screenshot"></span></a>
+			</td>
 		</tr>
 	</tbody>
 </table>
