@@ -17,6 +17,7 @@ import org.directwebremoting.annotations.Param;
 import org.directwebremoting.annotations.RemoteProperty;
 import org.directwebremoting.convert.BeanConverter;
 
+import com.erep.dist.data.enums.CountryCode;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.datanucleus.annotations.Unowned;
@@ -87,6 +88,30 @@ public class DailyStats {
 	@Persistent(defaultFetchGroup = "false")
 	@RemoteProperty
 	private Date				collectedAt;
+
+	@Persistent
+	@RemoteProperty
+	private boolean				isDead;
+
+	@Persistent
+	@RemoteProperty
+	private boolean				isPermaBan;
+
+	@Persistent
+	@RemoteProperty
+	private boolean				isTempBan;
+
+	@Persistent
+	@RemoteProperty
+	private String				banTip;
+
+	@Persistent
+	@RemoteProperty
+	private String				militaryUnit;
+
+	@Persistent
+	@RemoteProperty
+	private CountryCode			citizenship;
 
 	public DailyStats() {}
 
@@ -201,6 +226,54 @@ public class DailyStats {
 
 	public void setAvatarKey(Avatar avatarKey) {
 		this.avatarKey = avatarKey;
+	}
+
+	public boolean isDead() {
+		return isDead;
+	}
+
+	public void setDead(boolean isDead) {
+		this.isDead = isDead;
+	}
+
+	public boolean isPermaBan() {
+		return isPermaBan;
+	}
+
+	public void setPermaBan(boolean isPermaBan) {
+		this.isPermaBan = isPermaBan;
+	}
+
+	public boolean isTempBan() {
+		return isTempBan;
+	}
+
+	public void setTempBan(boolean isTempBan) {
+		this.isTempBan = isTempBan;
+	}
+
+	public String getBanTip() {
+		return banTip;
+	}
+
+	public void setBanTip(String banTip) {
+		this.banTip = banTip;
+	}
+
+	public String getMilitaryUnit() {
+		return militaryUnit;
+	}
+
+	public void setMilitaryUnit(String militaryUnit) {
+		this.militaryUnit = militaryUnit;
+	}
+
+	public CountryCode getCitizenship() {
+		return citizenship;
+	}
+
+	public void setCitizenship(CountryCode citizenship) {
+		this.citizenship = citizenship;
 	}
 
 }

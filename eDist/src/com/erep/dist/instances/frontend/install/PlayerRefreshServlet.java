@@ -32,7 +32,7 @@ public class PlayerRefreshServlet extends HttpServlet {
 			DataAccessObject dao = new DataAccessObject(pm);
 
 			PlayerRoot root = dao.playerRoot();
-			Extent<Player> players = pm.getExtent(Player.class);
+			Extent<Player> players = dao.listAllPlayers();
 			for (Player p : players) {
 				root.addPlayer(p);
 				count++;
