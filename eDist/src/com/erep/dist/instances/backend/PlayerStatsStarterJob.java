@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.jdo.Extent;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -42,12 +43,16 @@ public class PlayerStatsStarterJob extends HttpServlet {
 				return;
 			
 			Integer day = eRepTimeCalculator.geteRepDay();
+			Extent<Player> players = dao.listAllPlayers();
+			
 			int count = 0;
-			for (Player dbPlayer : dao.listAllPlayers())
+			for (Player dbPlayer : players)
 				if (dbPlayer.getDbStatus() == ENABLED) {
 					startUpdateTask(day, dbPlayer);
 					count++;
 				}
+			
+			players.closeAll();
 			logger.log(Level.WARNING, "Starting stats refresh for {0} players",
 					count);
 		}

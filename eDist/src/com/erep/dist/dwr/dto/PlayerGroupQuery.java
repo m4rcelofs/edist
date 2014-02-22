@@ -12,10 +12,16 @@ import com.erep.dist.data.enums.ConfigGranularity;
 public class PlayerGroupQuery {
 
 	@RemoteProperty
-	private ConfigGranularity granularity;
+	private ConfigGranularity	granularity;
+
+	@RemoteProperty
+	private int					groupsCount;
 	
 	@RemoteProperty
-	private List<PlayerGroup> results;
+	private int					playersCount;
+
+	@RemoteProperty
+	private List<PlayerGroup>	results;
 
 	public ConfigGranularity getGranularity() {
 		return granularity;
@@ -32,5 +38,21 @@ public class PlayerGroupQuery {
 	public void setResults(List<PlayerGroup> results) {
 		this.results = results;
 	}
-	
+
+	public int getGroupsCount() {
+		return groupsCount;
+	}
+
+	public void setGroupsCount(int groupsCount) {
+		this.groupsCount = groupsCount;
+	}
+
+	public int getPlayersCount() {
+		return playersCount;
+	}
+
+	public void setPlayersCount(int playersCount) {
+		this.playersCount = playersCount;
+	}
+
 }

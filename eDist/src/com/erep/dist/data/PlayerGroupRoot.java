@@ -27,7 +27,7 @@ public class PlayerGroupRoot implements Serializable {
 	private Key					key;
 
 	@Persistent(mappedBy = "root")
-	public List<PlayerGroup>	groups;
+	protected List<PlayerGroup>	groups;
 
 	public Key getKey() {
 		return key;
@@ -49,6 +49,12 @@ public class PlayerGroupRoot implements Serializable {
 		if (getGroups() == null)
 			setGroups(new ArrayList<PlayerGroup>());
 		getGroups().add(group);
+	}
+
+	public int getGroupsCount() {
+		if (getGroups() != null)
+			return getGroups().size() + 1; // default is not on the collection
+		return 0;
 	}
 
 }
