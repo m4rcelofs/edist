@@ -41,7 +41,7 @@
 					key="header.logout" /></a></li>
 	</ul>
 	<h1 class="sr-only">eDist</h1>
-	<h2 class="text-primary">
+	<h2 class="text-primary hidden-xs">
 		<a id="muNameHeader" href="${baseUrl}"></a>
 	</h2>
 </div>

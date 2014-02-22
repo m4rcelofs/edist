@@ -275,6 +275,7 @@ var PlayersViewModel = new function() {
 			callback : function(response) {
 				response.results.sort(Management.groupSortFct);
 				self.groups(response.results);
+				Management.setCount(response);
 			}
 		});
 	}
