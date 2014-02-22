@@ -89,24 +89,42 @@
 				data-toggle="popover"></span></td>
 			<td
 				data-bind="visible: edist.user.hasManagementAccess || edist.user.hasReportsAccess">
-				<a data-toggle="popover"
-				data-content="<fmt:message key="header.mod"/>"
-				data-bind="if: edist.user.hasManagementAccess,
-							attr: {href: '${baseUrl}/management/playersList/search/' + (erId ? erId : '')  }, updatePopup:{}"><span
-					class="glyphicon glyphicon-list"></span></a> <a data-toggle="popover"
-				data-content="<fmt:message key="management.players.template.dist"/>"
-				data-bind="if: edist.user.hasReportsAccess, 
-							attr: {href: '${baseUrl}/reports/requests/player/' + (erId ? erId : '')  }, updatePopup:{}"><span
-					class="glyphicon glyphicon-cutlery"></span></a> <a
-				data-toggle="popover"
-				data-content="<fmt:message key="management.players.template.work"/>"
-				data-bind="if: edist.user.hasReportsAccess, 
-							attr: {href: '${baseUrl}/reports/work/player/' + (erId ? erId : '') }, updatePopup:{}"><span
-					class="glyphicon glyphicon-wrench"></span></a> <a data-toggle="popover"
-				data-content="<fmt:message key="management.players.template.fights"/>"
-				data-bind="if: edist.user.hasReportsAccess, 
-								attr: {href: '${baseUrl}/reports/fights/player/' + (erId ? erId : '')  }, updatePopup:{}"><span
-					class="glyphicon glyphicon-screenshot"></span></a>
+				
+				<div class="btn-toolbar">
+                    <div class="btn-group">
+                        <button class="btn btn-default dropdown-toggle" 
+                        		data-toggle="dropdown"
+                        		title="<fmt:message key="management.players.actions"/>">
+                        	<span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu">
+                            <li>
+                            	<a data-bind="if: edist.user.hasManagementAccess,
+											  attr: {href: '${baseUrl}/management/playersList/search/' + (erId ? erId : '')  }">
+									<span class="glyphicon glyphicon-list"></span> <fmt:message key="header.mod"/>
+								</a>
+							</li>
+                            <li>
+                            	<a data-bind="if: edist.user.hasReportsAccess, 
+										attr: {href: '${baseUrl}/reports/requests/player/' + (erId ? erId : '')  }">
+									<span class="glyphicon glyphicon-cutlery"></span> <fmt:message key="management.players.template.dist"/>
+								</a>
+                            </li>
+                            <li>
+                            	<a data-bind="if: edist.user.hasReportsAccess, 
+									attr: {href: '${baseUrl}/reports/work/player/' + (erId ? erId : '') }">
+									<span class="glyphicon glyphicon-wrench"></span> <fmt:message key="management.players.template.work"/>
+								</a>
+                            </li>
+                            <li>
+                            	 <a data-bind="if: edist.user.hasReportsAccess, 
+											attr: {href: '${baseUrl}/reports/fights/player/' + (erId ? erId : '')  }">
+									<span class="glyphicon glyphicon-screenshot"></span> <fmt:message key="management.players.template.fights"/>
+								</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div> 
 			</td>
 		</tr>
 	</tbody>
