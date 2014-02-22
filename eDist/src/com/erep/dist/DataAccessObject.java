@@ -13,6 +13,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.jdo.Extent;
 import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
@@ -267,7 +268,7 @@ public class DataAccessObject {
 		} else
 			newPlayer.addGroup(defaultGroup());
 
-		pm.makePersistent(newPlayer);
+		playerRoot().addPlayer(newPlayer);
 
 		return true;
 	}
@@ -314,11 +315,13 @@ public class DataAccessObject {
 		return (List<RegisteredUser>) q.execute();
 	}
 
-	public List<Player> listAllPlayers() {
-		Query q = pm.newQuery(Player.class);
-		q.setFilter("root == rootParam");
-		q.declareParameters(Key.class.getName() + " rootParam");
-		return (List<Player>) q.execute(playerRootKey());
+	/**
+	 * Don't forget to closeAll() after you are done!
+	 * @return
+	 */
+	public Extent<Player> listAllPlayers() {
+		Extent<Player> players = pm.getExtent(Player.class);
+		return players;
 	}
 
 	public List<Player> listPlayers(String encodedCursor) {
@@ -740,12 +743,16 @@ public class DataAccessObject {
 				ServerConstants.DEFAULT_ID);
 	}
 
+	public PlayerRoot playerRoot() {
+		return pm.getObjectById(PlayerRoot.class, playerRootKey());
+	}
+
 	public static Key playerRootKey() {
 		return KeyFactory.createKey(PlayerRoot.class.getSimpleName(),
 				ServerConstants.DEFAULT_ID);
 	}
 
-	private PlayerGroupRoot groupRoot() {
+	public PlayerGroupRoot groupRoot() {
 		return pm.getObjectById(PlayerGroupRoot.class, groupRootKey());
 	}
 
