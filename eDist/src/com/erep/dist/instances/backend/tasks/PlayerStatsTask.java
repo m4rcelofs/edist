@@ -16,6 +16,7 @@ import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
 import com.erep.dist.data.DailyStats;
 import com.erep.dist.data.Player;
+import com.erep.dist.data.enums.CountryCode;
 import com.erep.dist.data.enums.PlayerStatus;
 import com.erep.dist.data.enums.ResourceQuality;
 import com.erep.dist.erep.HitCalculator;
@@ -67,6 +68,10 @@ public class PlayerStatsTask implements DeferredTask {
 
 			dbPlayer.addDailyStats(stats);
 			dbPlayer.setName(stats.getName());
+			
+			if(stats.getIsDead() || stats.getIsPermaBan())
+				dbPlayer.setDbStatus(PlayerStatus.DISABLED);
+			
 			startFightCalculationTask(day, dbPlayer);
 
 			if (dao.getServerConfig().isAvatarHistory())
@@ -96,11 +101,17 @@ public class PlayerStatsTask implements DeferredTask {
 
 		Map<String, String> playerInfo = new CitizenParser().parse(html);
 
-		stats.setAvatar(playerInfo.get("avatar").toString());
-		stats.setName(playerInfo.get("name").toString());
-		stats.setRank(Long.valueOf(playerInfo.get("rank").toString()));
-		stats.setStrength(Double.valueOf(playerInfo.get("strength").toString()));
-		stats.setXp(Long.valueOf(playerInfo.get("xp").toString()));
+		stats.setAvatar(playerInfo.get("avatar"));
+		stats.setName(playerInfo.get("name"));
+		stats.setRank(Long.valueOf(playerInfo.get("rank")));
+		stats.setStrength(Double.valueOf(playerInfo.get("strength")));
+		stats.setXp(Long.valueOf(playerInfo.get("xp")));
+		stats.setIsDead(Boolean.valueOf(playerInfo.get("dead")));
+		stats.setIsPermaBan(Boolean.valueOf(playerInfo.get("permaBanned")));
+		stats.setIsTempBan(Boolean.valueOf(playerInfo.get("tempBanned")));
+		stats.setBanTip(playerInfo.get("banTip"));
+		stats.setMilitaryUnit(playerInfo.get("mu"));
+		stats.setCitizenship(CountryCode.getCode(playerInfo.get("citizenship")));
 
 		return stats;
 	}
