@@ -136,6 +136,12 @@ var WorkViewModel = new function() {
 		return checkWorked(works, days, null);
 	}
 	
+	self.setEmployerOptionText = function(option, item) {
+		if(item.lastUpdatedAt) {
+			$(option).attr('data-subtext', $.format.date(item.lastUpdatedAt, edist.format.date));
+		}
+	}
+	
 	function checkWorked(works, days, status) {
 		if(works && works[edist.server.eRepDay - days]) {
 			return works[edist.server.eRepDay - days].worked === status; 

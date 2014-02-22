@@ -1,7 +1,7 @@
 package com.erep.dist.data;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -21,10 +21,10 @@ public class PlayerRoot {
 
 	@PrimaryKey
 	@Persistent
-	private Key					key;
+	private Key				key;
 
 	@Persistent(mappedBy = "root")
-	public List<Player>	players;
+	protected Set<Player>	players;
 
 	public Key getKey() {
 		return key;
@@ -34,18 +34,24 @@ public class PlayerRoot {
 		this.key = key;
 	}
 
-	public List<Player> getPlayers() {
+	public Set<Player> getPlayers() {
 		return players;
 	}
 
-	public void setPlayers(List<Player> players) {
+	public void setPlayers(Set<Player> players) {
 		this.players = players;
 	}
 
 	public void addPlayer(Player player) {
 		if (getPlayers() == null)
-			setPlayers(new ArrayList<Player>());
+			setPlayers(new HashSet<Player>());
 		getPlayers().add(player);
+	}
+
+	public int getPlayersCount() {
+		if (getPlayers() != null)
+			return getPlayers().size();
+		return 0;
 	}
 
 }
