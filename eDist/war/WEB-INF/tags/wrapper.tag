@@ -69,11 +69,17 @@
 
 		<noscript>
 			<div class="alert alert-danger text-center">
-				<span class="glyphicon glyphicon-warning-sign"></span> 
-				<strong> <fmt:message key="header.noscript" />
+				<span class="glyphicon glyphicon-warning-sign"></span> <strong>
+					<fmt:message key="header.noscript" />
 				</strong>
 			</div>
 		</noscript>
+
+		<div id="licence-warning" class="alert alert-warning text-center" style="display: none;">
+			<span class="glyphicon glyphicon-warning-sign"></span> <strong>
+				<fmt:message key="header.licenceExpired" /> 
+			</strong>
+		</div>
 
 		<jsp:doBody />
 

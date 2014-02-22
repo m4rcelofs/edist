@@ -17,17 +17,14 @@ import org.directwebremoting.annotations.Param;
 import org.directwebremoting.annotations.RemoteProperty;
 import org.directwebremoting.convert.BeanConverter;
 
+import com.erep.dist.data.enums.CountryCode;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.datanucleus.annotations.Unowned;
 
 @DataTransferObject(converter = BeanConverter.class, params = @Param(name = "javascript", value = "DailyStats"))
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-@FetchGroups({ @FetchGroup(name = "statsListing", members = {
-		@Persistent(name = "groups"), @Persistent(name = "day"),
-		@Persistent(name = "xp"), @Persistent(name = "strength"),
-		@Persistent(name = "rank"), @Persistent(name = "maxHit"),
-		@Persistent(name = "collectedAt") }) })
+@FetchGroups({ @FetchGroup(name = "statsListing", members = { @Persistent(name = "groups") }) })
 public class DailyStats {
 
 	/**
@@ -64,29 +61,53 @@ public class DailyStats {
 	@RemoteProperty
 	private Set<PlayerGroup>	groups;
 
-	@Persistent(defaultFetchGroup = "false")
+	@Persistent
 	@RemoteProperty
 	private Integer				day;
 
-	@Persistent(defaultFetchGroup = "false")
+	@Persistent
 	@RemoteProperty
 	private Long				xp;
 
-	@Persistent(defaultFetchGroup = "false")
+	@Persistent
 	@RemoteProperty
 	private Double				strength;
 
-	@Persistent(defaultFetchGroup = "false")
+	@Persistent
 	@RemoteProperty
 	private Long				rank;
 
-	@Persistent(defaultFetchGroup = "false")
+	@Persistent
 	@RemoteProperty
 	private Integer				maxHit;
 
-	@Persistent(defaultFetchGroup = "false")
+	@Persistent
 	@RemoteProperty
 	private Date				collectedAt;
+
+	@Persistent
+	@RemoteProperty
+	private boolean				isDead;
+
+	@Persistent
+	@RemoteProperty
+	private boolean				isPermaBan;
+
+	@Persistent
+	@RemoteProperty
+	private boolean				isTempBan;
+
+	@Persistent
+	@RemoteProperty
+	private String				banTip;
+
+	@Persistent
+	@RemoteProperty
+	private String				militaryUnit;
+
+	@Persistent
+	@RemoteProperty
+	private CountryCode			citizenship;
 
 	public DailyStats() {}
 
@@ -201,6 +222,54 @@ public class DailyStats {
 
 	public void setAvatarKey(Avatar avatarKey) {
 		this.avatarKey = avatarKey;
+	}
+
+	public boolean getIsDead() {
+		return isDead;
+	}
+
+	public void setIsDead(boolean isDead) {
+		this.isDead = isDead;
+	}
+
+	public boolean getIsPermaBan() {
+		return isPermaBan;
+	}
+
+	public void setIsPermaBan(boolean isPermaBan) {
+		this.isPermaBan = isPermaBan;
+	}
+
+	public boolean getIsTempBan() {
+		return isTempBan;
+	}
+
+	public void setIsTempBan(boolean isTempBan) {
+		this.isTempBan = isTempBan;
+	}
+
+	public String getBanTip() {
+		return banTip;
+	}
+
+	public void setBanTip(String banTip) {
+		this.banTip = banTip;
+	}
+
+	public String getMilitaryUnit() {
+		return militaryUnit;
+	}
+
+	public void setMilitaryUnit(String militaryUnit) {
+		this.militaryUnit = militaryUnit;
+	}
+
+	public CountryCode getCitizenship() {
+		return citizenship;
+	}
+
+	public void setCitizenship(CountryCode citizenship) {
+		this.citizenship = citizenship;
 	}
 
 }
