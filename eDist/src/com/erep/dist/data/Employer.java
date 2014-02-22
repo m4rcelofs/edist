@@ -19,7 +19,8 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.datanucleus.annotations.Unowned;
 
-@FetchGroups({ @FetchGroup(name = "employerListing", members = { @Persistent(name = "players") }) })
+@FetchGroups({ @FetchGroup(name = "employerListing", members = {
+		@Persistent(name = "players"), @Persistent(name = "authKey") }) })
 @DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class Employer implements HasEncodedKey {
@@ -32,7 +33,7 @@ public class Employer implements HasEncodedKey {
 	@RemoteProperty
 	private String			encodedKey;
 
-	@Persistent
+	@Persistent(defaultFetchGroup = "false")
 	@RemoteProperty
 	private String			authKey;
 
@@ -118,8 +119,6 @@ public class Employer implements HasEncodedKey {
 	}
 
 	public String getAuthKey() {
-		if (authKey == null)
-			setAuthKey(getEncodedKey());
 		return authKey;
 	}
 

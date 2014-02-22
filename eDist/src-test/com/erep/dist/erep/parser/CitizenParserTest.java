@@ -1,5 +1,8 @@
 package com.erep.dist.erep.parser;
 
+import static junit.framework.Assert.assertEquals;
+import static junit.framework.Assert.assertFalse;
+import static junit.framework.Assert.assertTrue;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.IOException;
@@ -9,13 +12,11 @@ import java.util.Map;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 
-import com.erep.dist.erep.parser.CitizenParser;
-
 public class CitizenParserTest {
 
 	@Test
 	public void testParse() throws IOException {
-		URL url = new URL("http://www.erepublik.com/br/citizen/profile/1432558");
+		URL url = new URL("http://www.erepublik.com/en/citizen/profile/1432558");
 		String html = IOUtils.toString(url.openConnection().getInputStream(),
 				"UTF-8");
 
@@ -25,6 +26,7 @@ public class CitizenParserTest {
 		assertNotNull(response);
 		assertNotNull(response.get("name"));
 		assertNotNull(response.get("avatar"));
+		assertTrue(response.get("avatar").contains("142x142"));
 		assertNotNull(response.get("mu"));
 		assertNotNull(response.get("xp"));
 		assertNotNull(response.get("rank"));
@@ -33,6 +35,22 @@ public class CitizenParserTest {
 		assertNotNull(Long.valueOf(response.get("xp")));
 		assertNotNull(Long.valueOf(response.get("rank")));
 		assertNotNull(Double.valueOf(response.get("strength")));
+	}
+	
+	@Test
+	public void testDeadBanned() throws IOException {
+		URL url = new URL("http://www.erepublik.com/en/citizen/profile/3905264");
+		String html = IOUtils.toString(url.openConnection().getInputStream(),
+				"UTF-8");
+
+		Map<String, String> response = new CitizenParser().parse(html);
+		System.out.println(response.toString());
+		
+		assertFalse(Boolean.valueOf(response.get("tempBanned")));
+		assertTrue(Boolean.valueOf(response.get("permaBanned")));
+		assertTrue(Boolean.valueOf(response.get("dead")));
+		assertNotNull(response.get("banTip"));
+		assertEquals("Brazil", response.get("Citizenship"));
 	}
 
 }

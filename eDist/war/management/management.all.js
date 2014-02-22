@@ -1575,7 +1575,8 @@ var GroupsViewModel = new function() {
 			callback : function(response) {
 				response.results.sort(Management.groupSortFct);
 				self.groups(response.results);
-				self.granularity(response.granularity);				
+				self.granularity(response.granularity);
+				Management.setCount(response);
 			}
 		});
 	}
@@ -1595,6 +1596,7 @@ $(document).ready(function() {
 	ko.applyBindings(WorkVerificationViewModel, document.getElementById('workVerifDialog'));
 	ko.applyBindings(GroupsViewModel, document.getElementById('listGroups'));
 	ko.applyBindings(PlayersViewModel, document.getElementById('playersList'));
+	ko.applyBindings(Management, document.getElementById('management-tabs'));
 		
 	$('#listGroupsTab').on('show.bs.tab', GroupsViewModel.onGroupsShow);
 
@@ -1615,6 +1617,9 @@ $(document).ready(function() {
 var Management = new function() {
 
 	var self = this;
+	
+	self.groupsCount = ko.observable();
+	self.playersCount = ko.observable();
 
 	self.selectTab = function() {
 		$('#listGroupsTab').tab('show');
@@ -1639,6 +1644,11 @@ var Management = new function() {
 			return 1;
 		}
 		return 0;
+	}
+	
+	self.setCount = function(response) {
+		self.groupsCount(response.groupsCount);
+		self.playersCount(response.playersCount);
 	}
 };
 /*
@@ -1925,6 +1935,7 @@ var PlayersViewModel = new function() {
 			callback : function(response) {
 				response.results.sort(Management.groupSortFct);
 				self.groups(response.results);
+				Management.setCount(response);
 			}
 		});
 	}

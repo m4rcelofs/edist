@@ -17,6 +17,7 @@ import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
 import com.erep.dist.ServerConstants;
 import com.erep.dist.auth.AuthHelper;
+import com.erep.dist.auth.LicensingHelper;
 import com.erep.dist.cache.Cacheable;
 import com.erep.dist.data.RegisteredUser;
 import com.erep.dist.erep.eRepTimeCalculator;
@@ -103,6 +104,7 @@ public class JavascriptGenerationServlet extends HttpServlet {
 				PMF.getNewPersistenceManager())) {
 			DataAccessObject dao = new DataAccessObject(pm);
 			template = replace(template, "{muName}", dao.getServerConfig().getMuName());	
+			template = replace(template, "hasExpired : false", "hasExpired : " + String.valueOf(!new LicensingHelper(dao).isValidLicence()));
 		}
 		
 		resp.getWriter().write(template);
