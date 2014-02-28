@@ -18,6 +18,7 @@ import com.erep.dist.cache.CacheFacade;
 import com.erep.dist.data.DailyStats;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.enums.CountryCode;
+import com.erep.dist.data.enums.Division;
 import com.erep.dist.data.enums.PlayerStatus;
 import com.erep.dist.data.enums.ResourceQuality;
 import com.erep.dist.erep.HitCalculator;
@@ -113,6 +114,7 @@ public class GetUserInfoTask implements DeferredTask {
 		stats.setRank(Long.valueOf(playerInfo.get("rank")));
 		stats.setStrength(Double.valueOf(playerInfo.get("strength")));
 		stats.setXp(Long.valueOf(playerInfo.get("xp")));
+		stats.setDiv(Division.findDivision(Long.valueOf(playerInfo.get("xp")), eRepTimeCalculator.geteRepDay()));
 		stats.setIsDead(Boolean.valueOf(playerInfo.get("dead")));
 		stats.setIsPermaBan(Boolean.valueOf(playerInfo.get("permaBanned")));
 		stats.setIsTempBan(Boolean.valueOf(playerInfo.get("tempBanned")));
