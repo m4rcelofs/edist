@@ -2,6 +2,9 @@ package com.erep.dist.instances.backend.tasks;
 
 import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withPayload;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.jdo.JDOObjectNotFoundException;
 
 import com.erep.dist.CloseablePM;
@@ -24,6 +27,9 @@ import com.google.appengine.api.taskqueue.TaskAlreadyExistsException;
 public class CalculateDailyFightsTask implements DeferredTask {
 
 	private static final long	serialVersionUID	= 1L;
+
+	private static Logger		logger				= Logger.getLogger(CalculateDailyFightsTask.class
+															.getName());
 
 	private final Integer		today;
 	private final Key			playerKey;
@@ -57,6 +63,12 @@ public class CalculateDailyFightsTask implements DeferredTask {
 			fights.setStats(todayStats);
 
 			dbPlayer.addDailyFights(fights);
+			pm.makePersistent(fights);
+
+			if (fights.getKey() == null)
+				logger.log(Level.SEVERE, "DailyFights key for player "
+						+ dbPlayer.getErId() + " on day " + today
+						+ " is null ):");
 
 			createFightVerificationTask(today, dbPlayer, fights);
 
