@@ -18,6 +18,7 @@ import org.directwebremoting.annotations.RemoteProperty;
 import org.directwebremoting.convert.BeanConverter;
 
 import com.erep.dist.data.enums.CountryCode;
+import com.erep.dist.data.enums.Division;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.datanucleus.annotations.Unowned;
@@ -68,6 +69,10 @@ public class DailyStats {
 	@Persistent
 	@RemoteProperty
 	private Long				xp;
+
+	@Persistent
+	@RemoteProperty
+	private Division			div;
 
 	@Persistent
 	@RemoteProperty
@@ -224,6 +229,7 @@ public class DailyStats {
 		this.avatarKey = avatarKey;
 	}
 
+	// DWR requires old-style getters and setters
 	public boolean getIsDead() {
 		return isDead;
 	}
@@ -270,6 +276,16 @@ public class DailyStats {
 
 	public void setCitizenship(CountryCode citizenship) {
 		this.citizenship = citizenship;
+	}
+
+	public Division getDiv() {
+		if (div == null && getDay() != null)
+			setDiv(Division.findDivision(getXp(), getDay()));
+		return div;
+	}
+
+	public void setDiv(Division div) {
+		this.div = div;
 	}
 
 }

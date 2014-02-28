@@ -7,7 +7,7 @@
 			<th colspan="2"><fmt:message key="players.fights.player" /></th>
 			<th data-bind="visible: category() !== 'group'"><fmt:message
 					key="players.fights.groups" /></th>
-			<th><fmt:message key="players.history.xp" /></th>
+			<th colspan="2"><fmt:message key="players.history.xp" /></th>
 			<th><fmt:message key="players.history.str" /></th>
 			<th><fmt:message key="players.history.rank" /></th>
 			<th><fmt:message key="players.history.maxHit" /></th>
@@ -55,6 +55,7 @@
 					<span class="badge pull-right"
 					data-bind="text: '+' +  $.format.number(xp - $root.statsHistory()[$index() + 1].xp, edist.format.number)"></span>
 			</span></td>
+			<td data-bind="text: div"></td>
 			<td><span
 				data-bind="text:  $.format.number(strength, edist.format.number)"></span>
 				<span

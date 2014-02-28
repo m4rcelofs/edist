@@ -249,7 +249,8 @@
 				com.erep.dist.data.DailyStats,
 				com.erep.dist.data.PlayerGroup,
 				
-				com.erep.dist.data.enums.CountryCode
+				com.erep.dist.data.enums.CountryCode,
+				com.erep.dist.data.enums.Division
 			</param-value>
 		</init-param>
 	</servlet>
