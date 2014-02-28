@@ -79,7 +79,7 @@ public class EmployerFacadeServlet extends HttpServlet {
 			String id) {
 		Employer emp = dao.find(new Employer(dao.createEmployerKey(id)));
 		if (!emp.getErId().equals(id.trim())
-				|| !emp.getAuthKey().equals(authKey.trim()))
+				|| !emp.isAuthKeyValid(authKey))
 			throw new IllegalArgumentException("Invalid employer");
 		return emp;
 	}
