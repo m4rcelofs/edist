@@ -114,6 +114,10 @@ public class PlayerStatsTask implements DeferredTask {
 		stats.setBanTip(playerInfo.get("banTip"));
 		stats.setMilitaryUnit(playerInfo.get("mu"));
 		stats.setCitizenship(CountryCode.getCode(playerInfo.get("citizenship")));
+		stats.setGuerrillaWon(Integer.valueOf(playerInfo.get("guerrillaWon")));
+		stats.setGuerrillaLost(Integer.valueOf(playerInfo.get("guerrillaLost")));
+		stats.setSmallBombsUsed(Integer.valueOf(playerInfo.get("smallBombs")));
+		stats.setBigBombsUsed(Integer.valueOf(playerInfo.get("bigBombs")));
 
 		return stats;
 	}

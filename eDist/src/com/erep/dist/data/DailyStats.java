@@ -114,6 +114,18 @@ public class DailyStats {
 	@RemoteProperty
 	private CountryCode			citizenship;
 
+	@Persistent
+	private Integer				guerrillaWon;
+
+	@Persistent
+	private Integer				guerrillaLost;
+
+	@Persistent
+	private Integer				smallBombsUsed;
+
+	@Persistent
+	private Integer				bigBombsUsed;
+
 	public DailyStats() {}
 
 	public DailyStats(Player player, Integer day) {
@@ -286,6 +298,38 @@ public class DailyStats {
 
 	public void setDiv(Division div) {
 		this.div = div;
+	}
+
+	public Integer getGuerrillaWon() {
+		return guerrillaWon;
+	}
+
+	public void setGuerrillaWon(Integer guerrillaWon) {
+		this.guerrillaWon = guerrillaWon;
+	}
+
+	public Integer getGuerrillaLost() {
+		return guerrillaLost;
+	}
+
+	public void setGuerrillaLost(Integer guerrillaLost) {
+		this.guerrillaLost = guerrillaLost;
+	}
+
+	public Integer getSmallBombsUsed() {
+		return smallBombsUsed;
+	}
+
+	public void setSmallBombsUsed(Integer smallBombsUsed) {
+		this.smallBombsUsed = smallBombsUsed;
+	}
+
+	public Integer getBigBombsUsed() {
+		return bigBombsUsed;
+	}
+
+	public void setBigBombsUsed(Integer bigBombsUsed) {
+		this.bigBombsUsed = bigBombsUsed;
 	}
 
 }
