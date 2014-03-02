@@ -55,7 +55,9 @@
 					<span class="badge pull-right"
 					data-bind="text: '+' +  $.format.number(xp - $root.statsHistory()[$index() + 1].xp, edist.format.number)"></span>
 			</span></td>
-			<td data-bind="text: div"></td>
+			<td data-bind="if: $root.category() !== 'division'">
+				<a data-bind="text: div, attr: {href: '${baseUrl}/players/history/division/' + day + '/' + (div ? div : '')}"></a>
+			</td>
 			<td><span
 				data-bind="text:  $.format.number(strength, edist.format.number)"></span>
 				<span

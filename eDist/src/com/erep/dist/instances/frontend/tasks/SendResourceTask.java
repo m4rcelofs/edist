@@ -97,18 +97,23 @@ public class SendResourceTask implements DeferredTask {
 			Distributor distributor) {
 
 		Transaction tx = pm.currentTransaction();
-		tx.begin();
-		Long lastAccess = distributor.getLastAccessTimestamp();
-		tx.commit();
+		try {
+			tx.begin();
 
-		Long now = new Date().getTime();
-		if (now < (lastAccess + 10000))
-			throw new IllegalStateException(distributor.getEmail()
-					+ " cooldown period, will retry later");
+			long lastAccess = distributor.getLastAccessTimestamp();
+			long now = new Date().getTime();
+			if (now < (lastAccess + 10000))
+				throw new IllegalStateException(distributor.getEmail()
+						+ " cooldown period, will retry later");
+			// other requests might start while sending this one
+			distributor.setLastAccessTimestamp(now);
 
-		// other requests might start while sending this one!
-		setDistributorAccess(pm, distributor);
-
+			tx.commit();
+		} catch (Exception e) {
+			if (tx.isActive())
+				tx.rollback();
+			throw e;
+		}
 	}
 
 	private void setDistributorAccess(PersistenceManager pm,
