@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 
 import javax.jdo.PersistenceManager;
 import javax.jdo.Transaction;
+import javax.servlet.http.HttpServletRequest;
 
 import com.erep.dist.CloseablePM;
 import com.erep.dist.DataAccessObject;
@@ -24,6 +25,7 @@ import com.erep.dist.erep.dist.ManufacturedStrategy;
 import com.erep.dist.erep.dist.WeaponStrategy;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.taskqueue.DeferredTask;
+import com.google.appengine.api.taskqueue.DeferredTaskContext;
 
 public class SendResourceTask implements DeferredTask {
 
@@ -55,6 +57,19 @@ public class SendResourceTask implements DeferredTask {
 				logger.log(Level.WARNING,
 						"Request not found or resource already sent, aborting");
 				return;
+			}
+
+			HttpServletRequest req = DeferredTaskContext.getCurrentRequest();
+			if (req != null) {
+				Integer count = Integer.valueOf(req
+						.getHeader("X-AppEngine-TaskExecutionCount"));
+				if (count > 200) {
+					dbRequest.setStatus(RequestStatus.ERROR);
+					dbResource.setStatus(ResourceDistStatus.ERROR);
+					logger.log(Level.SEVERE,
+							"Distribution task has been retrying for more then 200 times, aborting");
+					return;
+				}
 			}
 
 			checkDistributorAccess(pm, dbRequest.getDistributor());
@@ -93,6 +108,7 @@ public class SendResourceTask implements DeferredTask {
 		}
 	}
 
+	//TODO check DeferredTaskContext.markForRetry()
 	private void checkDistributorAccess(PersistenceManager pm,
 			Distributor distributor) {
 
