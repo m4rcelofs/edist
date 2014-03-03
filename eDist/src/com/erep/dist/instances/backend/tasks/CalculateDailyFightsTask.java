@@ -91,19 +91,25 @@ public class CalculateDailyFightsTask implements DeferredTask {
 
 		int calculatedFights = calculateFights(dailyInfluence, todayStats,
 				quality);
-		
-		int calculatedSmallBombs = todayStats.getSmallBombsUsed() - previousDayStats.getSmallBombsUsed();
-		int calculatedBigBombs = todayStats.getBigBombsUsed() - previousDayStats.getBigBombsUsed();
-		
-		int calculatedGuerrillaWins = todayStats.getGuerrillaWon() - previousDayStats.getGuerrillaWon();
-		int calculatedGuerrillaLoses = todayStats.getGuerrillaLost() - previousDayStats.getGuerrillaLost();
-		
+
 		fights.setCalculatedRankDamage(dailyInfluence);
 		fights.setCalculatedFfFights(calculatedFights);
-		fights.setSmallBombsUsed(calculatedSmallBombs);
-		fights.setBigBombsUsed(calculatedBigBombs);
-		fights.setGuerrillaWon(calculatedGuerrillaWins);
-		fights.setGuerrillaLost(calculatedGuerrillaLoses);
+
+		if (previousDayStats.getSmallBombsUsed() != null)
+			fights.setSmallBombsUsed(todayStats.getSmallBombsUsed()
+					- previousDayStats.getSmallBombsUsed());
+
+		if (previousDayStats.getBigBombsUsed() != null)
+			fights.setBigBombsUsed(todayStats.getBigBombsUsed()
+					- previousDayStats.getBigBombsUsed());
+
+		if (previousDayStats.getGuerrillaWon() != null)
+			fights.setGuerrillaWon(todayStats.getGuerrillaWon()
+					- previousDayStats.getGuerrillaWon());
+
+		if (previousDayStats.getGuerrillaLost() != null)
+			fights.setGuerrillaLost(todayStats.getGuerrillaLost()
+					- previousDayStats.getGuerrillaLost());
 
 		return fights;
 	}
