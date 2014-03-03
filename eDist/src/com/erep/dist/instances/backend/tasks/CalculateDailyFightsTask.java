@@ -91,9 +91,19 @@ public class CalculateDailyFightsTask implements DeferredTask {
 
 		int calculatedFights = calculateFights(dailyInfluence, todayStats,
 				quality);
-
+		
+		int calculatedSmallBombs = todayStats.getSmallBombsUsed() - previousDayStats.getSmallBombsUsed();
+		int calculatedBigBombs = todayStats.getBigBombsUsed() - previousDayStats.getBigBombsUsed();
+		
+		int calculatedGuerrillaWins = todayStats.getGuerrillaWon() - previousDayStats.getGuerrillaWon();
+		int calculatedGuerrillaLoses = todayStats.getGuerrillaLost() - previousDayStats.getGuerrillaLost();
+		
 		fights.setCalculatedRankDamage(dailyInfluence);
 		fights.setCalculatedFfFights(calculatedFights);
+		fights.setSmallBombsUsed(calculatedSmallBombs);
+		fights.setBigBombsUsed(calculatedBigBombs);
+		fights.setGuerrillaWon(calculatedGuerrillaWins);
+		fights.setGuerrillaLost(calculatedGuerrillaLoses);
 
 		return fights;
 	}
