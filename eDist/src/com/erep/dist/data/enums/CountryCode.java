@@ -79,29 +79,30 @@ public enum CountryCode
 	UY("Uruguay"),
 	US("USA"),
 	VE("Venezuela"),
-	ZZ("Unknown")
-	;
-	
-	public String countryName;
-	
-	private static Map<String, CountryCode> nameToCode;
-	
+	ZZ("Unknown");
+
+	public String							countryName;
+
+	private static Map<String, CountryCode>	nameToCode;
+
 	private CountryCode(String country) {
 		this.countryName = country;
 	}
-	
+
 	public static CountryCode getCode(String countryName) {
-		if(nameToCode ==null)
+		if (nameToCode == null)
 			buildMap();
-		if(nameToCode.containsKey(countryName))
+		if (countryName != null)
+			countryName = countryName.toLowerCase().trim();
+		if (nameToCode.containsKey(countryName))
 			return nameToCode.get(countryName);
 		return ZZ;
 	}
 
 	private static void buildMap() {
 		nameToCode = new HashMap<String, CountryCode>();
-		for(CountryCode code : CountryCode.values())
-			nameToCode.put(code.countryName, code);
+		for (CountryCode code : CountryCode.values())
+			nameToCode.put(code.countryName.toLowerCase(), code);
 	}
-	
+
 }

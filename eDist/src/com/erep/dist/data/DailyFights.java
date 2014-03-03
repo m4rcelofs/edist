@@ -68,6 +68,22 @@ public class DailyFights {
 	@Persistent
 	@RemoteProperty
 	private PlayerDistStatus	verificationStatus;
+	
+	@Persistent
+	@RemoteProperty
+	private Integer				guerrillaWon;
+
+	@Persistent
+	@RemoteProperty
+	private Integer				guerrillaLost;
+
+	@Persistent
+	@RemoteProperty
+	private Integer				smallBombsUsed;
+
+	@Persistent
+	@RemoteProperty
+	private Integer				bigBombsUsed;
 
 	@Deprecated
 	public DailyFights() {
@@ -149,6 +165,38 @@ public class DailyFights {
 
 	public void setCalculatedRankDamage(Long calculatedRankDamage) {
 		this.calculatedRankDamage = calculatedRankDamage;
+	}
+
+	public Integer getGuerrillaWon() {
+		return guerrillaWon;
+	}
+
+	public void setGuerrillaWon(Integer guerrillaWon) {
+		this.guerrillaWon = guerrillaWon;
+	}
+
+	public Integer getGuerrillaLost() {
+		return guerrillaLost;
+	}
+
+	public void setGuerrillaLost(Integer guerrillaLost) {
+		this.guerrillaLost = guerrillaLost;
+	}
+
+	public Integer getSmallBombsUsed() {
+		return smallBombsUsed;
+	}
+
+	public void setSmallBombsUsed(Integer smallBombsUsed) {
+		this.smallBombsUsed = smallBombsUsed;
+	}
+
+	public Integer getBigBombsUsed() {
+		return bigBombsUsed;
+	}
+
+	public void setBigBombsUsed(Integer bigBombsUsed) {
+		this.bigBombsUsed = bigBombsUsed;
 	}
 
 }

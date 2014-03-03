@@ -18,6 +18,7 @@ import org.directwebremoting.annotations.RemoteProperty;
 import org.directwebremoting.convert.BeanConverter;
 
 import com.erep.dist.data.enums.CountryCode;
+import com.erep.dist.data.enums.Division;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.datanucleus.annotations.Unowned;
@@ -71,6 +72,10 @@ public class DailyStats {
 
 	@Persistent
 	@RemoteProperty
+	private Division			div;
+
+	@Persistent
+	@RemoteProperty
 	private Double				strength;
 
 	@Persistent
@@ -108,6 +113,18 @@ public class DailyStats {
 	@Persistent
 	@RemoteProperty
 	private CountryCode			citizenship;
+
+	@Persistent
+	private Integer				guerrillaWon;
+
+	@Persistent
+	private Integer				guerrillaLost;
+
+	@Persistent
+	private Integer				smallBombsUsed;
+
+	@Persistent
+	private Integer				bigBombsUsed;
 
 	public DailyStats() {}
 
@@ -224,6 +241,7 @@ public class DailyStats {
 		this.avatarKey = avatarKey;
 	}
 
+	// DWR requires old-style getters and setters
 	public boolean getIsDead() {
 		return isDead;
 	}
@@ -270,6 +288,48 @@ public class DailyStats {
 
 	public void setCitizenship(CountryCode citizenship) {
 		this.citizenship = citizenship;
+	}
+
+	public Division getDiv() {
+		if (div == null && getDay() != null)
+			setDiv(Division.findDivision(getXp(), getDay()));
+		return div;
+	}
+
+	public void setDiv(Division div) {
+		this.div = div;
+	}
+
+	public Integer getGuerrillaWon() {
+		return guerrillaWon;
+	}
+
+	public void setGuerrillaWon(Integer guerrillaWon) {
+		this.guerrillaWon = guerrillaWon;
+	}
+
+	public Integer getGuerrillaLost() {
+		return guerrillaLost;
+	}
+
+	public void setGuerrillaLost(Integer guerrillaLost) {
+		this.guerrillaLost = guerrillaLost;
+	}
+
+	public Integer getSmallBombsUsed() {
+		return smallBombsUsed;
+	}
+
+	public void setSmallBombsUsed(Integer smallBombsUsed) {
+		this.smallBombsUsed = smallBombsUsed;
+	}
+
+	public Integer getBigBombsUsed() {
+		return bigBombsUsed;
+	}
+
+	public void setBigBombsUsed(Integer bigBombsUsed) {
+		this.bigBombsUsed = bigBombsUsed;
 	}
 
 }
