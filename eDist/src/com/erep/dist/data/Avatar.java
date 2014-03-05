@@ -21,6 +21,7 @@ public class Avatar {
 	private Key		key;
 
 	@Persistent
+	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	private BlobKey	blob;
 
 	@Persistent

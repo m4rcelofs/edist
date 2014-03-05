@@ -318,6 +318,7 @@ public class DataAccessObject {
 
 	/**
 	 * Don't forget to closeAll() after you are done!
+	 * 
 	 * @return
 	 */
 	public Extent<Player> listAllPlayers() {
@@ -449,7 +450,7 @@ public class DataAccessObject {
 				+ Integer.class.getName() + " dayParam");
 		return (List<DailyStats>) q.execute(group.getKey(), day);
 	}
-	
+
 	public List<DailyStats> listStats(Integer day, Division div,
 			String encodedCursor) {
 		Query q = queryWithCursor(DailyStats.class,
@@ -642,15 +643,7 @@ public class DataAccessObject {
 	}
 
 	public DailyFights find(DailyFights fights) {
-		try {
-			if (fights == null || fights.getKey() == null)
-				return null;
-
-			return pm.getObjectById(DailyFights.class, fights.getKey());
-
-		} catch (JDOObjectNotFoundException e) {
-			return null;
-		}
+		return pm.getObjectById(DailyFights.class, fights.getKey());
 	}
 
 	public DailyWork find(DailyWork work) {
