@@ -2,6 +2,7 @@ package com.erep.dist.data;
 
 import java.util.Set;
 
+import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.FetchGroup;
 import javax.jdo.annotations.FetchGroups;
 import javax.jdo.annotations.IdentityType;
@@ -44,6 +45,7 @@ public class DailyFights {
 	@Unowned
 	@Persistent
 	@RemoteProperty
+	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	private DailyStats			stats;
 
 	@Unowned
