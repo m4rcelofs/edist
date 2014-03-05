@@ -2,6 +2,7 @@ package com.erep.dist.data;
 
 import java.io.Serializable;
 
+import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.FetchGroup;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
@@ -31,40 +32,50 @@ public class ServerConfig implements Serializable {
 
 	@Persistent
 	@RemoteProperty
+	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	private String				muName;
 
 	@Persistent(dependent = "true")
 	@RemoteProperty
+	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	private DistConfig			config;
 
 	@Persistent(dependent = "true")
 	@RemoteProperty
+	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	private FightVerification	fightVerif;
 
 	@Persistent(dependent = "true")
 	@RemoteProperty
+	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	private WorkVerification	workVerif;
 
 	@Persistent
 	@RemoteProperty
+	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	private ConfigGranularity	granularity;
 
 	@Persistent
 	@RemoteProperty
+	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	private ReportsAccessLevel	reportsAccess;
 
 	@Persistent
 	@RemoteProperty
+	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	private ReportsAccessLevel	playerReportsAccess;
 
 	@Persistent
 	@RemoteProperty
+	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	private String				contactEmail;
 
 	@Persistent
+	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	private Boolean				avatarHistory;
 
 	@Persistent
+	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	private Boolean				showDistributorInventory;
 
 	public String getMuName() {

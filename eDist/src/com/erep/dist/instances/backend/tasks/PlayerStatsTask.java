@@ -67,7 +67,7 @@ public class PlayerStatsTask implements DeferredTask {
 
 			stats.setCollectedAt(new Date());
 
-			dbPlayer.addDailyStats(stats);
+			pm.makePersistent(stats);
 			dbPlayer.setName(stats.getName());
 			
 			if(stats.getIsDead() || stats.getIsPermaBan())

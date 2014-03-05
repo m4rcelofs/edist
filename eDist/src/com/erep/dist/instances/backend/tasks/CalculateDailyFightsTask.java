@@ -18,7 +18,6 @@ import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.enums.ResourceQuality;
 import com.erep.dist.erep.HitCalculator;
 import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.taskqueue.DeferredTask;
 import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
@@ -62,7 +61,6 @@ public class CalculateDailyFightsTask implements DeferredTask {
 			fights.setGroups(dbPlayer.getGroups());
 			fights.setStats(todayStats);
 
-			dbPlayer.addDailyFights(fights);
 			pm.makePersistent(fights);
 
 			if (fights.getKey() == null)
@@ -81,9 +79,8 @@ public class CalculateDailyFightsTask implements DeferredTask {
 			DailyStats previousDayStats, DailyStats todayStats,
 			ResourceQuality quality) {
 
-		DailyFights fights = new DailyFights(createKey(dbPlayer, today));
+		DailyFights fights = new DailyFights(dbPlayer, today);
 
-		fights.setDay(today);
 		fights.setCalculatedWithWeaponQuality(quality);
 
 		long dailyInfluence = calculateDailyInfluence(previousDayStats,
@@ -139,10 +136,5 @@ public class CalculateDailyFightsTask implements DeferredTask {
 		} catch (TaskAlreadyExistsException e) {
 			// tombstoned, already run
 		}
-	}
-
-	private Key createKey(Player dbPlayer, Integer day) {
-		return KeyFactory.createKey(dbPlayer.getKey(),
-				DailyFights.class.getSimpleName(), day);
 	}
 }

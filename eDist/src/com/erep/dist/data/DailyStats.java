@@ -35,6 +35,7 @@ public class DailyStats {
 	@Persistent
 	private Key					key;
 
+	@Unowned
 	@Persistent
 	private Player				player;
 
@@ -55,6 +56,7 @@ public class DailyStats {
 	// keep a copy, never know when it might be useful
 	@Unowned
 	@Persistent(defaultFetchGroup = "false")
+	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	private Avatar				avatarKey;
 
 	@Unowned
