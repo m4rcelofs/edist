@@ -70,7 +70,8 @@ public class GetUserInfoTask implements DeferredTask {
 
 			stats.setCollectedAt(new Date());
 
-			dbPlayer.addDailyStats(stats);
+			pm.makePersistent(stats);
+
 			dbPlayer.setName(stats.getName());
 			dbPlayer.setAvatar(stats.getAvatar());
 
@@ -114,7 +115,8 @@ public class GetUserInfoTask implements DeferredTask {
 		stats.setRank(Long.valueOf(playerInfo.get("rank")));
 		stats.setStrength(Double.valueOf(playerInfo.get("strength")));
 		stats.setXp(Long.valueOf(playerInfo.get("xp")));
-		stats.setDiv(Division.findDivision(Long.valueOf(playerInfo.get("xp")), eRepTimeCalculator.geteRepDay()));
+		stats.setDiv(Division.findDivision(Long.valueOf(playerInfo.get("xp")),
+				eRepTimeCalculator.geteRepDay()));
 		stats.setIsDead(Boolean.valueOf(playerInfo.get("dead")));
 		stats.setIsPermaBan(Boolean.valueOf(playerInfo.get("permaBanned")));
 		stats.setIsTempBan(Boolean.valueOf(playerInfo.get("tempBanned")));

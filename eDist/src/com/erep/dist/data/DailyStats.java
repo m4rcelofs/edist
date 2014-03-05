@@ -35,6 +35,7 @@ public class DailyStats {
 	@Persistent
 	private Key					key;
 
+	@Unowned
 	@Persistent
 	private Player				player;
 

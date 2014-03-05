@@ -37,6 +37,7 @@ public class DailyWork {
 	@Persistent
 	private Key					key;
 
+	@Unowned
 	@Persistent
 	private Player				player;
 

@@ -16,6 +16,7 @@ import org.directwebremoting.annotations.RemoteProperty;
 import com.erep.dist.data.enums.PlayerDistStatus;
 import com.erep.dist.data.enums.ResourceQuality;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.datanucleus.annotations.Unowned;
 
 @DataTransferObject
@@ -31,6 +32,7 @@ public class DailyFights {
 	@Persistent
 	private Key					key;
 
+	@Unowned
 	@Persistent
 	private Player				player;
 
@@ -68,7 +70,7 @@ public class DailyFights {
 	@Persistent
 	@RemoteProperty
 	private PlayerDistStatus	verificationStatus;
-	
+
 	@Persistent
 	@RemoteProperty
 	private Integer				guerrillaWon;
@@ -92,6 +94,13 @@ public class DailyFights {
 
 	public DailyFights(Key key) {
 		this.key = key;
+	}
+
+	public DailyFights(Player dbPlayer, Integer day) {
+		this(KeyFactory.createKey(dbPlayer.getKey(),
+				DailyFights.class.getSimpleName(), day));
+		setPlayer(dbPlayer);
+		setDay(day);
 	}
 
 	public Key getKey() {
