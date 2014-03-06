@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.jdo.Extent;
+import javax.jdo.JDOHelper;
 import javax.jdo.Query;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -41,6 +42,9 @@ public class DataMigrationServlet extends HttpServlet {
 				case "playerRefresh":
 					refreshPlayerCount(resp);
 					return;
+				case "playerEntityRefresh":
+					refreshPlayerEntity(resp);
+					return;
 				case "statsRootRefresh":
 					refreshStatsRoot(resp);
 					return;
@@ -63,6 +67,8 @@ public class DataMigrationServlet extends HttpServlet {
 		resp.getWriter()
 				.write("<li><a href='?action=playerRefresh'>Refresh player count</a></li>");
 		resp.getWriter()
+				.write("<li><a href='?action=playerEntityRefresh'>Refresh player entities</a></li>");
+		resp.getWriter()
 				.write("<li><a href='?action=statsRootRefresh'>Refresh stats player root</a></li>");
 		resp.getWriter()
 				.write("<li><a href='?action=workRootRefresh'>Refresh work player root</a></li>");
@@ -73,83 +79,118 @@ public class DataMigrationServlet extends HttpServlet {
 
 	private void refreshStatsRoot(HttpServletResponse resp) throws IOException {
 		resp.getWriter().write("Starting...");
-		DeferredTask task = new DeferredTask()
-		{
-
-			@Override
-			public void run() {
-				try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-					DataAccessObject dao = new DataAccessObject(pm);
-					Query q = pm.newQuery(DailyStats.class);
-					q.setFilter("player == null");
-					List<DailyStats> stats = (List<DailyStats>)q.execute();
-					for (DailyStats s : stats) {
-						if (s.getPlayer() == null) {
-							Key parentKey = s.getKey().getParent();
-							Player parent = dao.find(new Player(parentKey));
-							s.setPlayer(parent);
+		Queue queue = QueueFactory.getDefaultQueue();
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			Extent<DailyStats> stats = pm.getExtent(DailyStats.class);
+			for (DailyStats s : stats) {
+				final Key key = s.getKey();
+				DeferredTask task = new DeferredTask()
+				{
+					@Override
+					public void run() {
+						try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+							DataAccessObject dao = new DataAccessObject(pm);
+							DailyStats stat = dao.find(new DailyStats(key));
+							if (stat.getPlayer() == null) {
+								Key parentKey = stat.getKey().getParent();
+								Player parent = dao.find(new Player(parentKey));
+								stat.setPlayer(parent);
+							}
 						}
 					}
-				}
+				};
+				queue.add(withPayload(task));
 			}
-		};
-		Queue queue = QueueFactory.getDefaultQueue();
-		queue.add(withPayload(task));
+			stats.closeAll();
+		}
 		resp.getWriter().write("Added to queue.");
 	}
 
 	private void refreshWorkRoot(HttpServletResponse resp) throws IOException {
 		resp.getWriter().write("Starting...");
-		DeferredTask task = new DeferredTask()
-		{
-
-			@Override
-			public void run() {
-				try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-					DataAccessObject dao = new DataAccessObject(pm);
-					Query q = pm.newQuery(DailyWork.class);
-					q.setFilter("player == null");
-					List<DailyWork> stats = (List<DailyWork>)q.execute();
-					for (DailyWork s : stats) {
-						if (s.getPlayer() == null) {
-							Key parentKey = s.getKey().getParent();
-							Player parent = dao.find(new Player(parentKey));
-							s.setPlayer(parent);
+		Queue queue = QueueFactory.getDefaultQueue();
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			Extent<DailyWork> stats = pm.getExtent(DailyWork.class);
+			for (DailyWork s : stats) {
+				final Key key = s.getKey();
+				DeferredTask task = new DeferredTask()
+				{
+					@Override
+					public void run() {
+						try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+							DataAccessObject dao = new DataAccessObject(pm);
+							DailyWork stat = dao.find(new DailyWork(key));
+							if (stat.getPlayer() == null) {
+								Key parentKey = stat.getKey().getParent();
+								Player parent = dao.find(new Player(parentKey));
+								stat.setPlayer(parent);
+							}
 						}
 					}
-				}
+				};
+				queue.add(withPayload(task));
 			}
-		};
-		Queue queue = QueueFactory.getDefaultQueue();
-		queue.add(withPayload(task));
+			stats.closeAll();
+		}
 		resp.getWriter().write("Added to queue.");
 	}
 
 	private void refreshFightsRoot(HttpServletResponse resp) throws IOException {
 		resp.getWriter().write("Starting...");
-		DeferredTask task = new DeferredTask()
-		{
-
-			@Override
-			public void run() {
-				try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-					DataAccessObject dao = new DataAccessObject(pm);
-					Query q = pm.newQuery(DailyFights.class);
-					q.setFilter("player == null");
-					List<DailyFights> stats = (List<DailyFights>)q.execute();
-					for (DailyFights s : stats) {
-						if (s.getPlayer() == null) {
-							Key parentKey = s.getKey().getParent();
-							Player parent = dao.find(new Player(parentKey));
-							s.setPlayer(parent);
+		Queue queue = QueueFactory.getDefaultQueue();
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			Extent<DailyFights> stats = pm.getExtent(DailyFights.class);
+			for (DailyFights s : stats) {
+				final Key key = s.getKey();
+				DeferredTask task = new DeferredTask()
+				{
+					@Override
+					public void run() {
+						try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+							DataAccessObject dao = new DataAccessObject(pm);
+							DailyFights stat = dao.find(new DailyFights(key));
+							if (stat.getPlayer() == null) {
+								Key parentKey = stat.getKey().getParent();
+								Player parent = dao.find(new Player(parentKey));
+								stat.setPlayer(parent);
+							}
 						}
 					}
-				}
+				};
+				queue.add(withPayload(task));
 			}
-		};
-		Queue queue = QueueFactory.getDefaultQueue();
-		queue.add(withPayload(task));
+			stats.closeAll();
+		}
 		resp.getWriter().write("Added to queue.");
+	}
+
+	private void refreshPlayerEntity(HttpServletResponse resp)
+			throws IOException {
+		resp.getWriter().write("Loading all players... ");
+		Queue queue = QueueFactory.getDefaultQueue();
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			Extent<Player> players = pm.getExtent(Player.class);
+			for (Player p : players) {
+				final Key key = p.getKey();
+				DeferredTask task = new DeferredTask()
+				{
+					@Override
+					public void run() {
+						try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+							DataAccessObject dao = new DataAccessObject(pm);
+							Player p = dao.find(new Player(key));
+							p.setDailyFights(null);
+							p.setDailyStats(null);
+							p.setDailyWork(null);
+							pm.makePersistent(p);
+						}
+					}
+				};
+				queue.add(withPayload(task));
+			}
+			players.closeAll();
+		}
+		resp.getWriter().write(" players refreshed");
 	}
 
 	private void refreshPlayerCount(HttpServletResponse resp)
