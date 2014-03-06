@@ -1,6 +1,7 @@
 package com.erep.dist.data;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.jdo.annotations.Extension;
@@ -155,7 +156,6 @@ public class DailyStats {
 
 	public void setPlayer(Player player) {
 		this.player = player;
-		setGroups(player.getGroups());
 	}
 
 	public Integer getDay() {
@@ -207,6 +207,8 @@ public class DailyStats {
 	}
 
 	public Set<PlayerGroup> getGroups() {
+		if(groups == null)
+			setGroups(new HashSet<PlayerGroup>());
 		return groups;
 	}
 

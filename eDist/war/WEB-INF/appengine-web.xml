@@ -20,8 +20,9 @@
 	</static-files>
 
 	<admin-console>
-		<page name="Setup" url="/admin/install" />
 		<page name="Refresh Licence" url="/admin/cron/licence" />
+		<page name="Setup" url="/admin/install" />
+		<page name="Data Migration Tool" url="/admin/install/migrate" />
 	</admin-console>
 
 </appengine-web-app>
