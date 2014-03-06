@@ -3,6 +3,7 @@ package com.erep.dist.data;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -24,6 +25,7 @@ public class PlayerRoot {
 	private Key				key;
 
 	@Persistent(mappedBy = "root")
+	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	protected Set<Player>	players;
 
 	public Key getKey() {

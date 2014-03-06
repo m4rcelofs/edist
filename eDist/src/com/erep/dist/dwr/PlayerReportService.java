@@ -15,6 +15,7 @@ import com.erep.dist.PlayerIdentificator;
 import com.erep.dist.data.DailyStats;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
+import com.erep.dist.data.enums.Division;
 import com.erep.dist.dwr.dto.FiltersInitialInfo;
 import com.erep.dist.dwr.dto.StatsQuery;
 import com.erep.dist.erep.eRepTimeCalculator;
@@ -94,6 +95,24 @@ public class PlayerReportService {
 			StatsQuery queryResults = new StatsQuery();
 			List<DailyStats> requests = new DataAccessObject(pm).listStats(day,
 					group, encodedCursor);
+
+			queryResults.setResults(requests);
+			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(requests)
+					.toWebSafeString());
+			return queryResults;
+		}
+	}
+
+	@RemoteMethod
+	public StatsQuery statsByDivision(Integer day, Division division,
+			String encodedCursor) {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+
+			pm.getFetchPlan().addGroup("statsListing");
+
+			StatsQuery queryResults = new StatsQuery();
+			List<DailyStats> requests = new DataAccessObject(pm).listStats(day,
+					division, encodedCursor);
 
 			queryResults.setResults(requests);
 			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(requests)

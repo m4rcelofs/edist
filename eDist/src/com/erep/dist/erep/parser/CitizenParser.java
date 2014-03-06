@@ -25,9 +25,30 @@ public class CitizenParser {
 		parseStrRank(doc, citizen);
 		parseCitizenship(doc, citizen);
 		parseDeadBanned(doc, citizen);
+		parseGuerrilla(doc, citizen);
+		parseBombs(doc, citizen);
 
 		return citizen;
 
+	}
+
+	private void parseBombs(Document doc, Map<String, String> citizen) {
+		Elements elements = doc.select("div .citizen_mass_destruction > strong > b");
+		String sb = "0";
+		String bb = "0";
+		if(elements.size() == 2) {
+			sb = elements.get(0).text();
+			bb = elements.get(1).text();
+		}
+		
+		citizen.put("smallBombs", sb);
+		citizen.put("bigBombs", bb);
+	}
+
+	private void parseGuerrilla(Document doc, Map<String, String> citizen) {
+		Elements elements = doc.select("div .guerilla_fights_history");
+		citizen.put("guerrillaWon", elements.select(".won").text());
+		citizen.put("guerrillaLost", elements.select(".lost").text());
 	}
 
 	private void parseDeadBanned(Document doc, Map<String, String> citizen) {

@@ -2,6 +2,7 @@ package com.erep.dist.data;
 
 import java.util.Set;
 
+import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.FetchGroup;
 import javax.jdo.annotations.FetchGroups;
 import javax.jdo.annotations.IdentityType;
@@ -16,6 +17,7 @@ import org.directwebremoting.annotations.RemoteProperty;
 import com.erep.dist.data.enums.PlayerDistStatus;
 import com.erep.dist.data.enums.ResourceQuality;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.datanucleus.annotations.Unowned;
 
 @DataTransferObject
@@ -31,6 +33,7 @@ public class DailyFights {
 	@Persistent
 	private Key					key;
 
+	@Unowned
 	@Persistent
 	private Player				player;
 
@@ -42,6 +45,7 @@ public class DailyFights {
 	@Unowned
 	@Persistent
 	@RemoteProperty
+	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	private DailyStats			stats;
 
 	@Unowned
@@ -69,6 +73,22 @@ public class DailyFights {
 	@RemoteProperty
 	private PlayerDistStatus	verificationStatus;
 
+	@Persistent
+	@RemoteProperty
+	private Integer				guerrillaWon;
+
+	@Persistent
+	@RemoteProperty
+	private Integer				guerrillaLost;
+
+	@Persistent
+	@RemoteProperty
+	private Integer				smallBombsUsed;
+
+	@Persistent
+	@RemoteProperty
+	private Integer				bigBombsUsed;
+
 	@Deprecated
 	public DailyFights() {
 		// DWR only
@@ -76,6 +96,13 @@ public class DailyFights {
 
 	public DailyFights(Key key) {
 		this.key = key;
+	}
+
+	public DailyFights(Player dbPlayer, Integer day) {
+		this(KeyFactory.createKey(dbPlayer.getKey(),
+				DailyFights.class.getSimpleName(), day));
+		setPlayer(dbPlayer);
+		setDay(day);
 	}
 
 	public Key getKey() {
@@ -149,6 +176,38 @@ public class DailyFights {
 
 	public void setCalculatedRankDamage(Long calculatedRankDamage) {
 		this.calculatedRankDamage = calculatedRankDamage;
+	}
+
+	public Integer getGuerrillaWon() {
+		return guerrillaWon;
+	}
+
+	public void setGuerrillaWon(Integer guerrillaWon) {
+		this.guerrillaWon = guerrillaWon;
+	}
+
+	public Integer getGuerrillaLost() {
+		return guerrillaLost;
+	}
+
+	public void setGuerrillaLost(Integer guerrillaLost) {
+		this.guerrillaLost = guerrillaLost;
+	}
+
+	public Integer getSmallBombsUsed() {
+		return smallBombsUsed;
+	}
+
+	public void setSmallBombsUsed(Integer smallBombsUsed) {
+		this.smallBombsUsed = smallBombsUsed;
+	}
+
+	public Integer getBigBombsUsed() {
+		return bigBombsUsed;
+	}
+
+	public void setBigBombsUsed(Integer bigBombsUsed) {
+		this.bigBombsUsed = bigBombsUsed;
 	}
 
 }
