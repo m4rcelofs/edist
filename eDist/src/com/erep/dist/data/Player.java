@@ -109,17 +109,17 @@ public class Player implements HasEncodedKey {
 
 	// 2296 v0.13
 	@Deprecated
-	@NotPersistent
+	@Persistent
 	private Set<DailyStats>		dailyStats;
 
 	// 2296 v0.13
 	@Deprecated
-	@NotPersistent
+	@Persistent
 	private Set<DailyFights>	dailyFights;
 
 	// 2296 v0.13
 	@Deprecated
-	@NotPersistent
+	@Persistent
 	private Set<DailyWork>		dailyWork;
 
 	@Persistent
