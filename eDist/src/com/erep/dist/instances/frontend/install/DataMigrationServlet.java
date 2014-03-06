@@ -42,9 +42,6 @@ public class DataMigrationServlet extends HttpServlet {
 				case "playerRefresh":
 					refreshPlayerCount(resp);
 					return;
-				case "playerEntityRefresh":
-					refreshPlayerEntity(resp);
-					return;
 				case "statsRootRefresh":
 					refreshStatsRoot(resp);
 					return;
@@ -66,8 +63,6 @@ public class DataMigrationServlet extends HttpServlet {
 		resp.getWriter().write("<ul>");
 		resp.getWriter()
 				.write("<li><a href='?action=playerRefresh'>Refresh player count</a></li>");
-		resp.getWriter()
-				.write("<li><a href='?action=playerEntityRefresh'>Refresh player entities</a></li>");
 		resp.getWriter()
 				.write("<li><a href='?action=statsRootRefresh'>Refresh stats player root</a></li>");
 		resp.getWriter()
@@ -162,35 +157,6 @@ public class DataMigrationServlet extends HttpServlet {
 			stats.closeAll();
 		}
 		resp.getWriter().write("Added to queue.");
-	}
-
-	private void refreshPlayerEntity(HttpServletResponse resp)
-			throws IOException {
-		resp.getWriter().write("Loading all players... ");
-		Queue queue = QueueFactory.getDefaultQueue();
-		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			Extent<Player> players = pm.getExtent(Player.class);
-			for (Player p : players) {
-				final Key key = p.getKey();
-				DeferredTask task = new DeferredTask()
-				{
-					@Override
-					public void run() {
-						try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-							DataAccessObject dao = new DataAccessObject(pm);
-							Player p = dao.find(new Player(key));
-							p.setDailyFights(null);
-							p.setDailyStats(null);
-							p.setDailyWork(null);
-							pm.makePersistent(p);
-						}
-					}
-				};
-				queue.add(withPayload(task));
-			}
-			players.closeAll();
-		}
-		resp.getWriter().write(" players refreshed");
 	}
 
 	private void refreshPlayerCount(HttpServletResponse resp)

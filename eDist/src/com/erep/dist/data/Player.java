@@ -326,19 +326,4 @@ public class Player implements HasEncodedKey {
 	public void setCurrentEmployerName(String name) {
 		this.currentEmployerName = name;
 	}
-
-	@Deprecated
-	public void setDailyStats(Set<DailyStats> dailyStats) {
-		this.dailyStats = dailyStats;
-	}
-
-	@Deprecated
-	public void setDailyFights(Set<DailyFights> dailyFights) {
-		this.dailyFights = dailyFights;
-	}
-
-	@Deprecated
-	public void setDailyWork(Set<DailyWork> dailyWork) {
-		this.dailyWork = dailyWork;
-	}
 }
