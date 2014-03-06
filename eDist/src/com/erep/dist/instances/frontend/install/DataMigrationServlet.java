@@ -3,8 +3,10 @@ package com.erep.dist.instances.frontend.install;
 import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withPayload;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.jdo.Extent;
+import javax.jdo.Query;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -78,7 +80,9 @@ public class DataMigrationServlet extends HttpServlet {
 			public void run() {
 				try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 					DataAccessObject dao = new DataAccessObject(pm);
-					Extent<DailyStats> stats = pm.getExtent(DailyStats.class);
+					Query q = pm.newQuery(DailyStats.class);
+					q.setFilter("player == null");
+					List<DailyStats> stats = (List<DailyStats>)q.execute();
 					for (DailyStats s : stats) {
 						if (s.getPlayer() == null) {
 							Key parentKey = s.getKey().getParent();
@@ -103,7 +107,9 @@ public class DataMigrationServlet extends HttpServlet {
 			public void run() {
 				try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 					DataAccessObject dao = new DataAccessObject(pm);
-					Extent<DailyWork> stats = pm.getExtent(DailyWork.class);
+					Query q = pm.newQuery(DailyWork.class);
+					q.setFilter("player == null");
+					List<DailyWork> stats = (List<DailyWork>)q.execute();
 					for (DailyWork s : stats) {
 						if (s.getPlayer() == null) {
 							Key parentKey = s.getKey().getParent();
@@ -128,7 +134,9 @@ public class DataMigrationServlet extends HttpServlet {
 			public void run() {
 				try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 					DataAccessObject dao = new DataAccessObject(pm);
-					Extent<DailyFights> stats = pm.getExtent(DailyFights.class);
+					Query q = pm.newQuery(DailyFights.class);
+					q.setFilter("player == null");
+					List<DailyFights> stats = (List<DailyFights>)q.execute();
 					for (DailyFights s : stats) {
 						if (s.getPlayer() == null) {
 							Key parentKey = s.getKey().getParent();
