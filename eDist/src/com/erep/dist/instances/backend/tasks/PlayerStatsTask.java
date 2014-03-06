@@ -65,6 +65,7 @@ public class PlayerStatsTask implements DeferredTask {
 
 			calculateHit(stats);
 
+			stats.getGroups().addAll(dbPlayer.getGroups());
 			stats.setCollectedAt(new Date());
 
 			pm.makePersistent(stats);

@@ -89,6 +89,12 @@
 		<property name="day" direction="asc" />
 	</datastore-index>
 
+	<datastore-index kind="DailyWork" ancestor="false"
+		source="manual">
+		<property name="player_key_OID" direction="asc" />
+		<property name="day" direction="desc" />
+	</datastore-index>
+
 	<datastore-index kind="DailyStats" ancestor="true"
 		source="manual">
 		<property name="day" direction="desc" />
