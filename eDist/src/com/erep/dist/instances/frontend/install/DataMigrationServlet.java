@@ -95,7 +95,7 @@ public class DataMigrationServlet extends HttpServlet {
 								Key parentKey = stat.getKey().getParent();
 								Player parent = dao.find(new Player(parentKey));
 								stat.setPlayer(parent);
-							}							
+							}
 						}
 					}
 				};
@@ -124,7 +124,7 @@ public class DataMigrationServlet extends HttpServlet {
 								Key parentKey = stat.getKey().getParent();
 								Player parent = dao.find(new Player(parentKey));
 								stat.setPlayer(parent);
-							}							
+							}
 						}
 					}
 				};
@@ -153,7 +153,7 @@ public class DataMigrationServlet extends HttpServlet {
 								Key parentKey = stat.getKey().getParent();
 								Player parent = dao.find(new Player(parentKey));
 								stat.setPlayer(parent);
-							}							
+							}
 						}
 					}
 				};
@@ -167,20 +167,30 @@ public class DataMigrationServlet extends HttpServlet {
 	private void refreshPlayerEntity(HttpServletResponse resp)
 			throws IOException {
 		resp.getWriter().write("Loading all players... ");
-
-		int count = 0;
+		Queue queue = QueueFactory.getDefaultQueue();
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			Extent<Player> players = pm.getExtent(Player.class);
 			for (Player p : players) {
-				p.setDailyFights(null);
-				p.setDailyStats(null);
-				p.setDailyWork(null);
-				pm.makePersistent(p);
-				count++;
+				final Key key = p.getKey();
+				DeferredTask task = new DeferredTask()
+				{
+					@Override
+					public void run() {
+						try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+							DataAccessObject dao = new DataAccessObject(pm);
+							Player p = dao.find(new Player(key));
+							p.setDailyFights(null);
+							p.setDailyStats(null);
+							p.setDailyWork(null);
+							pm.makePersistent(p);
+						}
+					}
+				};
+				queue.add(withPayload(task));
 			}
 			players.closeAll();
 		}
-		resp.getWriter().write(count + " players refreshed");
+		resp.getWriter().write(" players refreshed");
 	}
 
 	private void refreshPlayerCount(HttpServletResponse resp)
