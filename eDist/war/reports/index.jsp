@@ -9,6 +9,7 @@
 <t:wrapper>
 
 	<jsp:attribute name="imports">
+		<script type='text/javascript' src='${baseUrl}/reports/work_custom.closure.js'></script>
 		<script type='text/javascript' src='${baseUrl}/reports/reports.all.closure.js'></script>
     </jsp:attribute>
 

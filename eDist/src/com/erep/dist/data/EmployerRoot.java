@@ -3,6 +3,7 @@ package com.erep.dist.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -24,6 +25,7 @@ public class EmployerRoot {
 	private Key					key;
 
 	@Persistent(mappedBy="root")
+	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	public List<Employer>	employers;
 
 	public Key getKey() {

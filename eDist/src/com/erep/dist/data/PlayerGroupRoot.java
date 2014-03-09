@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -27,6 +28,7 @@ public class PlayerGroupRoot implements Serializable {
 	private Key					key;
 
 	@Persistent(mappedBy = "root")
+	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	protected List<PlayerGroup>	groups;
 
 	public Key getKey() {

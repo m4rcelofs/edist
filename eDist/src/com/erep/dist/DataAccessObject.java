@@ -38,6 +38,7 @@ import com.erep.dist.data.RegisteredUser;
 import com.erep.dist.data.Request;
 import com.erep.dist.data.ResourceDist;
 import com.erep.dist.data.ServerConfig;
+import com.erep.dist.data.enums.Division;
 import com.erep.dist.data.enums.PlayerDistStatus;
 import com.erep.dist.data.enums.PlayerStatus;
 import com.erep.dist.data.enums.RequestStatus;
@@ -317,6 +318,7 @@ public class DataAccessObject {
 
 	/**
 	 * Don't forget to closeAll() after you are done!
+	 * 
 	 * @return
 	 */
 	public Extent<Player> listAllPlayers() {
@@ -446,8 +448,16 @@ public class DataAccessObject {
 				"groups.contains(groupParam) && day == dayParam", encodedCursor);
 		q.declareParameters(Key.class.getName() + " groupParam, "
 				+ Integer.class.getName() + " dayParam");
-		q.setOrdering("day desc");
 		return (List<DailyStats>) q.execute(group.getKey(), day);
+	}
+
+	public List<DailyStats> listStats(Integer day, Division div,
+			String encodedCursor) {
+		Query q = queryWithCursor(DailyStats.class,
+				"div == divParam && day == dayParam", encodedCursor);
+		q.declareParameters(Division.class.getName() + " divParam, "
+				+ Integer.class.getName() + " dayParam");
+		return (List<DailyStats>) q.execute(div, day);
 	}
 
 	public List<DailyStats> listStats(Integer day, String encodedCursor) {
@@ -633,15 +643,7 @@ public class DataAccessObject {
 	}
 
 	public DailyFights find(DailyFights fights) {
-		try {
-			if (fights == null || fights.getKey() == null)
-				return null;
-
-			return pm.getObjectById(DailyFights.class, fights.getKey());
-
-		} catch (JDOObjectNotFoundException e) {
-			return null;
-		}
+		return pm.getObjectById(DailyFights.class, fights.getKey());
 	}
 
 	public DailyWork find(DailyWork work) {

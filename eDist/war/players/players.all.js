@@ -1345,17 +1345,21 @@ dwr.engine._debug = function(message, stacktrace) {
 
 if (typeof DailyStats != "function") {
   function DailyStats() {
-    this.rank = null;
-    this.militaryUnit = null;
     this.maxHit = null;
-    this.collectedAt = null;
     this.strength = null;
-    this.name = null;
+    this.div = null;
     this.banTip = null;
+    this.isDead = false;
     this.xp = null;
     this.citizenship = null;
-    this.day = null;
     this.avatar = null;
+    this.isPermaBan = false;
+    this.isTempBan = false;
+    this.rank = null;
+    this.militaryUnit = null;
+    this.collectedAt = null;
+    this.name = null;
+    this.day = null;
     this.groups = null;
   }
 }
@@ -1367,6 +1371,15 @@ if (DWREngine == null) var DWREngine = dwr.engine;
 
 if (PlayerReportService == null) var PlayerReportService = {};
 PlayerReportService._path = '/players/dwr';
+PlayerReportService.getInitialInfo = function(callback) {
+  dwr.engine._execute(PlayerReportService._path, 'PlayerReportService', 'getInitialInfo', callback);
+}
+PlayerReportService.statsByPlayer = function(p0, p1, callback) {
+  dwr.engine._execute(PlayerReportService._path, 'PlayerReportService', 'statsByPlayer', p0, p1, callback);
+}
+PlayerReportService.statsByDivision = function(p0, p1, p2, callback) {
+  dwr.engine._execute(PlayerReportService._path, 'PlayerReportService', 'statsByDivision', p0, p1, p2, callback);
+}
 PlayerReportService.statsByDate = function(p0, p1, callback) {
   dwr.engine._execute(PlayerReportService._path, 'PlayerReportService', 'statsByDate', p0, p1, callback);
 }
@@ -1375,12 +1388,6 @@ PlayerReportService.statsByDay = function(p0, p1, callback) {
 }
 PlayerReportService.statsByGroup = function(p0, p1, p2, callback) {
   dwr.engine._execute(PlayerReportService._path, 'PlayerReportService', 'statsByGroup', p0, p1, p2, callback);
-}
-PlayerReportService.getInitialInfo = function(callback) {
-  dwr.engine._execute(PlayerReportService._path, 'PlayerReportService', 'getInitialInfo', callback);
-}
-PlayerReportService.statsByPlayer = function(p0, p1, callback) {
-  dwr.engine._execute(PlayerReportService._path, 'PlayerReportService', 'statsByPlayer', p0, p1, callback);
 }
 /*
  * END OF FILE - /edist/eDist/war/players/dwr-interface.js
@@ -1604,6 +1611,10 @@ var HistoryViewModel = new function() {
 		case 'player':
 			searchText += self.filters.searchText();
 			break;
+		case 'division':
+			searchText += self.filters.searchDay() + '/'
+					+ self.filters.searchParam();
+			break;
 		}
 
 		Navigation.setCurrentLocation('/players/history/' + self.category()
@@ -1635,6 +1646,13 @@ var HistoryViewModel = new function() {
 		queryServer();
 	}
 
+	self.filterByDivision = function(day, param) {
+		day = checkParam(day) ? day : (edist.server.eRepDay - 1);
+		reset('division', PlayerReportService.statsByDivision, param, param,
+				day);
+		queryServer();
+	}
+
 	function checkParam(param) {
 		return param && param !== 'undefined' && param !== 'null' ? param
 				: null;
@@ -1652,9 +1670,9 @@ var HistoryViewModel = new function() {
 
 	function queryServer() {
 		if (self.filters.searchParam()) {
-			if (self.category() === 'group' && self.filters.searchDay()) {
-				self.filters.searchFct(self.filters.searchDay(), self.filters.searchParam(), self
-						.cursor(), {
+			if ((self.category() === 'group' || self.category() === 'division') && self.filters.searchDay()) {
+				self.filters.searchFct(self.filters.searchDay(), self.filters
+						.searchParam(), self.cursor(), {
 					callback : function(response) {
 						setResults(response);
 					}
@@ -1698,6 +1716,8 @@ var HistoryRoutes = new function() {
 				HistoryViewModel.filterByGroup);
 		crossroads.addRoute('players/history/player/:param:',
 				HistoryViewModel.filterByPlayer);
+		crossroads.addRoute('players/history/division/:day:/:param:',
+				HistoryViewModel.filterByDivision);
 	}
 };
 
