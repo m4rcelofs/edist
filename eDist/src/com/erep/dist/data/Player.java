@@ -107,13 +107,19 @@ public class Player implements HasEncodedKey {
 	@Persistent(mappedBy = "player")
 	private Set<Request>		requests;
 
-	@Persistent(mappedBy = "player")
+	// 2296 v0.13
+	@Deprecated
+	@Persistent
 	private Set<DailyStats>		dailyStats;
 
-	@Persistent(mappedBy = "player")
+	// 2296 v0.13
+	@Deprecated
+	@Persistent
 	private Set<DailyFights>	dailyFights;
 
-	@Persistent(mappedBy = "player")
+	// 2296 v0.13
+	@Deprecated
+	@Persistent
 	private Set<DailyWork>		dailyWork;
 
 	@Persistent
@@ -201,34 +207,6 @@ public class Player implements HasEncodedKey {
 		this.getRequests().add(request);
 	}
 
-	public Set<DailyStats> getDailyStats() {
-		return dailyStats;
-	}
-
-	public void setDailyStats(Set<DailyStats> stats) {
-		this.dailyStats = stats;
-	}
-
-	public void addDailyStats(DailyStats stats) {
-		if (getDailyStats() == null)
-			setDailyStats(new HashSet<DailyStats>());
-		this.getDailyStats().add(stats);
-	}
-
-	public Set<DailyFights> getDailyFights() {
-		return dailyFights;
-	}
-
-	public void setDailyFights(Set<DailyFights> dailyFights) {
-		this.dailyFights = dailyFights;
-	}
-
-	public void addDailyFights(DailyFights fights) {
-		if (getDailyFights() == null)
-			setDailyFights(new HashSet<DailyFights>());
-		this.getDailyFights().add(fights);
-	}
-
 	public PlayerDistStatus getFightStatus() {
 		return fightStatus;
 	}
@@ -253,20 +231,6 @@ public class Player implements HasEncodedKey {
 
 	public void setErId(String erId) {
 		this.erId = erId;
-	}
-
-	public Set<DailyWork> getDailyWork() {
-		return dailyWork;
-	}
-
-	public void setDailyWork(Set<DailyWork> dailyWork) {
-		this.dailyWork = dailyWork;
-	}
-
-	public void addDailyWork(DailyWork work) {
-		if (getDailyWork() == null)
-			setDailyWork(new HashSet<DailyWork>());
-		this.getDailyWork().add(work);
 	}
 
 	public FightVerification getFightVerif() {

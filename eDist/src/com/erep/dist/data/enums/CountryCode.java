@@ -2,9 +2,13 @@ package com.erep.dist.data.enums;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.directwebremoting.annotations.DataTransferObject;
 import org.directwebremoting.convert.EnumConverter;
+
+import com.erep.dist.instances.frontend.AutoDistJob;
 
 @DataTransferObject(converter = EnumConverter.class)
 public enum CountryCode
@@ -79,29 +83,34 @@ public enum CountryCode
 	UY("Uruguay"),
 	US("USA"),
 	VE("Venezuela"),
-	ZZ("Unknown")
-	;
+	ZZ("Unknown");
+
+	public String							countryName;
+
+	private static Map<String, CountryCode>	nameToCode;
 	
-	public String countryName;
-	
-	private static Map<String, CountryCode> nameToCode;
-	
+	private static Logger logger = Logger.getLogger(CountryCode.class.getName());
+
 	private CountryCode(String country) {
 		this.countryName = country;
 	}
-	
+
 	public static CountryCode getCode(String countryName) {
-		if(nameToCode ==null)
+		if (nameToCode == null)
 			buildMap();
-		if(nameToCode.containsKey(countryName))
+		if (countryName != null)
+			countryName = countryName.toLowerCase().trim();
+		if (nameToCode.containsKey(countryName))
 			return nameToCode.get(countryName);
+		
+		logger.log(Level.WARNING, "No country code found for '" + countryName +"'");
 		return ZZ;
 	}
 
 	private static void buildMap() {
 		nameToCode = new HashMap<String, CountryCode>();
-		for(CountryCode code : CountryCode.values())
-			nameToCode.put(code.countryName, code);
+		for (CountryCode code : CountryCode.values())
+			nameToCode.put(code.countryName.toLowerCase(), code);
 	}
-	
+
 }

@@ -35,6 +35,12 @@ public class CitizenParserTest {
 		assertNotNull(Long.valueOf(response.get("xp")));
 		assertNotNull(Long.valueOf(response.get("rank")));
 		assertNotNull(Double.valueOf(response.get("strength")));
+		
+		assertNotNull(Long.valueOf(response.get("guerrillaWon")));
+		assertNotNull(Long.valueOf(response.get("guerrillaLost")));
+		
+		assertNotNull(Long.valueOf(response.get("smallBombs")));
+		assertNotNull(Long.valueOf(response.get("bigBombs")));
 	}
 	
 	@Test
@@ -50,7 +56,13 @@ public class CitizenParserTest {
 		assertTrue(Boolean.valueOf(response.get("permaBanned")));
 		assertTrue(Boolean.valueOf(response.get("dead")));
 		assertNotNull(response.get("banTip"));
-		assertEquals("Brazil", response.get("Citizenship"));
+		assertEquals("Brazil", response.get("citizenship"));
+		
+		assertNotNull(Long.valueOf(response.get("guerrillaWon")));
+		assertNotNull(Long.valueOf(response.get("guerrillaLost")));
+		
+		assertEquals("0", response.get("smallBombs"));
+		assertEquals("0", response.get("bigBombs"));
 	}
 
 }

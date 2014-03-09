@@ -1,5 +1,6 @@
 package com.erep.dist.data;
 
+import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
@@ -15,6 +16,7 @@ public class Licence {
 	private Key		id;
 
 	@Persistent
+	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	private String	signed;
 
 	public Key getId() {

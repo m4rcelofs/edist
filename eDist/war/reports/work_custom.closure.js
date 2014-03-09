@@ -1,0 +1,1 @@
+function WorkTextProvider(){var a=this;a.getWorkWeekPct=function(c){var b=0,d=0;c.forEach(function(e){if(e.worked!=null){e.worked==true&&d++;b++}});if(b!=0)return $.format.number(d/b*100,edist.format.number)+"%";return""};a.hasCustomText=function(){return false};a.getCustomTextTitle=function(){return""};a.getCustomText=function(c){return""}};
