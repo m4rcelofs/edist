@@ -16,6 +16,7 @@
 			</a></th>
 			<th><fmt:message key="players.fights.damage" /></th>
 			<th><fmt:message key="players.fights.weapons" /></th>
+			<th></th>
 			<th><fmt:message key="players.fights.dist" /></th>
 			<th></th>
 		</tr>
@@ -56,6 +57,24 @@
 				data-bind="attr: {title: calculatedWithWeaponQuality, 
 									   src: '${baseUrl}/img/weapons/' + calculatedWithWeaponQuality + '.png'}">
 			</td>
+			<td>
+				<span data-bind="if: guerrillaWon">
+					<img src="${baseUrl}/img/weapons/guerrilla_won.png">
+					<span data-bind="text: guerrillaWon"></span>
+				</span>
+				<span data-bind="if: guerrillaLost">
+					<img src="${baseUrl}/img/weapons/guerrilla_lost.png">
+					<span data-bind="text: guerrillaLost"></span>
+				</span>
+				<span data-bind="if: smallBombsUsed">
+					<img src="${baseUrl}/img/weapons/small_bomb.png" width="30px">
+					<span data-bind="text: smallBombsUsed"></span>
+				</span>
+				<span data-bind="if: bigBombsUsed">
+					<img src="${baseUrl}/img/weapons/big_bomb.png" width="30px">
+					<span data-bind="text: bigBombsUsed"></span>
+				</span>
+			</td>
 			<td><a
 				data-bind="attr: { href: edist.user.hasReportsAccess === true ? 
 								'${baseUrl}/reports/requests/player/' + (stats ? stats.erId : '') 
@@ -79,37 +98,37 @@
 			</a></td>
 			<td>
 				<div class="btn-toolbar">
-                    <div class="btn-group">
-                        <button class="btn btn-default dropdown-toggle" 
-                        		data-toggle="dropdown"
-                        		title="<fmt:message key="management.players.actions"/>">
-                        	<span class="caret"></span>
-                        </button>
-                        <ul class="dropdown-menu">
-                            <li>
-                            	<a data-bind="if: edist.user.hasManagementAccess,
+					<div class="btn-group">
+						<button class="btn btn-default dropdown-toggle"
+							data-toggle="dropdown"
+							title="<fmt:message key="management.players.actions"/>">
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu">
+							<li><a
+								data-bind="if: edist.user.hasManagementAccess,
 											  attr: {href: '${baseUrl}/management/playersList/search/' + (stats ? stats.erId : '')  }">
-									<span class="glyphicon glyphicon-list"></span> <fmt:message key="header.mod"/>
-								</a>
-							</li>
-                            <li>
-                            	<a data-bind="attr: {href: '${baseUrl}/reports/requests/player/' + (stats ? stats.erId : '')  }">
-									<span class="glyphicon glyphicon-cutlery"></span> <fmt:message key="management.players.template.dist"/>
-								</a>
-                            </li>
-                            <li>
-                            	<a data-bind="attr: {href: '${baseUrl}/reports/work/player/' + (stats ? stats.erId : '') }">
-									<span class="glyphicon glyphicon-wrench"></span> <fmt:message key="management.players.template.work"/>
-								</a>
-                            </li>
-                            <li>
-                            	 <a data-bind="attr: {href: '${baseUrl}/players/history/player/' + (stats ? stats.erId : '') }">
-									<span class="glyphicon glyphicon-stats"></span> <fmt:message key="management.players.template.stats"/>
-								</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div> 
+									<span class="glyphicon glyphicon-list"></span> <fmt:message
+										key="header.mod" />
+							</a></li>
+							<li><a
+								data-bind="attr: {href: '${baseUrl}/reports/requests/player/' + (stats ? stats.erId : '')  }">
+									<span class="glyphicon glyphicon-cutlery"></span> <fmt:message
+										key="management.players.template.dist" />
+							</a></li>
+							<li><a
+								data-bind="attr: {href: '${baseUrl}/reports/work/player/' + (stats ? stats.erId : '') }">
+									<span class="glyphicon glyphicon-wrench"></span> <fmt:message
+										key="management.players.template.work" />
+							</a></li>
+							<li><a
+								data-bind="attr: {href: '${baseUrl}/players/history/player/' + (stats ? stats.erId : '') }">
+									<span class="glyphicon glyphicon-stats"></span> <fmt:message
+										key="management.players.template.stats" />
+							</a></li>
+						</ul>
+					</div>
+				</div>
 			</td>
 		</tr>
 	</tbody>

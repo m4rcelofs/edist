@@ -1,6 +1,7 @@
 package com.erep.dist.data;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.jdo.annotations.Extension;
@@ -18,6 +19,7 @@ import org.directwebremoting.annotations.RemoteProperty;
 import org.directwebremoting.convert.BeanConverter;
 
 import com.erep.dist.data.enums.CountryCode;
+import com.erep.dist.data.enums.Division;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.datanucleus.annotations.Unowned;
@@ -34,6 +36,7 @@ public class DailyStats {
 	@Persistent
 	private Key					key;
 
+	@Unowned
 	@Persistent
 	private Player				player;
 
@@ -54,6 +57,7 @@ public class DailyStats {
 	// keep a copy, never know when it might be useful
 	@Unowned
 	@Persistent(defaultFetchGroup = "false")
+	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	private Avatar				avatarKey;
 
 	@Unowned
@@ -68,6 +72,10 @@ public class DailyStats {
 	@Persistent
 	@RemoteProperty
 	private Long				xp;
+
+	@Persistent
+	@RemoteProperty
+	private Division			div;
 
 	@Persistent
 	@RemoteProperty
@@ -109,6 +117,18 @@ public class DailyStats {
 	@RemoteProperty
 	private CountryCode			citizenship;
 
+	@Persistent
+	private Integer				guerrillaWon;
+
+	@Persistent
+	private Integer				guerrillaLost;
+
+	@Persistent
+	private Integer				smallBombsUsed;
+
+	@Persistent
+	private Integer				bigBombsUsed;
+
 	public DailyStats() {}
 
 	public DailyStats(Player player, Integer day) {
@@ -136,7 +156,6 @@ public class DailyStats {
 
 	public void setPlayer(Player player) {
 		this.player = player;
-		setGroups(player.getGroups());
 	}
 
 	public Integer getDay() {
@@ -188,6 +207,8 @@ public class DailyStats {
 	}
 
 	public Set<PlayerGroup> getGroups() {
+		if(groups == null)
+			setGroups(new HashSet<PlayerGroup>());
 		return groups;
 	}
 
@@ -224,6 +245,7 @@ public class DailyStats {
 		this.avatarKey = avatarKey;
 	}
 
+	// DWR requires old-style getters and setters
 	public boolean getIsDead() {
 		return isDead;
 	}
@@ -270,6 +292,48 @@ public class DailyStats {
 
 	public void setCitizenship(CountryCode citizenship) {
 		this.citizenship = citizenship;
+	}
+
+	public Division getDiv() {
+		if (div == null && getDay() != null)
+			setDiv(Division.findDivision(getXp(), getDay()));
+		return div;
+	}
+
+	public void setDiv(Division div) {
+		this.div = div;
+	}
+
+	public Integer getGuerrillaWon() {
+		return guerrillaWon;
+	}
+
+	public void setGuerrillaWon(Integer guerrillaWon) {
+		this.guerrillaWon = guerrillaWon;
+	}
+
+	public Integer getGuerrillaLost() {
+		return guerrillaLost;
+	}
+
+	public void setGuerrillaLost(Integer guerrillaLost) {
+		this.guerrillaLost = guerrillaLost;
+	}
+
+	public Integer getSmallBombsUsed() {
+		return smallBombsUsed;
+	}
+
+	public void setSmallBombsUsed(Integer smallBombsUsed) {
+		this.smallBombsUsed = smallBombsUsed;
+	}
+
+	public Integer getBigBombsUsed() {
+		return bigBombsUsed;
+	}
+
+	public void setBigBombsUsed(Integer bigBombsUsed) {
+		this.bigBombsUsed = bigBombsUsed;
 	}
 
 }

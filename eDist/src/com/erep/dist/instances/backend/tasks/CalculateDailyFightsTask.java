@@ -2,6 +2,9 @@ package com.erep.dist.instances.backend.tasks;
 
 import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withPayload;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.jdo.JDOObjectNotFoundException;
 
 import com.erep.dist.CloseablePM;
@@ -15,7 +18,6 @@ import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.enums.ResourceQuality;
 import com.erep.dist.erep.HitCalculator;
 import com.google.appengine.api.datastore.Key;
-import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.api.taskqueue.DeferredTask;
 import com.google.appengine.api.taskqueue.Queue;
 import com.google.appengine.api.taskqueue.QueueFactory;
@@ -24,6 +26,9 @@ import com.google.appengine.api.taskqueue.TaskAlreadyExistsException;
 public class CalculateDailyFightsTask implements DeferredTask {
 
 	private static final long	serialVersionUID	= 1L;
+
+	private static Logger		logger				= Logger.getLogger(CalculateDailyFightsTask.class
+															.getName());
 
 	private final Integer		today;
 	private final Key			playerKey;
@@ -56,7 +61,12 @@ public class CalculateDailyFightsTask implements DeferredTask {
 			fights.setGroups(dbPlayer.getGroups());
 			fights.setStats(todayStats);
 
-			dbPlayer.addDailyFights(fights);
+			pm.makePersistent(fights);
+
+			if (fights.getKey() == null)
+				logger.log(Level.SEVERE, "DailyFights key for player "
+						+ dbPlayer.getErId() + " on day " + today
+						+ " is null ):");
 
 			createFightVerificationTask(today, dbPlayer, fights);
 
@@ -69,9 +79,8 @@ public class CalculateDailyFightsTask implements DeferredTask {
 			DailyStats previousDayStats, DailyStats todayStats,
 			ResourceQuality quality) {
 
-		DailyFights fights = new DailyFights(createKey(dbPlayer, today));
+		DailyFights fights = new DailyFights(dbPlayer, today);
 
-		fights.setDay(today);
 		fights.setCalculatedWithWeaponQuality(quality);
 
 		long dailyInfluence = calculateDailyInfluence(previousDayStats,
@@ -82,6 +91,22 @@ public class CalculateDailyFightsTask implements DeferredTask {
 
 		fights.setCalculatedRankDamage(dailyInfluence);
 		fights.setCalculatedFfFights(calculatedFights);
+
+		if (previousDayStats.getSmallBombsUsed() != null)
+			fights.setSmallBombsUsed(todayStats.getSmallBombsUsed()
+					- previousDayStats.getSmallBombsUsed());
+
+		if (previousDayStats.getBigBombsUsed() != null)
+			fights.setBigBombsUsed(todayStats.getBigBombsUsed()
+					- previousDayStats.getBigBombsUsed());
+
+		if (previousDayStats.getGuerrillaWon() != null)
+			fights.setGuerrillaWon(todayStats.getGuerrillaWon()
+					- previousDayStats.getGuerrillaWon());
+
+		if (previousDayStats.getGuerrillaLost() != null)
+			fights.setGuerrillaLost(todayStats.getGuerrillaLost()
+					- previousDayStats.getGuerrillaLost());
 
 		return fights;
 	}
@@ -111,10 +136,5 @@ public class CalculateDailyFightsTask implements DeferredTask {
 		} catch (TaskAlreadyExistsException e) {
 			// tombstoned, already run
 		}
-	}
-
-	private Key createKey(Player dbPlayer, Integer day) {
-		return KeyFactory.createKey(dbPlayer.getKey(),
-				DailyFights.class.getSimpleName(), day);
 	}
 }
