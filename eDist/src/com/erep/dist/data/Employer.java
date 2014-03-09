@@ -118,6 +118,16 @@ public class Employer implements HasEncodedKey {
 		this.lastUpdatedAt = lastUpdatedAt;
 	}
 
+	public boolean isAuthKeyValid(String authKey) {
+		if (authKey == null || authKey.trim().isEmpty())
+			return false;
+
+		if (getAuthKey() != null)
+			return getAuthKey().equals(authKey.trim());
+		else
+			return getEncodedKey().equals(authKey.trim());
+	}
+
 	public String getAuthKey() {
 		return authKey;
 	}

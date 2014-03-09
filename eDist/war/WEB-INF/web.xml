@@ -249,7 +249,8 @@
 				com.erep.dist.data.DailyStats,
 				com.erep.dist.data.PlayerGroup,
 				
-				com.erep.dist.data.enums.CountryCode
+				com.erep.dist.data.enums.CountryCode,
+				com.erep.dist.data.enums.Division
 			</param-value>
 		</init-param>
 	</servlet>
@@ -307,13 +308,13 @@
 
 	<!-- Player migration -->
 	<servlet>
-		<servlet-name>playerRefreshServlet</servlet-name>
-		<servlet-class>com.erep.dist.instances.frontend.install.PlayerRefreshServlet</servlet-class>
+		<servlet-name>dataMigrationServlet</servlet-name>
+		<servlet-class>com.erep.dist.instances.frontend.install.DataMigrationServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>playerRefreshServlet</servlet-name>
-		<url-pattern>/admin/playerRefresh</url-pattern>
+		<servlet-name>dataMigrationServlet</servlet-name>
+		<url-pattern>/admin/install/migrate</url-pattern>
 	</servlet-mapping>
 
 	<!-- Dynamic javascript generation -->

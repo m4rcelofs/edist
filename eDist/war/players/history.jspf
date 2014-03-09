@@ -13,6 +13,9 @@
 				<li data-bind="css: {active : category() === 'group'}"><a
 					href="#/players/history/group"><fmt:message
 							key="filters.byGroup" /></a></li>
+				<li data-bind="css: {active : category() === 'division'}"><a
+					href="#/players/history/division"><fmt:message
+							key="filters.byDivision" /></a></li>
 				<li data-bind="css: {active : category() === 'player'}"><a
 					href="#/players/history/player"><fmt:message
 							key="filters.search" /></a></li>

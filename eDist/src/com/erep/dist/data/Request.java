@@ -3,6 +3,7 @@ package com.erep.dist.data;
 import java.util.Date;
 import java.util.List;
 
+import javax.jdo.annotations.Extension;
 import javax.jdo.annotations.FetchGroup;
 import javax.jdo.annotations.FetchGroups;
 import javax.jdo.annotations.IdGeneratorStrategy;
@@ -94,6 +95,7 @@ public class Request implements HasEncodedKey {
 	@Unowned
 	@Persistent
 	@RemoteProperty
+	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	private DailyStats			stats;
 
 	@Persistent(defaultFetchGroup = "false")

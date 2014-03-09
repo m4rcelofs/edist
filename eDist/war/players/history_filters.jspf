@@ -14,7 +14,8 @@
 		<div class="collapse navbar-collapse" id="requests-filter-collapse">
 			<form class="navbar-form navbar-right" role="search"
 				data-bind="submit: doSearch">
-				<div class="form-group" data-bind="if: $root.category() === 'day' || $root.category() === 'group'">
+				<div class="form-group"
+					data-bind="if: $root.category() !== 'player'">
 					<input type="number" class="form-control"
 						placeholder="<fmt:message key="filters.dayPlaceholder"/>"
 						data-bind="value: filters.searchDay">
@@ -27,6 +28,17 @@
 									value: filters.searchText, 
 									enable: $root.filters.groups().length > 0,
 									updateSelectPicker: filters.groups">
+					</select>
+				</div>
+				<div class="form-group"
+					data-bind="if: $root.category() === 'division'">
+					<select class="selectpicker show-menu-arrow navbar-btn show-tick"
+						data-bind="value: filters.searchParam, 
+								   updateSelectPicker: {}">
+						<option value="D1">D1</option>
+						<option value="D2">D2</option>
+						<option value="D3">D3</option>
+						<option value="D4">D4</option>
 					</select>
 				</div>
 				<div class="form-group"
