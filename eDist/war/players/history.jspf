@@ -10,9 +10,6 @@
 				<li data-bind="css: {active : category() === 'day'}"><a
 					href="#/players/history/day"><fmt:message
 							key="filters.allPlayers" /></a></li>
-				<li data-bind="css: {active : category() === 'group'}"><a
-					href="#/players/history/group"><fmt:message
-							key="filters.byGroup" /></a></li>
 				<li data-bind="css: {active : category() === 'division'}"><a
 					href="#/players/history/division"><fmt:message
 							key="filters.byDivision" /></a></li>

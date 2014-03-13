@@ -11,8 +11,8 @@
 	
 	<div class="form-group"></div>
 	
-	<img src="${baseUrl}/img/logo/logo1_simple_opt.cache.png"
-			class="img-responsive center-block" title="by @CarlosMarighella">
+	<img src="${baseUrl}/img/logo/V_for_Vendetta_logo.cache.png"
+			class="img-responsive center-block">
 	
 	<div class="form-group"></div>
 	</jsp:body>

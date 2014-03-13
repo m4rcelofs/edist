@@ -4,10 +4,6 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <div class="footer">
-	<div class="pull-right">
-		<img src="${baseUrl}/img/appengine-noborder-120x30.cache.gif"
-			alt="Powered by Google App Engine" />
-	</div>
 	<p>
 		<fmt:message key="footer.todayIs" />
 		<span id="eRepDay">?</span>

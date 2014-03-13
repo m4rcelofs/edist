@@ -2,6 +2,11 @@ body {
 	padding-top: 20px;
 	padding-bottom: 20px;
 	font-family: 'Source Sans Pro', Helvetica, Arial, sans-serif;
+	
+	background-repeat: no-repeat;
+	background-attachment: fixed;
+	background-position: right 0px bottom 0px;
+	background-image: url('../img/logo/V.cache.png');
 }
 
 .header {

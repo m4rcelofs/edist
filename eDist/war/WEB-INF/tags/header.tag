@@ -25,8 +25,6 @@
 
 <div class="header">
 	<ul class="nav nav-pills pull-right">
-		<li id="request"><a href="${baseUrl}/request/"><fmt:message
-					key="header.form" /></a></li>
 		<li id="admin" style="display: none;"><a href="${baseUrl}/admin/"><fmt:message
 					key="header.admin" /></a></li>
 		<li id="management" style="display: none;"><a
