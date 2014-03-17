@@ -92,8 +92,11 @@ public class RequestDailyStatisticsTask implements DeferredTask {
 		Integer current = map.get(resource.getType(), resource.getQuality());
 		if (current == null)
 			current = 0;
-		map.put(resource.getType(), resource.getQuality(),
-				current + resource.getQuantity());
+
+		//food may be null if in error status
+		if (resource.getQuantity() != null)
+			map.put(resource.getType(), resource.getQuality(), current
+					+ resource.getQuantity());
 	}
 
 	private void add(Map<RequestType, Integer> map, RequestType type) {

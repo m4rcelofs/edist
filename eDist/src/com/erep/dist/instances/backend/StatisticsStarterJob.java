@@ -36,7 +36,7 @@ public class StatisticsStarterJob extends HttpServlet {
 	}
 
 	private void addToQueue(DeferredTask task) {
-		Queue queue = QueueFactory.getQueue("erepublik-not-logged-in");
+		Queue queue = QueueFactory.getDefaultQueue();
 
 		TaskOptions taskOptions = withPayload(task).header(
 				"Host",
