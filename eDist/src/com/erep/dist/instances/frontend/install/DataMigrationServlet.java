@@ -3,11 +3,8 @@ package com.erep.dist.instances.frontend.install;
 import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withPayload;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.jdo.Extent;
-import javax.jdo.JDOHelper;
-import javax.jdo.Query;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

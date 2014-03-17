@@ -294,6 +294,15 @@
 		<url-pattern>/admin/cron/playerStatsStarter</url-pattern>
 	</servlet-mapping>
 
+	<servlet>
+		<servlet-name>statisticsStarterJob</servlet-name>
+		<servlet-class>com.erep.dist.instances.backend.StatisticsStarterJob</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>statisticsStarterJob</servlet-name>
+		<url-pattern>/admin/cron/statistics</url-pattern>
+	</servlet-mapping>
 
 	<!-- Install -->
 	<servlet>
