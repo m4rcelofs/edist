@@ -24,8 +24,14 @@ public class StatisticsStarterJob extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		int today = eRepTimeCalculator.geteRepDay();
-		DeferredTask requestDaily = new RequestDailyStatisticsTask(today - 1);
+
+		int day = eRepTimeCalculator.geteRepDay() - 1;
+
+		String dayParam = req.getParameter("day");
+		if (dayParam != null && !dayParam.isEmpty())
+			day = Integer.valueOf(dayParam);
+
+		DeferredTask requestDaily = new RequestDailyStatisticsTask(day);
 		addToQueue(requestDaily);
 	}
 

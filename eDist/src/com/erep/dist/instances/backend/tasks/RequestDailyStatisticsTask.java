@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.erep.dist.CloseablePM;
@@ -38,6 +39,10 @@ public class RequestDailyStatisticsTask implements DeferredTask {
 
 	@Override
 	public void run() {
+
+		logger.log(Level.WARNING,
+				"Starting RequestDailyStatisticsTask for day " + day);
+
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			Statistics stats = new Statistics(pm);
 			Requests requests = new Requests(pm);
@@ -47,6 +52,8 @@ public class RequestDailyStatisticsTask implements DeferredTask {
 
 			stats.save(dailyStats);
 		}
+		logger.log(Level.WARNING, "RequestDailyStatisticsTask for day " + day
+				+ " finished");
 	}
 
 	private RequestStatsDaily calculateStatistics(List<Request> dailyRequests) {
