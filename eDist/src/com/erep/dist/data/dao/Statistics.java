@@ -40,7 +40,7 @@ public class Statistics extends GenericDAO {
 	public AvailableStatistics getAvailable() {
 		Key key = createAvailableKey();
 		try {
-			return (AvailableStatistics) pm().getObjectById(key);
+			return pm().getObjectById(AvailableStatistics.class, key);
 		} catch (JDOObjectNotFoundException e) {
 			AvailableStatistics stats = new AvailableStatistics();
 			stats.setKey(key);
@@ -56,7 +56,7 @@ public class Statistics extends GenericDAO {
 	public RequestStatsMonthly getRequestsMonthly(YearMonth yearMonth) {
 		Key monthlyKey = createRequestsMonthlyKey(yearMonth);
 		try {
-			return (RequestStatsMonthly) pm().getObjectById(monthlyKey);
+			return pm().getObjectById(RequestStatsMonthly.class, monthlyKey);
 		} catch (JDOObjectNotFoundException e) {
 			return createMonthly(monthlyKey);
 		}

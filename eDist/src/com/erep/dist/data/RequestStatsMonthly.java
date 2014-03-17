@@ -1,5 +1,6 @@
 package com.erep.dist.data;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -42,16 +43,13 @@ public class RequestStatsMonthly {
 	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	private Integer													ffs;
 
-	@Persistent
-	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
+	@Persistent(defaultFetchGroup = "true", serialized = "true")
 	private Map<RocketQuality, Integer>								rockets;
 
-	@Persistent
-	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
+	@Persistent(defaultFetchGroup = "true", serialized = "true")
 	private Map<RequestType, Integer>								requests;
 
 	@Persistent(defaultFetchGroup = "false", serialized = "true")
-	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	private HashBasedTable<ResourceType, ResourceQuality, Integer>	itemsSent;
 
 	@Persistent
@@ -75,6 +73,8 @@ public class RequestStatsMonthly {
 	}
 
 	public Set<Player> getPlayers() {
+		if (players == null)
+			players = new HashSet<>();
 		return players;
 	}
 
@@ -83,6 +83,8 @@ public class RequestStatsMonthly {
 	}
 
 	public Integer getFfs() {
+		if (ffs == null)
+			ffs = 0;
 		return ffs;
 	}
 
@@ -91,6 +93,8 @@ public class RequestStatsMonthly {
 	}
 
 	public Map<RocketQuality, Integer> getRockets() {
+		if (rockets == null)
+			rockets = new HashMap<>();
 		return rockets;
 	}
 
@@ -99,6 +103,8 @@ public class RequestStatsMonthly {
 	}
 
 	public Map<RequestType, Integer> getRequests() {
+		if (requests == null)
+			requests = new HashMap<>();
 		return requests;
 	}
 
@@ -107,6 +113,8 @@ public class RequestStatsMonthly {
 	}
 
 	public HashBasedTable<ResourceType, ResourceQuality, Integer> getItemsSent() {
+		if (itemsSent == null)
+			itemsSent = HashBasedTable.create();
 		return itemsSent;
 	}
 
@@ -116,6 +124,8 @@ public class RequestStatsMonthly {
 	}
 
 	public Set<RequestStatsDaily> getDailies() {
+		if (dailies == null)
+			dailies = new HashSet<RequestStatsDaily>();
 		return dailies;
 	}
 
@@ -124,8 +134,10 @@ public class RequestStatsMonthly {
 	}
 
 	public void addDaily(RequestStatsDaily daily) {
-		if (getDailies() == null)
-			setDailies(new HashSet<RequestStatsDaily>());
+		
+		if(getDailies().contains(daily))
+			return;
+		
 		getDailies().add(daily);
 
 		addFFs(daily.getFfs());
@@ -136,49 +148,52 @@ public class RequestStatsMonthly {
 	}
 
 	private void addFFs(Integer ffs) {
-		if (getFfs() == null)
-			setFfs(0);
 		setFfs(getFfs() + ffs);
 	}
 
 	private void addItems(
 			HashBasedTable<ResourceType, ResourceQuality, Integer> map) {
+		HashBasedTable<ResourceType, ResourceQuality, Integer> copy = HashBasedTable
+				.create(getItemsSent());
 		for (ResourceType type : ResourceType.values())
 			for (ResourceQuality quality : ResourceQuality.values()) {
 				Integer toAdd = map.get(type, quality);
 				if (toAdd != null) {
-					Integer current = getItemsSent().get(type, quality);
+					Integer current = copy.get(type, quality);
 					if (current == null)
 						current = 0;
-					getItemsSent().put(type, quality, current + toAdd);
+					copy.put(type, quality, current + toAdd);
 				}
 			}
+		setItemsSent(copy);
 	}
 
 	private void addPlayers(Set<Player> players) {
-		if (getPlayers() == null)
-			setPlayers(new HashSet<Player>());
 		getPlayers().addAll(players);
 	}
 
 	private void addRequests(Map<RequestType, Integer> map) {
+		Map<RequestType, Integer> copy = new HashMap<>(getRequests());
 		for (RequestType type : map.keySet()) {
 			Integer toAdd = map.get(type);
-			Integer current = getRequests().get(type);
+			Integer current = copy.get(type);
 			if (current == null)
 				current = 0;
-			getRequests().put(type, current + toAdd);
+			copy.put(type, current + toAdd);
 		}
+		setRequests(copy);
 	}
 
 	private void addRockets(Map<RocketQuality, Integer> map) {
+		Map<RocketQuality, Integer> copy = new HashMap<>(getRockets());
 		for (RocketQuality quality : map.keySet()) {
 			Integer toAdd = map.get(quality);
-			Integer current = getRockets().get(quality);
+			Integer current = copy.get(quality);
 			if (current == null)
 				current = 0;
-			getRockets().put(quality, current + toAdd);
+			copy.put(quality, current + toAdd);
 		}
+		setRockets(copy);
 	}
 
 }

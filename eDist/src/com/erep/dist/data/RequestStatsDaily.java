@@ -40,16 +40,13 @@ public class RequestStatsDaily {
 	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	private Integer													ffs;
 
-	@Persistent
-	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
+	@Persistent(defaultFetchGroup = "true", serialized = "true")
 	private Map<RocketQuality, Integer>								rockets;
 
-	@Persistent
-	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
+	@Persistent(defaultFetchGroup = "true", serialized = "true")
 	private Map<RequestType, Integer>								requests;
 
 	@Persistent(defaultFetchGroup = "false", serialized = "true")
-	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	private HashBasedTable<ResourceType, ResourceQuality, Integer>	itemsSent;
 
 	public Key getKey() {
@@ -107,6 +104,32 @@ public class RequestStatsDaily {
 
 	public void setPlayers(Set<Player> players) {
 		this.players = players;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((key == null) ? 0 : key.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		RequestStatsDaily other = (RequestStatsDaily) obj;
+		if (key == null) {
+			if (other.key != null)
+				return false;
+		} else
+			if (!key.equals(other.key))
+				return false;
+		return true;
 	}
 
 }
