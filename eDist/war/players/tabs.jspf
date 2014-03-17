@@ -1,5 +1,5 @@
 <li>
 	<a href="#history" id="historyTab">
-		<span class="glyphicon glyphicon-stats"></span> <fmt:message key="players.history"/>
+		<span class="glyphicon glyphicon-calendar"></span> <fmt:message key="players.history"/>
 	</a>
 </li>
