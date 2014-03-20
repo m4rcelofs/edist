@@ -1631,14 +1631,21 @@ if (typeof DailyWork != "function") {
 
 if (typeof DailyStats != "function") {
   function DailyStats() {
-    this.rank = null;
     this.maxHit = null;
-    this.collectedAt = null;
     this.strength = null;
-    this.name = null;
+    this.div = null;
+    this.banTip = null;
+    this.isDead = false;
     this.xp = null;
-    this.day = null;
+    this.citizenship = null;
     this.avatar = null;
+    this.isPermaBan = false;
+    this.isTempBan = false;
+    this.rank = null;
+    this.militaryUnit = null;
+    this.collectedAt = null;
+    this.name = null;
+    this.day = null;
     this.groups = null;
   }
 }
@@ -1651,11 +1658,12 @@ if (typeof Player != "function") {
     this.workVerif = null;
     this.erId = null;
     this.groupIds = null;
+    this.currentEmployerName = null;
     this.name = null;
     this.dbStatus = null;
     this.config = null;
-    this.fightVerif = null;
     this.workStatus = null;
+    this.fightVerif = null;
     this.encodedKey = null;
     this.groups = null;
   }
@@ -1668,6 +1676,36 @@ if (DWREngine == null) var DWREngine = dwr.engine;
 
 if (ReportService == null) var ReportService = {};
 ReportService._path = '/reports/dwr';
+ReportService.fightsByDate = function(p0, p1, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'fightsByDate', p0, p1, callback);
+}
+ReportService.fightsByDay = function(p0, p1, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'fightsByDay', p0, p1, callback);
+}
+ReportService.listRequestsByPlayer = function(p0, p1, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByPlayer', p0, p1, callback);
+}
+ReportService.getInitialInfo = function(callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'getInitialInfo', callback);
+}
+ReportService.requestDetails = function(p0, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'requestDetails', p0, callback);
+}
+ReportService.listRequestsByDistributor = function(p0, p1, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByDistributor', p0, p1, callback);
+}
+ReportService.listRequestsByDate = function(p0, p1, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByDate', p0, p1, callback);
+}
+ReportService.listRequestsByDay = function(p0, p1, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByDay', p0, p1, callback);
+}
+ReportService.getRequestStats = function(p0, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'getRequestStats', p0, callback);
+}
+ReportService.getAvailableRequestStats = function(callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'getAvailableRequestStats', callback);
+}
 ReportService.fightsByGroup = function(p0, p1, callback) {
   dwr.engine._execute(ReportService._path, 'ReportService', 'fightsByGroup', p0, p1, callback);
 }
@@ -1679,24 +1717,6 @@ ReportService.listWorkByEmployer = function(p0, p1, callback) {
 }
 ReportService.listWorkByGroup = function(p0, p1, callback) {
   dwr.engine._execute(ReportService._path, 'ReportService', 'listWorkByGroup', p0, p1, callback);
-}
-ReportService.getInitialInfo = function(callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'getInitialInfo', callback);
-}
-ReportService.requestDetails = function(p0, callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'requestDetails', p0, callback);
-}
-ReportService.listRequestsByDate = function(p0, p1, callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByDate', p0, p1, callback);
-}
-ReportService.listRequestsByDay = function(p0, p1, callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByDay', p0, p1, callback);
-}
-ReportService.listRequestsByDistributor = function(p0, p1, callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByDistributor', p0, p1, callback);
-}
-ReportService.listRequestsByPlayer = function(p0, p1, callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByPlayer', p0, p1, callback);
 }
 ReportService.listWorkByPlayer = function(p0, p1, callback) {
   dwr.engine._execute(ReportService._path, 'ReportService', 'listWorkByPlayer', p0, p1, callback);
@@ -1710,14 +1730,144 @@ ReportService.listRequestsByStatus = function(p0, p1, callback) {
 ReportService.listRequestsByGroup = function(p0, p1, callback) {
   dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByGroup', p0, p1, callback);
 }
-ReportService.fightsByDate = function(p0, p1, callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'fightsByDate', p0, p1, callback);
-}
-ReportService.fightsByDay = function(p0, p1, callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'fightsByDay', p0, p1, callback);
-}
 /*
  * END OF FILE - /edist/eDist/war/reports/dwr-interface20131220.js
+ */
+
+/*
+ * START OF FILE - /edist/eDist/war/reports/statistics.js
+ */
+function StatisticsFiltersViewModel() {
+
+	var self = this;
+
+	self.searchText = ko.observable();
+	self.searchParam = ko.observable();
+
+	self.loaded = false;
+	self.availableRequests = ko.observableArray();
+
+}
+
+var StatisticsViewModel = new function() {
+	var self = this;
+
+	self.isLoading = ko.observable();
+	self.filters = new StatisticsFiltersViewModel();
+
+	self.monthly = ko.observable();
+	self.dailies = ko.observableArray();
+
+	self.init = function() {
+		showTab();
+	}
+
+	self.doSearch = function() {
+		var searchText = self.filters.searchText();
+		Navigation
+				.setCurrentLocation('/reports/statistics/month/' + searchText);
+	}
+
+	self.filter = function(param) {
+		if (!self.filters.loaded)
+			showTab();
+
+		self.isLoading(true);
+		ReportService.getRequestStats(param, {
+			callback : function(response) {
+				// TODO remove
+				console.log(response);
+
+				self.monthly(response);
+				if (response && response.dailies)
+					response.dailies.sort(orderDaysfct);
+				self.dailies(response.dailies);
+				self.isLoading(false);
+			}
+		});
+	}
+
+	self.sumRockets = function(daily) {
+		var rockets = 0;
+		if (daily && daily.rockets)
+			for ( var i = 1; i <= 5; i++)
+				if (daily.rockets['Q' + i])
+					rockets += daily.rockets['Q' + i];
+		return rockets;
+	}
+
+	self.sumRequests = function(daily) {
+		var requests = 0;
+		var types = [ 'WEAPONS', 'FOOD', 'WEAPONS_FOOD', 'ROCKET' ];
+		if (daily && daily.requests)
+			types.forEach(function(item) {
+				if (daily.requests[item])
+					requests += daily.requests[item];
+			});
+		return requests;
+	}
+
+	self.loadDetails = function(daily) {
+		// ReportService.requestDetails({
+		// encodedKey : request.encodedKey
+		// }, {
+		// callback : function(response) {
+		// self.requestDetails(response);
+		// $('#requestDetails').modal('show');
+		// }
+		// });
+	}
+
+	function showTab() {
+		$('#statisticsTab').tab('show');
+		self.isLoading(true);
+		ReportService.getAvailableRequestStats({
+			callback : function(response) {
+				self.filters.loaded = true;
+				response.sort(orderMonthsFct);
+				self.filters.availableRequests(response);
+				self.isLoading(false);
+			}
+		});
+	}
+
+	function orderMonthsFct(a, b) {
+		var aSplit = a.split('-');
+		var bSplit = b.split('-');
+		// year
+		if (bSplit[0] < aSplit[0])
+			return -1;
+		if (bSplit[0] > aSplit[0])
+			return 1;
+		// month
+		if (bSplit[1] < aSplit[1])
+			return -1;
+		if (bSplit[1] > aSplit[1])
+			return 1;
+		return 0;
+	}
+
+	function orderDaysfct(a, b) {
+		if (b.day < a.day)
+			return -1;
+		if (b.day > a.day)
+			return 1;
+		return 0;
+	}
+
+};
+
+var StatisticsRoutes = new function() {
+	var self = this;
+
+	self.addRoutes = function() {
+		crossroads.addRoute('reports/statistics', StatisticsViewModel.init);
+		crossroads.addRoute('reports/statistics/month/:param:',
+				StatisticsViewModel.filter);
+	}
+};
+/*
+ * END OF FILE - /edist/eDist/war/reports/statistics.js
  */
 
 /*
@@ -1727,22 +1877,24 @@ $(document).ready(function() {
 
 	Reports.downloadFilters();
 
+	ko.applyBindings(StatisticsViewModel, document.getElementById('statistics'));
 	ko.applyBindings(RequestsViewModel, document.getElementById('requests'));
 	ko.applyBindings(WorkViewModel, document.getElementById('work'));
 	ko.applyBindings(FightsViewModel, document.getElementById('fights'));
 
+	StatisticsRoutes.addRoutes();
 	RequestsRoutes.addRoutes();
 	WorkRoutes.addRoutes();
-	FightRoutes.addRoutes();
+	FightRoutes.addRoutes(); 
 
 	Navigation.configureRoutes('/reports/');
 
 	if (Navigation.getCurrenLocation() === '/reports/') {
-		Navigation.setCurrentLocation('requests/day');
+		Navigation.setCurrentLocation('statistics');
 	}
 
 	if (Navigation.getCurrenLocation() === '/reports') {
-		Navigation.setCurrentLocation('reports/requests/day');
+		Navigation.setCurrentLocation('reports/statistics');
 	}
 });
 

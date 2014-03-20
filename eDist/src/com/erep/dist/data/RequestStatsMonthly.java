@@ -6,29 +6,41 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.jdo.annotations.Extension;
+import javax.jdo.annotations.FetchGroup;
+import javax.jdo.annotations.FetchGroups;
 import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.NotPersistent;
 import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
 import org.directwebremoting.annotations.DataTransferObject;
+import org.directwebremoting.annotations.RemoteProperty;
 
 import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.data.enums.ResourceQuality;
 import com.erep.dist.data.enums.ResourceType;
 import com.erep.dist.data.enums.RocketQuality;
 import com.google.appengine.api.datastore.Key;
+import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.datanucleus.annotations.Unowned;
 import com.google.common.collect.HashBasedTable;
 
 @DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class RequestStatsMonthly {
+@FetchGroups({ @FetchGroup(name = "monthlyListing", members = {
+		@Persistent(name = "players"), @Persistent(name = "rockets"),
+		@Persistent(name = "requests"), @Persistent(name = "dailies") }) })
+public class RequestStatsMonthly implements HasEncodedKey {
 
 	// YYYY-MM
 	@PrimaryKey
 	@Persistent
 	private Key														key;
+
+	@RemoteProperty
+	@NotPersistent
+	private String													encodedKey;
 
 	// YYYY-MM
 	@Persistent
@@ -39,19 +51,23 @@ public class RequestStatsMonthly {
 	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	private Set<Player>												players;
 
+	@RemoteProperty
 	@Persistent
 	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	private Integer													ffs;
 
-	@Persistent(defaultFetchGroup = "true", serialized = "true")
+	@RemoteProperty
+	@Persistent(serialized = "true")
 	private Map<RocketQuality, Integer>								rockets;
 
-	@Persistent(defaultFetchGroup = "true", serialized = "true")
+	@RemoteProperty
+	@Persistent(serialized = "true")
 	private Map<RequestType, Integer>								requests;
 
 	@Persistent(defaultFetchGroup = "false", serialized = "true")
 	private HashBasedTable<ResourceType, ResourceQuality, Integer>	itemsSent;
 
+	@RemoteProperty
 	@Persistent
 	private Set<RequestStatsDaily>									dailies;
 
@@ -80,6 +96,16 @@ public class RequestStatsMonthly {
 
 	public void setPlayers(Set<Player> players) {
 		this.players = players;
+	}
+
+	@RemoteProperty
+	public int getPlayersCount() {
+		return getPlayers().size();
+	}
+
+	@Deprecated
+	public void setPlayersCount() {
+		// DWR only
 	}
 
 	public Integer getFfs() {
@@ -134,10 +160,10 @@ public class RequestStatsMonthly {
 	}
 
 	public void addDaily(RequestStatsDaily daily) {
-		
-		if(getDailies().contains(daily))
+
+		if (getDailies().contains(daily))
 			return;
-		
+
 		getDailies().add(daily);
 
 		addFFs(daily.getFfs());
@@ -194,6 +220,18 @@ public class RequestStatsMonthly {
 			copy.put(quality, current + toAdd);
 		}
 		setRockets(copy);
+	}
+
+	public String getEncodedKey() {
+		if (key != null)
+			return KeyFactory.keyToString(key);
+		return encodedKey;
+	}
+
+	public void setEncodedKey(String id) {
+		if (id != null)
+			this.key = KeyFactory.stringToKey(id);
+		this.encodedKey = id;
 	}
 
 }

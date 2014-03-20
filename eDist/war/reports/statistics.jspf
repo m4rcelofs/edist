@@ -1,0 +1,30 @@
+<div class="tab-pane active" id="statistics">
+
+	<div class="form-group"></div>
+
+	<div class="row">
+		<div class="col-md-12">
+
+			<div class="text-center" data-bind="if: isLoading()">
+				<img src="${baseUrl}/img/loader.cache.gif">
+			</div>
+
+			<div data-bind="if: !isLoading()">
+
+				<%@ include file="statistics_filters.jspf"%>
+
+
+				bla gráficos
+
+
+				<div class="form-group"></div>
+
+
+				<%@ include file="statistics_table.jspf"%>
+
+
+			</div>
+		</div>
+	</div>
+	<div class="form-group"></div>
+</div>

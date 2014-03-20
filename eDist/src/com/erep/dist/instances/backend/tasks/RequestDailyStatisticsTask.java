@@ -19,6 +19,7 @@ import com.erep.dist.data.ResourceDist;
 import com.erep.dist.data.dao.Requests;
 import com.erep.dist.data.dao.Statistics;
 import com.erep.dist.data.enums.RequestType;
+import com.erep.dist.data.enums.ResourceDistStatus;
 import com.erep.dist.data.enums.ResourceQuality;
 import com.erep.dist.data.enums.ResourceType;
 import com.erep.dist.data.enums.RocketQuality;
@@ -72,7 +73,8 @@ public class RequestDailyStatisticsTask implements DeferredTask {
 				add(rockets, req.getRocketQuality());
 
 			for (ResourceDist resource : req.getResources())
-				add(itemsSent, resource);
+				if (resource.getStatus() != ResourceDistStatus.ERROR)
+					add(itemsSent, resource);
 		}
 
 		RequestStatsDaily dailyStats = new RequestStatsDaily();
@@ -93,7 +95,7 @@ public class RequestDailyStatisticsTask implements DeferredTask {
 		if (current == null)
 			current = 0;
 
-		//food may be null if in error status
+		// food may be null if in error status
 		if (resource.getQuantity() != null)
 			map.put(resource.getType(), resource.getQuality(), current
 					+ resource.getQuantity());

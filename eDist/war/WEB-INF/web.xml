@@ -201,6 +201,8 @@
 				com.erep.dist.data.PlayerGroup,
 				com.erep.dist.data.Request,
 				com.erep.dist.data.ResourceDist,
+				com.erep.dist.data.RequestStatsMonthly,
+				com.erep.dist.data.RequestStatsDaily,
 				
 				com.erep.dist.dwr.ReportService,
 				

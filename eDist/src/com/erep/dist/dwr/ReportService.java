@@ -2,11 +2,13 @@ package com.erep.dist.dwr;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.jdo.JDOObjectNotFoundException;
 
 import org.directwebremoting.annotations.RemoteMethod;
 import org.directwebremoting.annotations.RemoteProxy;
+import org.joda.time.YearMonth;
 
 import com.erep.dist.CloseablePM;
 import com.erep.dist.DataAccessObject;
@@ -20,7 +22,9 @@ import com.erep.dist.data.Employer;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.Request;
+import com.erep.dist.data.RequestStatsMonthly;
 import com.erep.dist.data.ResourceDist;
+import com.erep.dist.data.dao.Statistics;
 import com.erep.dist.data.enums.RequestStatus;
 import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.dwr.dto.FightsQuery;
@@ -261,7 +265,7 @@ public class ReportService {
 			WorkWeekQuery queryResults = new WorkWeekQuery();
 
 			DataAccessObject dao = new DataAccessObject(pm);
-			
+
 			List<Player> players = dao.listPlayersByGroup(group, cursor);
 			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(players)
 					.toWebSafeString());
@@ -357,4 +361,22 @@ public class ReportService {
 			return queryResults;
 		}
 	}
+
+	@RemoteMethod
+	public Set<String> getAvailableRequestStats() {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			Statistics stats = new Statistics(pm);
+			return stats.getAvailable().getRequestMonthly();
+		}
+	}
+	
+	@RemoteMethod
+	public RequestStatsMonthly getRequestStats(String yearMonth){
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			pm.getFetchPlan().addGroup("monthlyListing");
+			Statistics stats = new Statistics(pm);
+			return stats.getRequestsMonthly(new YearMonth(yearMonth));
+		}
+	}
+	
 }
