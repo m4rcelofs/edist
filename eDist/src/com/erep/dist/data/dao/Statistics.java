@@ -24,11 +24,10 @@ public class Statistics extends GenericDAO {
 		Key dailyKey = createRequestsDailyKey(daily.getDay());
 		daily.setKey(dailyKey);
 
-		RequestStatsMonthly monthly = getRequestsMonthly(daily.getDay());
-		
 		Transaction tx = pm().currentTransaction();
 		try {
 			tx.begin();
+			RequestStatsMonthly monthly = getRequestsMonthly(daily.getDay());
 			monthly.addDaily(daily);
 			tx.commit();
 		} finally {
@@ -66,17 +65,10 @@ public class Statistics extends GenericDAO {
 		RequestStatsMonthly monthly = new RequestStatsMonthly();
 		monthly.setKey(monthlyKey);
 
-		Transaction tx = pm().currentTransaction();
-		try {
-			tx.begin();
-			pm().makePersistent(monthly);
-			getAvailable().addRequestMonthly(monthly);
-			tx.commit();
-			return monthly;
-		} finally {
-			if (tx.isActive())
-				tx.rollback();
-		}
+		pm().makePersistent(monthly);
+		getAvailable().addRequestMonthly(monthly);
+
+		return monthly;
 	}
 
 	protected Key createAvailableKey() {
