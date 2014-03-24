@@ -26,6 +26,7 @@
 			</ul>
 
 			<div class="tab-content">
+				<%@ include file="statistics.jspf"%>
 				<%@ include file="requests.jspf"%>
 				<%@ include file="work.jspf"%>
 				<%@ include file="fights.jspf"%>

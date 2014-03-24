@@ -2,26 +2,36 @@
 <cronentries>
 
 	<!-- frontend -->
-	<cron>
-		<url>/admin/cron/autoDist</url>
-		<description>Starts auto dist tasks every day</description>
-		<schedule>every day 00:02</schedule>
-		<timezone>America/Los_Angeles</timezone>
-	</cron>
+	<!-- <cron> -->
+	<!-- <url>/admin/cron/autoDist</url> -->
+	<!-- <description>Starts auto dist tasks every day</description> -->
+	<!-- <schedule>every day 00:02</schedule> -->
+	<!-- <timezone>America/Los_Angeles</timezone> -->
+	<!-- </cron> -->
 
 	<!-- backend -->
 	<cron>
 		<url>/admin/cron/licence</url>
-		<description>Checks if this application is properly licensed</description>
+		<description>Checks if this application is properly licensed
+		</description>
 		<schedule>every 12 hours</schedule>
 		<timezone>America/Los_Angeles</timezone>
 		<target>edist-default-backend</target>
 	</cron>
-	
+
 	<cron>
 		<url>/admin/cron/playerStatsStarter</url>
-		<description>Starts tasks to update player profile status</description>
+		<description>Starts tasks to update player profile status
+		</description>
 		<schedule>every day 23:45</schedule>
+		<timezone>America/Los_Angeles</timezone>
+		<target>edist-default-backend</target>
+	</cron>
+
+	<cron>
+		<url>/admin/cron/statistics</url>
+		<description>Starts tasks to create statistics</description>
+		<schedule>every day 00:05</schedule>
 		<timezone>America/Los_Angeles</timezone>
 		<target>edist-default-backend</target>
 	</cron>
