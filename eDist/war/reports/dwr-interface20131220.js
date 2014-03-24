@@ -101,6 +101,12 @@ ReportService.listRequestsByDate = function(p0, p1, callback) {
 ReportService.listRequestsByDay = function(p0, p1, callback) {
   dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByDay', p0, p1, callback);
 }
+ReportService.loadMonthlyDetails = function(p0, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'loadMonthlyDetails', p0, callback);
+}
+ReportService.loadDailyDetails = function(p0, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'loadDailyDetails', p0, callback);
+}
 ReportService.getRequestStats = function(p0, callback) {
   dwr.engine._execute(ReportService._path, 'ReportService', 'getRequestStats', p0, callback);
 }

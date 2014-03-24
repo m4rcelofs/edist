@@ -14,14 +14,12 @@
 				<%@ include file="statistics_filters.jspf"%>
 
 
-				bla gráficos
-
-
 				<div class="form-group"></div>
 
 
 				<%@ include file="statistics_table.jspf"%>
-
+				
+				<%@ include file="statistics_inventory.jspf"%> 
 
 			</div>
 		</div>

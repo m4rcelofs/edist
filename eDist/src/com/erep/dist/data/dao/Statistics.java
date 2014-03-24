@@ -20,6 +20,14 @@ public class Statistics extends GenericDAO {
 		super(pm);
 	}
 
+	public RequestStatsDaily find(RequestStatsDaily stats) {
+		return pm().getObjectById(RequestStatsDaily.class, stats.getKey());
+	}
+
+	public RequestStatsMonthly find(RequestStatsMonthly stats) {
+		return pm().getObjectById(RequestStatsMonthly.class, stats.getKey());
+	}
+
 	public void save(RequestStatsDaily daily) {
 		Key dailyKey = createRequestsDailyKey(daily.getDay());
 		daily.setKey(dailyKey);

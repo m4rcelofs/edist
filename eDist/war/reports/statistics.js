@@ -19,6 +19,11 @@ var StatisticsViewModel = new function() {
 	self.monthly = ko.observable();
 	self.dailies = ko.observableArray();
 
+	// details
+	self.qualities = [ 'Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7' ];
+	self.itemsSent = ko.observable();
+	self.detailsLoaded = ko.observable();
+
 	self.init = function() {
 		showTab();
 	}
@@ -36,9 +41,6 @@ var StatisticsViewModel = new function() {
 		self.isLoading(true);
 		ReportService.getRequestStats(param, {
 			callback : function(response) {
-				// TODO remove
-				console.log(response);
-
 				self.monthly(response);
 				if (response && response.dailies)
 					response.dailies.sort(orderDaysfct);
@@ -68,15 +70,39 @@ var StatisticsViewModel = new function() {
 		return requests;
 	}
 
-	self.loadDetails = function(daily) {
-		// ReportService.requestDetails({
-		// encodedKey : request.encodedKey
-		// }, {
-		// callback : function(response) {
-		// self.requestDetails(response);
-		// $('#requestDetails').modal('show');
-		// }
-		// });
+	self.loadDailyDetails = function(daily) {
+		self.itemsSent(false);
+		self.detailsLoaded('');
+		ReportService.loadDailyDetails({
+			encodedKey : daily.encodedKey
+		}, {
+			callback : function(response) {
+				self.detailsLoaded(daily.day);
+				self.itemsSent(response);
+				$('#itemsSentModal').modal('show');
+			}
+		});
+	}
+
+	self.loadMonthlyDetails = function(root) {
+		self.itemsSent(false);
+		self.detailsLoaded('');
+		ReportService.loadMonthlyDetails({
+			encodedKey : root.monthly().encodedKey
+		}, {
+			callback : function(response) {
+				self.detailsLoaded(self.filters.searchText());
+				self.itemsSent(response);
+				$('#itemsSentModal').modal('show');
+			}
+		});
+	}
+
+	self.inventoryContents = function(product, quality) {
+		if (self.itemsSent() && self.itemsSent()[product]
+				&& self.itemsSent()[product][quality])
+			return self.itemsSent()[product][quality];
+		return null;
 	}
 
 	function showTab() {

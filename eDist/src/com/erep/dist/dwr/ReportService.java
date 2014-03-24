@@ -2,6 +2,7 @@ package com.erep.dist.dwr;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.jdo.JDOObjectNotFoundException;
@@ -22,11 +23,14 @@ import com.erep.dist.data.Employer;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.Request;
+import com.erep.dist.data.RequestStatsDaily;
 import com.erep.dist.data.RequestStatsMonthly;
 import com.erep.dist.data.ResourceDist;
 import com.erep.dist.data.dao.Statistics;
 import com.erep.dist.data.enums.RequestStatus;
 import com.erep.dist.data.enums.RequestType;
+import com.erep.dist.data.enums.ResourceQuality;
+import com.erep.dist.data.enums.ResourceType;
 import com.erep.dist.dwr.dto.FightsQuery;
 import com.erep.dist.dwr.dto.FiltersInitialInfo;
 import com.erep.dist.dwr.dto.RequestQuery;
@@ -369,14 +373,34 @@ public class ReportService {
 			return stats.getAvailable().getRequestMonthly();
 		}
 	}
-	
+
 	@RemoteMethod
-	public RequestStatsMonthly getRequestStats(String yearMonth){
+	public RequestStatsMonthly getRequestStats(String yearMonth) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			pm.getFetchPlan().addGroup("monthlyListing");
 			Statistics stats = new Statistics(pm);
 			return stats.getRequestsMonthly(new YearMonth(yearMonth));
 		}
 	}
-	
+
+	@RemoteMethod
+	public Map<ResourceType, Map<ResourceQuality, Integer>> loadDailyDetails(
+			RequestStatsDaily daily) {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			Statistics statistics = new Statistics(pm);
+			daily = statistics.find(daily);
+			return daily.getItemsSent().rowMap();
+		}
+	}
+
+	@RemoteMethod
+	public Map<ResourceType, Map<ResourceQuality, Integer>> loadMonthlyDetails(
+			RequestStatsMonthly monthly) {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			Statistics statistics = new Statistics(pm);
+			monthly = statistics.find(monthly);
+			return monthly.getItemsSent().rowMap();
+		}
+	}
+
 }

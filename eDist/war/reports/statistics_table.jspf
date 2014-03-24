@@ -2,14 +2,14 @@
 	data-bind="if: !isLoading() && dailies().length > 0">
 	<thead>
 		<tr>
-			<th colspan="6">Distribuições</th>
+			<th colspan="6"><fmt:message key="reports.stats.supplies" /></th>
 		</tr>
 		<tr>
-			<th>Dia</th>
-			<th>Jogadores</th>
-			<th>Food Fights</th>
-			<th>Rockets</th>
-			<th>Pedidos</th>
+			<th><fmt:message key="filters.dayPlaceholder" /></th>
+			<th><fmt:message key="header.players" /></th>
+			<th><fmt:message key="request.foodFights" /></th>
+			<th><fmt:message key="distconfig.rocket.title" /></th>
+			<th><fmt:message key="reports.stats.requests" /></th>
 			<th></th>
 		</tr>
 	</thead>
@@ -22,21 +22,23 @@
 			<td data-bind="text: ffs"></td>
 			<td data-bind="text: $root.sumRockets($data)"></td>
 			<td data-bind="text: $root.sumRequests($data)"></td>
-			<td><a href="#itemsDetails" data-bind="click: $root.loadDetails">
-					<fmt:message key="reports.requests.details.short" /> <span
+			<td><a href="#itemsDetails"
+				data-bind="click: $root.loadDailyDetails"> <fmt:message
+						key="reports.requests.details.short" /> <span
 					class="glyphicon glyphicon-new-window"></span>
 			</a></td>
 		</tr>
 	</tbody>
 	<tfoot>
 		<tr data-bind="attr: {id: monthly() ? monthly().encodedKey : ''}">
-			<td>TOTAL</td>
+			<td><fmt:message key="reports.stats.total.title" /></td>
 			<td data-bind="text: monthly() ? monthly().playersCount : ''"></td>
 			<td data-bind="text: monthly() ? monthly().ffs : ''"></td>
 			<td data-bind="text: monthly() ? sumRockets(monthly()) : ''"></td>
 			<td data-bind="text: monthly() ? sumRequests(monthly()) : ''"></td>
 			<td data-bind="if: monthly()"><a href="#itemsDetails"
-				data-bind="click: $root.loadDetails"> Total de Itens <span
+				data-bind="click: $root.loadMonthlyDetails"> <fmt:message
+						key="reports.stats.itemsTotal" /><span
 					class="glyphicon glyphicon-new-window"></span>
 			</a></td>
 		</tr>
