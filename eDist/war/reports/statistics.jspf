@@ -9,17 +9,17 @@
 				<img src="${baseUrl}/img/loader.cache.gif">
 			</div>
 
-			<div data-bind="if: !isLoading()">
+			<div data-bind="visible: !isLoading()">
 
 				<%@ include file="statistics_filters.jspf"%>
 
-
 				<div class="form-group"></div>
 
+				<%@ include file="statistics_charts.jspf"%>
 
 				<%@ include file="statistics_table.jspf"%>
-				
-				<%@ include file="statistics_inventory.jspf"%> 
+
+				<%@ include file="statistics_inventory.jspf"%>
 
 			</div>
 		</div>
