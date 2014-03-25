@@ -1771,7 +1771,7 @@ function StatisticsGraphics() {
 
 		dailies.reverse();
 		dailies.forEach(function(item) {
-			self.dataTable.addRow([ '' + item.day, item.ffs, item.playersCount,
+			self.dataTable.addRow([ '' + item.day, item.playersCount, item.ffs,
 					item.rockets.Q1, item.rockets.Q2, item.rockets.Q3,
 					item.rockets.Q4, item.rockets.Q5, item.requests.ROCKET,
 					item.requests.WEAPONS, item.requests.FOOD,
