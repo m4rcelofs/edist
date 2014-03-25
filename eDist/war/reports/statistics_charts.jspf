@@ -1,0 +1,37 @@
+<div class="stats-charts" data-bind="visible: dailies().length > 0">
+	<div class="row text-center">
+		<div class="col-md-12">
+			<form class="form-inline" role="form" id="categoryForm">
+				<div class="radio">
+					<label> <input type="radio" name="category" value="1"
+						data-chart-type="line" data-bind="checked: chartCategory">
+						Jogadores
+					</label>
+				</div>
+				<div class="radio">
+					<label> <input type="radio" name="category" value="2"
+						data-chart-type="line" data-bind="checked: chartCategory">
+						Food Fights
+					</label>
+				</div>
+				<div class="radio">
+					<label> <input type="radio" name="category"
+						value="3,4,5,6,7" data-chart-type="bars"
+						data-bind="checked: chartCategory"> Foguetes
+					</label>
+				</div>
+				<div class="radio">
+					<label> <input type="radio" name="category"
+						value="8,9,10,11" data-chart-type="bars"
+						data-bind="checked: chartCategory"> Pedidos
+					</label>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div id="ff_chart"></div>
+		</div>
+	</div>
+</div>

@@ -38,7 +38,7 @@
 			<td data-bind="text: monthly() ? sumRequests(monthly()) : ''"></td>
 			<td data-bind="if: monthly()"><a href="#itemsDetails"
 				data-bind="click: $root.loadMonthlyDetails"> <fmt:message
-						key="reports.stats.itemsTotal" /><span
+						key="reports.stats.itemsTotal" /> <span
 					class="glyphicon glyphicon-new-window"></span>
 			</a></td>
 		</tr>
