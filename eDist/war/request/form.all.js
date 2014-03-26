@@ -1398,13 +1398,47 @@ RequestService.sendRequest = function(p0, p1, p2, p3, callback) {
  */
 $(document).ready(function() {
 
+	ko.applyBindings(FeedsViewModel, document.getElementById('feeds'));
 	ko.applyBindings(FormViewModel, document.getElementById('playerForm'));
 
 	crossroads.addRoute('request/{id}', function(id) {
 		FormViewModel.selectedName(id);
 	});
 	Navigation.configureRoutes();
+	FeedsViewModel.load();
 });
+
+var FeedsViewModel = new function() {
+	var self = this;
+
+	self.feed = ko.observable();
+
+	self.currentResult = ko.observable();
+	self.count = 1;
+
+	self.load = function() {
+		var feed = new google.feeds.Feed(
+				"http://pipes.yahoo.com/pipes/pipe.run?_id=4ef32a9e6ebae7eec5c0165e5cda15df&_render=rss&country=all");
+		feed.setNumEntries(10);
+		feed.load(function(result) {
+			if (!result.error) {
+				self.feed(result.feed);
+				startTimer();
+			}
+		});
+	}
+
+	function startTimer() {
+		self.currentResult(self.feed().entries[0]);
+		setInterval(function() {
+			self.currentResult(self.feed().entries[self.count]);
+			if (self.count === (self.feed().entries.length - 1))
+				self.count = 0;
+			else
+				self.count++;
+		}, 5000);
+	}
+};
 
 var FormViewModel = new function() {
 
