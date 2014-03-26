@@ -19,8 +19,9 @@ var FeedsViewModel = new function() {
 	self.count = 1;
 
 	self.load = function() {
+		var lang = Navigation.getLanguage();
 		var feed = new google.feeds.Feed(
-				"http://pipes.yahoo.com/pipes/pipe.run?_id=4ef32a9e6ebae7eec5c0165e5cda15df&_render=rss&country=all");
+				'http://pipes.yahoo.com/pipes/pipe.run?_id=4ef32a9e6ebae7eec5c0165e5cda15df&_render=rss&country=all&language=' + lang);
 		feed.setNumEntries(10);
 		feed.load(function(result) {
 			if (!result.error) {

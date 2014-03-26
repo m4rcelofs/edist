@@ -10,8 +10,6 @@
 
 	<jsp:attribute name="imports">
 		<script type='text/javascript'
-			src="${baseUrl}/js/humane.min.cache.js"></script>
-		<script type='text/javascript'
 			src="${baseUrl}/request/form.all.closure.js"></script>
 		<script type="text/javascript"
 			src="//www.google.com/jsapi?autoload=%7B%22modules%22%3A%5B%7B%22name%22%3A%22feeds%22%2C%22version%22%3A%221%22%7D%5D%7D"></script>
@@ -24,7 +22,7 @@
   				<img data-bind="attr:{src: currentResult().mediaGroups[0].contents[0].url}" height="20px">
   				<span data-bind="text: currentResult().author ? (currentResult().author.replace('-', ' ') + ':') : ''"></span>
     			<a data-bind="text: currentResult().title, attr:{href: currentResult().link}"></a>
-    			<small data-bind="text: currentResult().publishedDate ? (' - ' + humaneDate(new Date(currentResult().publishedDate))) : ''" class="text-muted"></small>
+    			<small data-bind="text: currentResult().content ? (' - ' + currentResult().content): ''" class="text-muted"></small>
   			</div>
 		</div>
 		

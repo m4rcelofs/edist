@@ -99,6 +99,13 @@ var Navigation = new function() {
 		return History.getState().hash;
 	}
 
+	nav.getLanguage = function() {
+		var lang = $.cookie('language');
+		if(!lang)
+			lang = navigator.language || navigator.userLanguage;
+		return lang;
+	}
+
 	nav.setLanguage = function(lang) {
 		$.cookie('language', lang, {
 			expires : 14,
