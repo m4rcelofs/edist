@@ -66,7 +66,8 @@ public class ManagementService {
 			dto.setGroupsCount(dao.groupRoot().getGroupsCount());
 			dto.setPlayersCount(dao.playerRoot().getPlayersCount());
 			
-			dto.setResults(dao.listGroupsUncached());
+			List<PlayerGroup> groups = dao.listGroupsUncached(); 
+			dto.setResults(pm.detachCopyAll(groups));
 			dto.setGranularity(dao.getServerConfig().getGranularity());
 
 			return dto;
@@ -109,9 +110,9 @@ public class ManagementService {
 			DataAccessObject dao = new DataAccessObject(pm);
 			List<Player> players = dao.listPlayers(cursor);
 
-			queryResults.setResults(players);
 			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(players)
 					.toWebSafeString());
+			queryResults.setResults(pm.detachCopyAll(players));
 
 			queryResults.setGranularity(dao.getServerConfig().getGranularity());
 
