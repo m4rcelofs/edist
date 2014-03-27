@@ -379,7 +379,8 @@ public class ReportService {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			pm.getFetchPlan().addGroup("monthlyListing");
 			Statistics stats = new Statistics(pm);
-			return stats.getRequestsMonthly(new YearMonth(yearMonth));
+			RequestStatsMonthly result = stats.getRequestsMonthly(new YearMonth(yearMonth));
+			return pm.detachCopy(result);
 		}
 	}
 

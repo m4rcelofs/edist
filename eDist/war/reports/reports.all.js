@@ -1753,6 +1753,9 @@ function StatisticsGraphics() {
 		legend : {
 			position : 'top',
 			alignment : 'center'
+		},
+		hAxis : {
+			title : edist.stats.day
 		}
 	};
 
@@ -1771,7 +1774,7 @@ function StatisticsGraphics() {
 
 		dailies.reverse();
 		dailies.forEach(function(item) {
-			self.dataTable.addRow([ '' + item.day, item.ffs, item.playersCount,
+			self.dataTable.addRow([ '' + item.day, item.playersCount, item.ffs,
 					item.rockets.Q1, item.rockets.Q2, item.rockets.Q3,
 					item.rockets.Q4, item.rockets.Q5, item.requests.ROCKET,
 					item.requests.WEAPONS, item.requests.FOOD,
@@ -1792,19 +1795,18 @@ function StatisticsGraphics() {
 
 	function newEmptyDataTable() {
 		var data = new google.visualization.DataTable();
-		// TODO i18n
-		data.addColumn('string', 'Dia');
-		data.addColumn('number', 'Jogadores');
-		data.addColumn('number', 'Food Fights');
-		data.addColumn('number', 'Foguetes Q1');
-		data.addColumn('number', 'Foguetes Q2');
-		data.addColumn('number', 'Foguetes Q3');
-		data.addColumn('number', 'Foguetes Q4');
-		data.addColumn('number', 'Foguetes Q5');
-		data.addColumn('number', 'Foguetes');
-		data.addColumn('number', 'Armas');
-		data.addColumn('number', 'Alimentos');
-		data.addColumn('number', 'Armas + Alimentos');
+		data.addColumn('string', edist.stats.day);
+		data.addColumn('number', edist.stats.players);
+		data.addColumn('number', edist.stats.ffs);
+		data.addColumn('number', edist.stats.rockets + ' Q1');
+		data.addColumn('number', edist.stats.rockets + ' Q2');
+		data.addColumn('number', edist.stats.rockets + ' Q3');
+		data.addColumn('number', edist.stats.rockets + ' Q4');
+		data.addColumn('number', edist.stats.rockets + ' Q5');
+		data.addColumn('number', edist.stats.rockets);
+		data.addColumn('number', edist.stats.weapons);
+		data.addColumn('number', edist.stats.food);
+		data.addColumn('number', edist.stats.both);
 		return data;
 	}
 }
@@ -1868,8 +1870,6 @@ var StatisticsViewModel = new function() {
 		self.isLoading(true);
 		ReportService.getRequestStats(param, {
 			callback : function(response) {
-				// TODO remove
-				console.log(response);
 
 				self.monthly(response);
 				if (response && response.dailies)

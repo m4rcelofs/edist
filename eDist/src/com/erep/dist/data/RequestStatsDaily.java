@@ -28,8 +28,7 @@ import com.google.common.collect.HashBasedTable;
 @DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 @FetchGroups({ @FetchGroup(name = "monthlyListing", members = {
-		@Persistent(name = "players"), @Persistent(name = "rockets"),
-		@Persistent(name = "requests") }) })
+		@Persistent(name = "rockets"), @Persistent(name = "requests") }) })
 public class RequestStatsDaily implements HasEncodedKey {
 
 	// monthly key (parent) + day
@@ -49,6 +48,11 @@ public class RequestStatsDaily implements HasEncodedKey {
 	@Persistent
 	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	private Set<Player>												players;
+
+	@RemoteProperty
+	@Persistent
+	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
+	private Integer													playersCount;
 
 	@RemoteProperty
 	@Persistent
@@ -123,16 +127,17 @@ public class RequestStatsDaily implements HasEncodedKey {
 
 	public void setPlayers(Set<Player> players) {
 		this.players = players;
+		setPlayersCount(players != null ? players.size() : 0);
 	}
 
-	@RemoteProperty
 	public int getPlayersCount() {
-		return getPlayers().size();
+		if (playersCount == null)
+			setPlayersCount(getPlayers().size());
+		return playersCount;
 	}
 
-	@Deprecated
-	public void setPlayersCount() {
-		// DWR only
+	public void setPlayersCount(Integer playersCount) {
+		this.playersCount = playersCount;
 	}
 
 	public String getEncodedKey() {
