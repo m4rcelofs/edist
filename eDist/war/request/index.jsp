@@ -19,7 +19,7 @@
 		
 		<div id="feeds" class="panel panel-default" data-bind="visible: feed() && currentResult()">
   			<div class="panel-body" data-bind="if: currentResult()">
-  				<img data-bind="attr:{src: currentResult().mediaGroups[0].contents[0].url}" height="20px">
+  				<img data-bind="attr:{src: $root.getLocalIcon(currentResult(), '${baseUrl}')}" height="20px">
   				<span data-bind="text: currentResult().author ? (currentResult().author.replace(/-/g, ' ') + ':') : ''"></span>
     			<a data-bind="text: currentResult().title, attr:{href: currentResult().link}"></a>
     			<small data-bind="text: currentResult().content ? (' - ' + currentResult().content): ''" class="text-muted"></small>

@@ -17,16 +17,26 @@ var FeedsViewModel = new function() {
 
 	self.currentResult = ko.observable();
 	self.count = 1;
+	self.gFeed = null;
 
 	self.load = function() {
 		var lang = Navigation.getLanguage();
-		var feed = new google.feeds.Feed(
-				'http://pipes.yahoo.com/pipes/pipe.run?_id=4ef32a9e6ebae7eec5c0165e5cda15df&_render=rss&country=all&language=' + lang);
-		feed.setNumEntries(10);
-		feed.load(function(result) {
+		self.gFeed = new google.feeds.Feed(
+				'http://pipes.yahoo.com/pipes/pipe.run?_id=4ef32a9e6ebae7eec5c0165e5cda15df&_render=rss&country=all&language='
+						+ lang);
+		self.gFeed.setNumEntries(10);
+		loadFeed(startTimer);
+		setInterval(function() {
+			loadFeed();
+		}, 300000);
+	}
+
+	function loadFeed(callback) {
+		self.gFeed.load(function(result) {
 			if (!result.error) {
 				self.feed(result.feed);
-				startTimer();
+				if (callback)
+					callback();
 			}
 		});
 	}
@@ -40,6 +50,12 @@ var FeedsViewModel = new function() {
 			else
 				self.count++;
 		}, 5000);
+	}
+
+	self.getLocalIcon = function(item, baseUrl) {
+		return item.mediaGroups[0].contents[0].url.replace(
+				/http:\/\/s\d.www.erepublik.net\/images\/icons/, baseUrl
+						+ '/img');
 	}
 };
 
