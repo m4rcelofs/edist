@@ -26,7 +26,7 @@ import com.erep.dist.data.Request;
 import com.erep.dist.data.RequestStatsDaily;
 import com.erep.dist.data.RequestStatsMonthly;
 import com.erep.dist.data.ResourceDist;
-import com.erep.dist.data.dao.Statistics;
+import com.erep.dist.data.dao.RequestStatistics;
 import com.erep.dist.data.enums.RequestStatus;
 import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.data.enums.ResourceQuality;
@@ -369,7 +369,7 @@ public class ReportService {
 	@RemoteMethod
 	public Set<String> getAvailableRequestStats() {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			Statistics stats = new Statistics(pm);
+			RequestStatistics stats = new RequestStatistics(pm);
 			return stats.getAvailable().getRequestMonthly();
 		}
 	}
@@ -378,7 +378,7 @@ public class ReportService {
 	public RequestStatsMonthly getRequestStats(String yearMonth) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			pm.getFetchPlan().addGroup("monthlyListing");
-			Statistics stats = new Statistics(pm);
+			RequestStatistics stats = new RequestStatistics(pm);
 			RequestStatsMonthly result = stats.getRequestsMonthly(new YearMonth(yearMonth));
 			return pm.detachCopy(result);
 		}
@@ -388,7 +388,7 @@ public class ReportService {
 	public Map<ResourceType, Map<ResourceQuality, Integer>> loadDailyDetails(
 			RequestStatsDaily daily) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			Statistics statistics = new Statistics(pm);
+			RequestStatistics statistics = new RequestStatistics(pm);
 			daily = statistics.find(daily);
 			return daily.getItemsSent().rowMap();
 		}
@@ -398,7 +398,7 @@ public class ReportService {
 	public Map<ResourceType, Map<ResourceQuality, Integer>> loadMonthlyDetails(
 			RequestStatsMonthly monthly) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			Statistics statistics = new Statistics(pm);
+			RequestStatistics statistics = new RequestStatistics(pm);
 			monthly = statistics.find(monthly);
 			return monthly.getItemsSent().rowMap();
 		}

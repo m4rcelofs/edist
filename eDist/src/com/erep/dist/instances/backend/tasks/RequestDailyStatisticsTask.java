@@ -17,7 +17,7 @@ import com.erep.dist.data.Request;
 import com.erep.dist.data.RequestStatsDaily;
 import com.erep.dist.data.ResourceDist;
 import com.erep.dist.data.dao.Requests;
-import com.erep.dist.data.dao.Statistics;
+import com.erep.dist.data.dao.RequestStatistics;
 import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.data.enums.ResourceDistStatus;
 import com.erep.dist.data.enums.ResourceQuality;
@@ -45,7 +45,7 @@ public class RequestDailyStatisticsTask implements DeferredTask {
 				"Starting RequestDailyStatisticsTask for day " + day);
 
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			Statistics stats = new Statistics(pm);
+			RequestStatistics stats = new RequestStatistics(pm);
 			Requests requests = new Requests(pm);
 
 			List<Request> dailyRequests = requests.listAllDaily(day);

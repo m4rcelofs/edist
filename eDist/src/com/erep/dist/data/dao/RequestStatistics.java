@@ -14,9 +14,9 @@ import com.erep.dist.data.RequestStatsMonthly;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 
-public class Statistics extends GenericDAO {
+public class RequestStatistics extends GenericDAO {
 
-	public Statistics(PersistenceManager pm) {
+	public RequestStatistics(PersistenceManager pm) {
 		super(pm);
 	}
 
