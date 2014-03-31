@@ -48,7 +48,7 @@ public class RequestDailyStatisticsTask implements DeferredTask {
 			RequestStatistics stats = new RequestStatistics(pm);
 			Requests requests = new Requests(pm);
 
-			List<Request> dailyRequests = requests.listAllDaily(day);
+			List<Request> dailyRequests = requests.getAllDaily(day);
 			RequestStatsDaily dailyStats = calculateStatistics(dailyRequests);
 
 			stats.save(dailyStats);
