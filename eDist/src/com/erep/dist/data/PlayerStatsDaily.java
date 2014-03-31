@@ -1,5 +1,7 @@
 package com.erep.dist.data;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -23,7 +25,7 @@ import com.google.appengine.datanucleus.annotations.Unowned;
 @DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 @FetchGroups({ @FetchGroup(name = "monthlyListing", members = {
-		@Persistent(name = "active"), @Persistent(name = "fighters"),
+		@Persistent(name = "activeCount"), @Persistent(name = "fightersCount"),
 		@Persistent(name = "influence") }) })
 public class PlayerStatsDaily implements HasEncodedKey {
 
@@ -47,11 +49,11 @@ public class PlayerStatsDaily implements HasEncodedKey {
 
 	@RemoteProperty
 	@Persistent(serialized = "true")
-	private Map<Division, Player>	active;
+	private Map<Division, Integer>	activeCount;
 
 	@RemoteProperty
 	@Persistent(serialized = "true")
-	private Map<Division, Player>	fighters;
+	private Map<Division, Integer>	fightersCount;
 
 	@Unowned
 	@Persistent
@@ -116,27 +118,56 @@ public class PlayerStatsDaily implements HasEncodedKey {
 	}
 
 	public Integer getEnabledCount() {
+		if (enabledCount == null)
+			return 0;
 		return enabledCount;
+	}
+
+	public void addEnabled(DailyStats enabled) {
+		setEnabledCount(getEnabledCount() + 1);
 	}
 
 	public void setEnabledCount(Integer enabledCount) {
 		this.enabledCount = enabledCount;
 	}
 
-	public Map<Division, Player> getActive() {
-		return active;
+	public Map<Division, Integer> getActiveCount() {
+		if (activeCount == null)
+			setActiveCount(new HashMap<Division, Integer>());
+		return activeCount;
 	}
 
-	public void setActive(Map<Division, Player> active) {
-		this.active = active;
+	public void addActive(DailyStats player) {
+		if (player == null)
+			return;
+		Integer original = getActiveCount().get(player.getDiv());
+		if (original == null)
+			original = 0;
+		getActiveCount().put(player.getDiv(), original++);
 	}
 
-	public Map<Division, Player> getFighters() {
-		return fighters;
+	public void setActiveCount(Map<Division, Integer> activeCount) {
+		this.activeCount = activeCount;
 	}
 
-	public void setFighters(Map<Division, Player> fighters) {
-		this.fighters = fighters;
+	public Map<Division, Integer> getFightersCount() {
+		if (fightersCount == null)
+			setFightersCount(new HashMap<Division, Integer>());
+		return fightersCount;
+	}
+
+	public void addFighter(DailyStats player) {
+		if (player == null)
+			return;
+		Integer original = getFightersCount().get(player.getDiv());
+		if (original == null)
+			original = 0;
+		getFightersCount().put(player.getDiv(), original++);
+		addActive(player);
+	}
+
+	public void setFightersCount(Map<Division, Integer> fightersCount) {
+		this.fightersCount = fightersCount;
 	}
 
 	public Integer getDeadCount() {
@@ -148,6 +179,8 @@ public class PlayerStatsDaily implements HasEncodedKey {
 	}
 
 	public Integer getPermaBannedCount() {
+		if (permaBannedCount == null)
+			setPermaBannedCount(0);
 		return permaBannedCount;
 	}
 
@@ -164,7 +197,19 @@ public class PlayerStatsDaily implements HasEncodedKey {
 	}
 
 	public Map<Division, Long> getInfluence() {
+		if (influence == null)
+			setInfluence(new HashMap<Division, Long>());
 		return influence;
+	}
+
+	public void addInfluence(DailyStats player, Long influenceToAdd) {
+		if (player == null || influenceToAdd == null || influenceToAdd == 0)
+			return;
+		Long original = getInfluence().get(player.getDiv());
+		if (original == null)
+			original = 0l;
+		original += influenceToAdd;
+		getInfluence().put(player.getDiv(), original);
 	}
 
 	public void setInfluence(Map<Division, Long> influence) {
@@ -198,7 +243,14 @@ public class PlayerStatsDaily implements HasEncodedKey {
 	}
 
 	public Set<Player> getDead() {
+		if (dead == null)
+			setDead(new HashSet<Player>());
 		return dead;
+	}
+
+	public void addDead(Player player) {
+		getDead().add(player);
+		setDeadCount(getDead().size());
 	}
 
 	public void setDead(Set<Player> dead) {
@@ -207,7 +259,14 @@ public class PlayerStatsDaily implements HasEncodedKey {
 	}
 
 	public Set<Player> getPermaBanned() {
+		if (permaBanned == null)
+			setPermaBanned(new HashSet<Player>());
 		return permaBanned;
+	}
+
+	public void addPermaBanned(Player player) {
+		getPermaBanned().add(player);
+		setPermaBannedCount(getPermaBanned().size());
 	}
 
 	public void setPermaBanned(Set<Player> permaBanned) {
@@ -216,7 +275,14 @@ public class PlayerStatsDaily implements HasEncodedKey {
 	}
 
 	public Set<Player> getTempBanned() {
+		if (tempBanned == null)
+			setTempBanned(new HashSet<Player>());
 		return tempBanned;
+	}
+
+	public void addTempBanned(Player player) {
+		getTempBanned().add(player);
+		setTempBannedCount(getTempBanned().size());
 	}
 
 	public void setTempBanned(Set<Player> tempBanned) {

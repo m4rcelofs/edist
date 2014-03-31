@@ -95,6 +95,7 @@ public class PlayerStatsMonthly implements HasEncodedKey {
 
 	public void setKey(Key key) {
 		this.key = key;
+		this.yearMonth = key.getName();
 	}
 
 	public String getYearMonth() {
@@ -134,13 +135,14 @@ public class PlayerStatsMonthly implements HasEncodedKey {
 	}
 
 	private void addInfluence(Map<Division, Long> influence) {
-		for (Division div : influence.keySet()) {
-			Long original = getInfluence().get(div);
-			if (original == null)
-				original = 0l;
-			original += influence.get(div);
-			getInfluence().put(div, original);
-		}
+		if(influence != null)
+			for (Division div : influence.keySet()) {
+				Long original = getInfluence().get(div);
+				if (original == null)
+					original = 0l;
+				original += influence.get(div);
+				getInfluence().put(div, original);
+			}
 	}
 
 	public Map<Division, Long> getInfluence() {
