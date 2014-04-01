@@ -46,14 +46,7 @@ public class PlayerStatistics extends GenericDAO {
 
 	public AvailableStatistics getAvailable() {
 		Key key = createAvailableKey();
-		try {
-			return pm().getObjectById(AvailableStatistics.class, key);
-		} catch (JDOObjectNotFoundException e) {
-			AvailableStatistics stats = new AvailableStatistics();
-			stats.setKey(key);
-			pm().makePersistent(stats);
-			return stats;
-		}
+		return pm().getObjectById(AvailableStatistics.class, key);
 	}
 
 	public PlayerStatsMonthly getPlayersMonthly(Integer day) {
