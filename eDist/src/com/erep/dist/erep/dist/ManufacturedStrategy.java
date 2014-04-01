@@ -1,6 +1,7 @@
 package com.erep.dist.erep.dist;
 
 import java.io.IOException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.erep.dist.data.Player;
@@ -22,7 +23,7 @@ public abstract class ManufacturedStrategy implements DistStrategy {
 	private final HashBasedTable<ResourceType, ResourceQuality, Integer>	inventory;
 	protected String														formToken;
 	protected boolean														hasCaptcha;
-	
+
 	protected static Logger													logger	= Logger.getLogger(ManufacturedStrategy.class
 																							.getName());
 
@@ -65,7 +66,28 @@ public abstract class ManufacturedStrategy implements DistStrategy {
 
 	private boolean sendResource() throws IOException,
 			ResourcesSendingException {
-		return scrapper.sendItem(player, resource, formToken);
+
+		String response = scrapper.sendItem(player, resource, formToken);
+
+		String successMessage = "Successfully transferred "
+				+ resource.getQuantity() + " item(s) to " + player.getName()
+				+ ".";
+		
+		parser.parse(response, inventory);
+		logger.log(Level.WARNING, "Current inventory: "
+				+ getInventory().toString());
+		
+		if (response.contains(successMessage)) {
+			logger.log(Level.WARNING,
+					"Redirection had success message, marking as sent");
+			return true;
+		} else {
+			logger.log(Level.INFO, "Success message should be: \""
+					+ successMessage + "\"");
+			logger.log(Level.INFO, response);
+			throw new ResourcesSendingException(
+					"Redirection DID NOT have success message, marking as NOT sent");
+		}
 	}
 
 	public HashBasedTable<ResourceType, ResourceQuality, Integer> getInventory() {

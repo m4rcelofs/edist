@@ -23,7 +23,7 @@ public class DonateItemsParser {
 		Document doc = Jsoup.parse(html);
 		scan(doc, ResourceType.FOOD, "1", inventory);
 		scan(doc, ResourceType.WEAPONS, "2", inventory);
-		
+
 		Element token = doc.getElementById("_token");
 		return token.val();
 	}
