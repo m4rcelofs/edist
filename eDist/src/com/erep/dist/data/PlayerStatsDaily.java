@@ -143,7 +143,7 @@ public class PlayerStatsDaily implements HasEncodedKey {
 		Integer original = getActiveCount().get(player.getDiv());
 		if (original == null)
 			original = 0;
-		getActiveCount().put(player.getDiv(), original++);
+		getActiveCount().put(player.getDiv(), original + 1);
 	}
 
 	public void setActiveCount(Map<Division, Integer> activeCount) {
@@ -162,7 +162,7 @@ public class PlayerStatsDaily implements HasEncodedKey {
 		Integer original = getFightersCount().get(player.getDiv());
 		if (original == null)
 			original = 0;
-		getFightersCount().put(player.getDiv(), original++);
+		getFightersCount().put(player.getDiv(), original + 1);
 		addActive(player);
 	}
 
@@ -208,8 +208,7 @@ public class PlayerStatsDaily implements HasEncodedKey {
 		Long original = getInfluence().get(player.getDiv());
 		if (original == null)
 			original = 0l;
-		original += influenceToAdd;
-		getInfluence().put(player.getDiv(), original);
+		getInfluence().put(player.getDiv(), original += influenceToAdd);
 	}
 
 	public void setInfluence(Map<Division, Long> influence) {
