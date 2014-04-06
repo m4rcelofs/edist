@@ -162,6 +162,7 @@
             <file>eDist/war/players/ranks.js</file>
             <file>eDist/war/players/players.js</file>
             <file>eDist/war/players/history.js</file>
+            <file>eDist/war/players/statistics.js</file>
         </dependencies>
         <properties/>
     </file>

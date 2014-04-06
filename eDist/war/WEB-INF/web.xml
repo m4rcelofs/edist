@@ -250,6 +250,8 @@
 								
 				com.erep.dist.data.DailyStats,
 				com.erep.dist.data.PlayerGroup,
+				com.erep.dist.data.PlayerStatsMonthly,
+				com.erep.dist.data.PlayerStatsDaily,
 				
 				com.erep.dist.data.enums.CountryCode,
 				com.erep.dist.data.enums.Division

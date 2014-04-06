@@ -24,7 +24,8 @@ import com.google.appengine.datanucleus.annotations.Unowned;
 
 @DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-@FetchGroups({ @FetchGroup(name = "monthlyListing", members = { @Persistent(name = "influence") }) })
+@FetchGroups({ @FetchGroup(name = "monthlyListing", members = {
+		@Persistent(name = "dailies"), @Persistent(name = "influence") }) })
 public class PlayerStatsMonthly implements HasEncodedKey {
 
 	// YYYY-MM
@@ -135,7 +136,7 @@ public class PlayerStatsMonthly implements HasEncodedKey {
 	}
 
 	private void addInfluence(Map<Division, Long> influence) {
-		if(influence != null)
+		if (influence != null)
 			for (Division div : influence.keySet()) {
 				Long original = getInfluence().get(div);
 				if (original == null)
