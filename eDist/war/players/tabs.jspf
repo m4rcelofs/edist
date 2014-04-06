@@ -1,4 +1,9 @@
 <li>
+	<a href="#statistics" id="statisticsTab">
+		<span class="glyphicon glyphicon-stats"></span> <fmt:message key="management.players.template.stats"/>
+	</a>
+</li>
+<li>
 	<a href="#history" id="historyTab">
 		<span class="glyphicon glyphicon-calendar"></span> <fmt:message key="players.history"/>
 	</a>

@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.erep.dist.erep.eRepTimeCalculator;
+import com.erep.dist.instances.backend.tasks.PlayerDailyStatisticsTask;
 import com.erep.dist.instances.backend.tasks.RequestDailyStatisticsTask;
 import com.google.appengine.api.backends.BackendServiceFactory;
 import com.google.appengine.api.taskqueue.DeferredTask;
@@ -33,6 +34,9 @@ public class StatisticsStarterJob extends HttpServlet {
 
 		DeferredTask requestDaily = new RequestDailyStatisticsTask(day);
 		addToQueue(requestDaily);
+
+		DeferredTask playersDaily = new PlayerDailyStatisticsTask(day);
+		addToQueue(playersDaily);
 	}
 
 	private void addToQueue(DeferredTask task) {

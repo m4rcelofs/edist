@@ -97,6 +97,7 @@ public class InstallServlet extends HttpServlet {
 		pm.makePersistent(InstallHelper.newDefaultGroup());
 		pm.makePersistent(InstallHelper.newDefaultConfig());
 		pm.makePersistent(InstallHelper.newDefaultLicence());
+		pm.makePersistent(InstallHelper.newAvailableStatistics());
 
 		InstallLog log = new InstallLog();
 		log.setDate(new Date());

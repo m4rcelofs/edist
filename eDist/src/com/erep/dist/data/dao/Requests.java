@@ -14,7 +14,7 @@ public class Requests extends GenericDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<Request> listAllDaily(Integer day) {
+	public List<Request> getAllDaily(Integer day) {
 		Query q = pm().newQuery(Request.class);
 		q.setFilter("eRepDay == eRepDayParam");
 		q.declareParameters(Integer.class.getName() + " eRepDayParam");

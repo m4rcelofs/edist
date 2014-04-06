@@ -55,7 +55,7 @@ public class ErepScrapper implements Closeable {
 		return read(response);
 	}
 
-	public boolean sendItem(Player player, ResourceDist resource,
+	public String sendItem(Player player, ResourceDist resource,
 			String formToken) throws IOException, ResourcesSendingException {
 
 		HttpPost httpPost = new HttpPost(eRepURL.DONATE_ITEMS_ACTION.getUrl(""));
@@ -81,7 +81,7 @@ public class ErepScrapper implements Closeable {
 						+ player.getErId());
 
 		printCookies(client.getCookieStore().getCookies());
-		
+
 		HttpResponse postResponse = client.execute(httpPost);
 		printHeaders(postResponse);
 
@@ -106,21 +106,7 @@ public class ErepScrapper implements Closeable {
 			HttpResponse redirectResponse = client.execute(redirectGet);
 
 			String redirectHtmlResponse = read(redirectResponse);
-			String successMessage = "Successfully transferred "
-					+ resource.getQuantity() + " item(s) to "
-					+ player.getName() + ".";
-
-			if (redirectHtmlResponse.contains(successMessage)) {
-				logger.log(Level.WARNING,
-						"Redirection had success message, marking as sent");
-				return true;
-			} else {
-				logger.log(Level.INFO, "Success message should be: \""
-						+ successMessage + "\"");
-				logger.log(Level.INFO, redirectHtmlResponse);
-				throw new ResourcesSendingException(
-						"Redirection DID NOT have success message, marking as NOT sent");
-			}
+			return redirectHtmlResponse;
 		}
 	}
 

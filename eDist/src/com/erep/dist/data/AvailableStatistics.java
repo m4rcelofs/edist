@@ -23,6 +23,10 @@ public class AvailableStatistics {
 	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	private Set<String>	requestMonthly;
 
+	@Persistent
+	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
+	private Set<String>	playersMonthly;
+
 	public Key getKey() {
 		return key;
 	}
@@ -35,7 +39,7 @@ public class AvailableStatistics {
 		return requestMonthly;
 	}
 
-	public void setRequestMonthly(Set<String> requestMonthly) {
+	private void setRequestMonthly(Set<String> requestMonthly) {
 		this.requestMonthly = requestMonthly;
 	}
 
@@ -46,6 +50,23 @@ public class AvailableStatistics {
 			throw new IllegalArgumentException(
 					"RequestStatsMonthly yearMonth cannot be null or empty");
 		getRequestMonthly().add(monthly.getYearMonth());
+	}
+
+	public void addPlayerMonthly(PlayerStatsMonthly monthly) {
+		if (getPlayersMonthly() == null)
+			setPlayersMonthly(new HashSet<String>());
+		if (monthly.getYearMonth() == null || monthly.getYearMonth().isEmpty())
+			throw new IllegalArgumentException(
+					"PlayerStatsMonthly yearMonth cannot be null or empty");
+		getPlayersMonthly().add(monthly.getYearMonth());
+	}
+
+	public Set<String> getPlayersMonthly() {
+		return playersMonthly;
+	}
+
+	private void setPlayersMonthly(Set<String> playersMonthly) {
+		this.playersMonthly = playersMonthly;
 	}
 
 }

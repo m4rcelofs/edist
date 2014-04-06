@@ -63,7 +63,7 @@ public class SendResourceTask implements DeferredTask {
 			if (req != null) {
 				Integer count = Integer.valueOf(req
 						.getHeader("X-AppEngine-TaskExecutionCount"));
-				if (count > 200) {
+				if (count >= 200) {
 					dbRequest.setStatus(RequestStatus.ERROR);
 					dbResource.setStatus(ResourceDistStatus.ERROR);
 					logger.log(Level.SEVERE,

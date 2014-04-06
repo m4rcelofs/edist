@@ -14,9 +14,9 @@ import com.erep.dist.data.RequestStatsMonthly;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 
-public class Statistics extends GenericDAO {
+public class RequestStatistics extends GenericDAO {
 
-	public Statistics(PersistenceManager pm) {
+	public RequestStatistics(PersistenceManager pm) {
 		super(pm);
 	}
 
@@ -46,14 +46,7 @@ public class Statistics extends GenericDAO {
 
 	public AvailableStatistics getAvailable() {
 		Key key = createAvailableKey();
-		try {
-			return pm().getObjectById(AvailableStatistics.class, key);
-		} catch (JDOObjectNotFoundException e) {
-			AvailableStatistics stats = new AvailableStatistics();
-			stats.setKey(key);
-			pm().makePersistent(stats);
-			return stats;
-		}
+		return pm().getObjectById(AvailableStatistics.class, key);
 	}
 
 	public RequestStatsMonthly getRequestsMonthly(Integer day) {
