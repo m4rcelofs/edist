@@ -1756,7 +1756,8 @@ function StatisticsGraphics() {
 		},
 		hAxis : {
 			title : edist.stats.day
-		}
+		},
+		pointSize: 3
 	};
 
 	self.chart = null;
