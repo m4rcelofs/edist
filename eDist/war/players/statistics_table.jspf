@@ -4,16 +4,16 @@
 		<tr>
 			<th><fmt:message key="filters.dayPlaceholder" /></th>
 			<th colspan="6"><fmt:message key="header.players" /></th>
-			<th>Influência</th>
+			<th><fmt:message key="header.influence" /></th>
 		</tr>
 		<tr>
 			<th></th>
-			<th>Habilitados</th>
-			<th>Ativos</th>
-			<th>Lutadores</th>
-			<th>Mortos</th>
-			<th>Banidos Perman.</th>
-			<th>Banidos Temp.</th>
+			<th><fmt:message key="header.enabled" /></th>
+			<th><fmt:message key="header.active" /></th>
+			<th><fmt:message key="header.fighters" /></th>
+			<th><fmt:message key="header.dead" /></th>
+			<th><fmt:message key="header.permaBan" /></th>
+			<th><fmt:message key="header.tempBan" /></th>
 			<th></th>
 		</tr>
 	</thead>
@@ -28,7 +28,8 @@
 			<td data-bind="text: deadCount ? deadCount : '0'"></td>
 			<td data-bind="text: permaBannedCount ? permaBannedCount : '0'"></td>
 			<td data-bind="text: tempBannedCount ? tempBannedCount : '0'"></td>
-			<td data-bind="text: $.format.number($root.countFromDivision('influence', $data), edist.format.number)"></td>
+			<td
+				data-bind="text: $.format.number($root.countFromDivision('influence', $data), edist.format.number)"></td>
 		</tr>
 	</tbody>
 	<tfoot>
@@ -38,9 +39,12 @@
 			<td></td>
 			<td></td>
 			<td data-bind="text: monthly().deadCount ? monthly().deadCount : '0'"></td>
-			<td data-bind="text: monthly().permaBannedCount ? monthly().permaBannedCount : '0'"></td>
-			<td data-bind="text: monthly().tempBannedCount? monthly().tempBannedCount: '0'"></td>
-			<td data-bind="text: $.format.number($root.countFromDivision('influence', monthly()), edist.format.number)"></td>
+			<td
+				data-bind="text: monthly().permaBannedCount ? monthly().permaBannedCount : '0'"></td>
+			<td
+				data-bind="text: monthly().tempBannedCount? monthly().tempBannedCount: '0'"></td>
+			<td
+				data-bind="text: $.format.number($root.countFromDivision('influence', monthly()), edist.format.number)"></td>
 		</tr>
 	</tfoot>
 </table>
