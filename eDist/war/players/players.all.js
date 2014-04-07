@@ -1799,24 +1799,24 @@ function StatisticsGraphics() {
 	function newEmptyDataTable() {
 		var data = new google.visualization.DataTable();
 		data.addColumn('string', edist.stats.day);
-		data.addColumn('number', 'Habilitados');
-		data.addColumn('number', 'Ativos' + ' (Total)');
-		data.addColumn('number', 'Ativos' + ' (D1)');
-		data.addColumn('number', 'Ativos' + ' (D2)');
-		data.addColumn('number', 'Ativos' + ' (D3)');
-		data.addColumn('number', 'Ativos' + ' (D4)');
-		data.addColumn('number', 'Lutadores' + ' (Total)');
-		data.addColumn('number', 'Lutadores' + ' (D1)');
-		data.addColumn('number', 'Lutadores' + ' (D2)');
-		data.addColumn('number', 'Lutadores' + ' (D3)');
-		data.addColumn('number', 'Lutadores' + ' (D4)');
-		data.addColumn('number', 'Mortos');
-		data.addColumn('number', 'Banidos Perm.');
-		data.addColumn('number', 'Banidos Temp.');
-		data.addColumn('number', 'Influência ' + ' (D1)');
-		data.addColumn('number', 'Influência ' + ' (D2)');
-		data.addColumn('number', 'Influência ' + ' (D3)');
-		data.addColumn('number', 'Influência ' + ' (D4)');
+		data.addColumn('number', edist.stats.enabled);
+		data.addColumn('number', edist.stats.active + ' (' + edist.stats.total + ')');
+		data.addColumn('number', edist.stats.active + ' (D1)');
+		data.addColumn('number', edist.stats.active + ' (D2)');
+		data.addColumn('number', edist.stats.active + ' (D3)');
+		data.addColumn('number', edist.stats.active + ' (D4)');
+		data.addColumn('number', edist.stats.fighters + ' (' + edist.stats.total + ')');
+		data.addColumn('number', edist.stats.fighters + ' (D1)');
+		data.addColumn('number', edist.stats.fighters + ' (D2)');
+		data.addColumn('number', edist.stats.fighters + ' (D3)');
+		data.addColumn('number', edist.stats.fighters + ' (D4)');
+		data.addColumn('number', edist.stats.dead);
+		data.addColumn('number', edist.stats.permaBan);
+		data.addColumn('number', edist.stats.tempBan);
+		data.addColumn('number', edist.stats.influence + ' (D1)');
+		data.addColumn('number', edist.stats.influence + ' (D2)');
+		data.addColumn('number', edist.stats.influence + ' (D3)');
+		data.addColumn('number', edist.stats.influence + ' (D4)');
 		return data;
 	}
 }
@@ -1876,8 +1876,6 @@ var StatisticsViewModel = new function() {
 		self.isLoading(true);
 		PlayerReportService.getPlayerStats(param, {
 			callback : function(response) {
-				// TODO remove
-				console.log(response);
 				self.monthly(response);
 				if (response && response.dailies)
 					response.dailies.sort(orderDaysfct);

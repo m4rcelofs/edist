@@ -72,9 +72,8 @@ public class PlayerDailyStatisticsTask implements DeferredTask {
 			} else {
 				DailyStats today = fight.getStats();
 				DailyStats previous = stats.find(today.getPlayer(), day - 1);
-				if (previous != null && today.getXp() - previous.getXp() > 0) {
+				if (today.getXp() - previous.getXp() > 0)
 					dailyStats.addActive(today);
-				}
 			}
 		}
 

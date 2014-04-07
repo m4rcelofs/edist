@@ -12,12 +12,14 @@
 		<script type="text/javascript">
 			edist.stats = {
 				day : '<fmt:message key="filters.dayPlaceholder"/>',
-				players : '<fmt:message key="header.players"/>',
-				ffs : '<fmt:message key="request.foodFights"/>',
-				rockets : '<fmt:message key="distconfig.rocket.title"/>',
-				weapons : '<fmt:message key="players.fights.weapons"/>',
-				food : '<fmt:message key="reports.requests.food"/>',
-				both : '<fmt:message key="reports.requests.both"/>'
+				enabled : '<fmt:message key="header.enabled"/>',
+				active : '<fmt:message key="header.active"/>',
+				total : '<fmt:message key="shared.total"/>',
+				fighters : '<fmt:message key="header.fighters"/>',
+				dead : '<fmt:message key="header.dead"/>',
+				permaBan : '<fmt:message key="header.permaBan"/>',
+				tempBan : '<fmt:message key="header.tempBan"/>',
+				influence : '<fmt:message key="header.influence"/>'
 			};
 		</script>
 		<script type='text/javascript'
