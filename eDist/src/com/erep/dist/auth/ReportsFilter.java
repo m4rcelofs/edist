@@ -10,12 +10,12 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.erep.dist.CloseablePM;
 import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
-import com.google.appengine.api.users.User;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
@@ -35,7 +35,6 @@ public class ReportsFilter implements Filter {
 			FilterChain filterChain) throws IOException, ServletException {
 
 		UserService userService = UserServiceFactory.getUserService();
-		User gUser = userService.getCurrentUser();
 
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			AuthHelper auth = new AuthHelper(new DataAccessObject(pm),
@@ -44,10 +43,14 @@ public class ReportsFilter implements Filter {
 			if (auth.hasReportsAccess())
 				filterChain.doFilter(req, resp);
 			else {
-				((HttpServletResponse) resp).sendError(403);
-				log.log(Level.SEVERE, "Unauthorized access attempt!");
-				if (gUser != null) {
-					log.log(Level.SEVERE, "eMail: " + gUser.getEmail());
+				if (!userService.isUserLoggedIn()) {
+					String destination = "/login?destination="
+							+ ((HttpServletRequest) req).getRequestURL();
+					((HttpServletResponse) resp).sendRedirect(destination);
+
+				} else {
+					log.log(Level.SEVERE, "Unauthorized access attempt!");
+					((HttpServletResponse) resp).sendError(403);
 				}
 			}
 		}

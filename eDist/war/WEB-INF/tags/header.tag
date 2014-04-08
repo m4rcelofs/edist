@@ -35,9 +35,9 @@
 			href="${baseUrl}/reports/"><fmt:message key="header.reports" /></a></li>
 		<li id="players" style="display: none;"><a
 			href="${baseUrl}/players/"><fmt:message key="header.players" /></a></li>
-		<li id="login" style="display: none;"><a href="#"><fmt:message
+		<li id="login" style="display: none;"><a href="${baseUrl}/login"><fmt:message
 					key="header.login" /></a></li>
-		<li id="logout" style="display: none;"><a href="#"><fmt:message
+		<li id="logout" style="display: none;"><a href="${baseUrl}/logout"><fmt:message
 					key="header.logout" /></a></li>
 	</ul>
 	<h1 class="sr-only">eDist</h1>

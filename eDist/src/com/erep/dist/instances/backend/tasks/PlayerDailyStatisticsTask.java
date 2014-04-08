@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 
 import com.erep.dist.CloseablePM;
 import com.erep.dist.PMF;
+import com.erep.dist.auth.LicensingHelper;
 import com.erep.dist.data.DailyFights;
 import com.erep.dist.data.DailyStats;
 import com.erep.dist.data.PlayerStatsDaily;
@@ -33,6 +34,10 @@ public class PlayerDailyStatisticsTask implements DeferredTask {
 				+ day);
 
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			
+			if (!new LicensingHelper(pm).isValidLicence())
+				return;
+			
 			PlayerStatistics stats = new PlayerStatistics(pm);
 
 			PlayerStatsDaily dailyStats = calculateStatistics(new Fights(pm),

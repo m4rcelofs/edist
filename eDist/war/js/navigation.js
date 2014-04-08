@@ -6,10 +6,8 @@ $(document).ready(function() {
 	
 	if (edist.user.loggedIn) {
 		$('#logout').css("display", "");
-		$('#logout > a').attr('href', edist.user.logoutURL);
 	} else {
 		$('#login').css("display", "");
-		$('#login > a').attr('href', edist.user.loginURL);
 	}
 
 	if (edist.user.hasAdminAccess) {
