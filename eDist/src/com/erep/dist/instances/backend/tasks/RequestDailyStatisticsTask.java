@@ -12,6 +12,7 @@ import java.util.logging.Logger;
 
 import com.erep.dist.CloseablePM;
 import com.erep.dist.PMF;
+import com.erep.dist.auth.LicensingHelper;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.Request;
 import com.erep.dist.data.RequestStatsDaily;
@@ -45,6 +46,10 @@ public class RequestDailyStatisticsTask implements DeferredTask {
 				"Starting RequestDailyStatisticsTask for day " + day);
 
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			
+			if (!new LicensingHelper(pm).isValidLicence())
+				return;
+			
 			RequestStatistics stats = new RequestStatistics(pm);
 			Requests requests = new Requests(pm);
 
