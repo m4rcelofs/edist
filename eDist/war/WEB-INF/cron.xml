@@ -31,7 +31,7 @@
 	<cron>
 		<url>/admin/cron/statistics</url>
 		<description>Starts tasks to create statistics</description>
-		<schedule>every day 00:05</schedule>
+		<schedule>every day 00:30</schedule>
 		<timezone>America/Los_Angeles</timezone>
 		<target>edist-default-backend</target>
 	</cron>

@@ -7,17 +7,20 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import com.erep.dist.CloseablePM;
 import com.erep.dist.PMF;
+import com.erep.dist.auth.LicensingHelper;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.Request;
 import com.erep.dist.data.RequestStatsDaily;
 import com.erep.dist.data.ResourceDist;
 import com.erep.dist.data.dao.Requests;
-import com.erep.dist.data.dao.Statistics;
+import com.erep.dist.data.dao.RequestStatistics;
 import com.erep.dist.data.enums.RequestType;
+import com.erep.dist.data.enums.ResourceDistStatus;
 import com.erep.dist.data.enums.ResourceQuality;
 import com.erep.dist.data.enums.ResourceType;
 import com.erep.dist.data.enums.RocketQuality;
@@ -38,15 +41,25 @@ public class RequestDailyStatisticsTask implements DeferredTask {
 
 	@Override
 	public void run() {
+
+		logger.log(Level.WARNING,
+				"Starting RequestDailyStatisticsTask for day " + day);
+
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			Statistics stats = new Statistics(pm);
+			
+			if (!new LicensingHelper(pm).isValidLicence())
+				return;
+			
+			RequestStatistics stats = new RequestStatistics(pm);
 			Requests requests = new Requests(pm);
 
-			List<Request> dailyRequests = requests.listAllDaily(day);
+			List<Request> dailyRequests = requests.getAllDaily(day);
 			RequestStatsDaily dailyStats = calculateStatistics(dailyRequests);
 
 			stats.save(dailyStats);
 		}
+		logger.log(Level.WARNING, "RequestDailyStatisticsTask for day " + day
+				+ " finished");
 	}
 
 	private RequestStatsDaily calculateStatistics(List<Request> dailyRequests) {
@@ -65,7 +78,8 @@ public class RequestDailyStatisticsTask implements DeferredTask {
 				add(rockets, req.getRocketQuality());
 
 			for (ResourceDist resource : req.getResources())
-				add(itemsSent, resource);
+				if (resource.getStatus() != ResourceDistStatus.ERROR)
+					add(itemsSent, resource);
 		}
 
 		RequestStatsDaily dailyStats = new RequestStatsDaily();
@@ -85,8 +99,11 @@ public class RequestDailyStatisticsTask implements DeferredTask {
 		Integer current = map.get(resource.getType(), resource.getQuality());
 		if (current == null)
 			current = 0;
-		map.put(resource.getType(), resource.getQuality(),
-				current + resource.getQuantity());
+
+		// food may be null if in error status
+		if (resource.getQuantity() != null)
+			map.put(resource.getType(), resource.getQuality(), current
+					+ resource.getQuantity());
 	}
 
 	private void add(Map<RequestType, Integer> map, RequestType type) {

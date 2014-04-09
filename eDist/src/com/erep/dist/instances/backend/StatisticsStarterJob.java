@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.erep.dist.erep.eRepTimeCalculator;
+import com.erep.dist.instances.backend.tasks.PlayerDailyStatisticsTask;
 import com.erep.dist.instances.backend.tasks.RequestDailyStatisticsTask;
 import com.google.appengine.api.backends.BackendServiceFactory;
 import com.google.appengine.api.taskqueue.DeferredTask;
@@ -24,13 +25,22 @@ public class StatisticsStarterJob extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		int today = eRepTimeCalculator.geteRepDay();
-		DeferredTask requestDaily = new RequestDailyStatisticsTask(today - 1);
+
+		int day = eRepTimeCalculator.geteRepDay() - 1;
+
+		String dayParam = req.getParameter("day");
+		if (dayParam != null && !dayParam.isEmpty())
+			day = Integer.valueOf(dayParam);
+
+		DeferredTask requestDaily = new RequestDailyStatisticsTask(day);
 		addToQueue(requestDaily);
+
+		DeferredTask playersDaily = new PlayerDailyStatisticsTask(day);
+		addToQueue(playersDaily);
 	}
 
 	private void addToQueue(DeferredTask task) {
-		Queue queue = QueueFactory.getQueue("erepublik-not-logged-in");
+		Queue queue = QueueFactory.getDefaultQueue();
 
 		TaskOptions taskOptions = withPayload(task).header(
 				"Host",

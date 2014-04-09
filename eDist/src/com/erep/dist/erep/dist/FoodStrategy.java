@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 
 import com.erep.dist.data.Player;
 import com.erep.dist.data.ResourceDist;
@@ -36,8 +37,11 @@ public class FoodStrategy extends ManufacturedStrategy {
 			throw new InventoryValidationException(
 					"Distributor has captcha enabled, aborting");
 
+		logger.log(Level.WARNING, "Current inventory: "
+				+ getInventory().toString());
+		
 		ResourceDist resource = getResource();
-
+		
 		Map<ResourceQuality, Integer> foodInventory = getInventory().row(
 				ResourceType.FOOD);
 

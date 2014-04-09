@@ -9,8 +9,20 @@
 <t:wrapper>
 
 	<jsp:attribute name="imports">
+		<script type="text/javascript">
+			edist.stats = {
+				day : '<fmt:message key="filters.dayPlaceholder"/>',
+				players : '<fmt:message key="header.players"/>',
+				ffs : '<fmt:message key="request.foodFights"/>',
+				rockets : '<fmt:message key="distconfig.rocket.title"/>',
+				weapons : '<fmt:message key="players.fights.weapons"/>',
+				food : '<fmt:message key="reports.requests.food"/>',
+				both : '<fmt:message key="reports.requests.both"/>'
+			};
+		</script>
 		<script type='text/javascript' src='${baseUrl}/reports/work_custom.closure.js'></script>
 		<script type='text/javascript' src='${baseUrl}/reports/reports.all.closure.js'></script>
+		<script type="text/javascript" src="//www.google.com/jsapi?autoload=%7B%22modules%22%3A%5B%7B%22name%22%3A%22visualization%22%2C%22version%22%3A%221%22%2C%22packages%22%3A%5B%22corechart%22%5D%7D%5D%7D"></script>
     </jsp:attribute>
 
 	<jsp:body>
@@ -18,7 +30,7 @@
 			style="display: none;">
 				<button type="button" class="close" aria-hidden="true"
 				onclick="$('#error-alert').fadeOut();">&times;</button>
-				<fmt:message key="admin.index.error"/>
+				<fmt:message key="admin.index.error" />
 			</div>
 	
 			<ul class="nav nav-tabs nav-justified">
@@ -26,6 +38,7 @@
 			</ul>
 
 			<div class="tab-content">
+				<%@ include file="statistics.jspf"%>
 				<%@ include file="requests.jspf"%>
 				<%@ include file="work.jspf"%>
 				<%@ include file="fights.jspf"%>

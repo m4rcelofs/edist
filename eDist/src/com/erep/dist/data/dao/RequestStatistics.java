@@ -14,21 +14,28 @@ import com.erep.dist.data.RequestStatsMonthly;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 
-public class Statistics extends GenericDAO {
+public class RequestStatistics extends GenericDAO {
 
-	public Statistics(PersistenceManager pm) {
+	public RequestStatistics(PersistenceManager pm) {
 		super(pm);
+	}
+
+	public RequestStatsDaily find(RequestStatsDaily stats) {
+		return pm().getObjectById(RequestStatsDaily.class, stats.getKey());
+	}
+
+	public RequestStatsMonthly find(RequestStatsMonthly stats) {
+		return pm().getObjectById(RequestStatsMonthly.class, stats.getKey());
 	}
 
 	public void save(RequestStatsDaily daily) {
 		Key dailyKey = createRequestsDailyKey(daily.getDay());
 		daily.setKey(dailyKey);
 
-		RequestStatsMonthly monthly = getRequestsMonthly(daily.getDay());
-		
 		Transaction tx = pm().currentTransaction();
 		try {
 			tx.begin();
+			RequestStatsMonthly monthly = getRequestsMonthly(daily.getDay());
 			monthly.addDaily(daily);
 			tx.commit();
 		} finally {
@@ -39,14 +46,7 @@ public class Statistics extends GenericDAO {
 
 	public AvailableStatistics getAvailable() {
 		Key key = createAvailableKey();
-		try {
-			return (AvailableStatistics) pm().getObjectById(key);
-		} catch (JDOObjectNotFoundException e) {
-			AvailableStatistics stats = new AvailableStatistics();
-			stats.setKey(key);
-			pm().makePersistent(stats);
-			return stats;
-		}
+		return pm().getObjectById(AvailableStatistics.class, key);
 	}
 
 	public RequestStatsMonthly getRequestsMonthly(Integer day) {
@@ -56,7 +56,7 @@ public class Statistics extends GenericDAO {
 	public RequestStatsMonthly getRequestsMonthly(YearMonth yearMonth) {
 		Key monthlyKey = createRequestsMonthlyKey(yearMonth);
 		try {
-			return (RequestStatsMonthly) pm().getObjectById(monthlyKey);
+			return pm().getObjectById(RequestStatsMonthly.class, monthlyKey);
 		} catch (JDOObjectNotFoundException e) {
 			return createMonthly(monthlyKey);
 		}
@@ -66,17 +66,10 @@ public class Statistics extends GenericDAO {
 		RequestStatsMonthly monthly = new RequestStatsMonthly();
 		monthly.setKey(monthlyKey);
 
-		Transaction tx = pm().currentTransaction();
-		try {
-			tx.begin();
-			pm().makePersistent(monthly);
-			getAvailable().addRequestMonthly(monthly);
-			tx.commit();
-			return monthly;
-		} finally {
-			if (tx.isActive())
-				tx.rollback();
-		}
+		pm().makePersistent(monthly);
+		getAvailable().addRequestMonthly(monthly);
+
+		return monthly;
 	}
 
 	protected Key createAvailableKey() {
