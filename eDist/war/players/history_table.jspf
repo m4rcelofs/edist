@@ -1,10 +1,12 @@
-<table class="table table-responsive"
+<table class="table table-striped table-hover table-responsive"
 	data-bind="if: statsHistory().length > 0">
 	<thead>
 		<tr>
 			<th data-bind="visible: category() === 'player'"><fmt:message
 					key="players.fights.day" /></th>
 			<th colspan="2"><fmt:message key="players.fights.player" /></th>
+			<th data-bind="visible: category() !== 'group'"><fmt:message
+					key="players.fights.groups" /></th>
 			<th colspan="2"><fmt:message key="players.history.xp" /></th>
 			<th><fmt:message key="players.history.str" /></th>
 			<th><fmt:message key="players.history.rank" /></th>
@@ -40,6 +42,13 @@
 			<td><a
 				data-bind="attr: {href : '#/players/history/player/' + (erId ? erId : '')}, text: name">
 			</a></td>
+			<td data-bind="visible: $root.category() !== 'group'">
+				<p data-bind="foreach: groups">
+					<a
+						data-bind="text: groupName ? groupName : '<fmt:message key="distconfig.distributor.noName"/>', attr: {href : '#/players/history/group/'+$parent.day+'/'+encodedKey}"></a>
+					<br />
+				</p>
+			</td>
 			<td><span
 				data-bind="text: $.format.number(xp, edist.format.number)"></span> <span
 				data-bind="if: $root.statsHistory().length > $index() + 1 && $root.category() === 'player'">
