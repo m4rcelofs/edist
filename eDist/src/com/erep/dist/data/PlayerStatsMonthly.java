@@ -135,15 +135,17 @@ public class PlayerStatsMonthly implements HasEncodedKey {
 		setPermaBannedCount(getPermaBanned().size());
 	}
 
-	private void addInfluence(Map<Division, Long> influence) {
-		if (influence != null)
-			for (Division div : influence.keySet()) {
-				Long original = getInfluence().get(div);
+	private void addInfluence(Map<Division, Long> influenceToAdd) {
+		if (influenceToAdd != null) {
+			Map<Division, Long> influence = getInfluence();
+			for (Division div : influenceToAdd.keySet()) {
+				Long original = influence.get(div);
 				if (original == null)
 					original = 0l;
-				original += influence.get(div);
-				getInfluence().put(div, original);
+				influence.put(div, original += influenceToAdd.get(div));
 			}
+			setInfluence(influence);
+		}
 	}
 
 	public Map<Division, Long> getInfluence() {
