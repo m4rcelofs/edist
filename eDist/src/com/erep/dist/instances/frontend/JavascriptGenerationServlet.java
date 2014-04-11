@@ -73,12 +73,8 @@ public class JavascriptGenerationServlet extends HttpServlet {
 		
 		String template = loadTemplate("user_template.js");
 		
-		template = replace(template, "{loggedIn}", ""+loggedIn);
-		String referer = req.getHeader("referer") != null ? req.getHeader("referer") : req.getRequestURI();
-		template = replace(template, "{loginURL}", loggedIn ? "null" : "'" + users.createLoginURL(referer) + "'");		
-		template = replace(template, "{logoutURL}", loggedIn ? "'" + users.createLogoutURL("/") + "'": "null");		
-	
-		
+		template = replace(template, "{loggedIn}", "" + loggedIn);
+				
 		try (CloseablePM pm = new CloseablePM(
 			PMF.getNewPersistenceManager())) {
 			DataAccessObject dao = new DataAccessObject(pm);

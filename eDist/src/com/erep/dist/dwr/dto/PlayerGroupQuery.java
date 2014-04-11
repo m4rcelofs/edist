@@ -1,6 +1,6 @@
 package com.erep.dist.dwr.dto;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.directwebremoting.annotations.DataTransferObject;
 import org.directwebremoting.annotations.RemoteProperty;
@@ -21,7 +21,7 @@ public class PlayerGroupQuery {
 	private int					playersCount;
 
 	@RemoteProperty
-	private List<PlayerGroup>	results;
+	private Collection<PlayerGroup>	results;
 
 	public ConfigGranularity getGranularity() {
 		return granularity;
@@ -31,11 +31,11 @@ public class PlayerGroupQuery {
 		this.granularity = granularity;
 	}
 
-	public List<PlayerGroup> getResults() {
+	public Collection<PlayerGroup> getResults() {
 		return results;
 	}
 
-	public void setResults(List<PlayerGroup> results) {
+	public void setResults(Collection<PlayerGroup> results) {
 		this.results = results;
 	}
 

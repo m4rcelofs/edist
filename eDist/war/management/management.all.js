@@ -1959,10 +1959,6 @@ var PlayersViewModel = new function() {
 			Navigation.setCurrentLocation('/management/playersList/search');
 		}
 
-		if (Navigation.getCurrenLocation() === '/management/playersList/') {
-			Navigation.setCurrentLocation('/management/playersList/search');
-		}
-
 		$('#playersListTab').tab('show');
 	}
 };

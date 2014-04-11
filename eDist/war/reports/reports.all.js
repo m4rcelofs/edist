@@ -1631,14 +1631,21 @@ if (typeof DailyWork != "function") {
 
 if (typeof DailyStats != "function") {
   function DailyStats() {
-    this.rank = null;
     this.maxHit = null;
-    this.collectedAt = null;
     this.strength = null;
-    this.name = null;
+    this.div = null;
+    this.banTip = null;
+    this.isDead = false;
     this.xp = null;
-    this.day = null;
+    this.citizenship = null;
     this.avatar = null;
+    this.isPermaBan = false;
+    this.isTempBan = false;
+    this.rank = null;
+    this.militaryUnit = null;
+    this.collectedAt = null;
+    this.name = null;
+    this.day = null;
     this.groups = null;
   }
 }
@@ -1651,11 +1658,12 @@ if (typeof Player != "function") {
     this.workVerif = null;
     this.erId = null;
     this.groupIds = null;
+    this.currentEmployerName = null;
     this.name = null;
     this.dbStatus = null;
     this.config = null;
-    this.fightVerif = null;
     this.workStatus = null;
+    this.fightVerif = null;
     this.encodedKey = null;
     this.groups = null;
   }
@@ -1668,6 +1676,42 @@ if (DWREngine == null) var DWREngine = dwr.engine;
 
 if (ReportService == null) var ReportService = {};
 ReportService._path = '/reports/dwr';
+ReportService.fightsByDate = function(p0, p1, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'fightsByDate', p0, p1, callback);
+}
+ReportService.fightsByDay = function(p0, p1, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'fightsByDay', p0, p1, callback);
+}
+ReportService.listRequestsByPlayer = function(p0, p1, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByPlayer', p0, p1, callback);
+}
+ReportService.getInitialInfo = function(callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'getInitialInfo', callback);
+}
+ReportService.requestDetails = function(p0, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'requestDetails', p0, callback);
+}
+ReportService.listRequestsByDistributor = function(p0, p1, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByDistributor', p0, p1, callback);
+}
+ReportService.listRequestsByDate = function(p0, p1, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByDate', p0, p1, callback);
+}
+ReportService.listRequestsByDay = function(p0, p1, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByDay', p0, p1, callback);
+}
+ReportService.loadMonthlyDetails = function(p0, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'loadMonthlyDetails', p0, callback);
+}
+ReportService.loadDailyDetails = function(p0, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'loadDailyDetails', p0, callback);
+}
+ReportService.getRequestStats = function(p0, callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'getRequestStats', p0, callback);
+}
+ReportService.getAvailableRequestStats = function(callback) {
+  dwr.engine._execute(ReportService._path, 'ReportService', 'getAvailableRequestStats', callback);
+}
 ReportService.fightsByGroup = function(p0, p1, callback) {
   dwr.engine._execute(ReportService._path, 'ReportService', 'fightsByGroup', p0, p1, callback);
 }
@@ -1679,24 +1723,6 @@ ReportService.listWorkByEmployer = function(p0, p1, callback) {
 }
 ReportService.listWorkByGroup = function(p0, p1, callback) {
   dwr.engine._execute(ReportService._path, 'ReportService', 'listWorkByGroup', p0, p1, callback);
-}
-ReportService.getInitialInfo = function(callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'getInitialInfo', callback);
-}
-ReportService.requestDetails = function(p0, callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'requestDetails', p0, callback);
-}
-ReportService.listRequestsByDate = function(p0, p1, callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByDate', p0, p1, callback);
-}
-ReportService.listRequestsByDay = function(p0, p1, callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByDay', p0, p1, callback);
-}
-ReportService.listRequestsByDistributor = function(p0, p1, callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByDistributor', p0, p1, callback);
-}
-ReportService.listRequestsByPlayer = function(p0, p1, callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByPlayer', p0, p1, callback);
 }
 ReportService.listWorkByPlayer = function(p0, p1, callback) {
   dwr.engine._execute(ReportService._path, 'ReportService', 'listWorkByPlayer', p0, p1, callback);
@@ -1710,14 +1736,259 @@ ReportService.listRequestsByStatus = function(p0, p1, callback) {
 ReportService.listRequestsByGroup = function(p0, p1, callback) {
   dwr.engine._execute(ReportService._path, 'ReportService', 'listRequestsByGroup', p0, p1, callback);
 }
-ReportService.fightsByDate = function(p0, p1, callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'fightsByDate', p0, p1, callback);
-}
-ReportService.fightsByDay = function(p0, p1, callback) {
-  dwr.engine._execute(ReportService._path, 'ReportService', 'fightsByDay', p0, p1, callback);
-}
 /*
  * END OF FILE - /edist/eDist/war/reports/dwr-interface20131220.js
+ */
+
+/*
+ * START OF FILE - /edist/eDist/war/reports/statistics.js
+ */
+function StatisticsGraphics() {
+
+	var self = this;
+
+	self.options = {
+		curveType : "function",
+		isStacked : true,
+		legend : {
+			position : 'top',
+			alignment : 'center'
+		},
+		hAxis : {
+			title : edist.stats.day
+		},
+		pointSize: 3
+	};
+
+	self.chart = null;
+	self.dataTable = null;
+	self.dataView = null;
+
+	self.start = function() {
+		if (!self.chart)
+			self.chart = new google.visualization.ComboChart(document
+					.getElementById('ff_chart'));
+	}
+
+	self.createTable = function(dailies) {
+		self.dataTable = newEmptyDataTable();
+
+		dailies.reverse();
+		dailies.forEach(function(item) {
+			self.dataTable.addRow([ '' + item.day, item.playersCount, item.ffs,
+					item.rockets.Q1, item.rockets.Q2, item.rockets.Q3,
+					item.rockets.Q4, item.rockets.Q5, item.requests.ROCKET,
+					item.requests.WEAPONS, item.requests.FOOD,
+					item.requests.WEAPONS_FOOD ]);
+		});
+
+		self.dataView = new google.visualization.DataView(self.dataTable);
+		self.draw([ 0, 1 ], 'line');
+	}
+
+	self.draw = function(columns, chartType) {
+		if (!self.dataView)
+			return;
+		self.options.seriesType = chartType ? chartType : 'line';
+		self.dataView.setColumns(columns);
+		self.chart.draw(self.dataView, self.options);
+	}
+
+	function newEmptyDataTable() {
+		var data = new google.visualization.DataTable();
+		data.addColumn('string', edist.stats.day);
+		data.addColumn('number', edist.stats.players);
+		data.addColumn('number', edist.stats.ffs);
+		data.addColumn('number', edist.stats.rockets + ' Q1');
+		data.addColumn('number', edist.stats.rockets + ' Q2');
+		data.addColumn('number', edist.stats.rockets + ' Q3');
+		data.addColumn('number', edist.stats.rockets + ' Q4');
+		data.addColumn('number', edist.stats.rockets + ' Q5');
+		data.addColumn('number', edist.stats.rockets);
+		data.addColumn('number', edist.stats.weapons);
+		data.addColumn('number', edist.stats.food);
+		data.addColumn('number', edist.stats.both);
+		return data;
+	}
+}
+
+function StatisticsFiltersViewModel() {
+
+	var self = this;
+
+	self.searchText = ko.observable();
+	self.searchParam = ko.observable();
+
+	self.loaded = false;
+	self.availableRequests = ko.observableArray();
+
+}
+
+var StatisticsViewModel = new function() {
+	var self = this;
+
+	self.isLoading = ko.observable();
+	self.filters = new StatisticsFiltersViewModel();
+
+	self.monthly = ko.observable();
+	self.dailies = ko.observableArray();
+
+	// details
+	self.qualities = [ 'Q1', 'Q2', 'Q3', 'Q4', 'Q5', 'Q6', 'Q7' ];
+	self.itemsSent = ko.observable();
+	self.detailsLoaded = ko.observable();
+
+	// charts
+	self.graphs = new StatisticsGraphics();
+	self.chartCategory = ko.observable('1');
+	ko.computed(function() {
+		var stringArray = self.chartCategory().split(',');
+		var catArray = [ 0 ]; // day
+		stringArray.forEach(function(item) {
+			catArray = catArray.concat(parseInt(item));
+		});
+
+		var chartType = $('input[name=category]:checked', '#categoryForm')
+				.attr('data-chart-type');
+
+		self.graphs.draw(catArray, chartType);
+	});
+
+	self.init = function() {
+		showTab();
+	}
+
+	self.doSearch = function() {
+		var searchText = self.filters.searchText();
+		Navigation
+				.setCurrentLocation('/reports/statistics/month/' + searchText);
+	}
+
+	self.filter = function(param) {
+		if (!self.filters.loaded)
+			showTab();
+
+		self.isLoading(true);
+		ReportService.getRequestStats(param, {
+			callback : function(response) {
+
+				self.monthly(response);
+				if (response && response.dailies)
+					response.dailies.sort(orderDaysfct);
+				self.dailies(response.dailies);
+
+				self.isLoading(false);
+				self.graphs.createTable(response.dailies);
+			}
+		});
+	}
+
+	self.sumRockets = function(daily) {
+		var rockets = 0;
+		if (daily && daily.rockets)
+			for ( var i = 1; i <= 5; i++)
+				if (daily.rockets['Q' + i])
+					rockets += daily.rockets['Q' + i];
+		return rockets;
+	}
+
+	self.sumRequests = function(daily) {
+		var requests = 0;
+		var types = [ 'WEAPONS', 'FOOD', 'WEAPONS_FOOD', 'ROCKET' ];
+		if (daily && daily.requests)
+			types.forEach(function(item) {
+				if (daily.requests[item])
+					requests += daily.requests[item];
+			});
+		return requests;
+	}
+
+	self.loadDailyDetails = function(daily) {
+		self.itemsSent(false);
+		self.detailsLoaded('');
+		ReportService.loadDailyDetails({
+			encodedKey : daily.encodedKey
+		}, {
+			callback : function(response) {
+				self.detailsLoaded(daily.day);
+				self.itemsSent(response);
+				$('#itemsSentModal').modal('show');
+			}
+		});
+	}
+
+	self.loadMonthlyDetails = function(root) {
+		self.itemsSent(false);
+		self.detailsLoaded('');
+		ReportService.loadMonthlyDetails({
+			encodedKey : root.monthly().encodedKey
+		}, {
+			callback : function(response) {
+				self.detailsLoaded(self.filters.searchText());
+				self.itemsSent(response);
+				$('#itemsSentModal').modal('show');
+			}
+		});
+	}
+
+	self.inventoryContents = function(product, quality) {
+		if (self.itemsSent() && self.itemsSent()[product]
+				&& self.itemsSent()[product][quality])
+			return self.itemsSent()[product][quality];
+		return null;
+	}
+
+	function showTab() {
+		$('#statisticsTab').tab('show');
+		self.graphs.start();
+		self.isLoading(true);
+		ReportService.getAvailableRequestStats({
+			callback : function(response) {
+				self.filters.loaded = true;
+				response.sort(orderMonthsFct);
+				self.filters.availableRequests(response);
+				self.isLoading(false);
+			}
+		});
+	}
+
+	function orderMonthsFct(a, b) {
+		var aSplit = a.split('-');
+		var bSplit = b.split('-');
+		// year
+		if (bSplit[0] < aSplit[0])
+			return -1;
+		if (bSplit[0] > aSplit[0])
+			return 1;
+		// month
+		if (bSplit[1] < aSplit[1])
+			return -1;
+		if (bSplit[1] > aSplit[1])
+			return 1;
+		return 0;
+	}
+
+	function orderDaysfct(a, b) {
+		if (b.day < a.day)
+			return -1;
+		if (b.day > a.day)
+			return 1;
+		return 0;
+	}
+
+};
+
+var StatisticsRoutes = new function() {
+	var self = this;
+
+	self.addRoutes = function() {
+		crossroads.addRoute('reports/statistics', StatisticsViewModel.init);
+		crossroads.addRoute('reports/statistics/month/:param:',
+				StatisticsViewModel.filter);
+	}
+};
+/*
+ * END OF FILE - /edist/eDist/war/reports/statistics.js
  */
 
 /*
@@ -1727,22 +1998,24 @@ $(document).ready(function() {
 
 	Reports.downloadFilters();
 
+	ko.applyBindings(StatisticsViewModel, document.getElementById('statistics'));
 	ko.applyBindings(RequestsViewModel, document.getElementById('requests'));
 	ko.applyBindings(WorkViewModel, document.getElementById('work'));
 	ko.applyBindings(FightsViewModel, document.getElementById('fights'));
 
+	StatisticsRoutes.addRoutes();
 	RequestsRoutes.addRoutes();
 	WorkRoutes.addRoutes();
-	FightRoutes.addRoutes();
+	FightRoutes.addRoutes(); 
 
 	Navigation.configureRoutes('/reports/');
 
 	if (Navigation.getCurrenLocation() === '/reports/') {
-		Navigation.setCurrentLocation('requests/day');
+		Navigation.setCurrentLocation('statistics');
 	}
 
 	if (Navigation.getCurrenLocation() === '/reports') {
-		Navigation.setCurrentLocation('reports/requests/day');
+		Navigation.setCurrentLocation('reports/statistics');
 	}
 });
 

@@ -9,6 +9,7 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.Days;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
+import org.joda.time.YearMonth;
 import org.joda.time.format.DateTimeFormat;
 
 import com.erep.dist.cache.Cacheable;
@@ -36,6 +37,10 @@ public class eRepTimeCalculator {
 
 	public static LocalDate toRLDate(Integer eRepDay) {
 		return new eRepTimeCalculator().addDays(eRepLaunch, eRepDay + 1);
+	}
+	
+	public static YearMonth toRLMonth(Integer eRepDay) {
+		return new YearMonth(toRLDate(eRepDay)); 
 	}
 
 	@Cacheable
