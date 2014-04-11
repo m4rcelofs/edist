@@ -2,11 +2,13 @@ package com.erep.dist.dwr;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.jdo.JDOObjectNotFoundException;
 
 import org.directwebremoting.annotations.RemoteMethod;
 import org.directwebremoting.annotations.RemoteProxy;
+import org.joda.time.YearMonth;
 
 import com.erep.dist.CloseablePM;
 import com.erep.dist.DataAccessObject;
@@ -15,6 +17,9 @@ import com.erep.dist.PlayerIdentificator;
 import com.erep.dist.data.DailyStats;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
+import com.erep.dist.data.PlayerStatsMonthly;
+import com.erep.dist.data.dao.PlayerStatistics;
+import com.erep.dist.data.dao.RequestStatistics;
 import com.erep.dist.data.enums.Division;
 import com.erep.dist.dwr.dto.FiltersInitialInfo;
 import com.erep.dist.dwr.dto.StatsQuery;
@@ -118,6 +123,25 @@ public class PlayerReportService {
 			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(requests)
 					.toWebSafeString());
 			return queryResults;
+		}
+	}
+
+	@RemoteMethod
+	public Set<String> getAvailableRequestStats() {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			RequestStatistics stats = new RequestStatistics(pm);
+			return stats.getAvailable().getPlayersMonthly();
+		}
+	}
+
+	@RemoteMethod
+	public PlayerStatsMonthly getPlayerStats(String yearMonth) {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			pm.getFetchPlan().addGroup("monthlyListing");
+			PlayerStatistics stats = new PlayerStatistics(pm);
+			PlayerStatsMonthly result = stats.getPlayersMonthly(new YearMonth(
+					yearMonth));
+			return pm.detachCopy(result);
 		}
 	}
 }
