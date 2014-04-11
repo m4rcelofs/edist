@@ -5,7 +5,7 @@
 			<th data-bind="visible: category() === 'player'"><fmt:message
 					key="players.fights.day" /></th>
 			<th colspan="2"><fmt:message key="players.fights.player" /></th>
-			<th data-bind="visible: category() !== 'group'"><fmt:message
+			<th data-bind="visible: category() !== 'group' && edist.user.hasManagementAccess"><fmt:message
 					key="players.fights.groups" /></th>
 			<th colspan="2"><fmt:message key="players.history.xp" /></th>
 			<th><fmt:message key="players.history.str" /></th>
@@ -42,7 +42,7 @@
 			<td><a
 				data-bind="attr: {href : '#/players/history/player/' + (erId ? erId : '')}, text: name">
 			</a></td>
-			<td data-bind="visible: $root.category() !== 'group'">
+			<td data-bind="visible: $root.category() !== 'group' && edist.user.hasManagementAccess">
 				<p data-bind="foreach: groups">
 					<a
 						data-bind="text: groupName ? groupName : '<fmt:message key="distconfig.distributor.noName"/>', attr: {href : '#/players/history/group/'+$parent.day+'/'+encodedKey}"></a>

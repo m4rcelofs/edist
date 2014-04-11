@@ -127,7 +127,7 @@
                             </li>
                             <li>
                             	<a data-bind="attr: {href: '${baseUrl}/players/history/player/' + (stats ? stats.erId : '') }">
-									<span class="glyphicon glyphicon-stats"></span> <fmt:message key="management.players.template.stats"/>
+									<span class="glyphicon glyphicon-calendar"></span> <fmt:message key="players.history"/>
 								</a>
                             </li>
                             <li>

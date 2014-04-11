@@ -8,8 +8,6 @@ import java.util.logging.Logger;
 import org.directwebremoting.annotations.DataTransferObject;
 import org.directwebremoting.convert.EnumConverter;
 
-import com.erep.dist.instances.frontend.AutoDistJob;
-
 @DataTransferObject(converter = EnumConverter.class)
 public enum CountryCode
 {
@@ -87,7 +85,12 @@ public enum CountryCode
 
 	public String							countryName;
 
-	private static Map<String, CountryCode>	nameToCode;
+	private static Map<String, CountryCode>	nameToCode = new HashMap<String, CountryCode>();
+	
+	static {
+		for (CountryCode code : CountryCode.values())
+			nameToCode.put(code.countryName.toLowerCase(), code);
+	}
 	
 	private static Logger logger = Logger.getLogger(CountryCode.class.getName());
 
@@ -96,8 +99,6 @@ public enum CountryCode
 	}
 
 	public static CountryCode getCode(String countryName) {
-		if (nameToCode == null)
-			buildMap();
 		if (countryName != null)
 			countryName = countryName.toLowerCase().trim();
 		if (nameToCode.containsKey(countryName))
@@ -106,11 +107,4 @@ public enum CountryCode
 		logger.log(Level.WARNING, "No country code found for '" + countryName +"'");
 		return ZZ;
 	}
-
-	private static void buildMap() {
-		nameToCode = new HashMap<String, CountryCode>();
-		for (CountryCode code : CountryCode.values())
-			nameToCode.put(code.countryName.toLowerCase(), code);
-	}
-
 }
