@@ -1,12 +1,63 @@
 $(document).ready(function() {
 
+	ko.applyBindings(FeedsViewModel, document.getElementById('feeds'));
 	ko.applyBindings(FormViewModel, document.getElementById('playerForm'));
 
 	crossroads.addRoute('request/{id}', function(id) {
 		FormViewModel.selectedName(id);
 	});
 	Navigation.configureRoutes();
+	FeedsViewModel.load();
 });
+
+var FeedsViewModel = new function() {
+	var self = this;
+
+	self.feed = ko.observable();
+
+	self.currentResult = ko.observable();
+	self.count = 1;
+	self.gFeed = null;
+
+	self.load = function() {
+		var lang = Navigation.getLanguage();
+		self.gFeed = new google.feeds.Feed(
+				'http://pipes.yahoo.com/pipes/pipe.run?_id=4ef32a9e6ebae7eec5c0165e5cda15df&_render=rss&country=all&language='
+						+ lang);
+		self.gFeed.setNumEntries(10);
+		loadFeed(startTimer);
+		setInterval(function() {
+			loadFeed();
+		}, 300000);
+	}
+
+	function loadFeed(callback) {
+		self.gFeed.load(function(result) {
+			if (!result.error) {
+				self.feed(result.feed);
+				if (callback)
+					callback();
+			}
+		});
+	}
+
+	function startTimer() {
+		self.currentResult(self.feed().entries[0]);
+		setInterval(function() {
+			self.currentResult(self.feed().entries[self.count]);
+			if (self.count === (self.feed().entries.length - 1))
+				self.count = 0;
+			else
+				self.count++;
+		}, 5000);
+	}
+
+	self.getLocalIcon = function(item, baseUrl) {
+		return item.mediaGroups[0].contents[0].url.replace(
+				/http:\/\/s\d.www.erepublik.net\/images\/icons/, baseUrl
+						+ '/img');
+	}
+};
 
 var FormViewModel = new function() {
 

@@ -1,7 +1,7 @@
 package com.erep.dist.dwr.dto;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 import org.directwebremoting.annotations.DataTransferObject;
 import org.directwebremoting.annotations.RemoteProperty;
@@ -19,7 +19,7 @@ public class PlayerQuery {
 	private String			encodedCursor;
 
 	@RemoteProperty
-	private List<Player>	results = new ArrayList<>();
+	private Collection<Player>	results = new ArrayList<>();
 
 	public String getEncodedCursor() {
 		return encodedCursor;
@@ -29,11 +29,11 @@ public class PlayerQuery {
 		this.encodedCursor = encodedCursor;
 	}
 
-	public List<Player> getResults() {
+	public Collection<Player> getResults() {
 		return results;
 	}
 
-	public void setResults(List<Player> results) {
+	public void setResults(Collection<Player> results) {
 		this.results = results;
 	}
 
