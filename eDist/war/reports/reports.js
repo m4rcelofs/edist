@@ -2,22 +2,24 @@ $(document).ready(function() {
 
 	Reports.downloadFilters();
 
+	ko.applyBindings(StatisticsViewModel, document.getElementById('statistics'));
 	ko.applyBindings(RequestsViewModel, document.getElementById('requests'));
 	ko.applyBindings(WorkViewModel, document.getElementById('work'));
 	ko.applyBindings(FightsViewModel, document.getElementById('fights'));
 
+	StatisticsRoutes.addRoutes();
 	RequestsRoutes.addRoutes();
 	WorkRoutes.addRoutes();
-	FightRoutes.addRoutes();
+	FightRoutes.addRoutes(); 
 
 	Navigation.configureRoutes('/reports/');
 
 	if (Navigation.getCurrenLocation() === '/reports/') {
-		Navigation.setCurrentLocation('requests/day');
+		Navigation.setCurrentLocation('statistics');
 	}
 
 	if (Navigation.getCurrenLocation() === '/reports') {
-		Navigation.setCurrentLocation('reports/requests/day');
+		Navigation.setCurrentLocation('reports/statistics');
 	}
 });
 
