@@ -3,11 +3,9 @@ package com.erep.dist.instances.frontend.install;
 import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withPayload;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.jdo.Extent;
-import javax.jdo.JDOHelper;
-import javax.jdo.Query;
+import javax.jdo.JDOObjectNotFoundException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -16,11 +14,13 @@ import javax.servlet.http.HttpServletResponse;
 import com.erep.dist.CloseablePM;
 import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
+import com.erep.dist.data.AvailableStatistics;
 import com.erep.dist.data.DailyFights;
 import com.erep.dist.data.DailyStats;
 import com.erep.dist.data.DailyWork;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerRoot;
+import com.erep.dist.data.dao.PlayerStatistics;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.taskqueue.DeferredTask;
 import com.google.appengine.api.taskqueue.Queue;
@@ -51,6 +51,9 @@ public class DataMigrationServlet extends HttpServlet {
 				case "fightsRootRefresh":
 					refreshFightsRoot(resp);
 					return;
+				case "createAvailableStats":
+					createAvailableStats(resp);
+					return;
 			}
 
 		writeMenu(resp);
@@ -69,7 +72,25 @@ public class DataMigrationServlet extends HttpServlet {
 				.write("<li><a href='?action=workRootRefresh'>Refresh work player root</a></li>");
 		resp.getWriter()
 				.write("<li><a href='?action=fightsRootRefresh'>Refresh fights player root</a></li>");
+		resp.getWriter()
+				.write("<li><a href='?action=createAvailableStats'>Create AvailableStatistics</a></li>");
 		resp.getWriter().write("</ul>");
+	}
+
+	private void createAvailableStats(HttpServletResponse resp)
+			throws IOException {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			try {
+				new PlayerStatistics(pm).getAvailable();
+				resp.getWriter().write(
+						"AvailableStatistics already exists, aborting");
+			} catch (JDOObjectNotFoundException e) {
+				AvailableStatistics stats = InstallHelper
+						.newAvailableStatistics();
+				pm.makePersistent(stats);
+				resp.getWriter().write("AvailableStatistics created");
+			}
+		}
 	}
 
 	private void refreshStatsRoot(HttpServletResponse resp) throws IOException {

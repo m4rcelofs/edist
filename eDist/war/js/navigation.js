@@ -6,10 +6,8 @@ $(document).ready(function() {
 	
 	if (edist.user.loggedIn) {
 		$('#logout').css("display", "");
-		$('#logout > a').attr('href', edist.user.logoutURL);
 	} else {
 		$('#login').css("display", "");
-		$('#login > a').attr('href', edist.user.loginURL);
 	}
 
 	if (edist.user.hasAdminAccess) {
@@ -97,6 +95,13 @@ var Navigation = new function() {
 
 	nav.getCurrenLocation = function() {
 		return History.getState().hash;
+	}
+
+	nav.getLanguage = function() {
+		var lang = $.cookie('language');
+		if(!lang)
+			lang = navigator.language || navigator.userLanguage;
+		return lang;
 	}
 
 	nav.setLanguage = function(lang) {

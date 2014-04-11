@@ -2,18 +2,20 @@ $(document).ready(function() {
 
 	Players.downloadFilters();
 
+	ko.applyBindings(StatisticsViewModel, document.getElementById('statistics'));
 	ko.applyBindings(HistoryViewModel, document.getElementById('history'));
 
+	StatisticsRoutes.addRoutes();
 	HistoryRoutes.addRoutes();
 
 	Navigation.configureRoutes('/players/');
 
 	if (Navigation.getCurrenLocation() === '/players/') {
-		Navigation.setCurrentLocation('history/day');
+		Navigation.setCurrentLocation('statistics');
 	}
 
 	if (Navigation.getCurrenLocation() === '/players') {
-		Navigation.setCurrentLocation('players/history/day');
+		Navigation.setCurrentLocation('players/statistics');
 	}
 });
 

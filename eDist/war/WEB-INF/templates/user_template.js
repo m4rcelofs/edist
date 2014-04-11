@@ -4,8 +4,6 @@ if (!window.edist) {
 
 window.edist.user = {
 	loggedIn : {loggedIn},
-	loginURL : {loginURL},
-	logoutURL : {logoutURL},
 	name : {name},
 	email : {email},
 	hasReportsAccess : {hasReportsAccess},
