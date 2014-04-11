@@ -1,6 +1,7 @@
 package com.erep.dist.instances.frontend.install;
 
 import com.erep.dist.ServerConstants;
+import com.erep.dist.data.AvailableStatistics;
 import com.erep.dist.data.DistConfig;
 import com.erep.dist.data.Distributor;
 import com.erep.dist.data.DistributorRoot;
@@ -21,6 +22,14 @@ import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 
 public class InstallHelper {
+
+	public static AvailableStatistics newAvailableStatistics() {
+		AvailableStatistics stats = new AvailableStatistics();
+		stats.setKey(KeyFactory.createKey(
+				AvailableStatistics.class.getSimpleName(), 1));
+		return stats;
+	}
+
 	public static ServerConfig newDefaultConfig() {
 		ServerConfig config = new ServerConfig();
 

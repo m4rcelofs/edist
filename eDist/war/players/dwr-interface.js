@@ -27,6 +27,15 @@ if (DWREngine == null) var DWREngine = dwr.engine;
 
 if (PlayerReportService == null) var PlayerReportService = {};
 PlayerReportService._path = '/players/dwr';
+PlayerReportService.statsByDay = function(p0, p1, callback) {
+  dwr.engine._execute(PlayerReportService._path, 'PlayerReportService', 'statsByDay', p0, p1, callback);
+}
+PlayerReportService.statsByGroup = function(p0, p1, p2, callback) {
+  dwr.engine._execute(PlayerReportService._path, 'PlayerReportService', 'statsByGroup', p0, p1, p2, callback);
+}
+PlayerReportService.statsByDate = function(p0, p1, callback) {
+  dwr.engine._execute(PlayerReportService._path, 'PlayerReportService', 'statsByDate', p0, p1, callback);
+}
 PlayerReportService.getInitialInfo = function(callback) {
   dwr.engine._execute(PlayerReportService._path, 'PlayerReportService', 'getInitialInfo', callback);
 }
@@ -36,12 +45,9 @@ PlayerReportService.statsByPlayer = function(p0, p1, callback) {
 PlayerReportService.statsByDivision = function(p0, p1, p2, callback) {
   dwr.engine._execute(PlayerReportService._path, 'PlayerReportService', 'statsByDivision', p0, p1, p2, callback);
 }
-PlayerReportService.statsByDate = function(p0, p1, callback) {
-  dwr.engine._execute(PlayerReportService._path, 'PlayerReportService', 'statsByDate', p0, p1, callback);
+PlayerReportService.getAvailableRequestStats = function(callback) {
+  dwr.engine._execute(PlayerReportService._path, 'PlayerReportService', 'getAvailableRequestStats', callback);
 }
-PlayerReportService.statsByDay = function(p0, p1, callback) {
-  dwr.engine._execute(PlayerReportService._path, 'PlayerReportService', 'statsByDay', p0, p1, callback);
-}
-PlayerReportService.statsByGroup = function(p0, p1, p2, callback) {
-  dwr.engine._execute(PlayerReportService._path, 'PlayerReportService', 'statsByGroup', p0, p1, p2, callback);
+PlayerReportService.getPlayerStats = function(p0, callback) {
+  dwr.engine._execute(PlayerReportService._path, 'PlayerReportService', 'getPlayerStats', p0, callback);
 }

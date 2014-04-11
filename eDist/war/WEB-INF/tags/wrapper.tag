@@ -23,7 +23,7 @@
 	response.setHeader(
 			"X-Content-Security-Policy",
 			"default-src 'self'; options inline-script eval-script; "
-					+ "script-src 'self' 'unsafe-inline' 'unsafe-eval' http://ajax.googleapis.com https://ajax.googleapis.com "
+					+ "script-src 'self' 'unsafe-inline' 'unsafe-eval' http://ajax.googleapis.com https://ajax.googleapis.com http://www.google.com https://www.google.com "
 					+ "http://www.google-analytics.com https://www.google-analytics.com http://netdna.bootstrapcdn.com https://netdna.bootstrapcdn.com; "
 					+ "font-src 'self' http://netdna.bootstrapcdn.com https://netdna.bootstrapcdn.com "
 					+ "http://themes.googleusercontent.com https://themes.googleusercontent.com "

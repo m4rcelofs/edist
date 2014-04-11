@@ -2,11 +2,14 @@ package com.erep.dist.dwr;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.jdo.JDOObjectNotFoundException;
 
 import org.directwebremoting.annotations.RemoteMethod;
 import org.directwebremoting.annotations.RemoteProxy;
+import org.joda.time.YearMonth;
 
 import com.erep.dist.CloseablePM;
 import com.erep.dist.DataAccessObject;
@@ -20,9 +23,14 @@ import com.erep.dist.data.Employer;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.Request;
+import com.erep.dist.data.RequestStatsDaily;
+import com.erep.dist.data.RequestStatsMonthly;
 import com.erep.dist.data.ResourceDist;
+import com.erep.dist.data.dao.RequestStatistics;
 import com.erep.dist.data.enums.RequestStatus;
 import com.erep.dist.data.enums.RequestType;
+import com.erep.dist.data.enums.ResourceQuality;
+import com.erep.dist.data.enums.ResourceType;
 import com.erep.dist.dwr.dto.FightsQuery;
 import com.erep.dist.dwr.dto.FiltersInitialInfo;
 import com.erep.dist.dwr.dto.RequestQuery;
@@ -261,7 +269,7 @@ public class ReportService {
 			WorkWeekQuery queryResults = new WorkWeekQuery();
 
 			DataAccessObject dao = new DataAccessObject(pm);
-			
+
 			List<Player> players = dao.listPlayersByGroup(group, cursor);
 			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(players)
 					.toWebSafeString());
@@ -357,4 +365,43 @@ public class ReportService {
 			return queryResults;
 		}
 	}
+
+	@RemoteMethod
+	public Set<String> getAvailableRequestStats() {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			RequestStatistics stats = new RequestStatistics(pm);
+			return stats.getAvailable().getRequestMonthly();
+		}
+	}
+
+	@RemoteMethod
+	public RequestStatsMonthly getRequestStats(String yearMonth) {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			pm.getFetchPlan().addGroup("monthlyListing");
+			RequestStatistics stats = new RequestStatistics(pm);
+			RequestStatsMonthly result = stats.getRequestsMonthly(new YearMonth(yearMonth));
+			return pm.detachCopy(result);
+		}
+	}
+
+	@RemoteMethod
+	public Map<ResourceType, Map<ResourceQuality, Integer>> loadDailyDetails(
+			RequestStatsDaily daily) {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			RequestStatistics statistics = new RequestStatistics(pm);
+			daily = statistics.find(daily);
+			return daily.getItemsSent().rowMap();
+		}
+	}
+
+	@RemoteMethod
+	public Map<ResourceType, Map<ResourceQuality, Integer>> loadMonthlyDetails(
+			RequestStatsMonthly monthly) {
+		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
+			RequestStatistics statistics = new RequestStatistics(pm);
+			monthly = statistics.find(monthly);
+			return monthly.getItemsSent().rowMap();
+		}
+	}
+
 }

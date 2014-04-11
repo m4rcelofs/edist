@@ -1,0 +1,38 @@
+<div class="stats-charts" data-bind="visible: dailies().length > 0">
+	<div class="row text-center">
+		<div class="col-md-12">
+			<form class="form-inline" role="form" id="categoryForm">
+				<div class="radio">
+					<label> <input type="radio" name="category"
+						value="1,2,7,12,13,14" data-chart-type="line"
+						data-bind="checked: chartCategory"> <fmt:message
+							key="header.players" />
+					</label>
+				</div>
+				<div class="radio">
+					<label> <input type="radio" name="category" value="3,4,5,6"
+						data-chart-type="bars" data-bind="checked: chartCategory">
+						Ativos
+					</label>
+				</div>
+				<div class="radio">
+					<label> <input type="radio" name="category"
+						value="8,9,10,11" data-chart-type="bars"
+						data-bind="checked: chartCategory"> Lutadores
+					</label>
+				</div>
+				<div class="radio">
+					<label> <input type="radio" name="category"
+						value="15,16,17,18" data-chart-type="steppedArea"
+						data-bind="checked: chartCategory"> Influência
+					</label>
+				</div>
+			</form>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div id="ff_chart"></div>
+		</div>
+	</div>
+</div>
