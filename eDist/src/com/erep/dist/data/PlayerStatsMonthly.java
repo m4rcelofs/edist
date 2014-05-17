@@ -137,7 +137,7 @@ public class PlayerStatsMonthly implements HasEncodedKey {
 
 	private void addInfluence(Map<Division, Long> influenceToAdd) {
 		if (influenceToAdd != null) {
-			Map<Division, Long> influence = getInfluence();
+			Map<Division, Long> influence = new HashMap<>(getInfluence());
 			for (Division div : influenceToAdd.keySet()) {
 				Long original = influence.get(div);
 				if (original == null)
