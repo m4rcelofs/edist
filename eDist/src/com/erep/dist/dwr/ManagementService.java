@@ -66,7 +66,7 @@ public class ManagementService {
 			dto.setGroupsCount(dao.groupRoot().getGroupsCount());
 			dto.setPlayersCount(dao.playerRoot().getPlayersCount());
 			
-			List<PlayerGroup> groups = dao.listGroupsUncached(); 
+			List<PlayerGroup> groups = dao.listGroups(); 
 			dto.setResults(pm.detachCopyAll(groups));
 			dto.setGranularity(dao.getServerConfig().getGranularity());
 

@@ -175,7 +175,6 @@ public class DataAccessObject {
 	private boolean add(PlayerGroup group) {
 		groupRoot().addGroup(group);
 		pm.makePersistent(group);
-		CacheFacade.remove(getClass().getName() + ".listGroups()");
 		return true;
 	}
 
@@ -209,16 +208,10 @@ public class DataAccessObject {
 		old.setConfig(newest.getConfig());
 		old.setFightVerif(newest.getFightVerif());
 		old.setWorkVerif(newest.getWorkVerif());
-		CacheFacade.remove(getClass().getName() + ".listGroups()");
 		return true;
 	}
 
-	@Cacheable
 	public List<PlayerGroup> listGroups() {
-		return (List<PlayerGroup>) pm.detachCopyAll(listGroupsUncached());
-	}
-
-	public List<PlayerGroup> listGroupsUncached() {
 		Query q = pm.newQuery(PlayerGroup.class);
 		q.setFilter("root == rootParam");
 		q.declareParameters(Key.class.getName() + " rootParam");
@@ -769,7 +762,6 @@ public class DataAccessObject {
 				ServerConstants.DEFAULT_ID));
 	}
 
-	@Cacheable
 	public ServerConfig getServerConfig() {
 		return pm.getObjectById(ServerConfig.class, ServerConstants.DEFAULT_ID);
 	}
@@ -816,7 +808,6 @@ public class DataAccessObject {
 		dbConfig.setShowDistributorInventory(dbConfig
 				.isShowDistributorInventory());
 
-		CacheFacade.remove(getClass().getName() + ".getServerConfig()");
 		return true;
 	}
 
