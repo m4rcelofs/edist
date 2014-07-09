@@ -1,0 +1,1648 @@
+<!DOCTYPE html>
+<html itemscope itemtype="http://schema.org/Product">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" /><script type="text/javascript">(window.NREUM||(NREUM={})).loader_config={xpid:"VgYDU1JACwIBU1dRBg=="};window.NREUM||(NREUM={}),__nr_require=function(t,e,n){function r(n){if(!e[n]){var o=e[n]={exports:{}};t[n][0].call(o.exports,function(e){var o=t[n][1][e];return r(o?o:e)},o,o.exports)}return e[n].exports}if("function"==typeof __nr_require)return __nr_require;for(var o=0;o<n.length;o++)r(n[o]);return r}({1:[function(t,e){function n(t,e,n){n||(n={});for(var r=o[t],a=r&&r.length||0,s=n[i]||(n[i]={}),u=0;a>u;u++)r[u].apply(s,e);return s}function r(t,e){var n=o[t]||(o[t]=[]);n.push(e)}var o={},i="nr@context";e.exports={on:r,emit:n}},{}],2:[function(t){function e(t,e,n,i,s){return u?u-=1:r("err",[s||new UncaughtException(t,e,n)]),"function"==typeof a?a.apply(this,o(arguments)):!1}function UncaughtException(t,e,n){this.message=t||"Uncaught error with no additional information",this.sourceURL=e,this.line=n}function n(t){r("err",[t,(new Date).getTime()])}var r=t("handle"),o=t(6),i=t(5),a=window.onerror,s=!1,u=0;t("loader").features.push("err"),window.onerror=e,NREUM.noticeError=n;try{throw new Error}catch(d){"stack"in d&&(t(1),t(2),"addEventListener"in window&&t(3),window.XMLHttpRequest&&XMLHttpRequest.prototype&&XMLHttpRequest.prototype.addEventListener&&t(4),s=!0)}i.on("fn-start",function(){s&&(u+=1)}),i.on("fn-err",function(t,e,r){s&&(this.thrown=!0,n(r))}),i.on("fn-end",function(){s&&!this.thrown&&u>0&&(u-=1)}),i.on("internal-error",function(t){r("ierr",[t,(new Date).getTime(),!0])})},{1:5,2:4,3:3,4:6,5:1,6:14,handle:"D5DuLP",loader:"G9z0Bl"}],3:[function(t){function e(t){r.inPlace(t,["addEventListener","removeEventListener"],"-",n)}function n(t){return t[1]}var r=t(1),o=(t(3),t(2));if(e(window),"getPrototypeOf"in Object){for(var i=document;i&&!i.hasOwnProperty("addEventListener");)i=Object.getPrototypeOf(i);i&&e(i);for(var a=XMLHttpRequest.prototype;a&&!a.hasOwnProperty("addEventListener");)a=Object.getPrototypeOf(a);a&&e(a)}else XMLHttpRequest.prototype.hasOwnProperty("addEventListener")&&e(XMLHttpRequest.prototype);o.on("addEventListener-start",function(t){if(t[1]){var e=t[1];"function"==typeof e?this.wrapped=e["nr@wrapped"]?t[1]=e["nr@wrapped"]:e["nr@wrapped"]=t[1]=r(e,"fn-"):"function"==typeof e.handleEvent&&r.inPlace(e,["handleEvent"],"fn-")}}),o.on("removeEventListener-start",function(t){var e=this.wrapped;e&&(t[1]=e)})},{1:15,2:1,3:14}],4:[function(t){var e=(t(3),t(1)),n=t(2);e.inPlace(window,["requestAnimationFrame","mozRequestAnimationFrame","webkitRequestAnimationFrame","msRequestAnimationFrame"],"raf-"),n.on("raf-start",function(t){t[0]=e(t[0],"fn-")})},{1:15,2:1,3:14}],5:[function(t){function e(t){var e=t[0];"string"==typeof e&&(e=new Function(e)),t[0]=n(e,"fn-")}var n=(t(3),t(1)),r=t(2);n.inPlace(window,["setTimeout","setInterval","setImmediate"],"setTimer-"),r.on("setTimer-start",e)},{1:15,2:1,3:14}],6:[function(t){function e(){o.inPlace(this,s,"fn-")}function n(t,e){o.inPlace(e,["onreadystatechange"],"fn-")}function r(t,e){return e}var o=t(1),i=t(2),a=window.XMLHttpRequest,s=["onload","onerror","onabort","onloadstart","onloadend","onprogress","ontimeout"];window.XMLHttpRequest=function(t){var n=new a(t);try{i.emit("new-xhr",[],n),o.inPlace(n,["addEventListener","removeEventListener"],"-",function(t,e){return e}),n.addEventListener("readystatechange",e,!1)}catch(r){try{i.emit("internal-error",r)}catch(s){}}return n},window.XMLHttpRequest.prototype=a.prototype,o.inPlace(XMLHttpRequest.prototype,["open","send"],"-xhr-",r),i.on("send-xhr-start",n),i.on("open-xhr-start",n)},{1:15,2:1}],7:[function(t){function e(){function e(t){if("string"==typeof t&&t.length)return t.length;if("object"!=typeof t)return void 0;if("undefined"!=typeof ArrayBuffer&&t instanceof ArrayBuffer&&t.byteLength)return t.byteLength;if("undefined"!=typeof Blob&&t instanceof Blob&&t.size)return t.size;if("undefined"!=typeof FormData&&t instanceof FormData)return void 0;try{return JSON.stringify(t).length}catch(e){return void 0}}function n(t){var n=this.params,r=this.metrics;if(!this.ended){this.ended=!0;for(var i=0;u>i;i++)t.removeEventListener(s[i],this.listener,!1);if(!n.aborted){if(r.duration=(new Date).getTime()-this.startTime,4===t.readyState){n.status=t.status;var a=t.responseType,d="arraybuffer"===a||"blob"===a||"json"===a?t.response:t.responseText,f=e(d);if(f&&(r.rxSize=f),this.sameOrigin){var c=t.getResponseHeader("X-NewRelic-App-Data");c&&(n.cat=c.split(", ").pop())}}else n.status=0;r.cbTime=this.cbTime,o("xhr",[n,r])}}}function r(t,e){var n=i(e),r=t.params;r.host=n.hostname+":"+n.port,r.pathname=n.pathname,t.sameOrigin=n.sameOrigin}t("loader").features.push("xhr");var o=t("handle"),i=t(1),a=t(5),s=["load","error","abort","timeout"],u=s.length,d=t(2);t(3),t(4),a.on("new-xhr",function(){this.totalCbs=0,this.called=0,this.cbTime=0,this.end=n,this.ended=!1,this.xhrGuids={}}),a.on("open-xhr-start",function(t){this.params={method:t[0]},r(this,t[1]),this.metrics={}}),a.on("open-xhr-end",function(t,e){"loader_config"in NREUM&&"xpid"in NREUM.loader_config&&this.sameOrigin&&e.setRequestHeader("X-NewRelic-ID",NREUM.loader_config.xpid)}),a.on("send-xhr-start",function(t,n){var r=this.metrics,o=t[0],i=this;if(r&&o){var d=e(o);d&&(r.txSize=d)}this.startTime=(new Date).getTime(),this.listener=function(t){try{"abort"===t.type&&(i.params.aborted=!0),("load"!==t.type||i.called===i.totalCbs&&(i.onloadCalled||"function"!=typeof n.onload))&&i.end(n)}catch(e){try{a.emit("internal-error",e)}catch(r){}}};for(var f=0;u>f;f++)n.addEventListener(s[f],this.listener,!1)}),a.on("xhr-cb-time",function(t,e,n){this.cbTime+=t,e?this.onloadCalled=!0:this.called+=1,this.called!==this.totalCbs||!this.onloadCalled&&"function"==typeof n.onload||this.end(n)}),a.on("xhr-load-added",function(t,e){var n=""+d(t)+!!e;this.xhrGuids&&!this.xhrGuids[n]&&(this.xhrGuids[n]=!0,this.totalCbs+=1)}),a.on("xhr-load-removed",function(t,e){var n=""+d(t)+!!e;this.xhrGuids&&this.xhrGuids[n]&&(delete this.xhrGuids[n],this.totalCbs-=1)}),a.on("addEventListener-end",function(t,e){e instanceof XMLHttpRequest&&"load"===t[0]&&a.emit("xhr-load-added",[t[1],t[2]],e)}),a.on("removeEventListener-end",function(t,e){e instanceof XMLHttpRequest&&"load"===t[0]&&a.emit("xhr-load-removed",[t[1],t[2]],e)}),a.on("fn-start",function(t,e,n){e instanceof XMLHttpRequest&&("onload"===n&&(this.onload=!0),("load"===(t[0]&&t[0].type)||this.onload)&&(this.xhrCbStart=(new Date).getTime()))}),a.on("fn-end",function(t,e){this.xhrCbStart&&a.emit("xhr-cb-time",[(new Date).getTime()-this.xhrCbStart,this.onload,e],e)})}window.XMLHttpRequest&&XMLHttpRequest.prototype&&XMLHttpRequest.prototype.addEventListener&&!/CriOS/.test(navigator.userAgent)&&e()},{1:8,2:11,3:3,4:6,5:1,handle:"D5DuLP",loader:"G9z0Bl"}],8:[function(t,e){e.exports=function(t){var e=document.createElement("a"),n=window.location,r={};e.href=t,r.port=e.port;var o=e.href.split("://");return!r.port&&o[1]&&(r.port=o[1].split("/")[0].split(":")[1]),r.port&&"0"!==r.port||(r.port="https"===o[0]?"443":"80"),r.hostname=e.hostname||n.hostname,r.pathname=e.pathname,"/"!==r.pathname.charAt(0)&&(r.pathname="/"+r.pathname),r.sameOrigin=!e.hostname||e.hostname===document.domain&&e.port===n.port&&e.protocol===n.protocol,r}},{}],handle:[function(t,e){e.exports=t("D5DuLP")},{}],D5DuLP:[function(t,e){function n(t,e){var n=r[t];return n?n.apply(this,e):(o[t]||(o[t]=[]),void o[t].push(e))}var r={},o={};e.exports=n,n.queues=o,n.handlers=r},{}],11:[function(t,e){function n(t){if(!t||"object"!=typeof t&&"function"!=typeof t)return-1;if(t===window)return 0;if(o.call(t,"__nr"))return t.__nr;try{return Object.defineProperty(t,"__nr",{value:r,writable:!0,enumerable:!1}),r}catch(e){return t.__nr=r,r}finally{r+=1}}var r=1,o=Object.prototype.hasOwnProperty;e.exports=n},{}],loader:[function(t,e){e.exports=t("G9z0Bl")},{}],G9z0Bl:[function(t,e){function n(){var t=p.info=NREUM.info;if(t&&t.agent&&t.licenseKey&&t.applicationID&&u&&u.body){p.proto="https"===c.split(":")[0]||t.sslForHttp?"https://":"http://",a("mark",["onload",i()]);var e=u.createElement("script");e.src=p.proto+t.agent,u.body.appendChild(e)}}function r(){"complete"===u.readyState&&o()}function o(){a("mark",["domContent",i()])}function i(){return(new Date).getTime()}var a=t("handle"),s=window,u=s.document,d="addEventListener",f="attachEvent",c=(""+location).split("?")[0],p=e.exports={offset:i(),origin:c,features:[]};u[d]?(u[d]("DOMContentLoaded",o,!1),s[d]("load",n,!1)):(u[f]("onreadystatechange",r),s[f]("onload",n)),a("mark",["firstbyte",i()])},{handle:"D5DuLP"}],14:[function(t,e){function n(t,e,n){e||(e=0),"undefined"==typeof n&&(n=t?t.length:0);for(var r=-1,o=n-e||0,i=Array(0>o?0:o);++r<o;)i[r]=t[e+r];return i}e.exports=n},{}],15:[function(t,e){function n(t,e,r,s){function nrWrapper(){try{var n,a=u(arguments),d=this,f=r&&r(a,d)||{}}catch(c){i([c,"",[a,d,s],f])}o(e+"start",[a,d,s],f);try{return n=t.apply(d,a)}catch(p){throw o(e+"err",[a,d,p],f),p}finally{o(e+"end",[a,d,n],f)}}return a(t)?t:(e||(e=""),nrWrapper[n.flag]=!0,nrWrapper)}function r(t,e,r,o){r||(r="");var i,s,u,d="-"===r.charAt(0);for(u=0;u<e.length;u++)s=e[u],i=t[s],a(i)||(t[s]=n(i,d?s+r:r,o,s,t))}function o(t,e,n){try{s.emit(t,e,n)}catch(r){i([r,t,e,n])}}function i(t){try{s.emit("internal-error",t)}catch(e){}}function a(t){return!(t&&"function"==typeof t&&t.apply&&!t[n.flag])}var s=t(1),u=t(2);e.exports=n,n.inPlace=r,n.flag="nr@wrapper"},{1:1,2:14}]},{},["G9z0Bl",2,7]);</script>
+<meta name="title" content="eRepublik" />
+<meta name="robots" content="index, follow" />
+<meta name="description" content="O Novo Mundo" />
+<meta name="keywords" content="" />
+<meta name="language" content="br" />
+<meta property="og:image" content="http://www.erepublik.net/images/modules/homepage/logo.png" />
+<meta itemprop="name" content="eRepublik - The New World | Online Social Strategy Game" />
+<meta itemprop="description" content="Create your Citizen and you will have the opportunity to develop your military, economy or political career." />
+<meta itemprop="image" content="http://www.erepublik.net/images/modules/homepage/logo.png" />
+
+<title>eRepublik</title>
+
+<link rel="shortcut icon" href="/images/favicon.ico" />
+
+<link href="//www.erepublik.net/css/fonts/Franchise/font.css?1309958974" rel="stylesheet" type="text/css" />
+<link href="//www.erepublik.net/css/fonts/Delicious/font.css?1309958974" rel="stylesheet" type="text/css" />
+<link href="//www.erepublik.net/css/fonts/DsDigital/font.css?1309958974" rel="stylesheet" type="text/css" />
+<link href="//fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700&subset=latin-ext,cyrillic,latin" rel='stylesheet' type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans+Narrow:400,700&subset=latin-ext,cyrillic,latin" rel='stylesheet' type="text/css">
+<link href="//fonts.googleapis.com/css?family=Open+Sans+Condensed:400,300,600,700,800&subset=latin,greek-ext,cyrillic-ext,greek,latin-ext,cyrillic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=Anonymous+Pro:400,700&subset=latin,cyrillic,greek" rel="stylesheet" type="text/css">
+<link href="//www.erepublik.net/css/jquery.pagewalkthrough.css" rel="stylesheet" type="text/css" media="screen" />
+
+<link rel="stylesheet" href="//www.erepublik.net/css/cmp/layout.1403874334.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="//www.erepublik.net/css/cmp/app.1403874333.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="//www.erepublik.net/css/cmp/my_land.1403874334.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="//www.erepublik.net/css/cmp/sales.1403874335.css" type="text/css" media="screen" />
+
+<link rel="stylesheet" href="http://www.erepublik.net/css/cmp/anniversary.1403874331.css" type="text/css" media="screen" />
+<link rel="stylesheet" href="/css/cmp/military_units.css?1403874334" type="text/css" media="screen" />
+<link rel="stylesheet" href="/css/selector.css?1369318131" type="text/css" media="screen" />
+<link rel="stylesheet" href="/css/threads/tokeninput.css?1369318131" type="text/css" media="screen" />
+<!--[if lt IE 8]>
+<link rel="stylesheet" href="//www.erepublik.net/css/cmp/ie.css" type="text/css" media="screen" />
+<![endif]-->
+
+<script type="text/javascript" charset="utf-8">
+	var erepublik = {
+		settings: {
+			notifications: 0,
+			hostname: 'www.erepublik.com',
+			domainname: 'erepublik.com',
+			culture: 'br',
+			economyhostname: 'economy.erepublik.com',
+			cookielessHost: 'www.erepublik.net'
+		},
+		citizen: {
+			citizenId: 5313713,
+			country: '169',
+			currency: 'AMD',
+			isEmpire: false,
+			countryLocationName: 'Chile',
+			countryLocationId: '64',
+			energy: 568,
+			energyToRecover: 1000,
+			gold: 588,
+			currencyAmount: 42114,
+			userLevel: 76,
+            hasCoreLoopAccess: false,
+            canWorkTrainAgainIn: 10433		},
+		misc: {
+			runningOnKongregate: 'false'
+		},
+		shortcuts: {
+			links: {"inventory":"\/\/www.erepublik.com\/br\/economy\/inventory","myland":"\/\/www.erepublik.com\/br\/economy\/myCompanies","campaigns":"\/\/www.erepublik.com\/br\/military\/campaigns","top_news":"\/\/www.erepublik.com\/br\/news\/international","new_message":"\/\/www.erepublik.com\/br\/main\/messages-compose\/0","world_map":"\/\/www.erepublik.com\/br\/map","military_unit":"\/\/www.erepublik.com\/br\/main\/group-home\/military","alerts":"\/\/www.erepublik.com\/br\/main\/messages-alerts\/1"},
+			names: {"inventory":"Dep\u00f3sito","myland":"Meus lugares","campaigns":"Campanhas militares","top_news":"Principais not\u00edcias","new_message":"Nova mensagem","world_map":"Mapa mundial","military_unit":"Unidade militar","alerts":"Alertas"}		},
+		i18n: {
+			shortcut: 'Atalho:',
+			missions: {
+				status1Title: 'Nova missão',
+				status2Title: 'Ongoing mission',
+				status3Title: 'Clique para concluir',
+				status4Title: 'Rewarded',
+			},
+			countdownLang: {
+				daysLabel: 		'Dias',
+				dayLabel: 		'Dia',
+				hoursLabel: 	'Hrs',
+				minutesLabel: 	'Min',
+				secondsLabel: 	'Seg',
+			},
+			boosterActivation: {
+				baConfirm: 		'Tens certeza que pretendes usar este Amplificador de Dano?',
+				baActivate: 	'Ativar Amplificador de Dano',
+				baYour: 		'Your ',
+				baAvailability: 'Disponibilidade de Amplificador de Dano',
+				baDisabled: 	'Um Amplificador de Dano mais potente está já ativo',
+			}
+		}
+	}
+
+	var SERVER_DATA = {
+		csrfToken          : 'f6f50a7f8cf9cdfb023b37158a9bfcdd'
+	};
+
+	window.confirmation = {
+		ok: 'ok',
+		yes: 'yes',
+		no: 'no'
+	};
+
+</script>
+<script type="text/javascript" charset="utf-8" src="//ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script>window.jQuery || document.write("<script src='//www.erepublik.com/js/jquery.min.js'>\x3C/script>")</script>
+<script type="text/javascript">var $j = jQuery.noConflict();</script>
+<script type="text/javascript" src="/js/cmp/erepublik.1403874332.js"></script>
+<script type="text/javascript" src="/js/citizen/energy.1403853780.js"></script>
+<script type="text/javascript" src="/js/awards/awards.1371546670.js"></script>
+<script type="text/javascript" src="/js/strophe.js"></script>
+<script type="text/javascript" src="/js/strophe.flxhr.js"></script>
+<script type="text/javascript" src="/js/pvp/bind.js"></script>
+
+
+<script type="text/javascript">
+	// these get assigned on join-pvp-queue now
+	// because that is the place where the balancing gets done
+	ErpkPvp.bosh_service = 'unassigned2';
+	ErpkPvp.muc_host = 'unassigned1';
+	ErpkPvp.citizenId = 5313713;
+</script>
+
+
+<script type="text/javascript" src="/js/global.1398257242.js"></script>
+
+<script type="text/javascript" charset="utf-8">
+	if (top !=self) {
+		top.location=self.location;
+	}
+</script>
+
+<script type="text/javascript" src="/js/groups/sortable.js?1374592953"></script><script type="text/javascript" src="/js/uncompressed.jquery.dd.js?1369318136"></script><script type="text/javascript" src="/js/groups/list.js?1396020696"></script><script type="text/javascript" src="/js/tools/paginate.js?1369318136"></script><script type="text/javascript" src="/js/jquery.tipsy.js?1369318136"></script><script type="text/javascript" src="/js/threads/jquery.tokeninput.js?1369318136"></script>
+
+<script type="text/javascript" charset="utf-8">
+	var citizen_regionList_select = "Selecione uma região";
+	var citizen_regionList_no_region = "The country selected does not have any regions.";
+	var citizen_items_confirm = "Are you sure you want to throw away this item? Maybe you want to donate it to someone else.";
+	var citizen_friends_prev = "Ant";
+	var citizen_friends_next = "Avançar";
+	var company_browsers_quality_level = "Quality Level";
+	var election_list_select_party = "Please select a party";
+	var scriptFeeds_countryAccounts_choose = "Selecionar";
+	var scriptFeeds_proposedCongressman_search = "Search";
+	var scriptFeeds_proposedCongressman_close = "Fechar";
+	var scriptFeeds_proposedCongressman_replace = "Substituir";
+	var scriptFeeds_proposedCongressman_close = "Fechar";
+	var scriptFeeds_proposedCongressman_presentation = "Apresentação";
+	var scriptFeeds_proposedCongressman_no_presentation = "Nenhuma apresentação";
+	var scriptFeeds_regionList_select = "Selecione uma região";
+	var register_region_list_belongs_to = "annexed by ";
+	var citizenship_application_accepted = "Accepted!"
+	var citizenship_application_canceled = "You have canceled your citizenship application"
+	var citizenship_application_cancel_confirm = "Are you sure you want to cancel your citizenship application?"
+	var company_market_offers_invalid_amount = "Please enter a valid amount";
+	var company_market_offers_invalid_price = "Please enter a valid price";
+	var company_market_offers_invalid_country = "Please select a new market";
+	var company_market_offers_embargo_confirm = "Mesmo após comprar esta licença de mercado, não será possível realizar negociações comercias com este país por causa de um embargo comercial. Quer mesmo comprar esta licença de mercado?";
+	var company_market_offers_atwar_confirm = "Even if you buy this market license, you won't be able to trade with this country due to a war. Are you sure you want to buy this market license?";
+	var company_market_offers_remove_confirm = "Because your company has changed it's product customization, you cannot take this products back into your company stock anymore. However, you can remove the current market offer by destroying your products. Do you want to proceed and destroy these products?";
+	var company_create_same_industry_error = "You cannot own two companies in the same industry.";
+	var citizen_profile_show_all_skills = "show all skills";
+	var citizen_profile_hide_all_skills = "hide all skills";
+	var citizen_move_countryList_select = "Selecione um país.";
+	var citizen_move_regionList_select = "Selecione uma região";
+	var timeManagement_buy_wellness_pack_confirm = "Are you sure you want to buy a health pack for %%1%% Gold?";
+	var company_customize = "All products in stock, finished components and components in progress will be lost. Are you sure?";
+	var missions_unlock_confirm = "Quer mesmo desbloquear por %%1%% Gold ?";
+	var migrate_company_industry_confirm = "Are you sure that you want to migrate the %%1%% from %%2%% industry into %%3%% industry? Only one migration is allowed and its effects are irreversible";
+	var eat_food_confirm = "Uma unidade de comida %%1%% será consumida, mas apenas recuperarás %%2%% de Energia. Gostarias de a usar de qualquer forma?";
+	var energy_confirm = "Você está prestes a consumir uma Barra de Energia. Isso irá restaurar a sua Energia em %%1%% sem afetar o seu limite diário de consumo de comida. Continuar?";
+	var energy_confirm_winter_treat = "You are about to consume a Treat. This will restore your Energy with %%1%% without affecting your daily food consumption limit. Continue?";
+</script>
+<script type="text/javascript">
+
+	var _gaq = _gaq || [];
+	_gaq.push(['_setAccount', 'UA-2001550-1']);
+	_gaq.push(['_setDomainName', 'erepublik.com']);
+	_gaq.push(['_trackPageview']);
+
+	
+	(function() {
+	var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+	ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+	var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+	})();
+
+</script>
+
+
+
+<script type="text/javascript">
+	var globalAlerts = [];
+</script>
+
+</head>
+<body id="military_units" class="">
+	<div id="notify_clone" style="display:none; visibility:hidden;">
+		<div class="notification_holder">
+			<div data-bind="notification_item" class="notification">
+				<div class="notification_icon_holder">
+					<img class="notification_icon" data-bind="notification_icon" src="http://s2.www.erepublik.net/images/parts/pixel.gif" alt="" />
+					<img class="notification_flag" data-bind="notification_flag" src="http://s2.www.erepublik.net/images/parts/pixel.gif" alt="" />
+				</div>
+				<em data-bind="notification_title"></em>
+				<strong data-bind="notification_content"></strong>
+				<span><span><q>&#8250;</q></span></span>
+				<a class="close" data-bind="notification_close" href="javascript:;" title="">&#10006;</a>
+				<a class="goto" data-bind="notification_url" href="javascript:;" title=""></a>
+			</div>
+		</div>
+	</div>
+
+	<a id="scrollToTop" class="scrollToTop" href="javascript:;"></a>
+
+	<div id="fb-root"></div>
+	<script type="text/javascript">
+		window.fbAsyncInit = function() {
+			FB.init({
+				appId: '300511377223',
+				status: true,
+				cookie: true,
+				xfbml: true,
+				channelUrl: 'http://www.erepublik.com/xd_receiver.htm'
+			});
+		};
+		(function(d){
+		 var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+		 if (d.getElementById(id)) {return;}
+		 js = d.createElement('script'); js.id = id; js.async = true;
+		 js.src = "//connect.facebook.net/en_US/all.js";
+		 ref.parentNode.insertBefore(js, ref);
+	   }(document));
+	</script>
+	<!--[if lt IE 9]>
+	<script type="text/javascript">
+			var IE6UPDATE_OPTIONS = {
+					icons_path: "/images/ie6/"
+			}
+	</script>
+	<script type="text/javascript" src="http://www.erepublik.com/js/ie6update.js"></script>
+	<![endif]-->
+<div class="at">
+	<div class="ath">
+		<a href="javascript:;" class="ambient_toggler"><span>Fundo lig/desl</span></a>
+	</div>
+</div>
+	<div id="container">
+
+		<!-- header -->
+		<div id="header">
+					<div id="logoNew" class="" title="eRepublik - Jogo de estratégia on-line">
+				<a href="http://www.erepublik.com/br" title="eRepublik - Jogo de estratégia on-line"><span>eRepublik – Online Strategy Game</span></a>
+			</div>
+
+			<!-- start header_top -->
+			<div class="header_top">
+								<div class="fb_like ">
+					<iframe src="http://www.facebook.com/plugins/like.php?app_id=210611115655687&amp;href=http://www.facebook.com/eRepublik&amp;send=false&amp;layout=button_count&amp;width=100&amp;show_faces=false&amp;action=like&amp;colorscheme=light&amp;font&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:118px; height:21px;float:left;clear:both;" allowTransparency="true"></iframe>
+
+					<a href="http://www.facebook.com/eRepublik">Página de fãs do eRepublik</a>
+				</div>
+
+								<div class="erpk_time">
+					<span class="eday">
+						Dia <strong>2,413</strong>					</span>
+					<span class="date">jun 29</span>
+					<span id="live_time" class="time"></span>
+				</div>
+				<div id="searchholder">
+					<form id="search" method="get" action="http://www.erepublik.com/br/main/search/">
+						<label for="search_field">Procurar cidadão</label>
+						<input type="text" name="q" id="search_field" value="" class="field">
+						<input type="submit" name="commit" value="" class="submit" disabled="disabled">
+					</form>
+				</div>
+				
+														<a href="/br/logout" class="logout">Desconectar-se</a>
+									
+			</div>
+			<!-- end header_top -->
+
+
+			<!-- start new menu -->
+						<div id="newMenu">
+				<ul id="nav">
+					<li id="menu1">
+						<a href="/br"><span>Home</span></a>
+					</li>
+					<li id="menu2">
+												<a href="javascript:;">
+							<span>Meus lugares</span>
+						</a>
+						<ul>
+							<li><a href="http://www.erepublik.com/br/economy/myCompanies">Empresas</a></li>
+							<li><a href="http://www.erepublik.com/br/economy/training-grounds">Campos de treinamento</a></li>
+							<li><a href="http://www.erepublik.com/br/economy/inventory">Depósito</a></li>
+							<li><a href="http://www.erepublik.com/br/economy/advanced-buildings">Construções avançadas</a></li>
+						</ul>
+					</li>
+					<li id="menu3">
+						<a href="/br/military/campaigns"><span>Guerras</span></a>
+					</li>
+										<li id="menu4">
+						<p></p>
+						<a href="javascript:;"><span>Mercado</span></a>
+						<ul>
+							<li><a href="/br/economy/market/169">Centro comercial</a></li>
+							<li><a href="/br/economy/job-market/64">Mercado de trabalho</a></li>
+							<li><a href="/br/economy/exchange-market/">Mercado monetário</a></li>
+							<li><a href="http://www.erepublik.com/br/economy/buy-company/169">Empresas à venda</a></li>
+						</ul>
+					</li>
+					<li id="menu5">
+						<a href="javascript:;"><span>
+							Comunidade</span>
+													</a>
+						<ul>
+														<li><a href="/br/country/economy/Armenia" rel="nofollow">Meu País</a></li>
+														<li><a href="/br/main/group-home/military">Minha Unidade Militar</a></li>
+							<li><a href="/br/main/my-party" rel="nofollow">Meu Partido</a></li>
+														<li><a href="/br/main/my-newspaper" rel="nofollow">Meu Jornal</a></li>
+							<li><a href="http://forum.erepublik.com"  rel="nofollow">Fórum</a></li>
+							<li><a href="/br/main/alliances" rel="nofollow">Alianças</a></li>
+							<li><a href="/br/main/elections">Eleições</a></li>
+							<li><a href="/br/main/rankings-countries" rel="nofollow">Classificações								 </a></li>
+							                            
+							<li><a href="/br/map"  rel="nofollow">Mapa mundial</a></li>
+						</ul>
+					</li>
+
+					<li id="menu6">
+
+						 
+							<a href="/br/get-gold/gold"><span>Gold & Extras</span></a>
+											</li>
+				</ul>
+			</div>
+						<!-- end new menu -->
+
+		</div>
+		<!-- end header -->
+
+		<div class="sidebar_wrapper ">
+		<div id="large_sidebar">
+		<div class="sidebar">
+			<div class="sidebar_container">
+								<a id="financier" href="/br/citizen/profile/5313713"></a>
+				<div class="user_section" style="position: relative;">
+										<a href="/br/citizen/profile/5313713" class="user_avatar" title="nW0lf">
+						<img src="http://static.erepublik.net/uploads/avatars/Citizens/2011/11/11/a77319cdddeccec56e795892984edec9_55x55.jpg" alt="nW0lf" width="55" height="55" />
+													<span><b>Visualizar Perfil</b></span>
+											</a>
+										<div class="user_info">
+						<div class="user_notify">
+							<a href="/br/main/messages-inbox" title="Novas mensagens: 0" class="notify nmail">
+																							</a>
+							<a href="/br/main/messages-alerts/1" title="Novos alertas: 0" class="notify nalert">
+																							</a>
+
+														<a href="/br/main/leaderboards-damage?showDivisions=true&division=4" title="Ranking Semanal" class="notify newleaderboard mu_tournament">
+							
+
+															</a>
+						</div>
+												<div class="user_level">
+															<b>76</b>
+														<div class="user_progress">
+																	<div class="progress_bar" style="width:77%"></div>
+															</div>
+						</div>
+						<div id="experienceTooltip" class="simple_yellow" style="display:none; width: 120px; position: absolute; top: 60px;">
+							<img src="http://s3.www.erepublik.net/images/modules/sidebar/yellow_arrow_tip.png" class="tip" alt="" />
+								Nível de experiência: <strong>76</strong><br />
+								Pontos de experiência: <strong>258859</strong><br />
+								Próximo nível em:<strong>260000</strong>
+						</div>
+											</div>
+										<div class="user_identity">
+						<a class="user_country" href="/br/country/society/Chile">
+										<img src="http://s1.www.erepublik.net/images/flags_png/S/Chile.png" alt="" />
+													</a>
+						<a class="user_name" href="/br/citizen/profile/5313713">
+							nW0lf						</a>
+					</div>
+																				<div class="user_health">
+						<script type="text/javascript">
+							var reset_health_to_recover = 1000;
+							var reset_has_food = 3;
+							var show_reset = true;
+							var new_date = '272';
+							globalNS.userInfo.wellness = 568;
+							globalNS.userInfo.specialFoodAmount = 35;
+							globalNS.userInfo.specialFoodValue = 200;
+                            globalNS.userInfo.energyPerInterval = 40						</script>
+														<input type="hidden" value="f6f50a7f8cf9cdfb023b37158a9bfcdd" id="a69925ed4a6ac8d4b191ead1ab58e853">
+
+								<div class="health_bg">
+
+									<div class="health_bar full_width">
+										<img src="http://s1.www.erepublik.net/images/modules/sidebar/energy_bar_icon2.png" alt="" class="health_icon" />
+										<strong id="current_health">568 / 1000</strong>
+										<div class="progress" id="health_bar_progress" style="width:56%">
+											<q></q>
+										</div>
+										<div class="back_progress" id="health_back_progress" style="width: 64.8%"></div>
+									</div>
+									
+									                                    
+<script type="text/javascript" src="/js/jquery.zclip.js"></script>
+
+<script>
+
+	window.twttr = (function (d,s,id) {
+	 var t, js, fjs = d.getElementsByTagName(s)[0];
+	if (d.getElementById(id)) return; js=d.createElement(s); js.id=id;
+	js.src="https://platform.twitter.com/widgets.js"; fjs.parentNode.insertBefore(js, fjs);
+	return window.twttr || (t = { _e: [], ready: function(f){ t._e.push(f) } });
+	}(document, "script", "twitter-wjs"));
+
+	function shareSuccess(jsonParam) {
+        $j.post('/en/main/invite-reward', {_token: $j('#_token').val()},
+                    function(data) {
+                        if(data.success) {
+                        	$j('#invite_step1').css("display", "none");
+                        	$j('.invite_friends_reward_pop').lightbox_me({'centered':true});
+                        }
+                    },
+                    'json'
+                );
+
+	}
+
+	function inviteFriends(platform) {
+
+        if(typeof erepublik.citizen.hasCoreLoopAccess != 'undefined' && erepublik.citizen.hasCoreLoopAccess == true){
+            //track in ga
+            _gaq.push(['_trackEvent', 'CoreLoop', 'invite_'+platform]);
+        }
+
+		var url = 'http://www.erepublik.com/br/main/oauth2-callback/'+platform;
+
+		try {
+				var x = 600;
+				var y = 550;
+				switch(platform.toLowerCase()) {
+					case 'msn':
+						x += 350;
+						y += 50;
+					break;
+				}
+				getOauthContacts(url, "oauthInviteFriends", x, y);
+		}
+		catch(e){console.log(e);}
+	}
+
+	var oauthWindow = false;
+
+	function doInviteFriends(platform, get) {
+
+		var url = 'http://www.erepublik.com/br/main/oauth2-callback/'+platform;
+		oauthWindow.close();
+
+		var contacts = $j.get(url, get,
+		   function(data){
+
+				$j('#facebook_invite_container').html(data);
+				pop_up_rendered = true;
+		   });
+	}
+
+	function getOauthContacts(url, name, width, height) {
+			var isResizeAble = false;
+			var left = Math.round((screen.width - width) / 2);
+			var itop = Math.round((screen.height - height) / 2);
+			var styleStr = "";
+			styleStr += 'height=' + height+','+'width=' + width;
+			styleStr += 'toolbar=no,location=no,directories=no,status=no,menuBar=no,scrollbars=yes';
+			styleStr += ',resizable=' + (isResizeAble ? 'yes' : 'no');
+
+			styleStr += ',left=' + left + ',top=' + itop;
+			//styleStr += ',screenX=' + left + ',screenY=' + itop;
+			try {
+				var res = window.open(url, name, styleStr);
+				oauthWindow = res;
+				res.focus();
+				window.childW = res;
+			}
+			catch(e) {alert(e);}
+			return res;
+		}
+
+
+	$j(document).ready(function(){
+
+		$j('a.invite_friends,#gold_bonus_invite_friends, a.militaty_empire, .invite_anniversary_bonus, #inviteFriendsGoldBonus').click(function() {
+			$j('#invite_step1').lightbox_me({
+				centered: true,
+				overlayCSS: {background:'black', opacity: .7, zIndex: 9000},
+				onLoad: function() {
+
+					if(typeof erepublik.citizen.hasCoreLoopAccess != 'undefined' && erepublik.citizen.hasCoreLoopAccess == true){
+						//track in ga
+						_gaq.push(['_trackEvent', 'CoreLoop', 'invite_start']);
+					}
+
+					setCopyButton = function() {
+						$j("#copy_link").zclip({
+							path:'http://www.erepublik.com/js/ZeroClipboard1.swf',
+							copy:$j('#personal_link').val(),
+							afterCopy:function(){
+                                if(typeof erepublik.citizen.hasCoreLoopAccess != 'undefined' && erepublik.citizen.hasCoreLoopAccess == true){
+                                    //track in ga
+                                    _gaq.push(['_trackEvent', 'CoreLoop', 'clipboard_share']);
+                                }
+								$j('#personal_link').addClass("highlight");
+								setTimeout(function() {
+									$j('#personal_link').removeClass("highlight");
+								}, 1000);
+							}
+						});
+					}();
+
+					//window.setCopyButton();
+				}
+			});
+			return false;
+		});
+
+		$j('#share').click(function(){
+			//$j('#invite_step1').trigger('close');
+            if(typeof erepublik.citizen.hasCoreLoopAccess != 'undefined' && erepublik.citizen.hasCoreLoopAccess == true){
+                //track in ga
+                _gaq.push(['_trackEvent', 'CoreLoop', 'facebook_share']);
+            }
+			$j('#invite_step1').css('display', 'none');
+			FB.ui(obj, callback);
+		});
+
+        $j('a.twitter-share-button').click(function(){
+            if(typeof erepublik.citizen.hasCoreLoopAccess != 'undefined' && erepublik.citizen.hasCoreLoopAccess == true){
+                //track in ga
+                _gaq.push(['_trackEvent', 'CoreLoop', 'twitter_share']);
+            }
+        });
+
+        $j('#invite_step1 a.close').click(function(){
+            if(typeof erepublik.citizen.hasCoreLoopAccess != 'undefined' && erepublik.citizen.hasCoreLoopAccess == true){
+                //track in ga
+                _gaq.push(['_trackEvent', 'CoreLoop', 'invite_close']);
+            }
+        });
+        if(typeof twttr !== 'undefined') {
+        	twttr.ready(function(twttr) {
+        	    twttr.events.bind('tweet', function (event) {
+        	        shareSuccess();
+        	    });
+        	});
+        }
+
+		var obj = {
+		  method: 'feed',
+		  link: 'http://www.erepublik.com/br/referrer/nW0lf',
+		  picture: 'http://www.erepublik.net/images/erepublik_logo.jpg',
+		  name: 'eRepublik',
+		  caption: 'Free Online Multiplayer Strategy Game',
+		  description: 'Join me in eRepublik and I will guide your steps into discovering your calling in the New World! Being a cunning politician, a fierce military commander or a media mogul!',
+		  display: 'popup'
+		};
+
+		var callback = function(response) {
+			$j('#invite_step1').css('display', 'block');
+			if (response && response.post_id) {
+				shareSuccess();
+			}
+			//$j('a.invite_friends, a.militaty_empire').trigger('click');
+		}
+	});
+</script>
+<div class="facebook_friends" id="invite_step1">
+	<a href="javascript:;" class="close" title="Fechar janela"><span>Fechar</span></a>
+	<h2>Convidar amigos</h2>
+
+	
+	
+	
+	<div class="listing">
+		<span>Convide amigos das suas listas de contato</span>
+		<a class="invite invite_yahoo" href="javascript:inviteFriends('yahoo');" title="Convidar amigos do Yahoo">Convidar amigos do Yahoo</a>
+		<a class="invite invite_gmail" href="javascript:inviteFriends('google');" title="Convidar amigos do Gmail">Convidar amigos do Gmail</a>
+		</div>
+
+		<div class="listing">
+		   <div id="fb-root"></div>
+		   <script src="//connect.facebook.net/en_US/all.js"></script>
+		   <script>
+			   window.fbAsyncInit = function() {
+				// init the FB JS SDK
+				FB.init({
+					appId: '300511377223',
+					status: true,
+					cookie: true,
+					xfbml: true,
+					channelUrl: 'http://www.erepublik.com/xd_receiver.htm'
+				});
+				// Additional initialization code such as adding Event Listeners goes here
+
+			   };
+
+			   (function(d, debug) {
+				var js, id = 'facebook-jssdk',
+					ref = d.getElementsByTagName('script')[0];
+				if (d.getElementById(id)) {
+					return;
+				}
+				js = d.createElement('script');
+				js.id = id;
+				js.async = true;
+				js.src = "//connect.facebook.net/en_US/all" + (debug ? "/debug" : "") + ".js";
+				ref.parentNode.insertBefore(js, ref);
+			   }(document, /*debug*/ false));
+		   </script>
+			<span>Partilha o teu link pessoal</span>
+
+			<input type="text" value="http://www.erepublik.com/br/referrer/nW0lf" class="" id="personal_link" name="personal_link" readonly="readonly" />
+			<a href="javascript:;" class="copy_clipboard" id="copy_link" title="Copiar para área de transferência">Copiar para área de transferência</a>
+
+			<ul class="social_btn">
+				<li>
+					<a href="javascript:;" id="share">Share</a>
+				</li>
+				<li>
+					<a href="https://twitter.com/share" class="twitter-share-button" data-url="http://www.erepublik.com/br/referrer/nW0lf" data-count="none">Tweet</a>
+				</li>
+			</ul>
+		</div>
+		</div>
+<!--<a href="javascript:;" id="bclick" style="margin-bottom:15px;display:block;">
+	<img src="http://s2.www.erepublik.net/images/modules/banners/cvote.jpg" alt="" />
+</a>-->
+<script>
+var pop_up_rendered = false;
+$j(document).ready(function(){
+	$j('#bclick').click(function(event){
+		 event.preventDefault();
+		FB.login(function(response){
+			if(response.status == 'connected') {
+
+				if(pop_up_rendered) {
+					openInvitePop();
+				} else {
+					$j.get('/br/main/facebook-get-friends', function(data){
+						$j('#facebook_invite_container').html(data);
+						pop_up_rendered = true;
+						openInvitePop();
+					});
+				}
+
+			}
+		}, {scope:'email'});
+	});
+});
+</script>
+<div id="facebook_invite_container">
+</div>
+
+
+								</div>
+
+								<a href="javascript:;" title="" class="eat_food_wide      reset" id="DailyConsumtionTrigger">
+									<img src="http://s2.www.erepublik.net/images/modules/sidebar/eating.gif" id="eatload" alt="" width="152" height="36"/>
+
+									<q><div>
+											<span>
+												<img alt="" class="warn" src="http://s3.www.erepublik.net/images/modules/_icons/swarning.png" />
+											</span>
+											<input type="hidden" id="eat_energy_text" value="Barra de cereais" />
+											<input type="hidden" id="eat_food_text" value="Recuperar Energia" />
+											<input type="hidden" id="buy_food_text" value="Comprar alimento" />
+											<strong id="foodText">Recuperar Energia</strong>
+									</div></q>
+								</a>
+
+								                                <p title="Recover 40 Energy every 6 minutes until Day 2,415 00:00:02" class="recover_health boosted" id="foodResetHoursContainer" style="display: none;">Recupera mais <strong>40</strong> em <em id="foodResetHours">00:05:59</em></p>
+
+												<div id="eatFoodTooltip" class="simple_yellow" style="display:none; width: 250px; position: absolute; top: 80px;">
+							<input type="hidden" id="valid_for_energy_text" value="Vais consumir uma Barra de Energia para recuperares energia. Isto não afecta a quantidade de energia que podes recuperar comendo.">
+							<input type="hidden" id="valid_for_winter_treat_text" value="You will consume a Treat to recover Energy. This does not affect the amount of Energy you can recover by eating food.">
+							<input type="hidden" id="valid_for_food_text" value="Esta acção recupera tanta Energia quanta possível consumindo Comida do teu Armazém.">
+							<input type="hidden" id="valid_for_buy_text" value="Consumiste toda a comida do teu Armazém. Compra mais para recuperares a tua Energia.">
+							<img src="http://s3.www.erepublik.net/images/modules/sidebar/yellow_arrow_tip.png" class="tip" alt="" />
+							<p>
+																Esta acção recupera tanta Energia quanta possível consumindo Comida do teu Armazém.															</p>
+
+														<p style="margin:0">
+								Podes recuperar mais <big class="tooltip_health_limit">80</big> de Energia								<img class="mini_health" src="http://s3.www.erepublik.net/images/modules/_icons/mini_energy.png" alt="" />
+							</p>
+						</div>
+
+						<div id="wellnessTooltip" class="simple_yellow" style="display:none;width:250px; position: absolute; top: 35px;">
+							<img src="http://s3.www.erepublik.net/images/modules/sidebar/yellow_arrow_tip.png" class="tip" alt="" />
+							&bull;&nbsp;Trabalhar, treinar e lutar decresce a tua Energia<br />
+							&bull;&nbsp;Comida, Barras de Energia e Kits de Primeiros Socorros restauram Energia.						</div>
+					</div>
+										
+				</div>
+								<div class="user_finances">
+					<div class="gold_amount">
+						<p>
+							<img src="http://s2.www.erepublik.net/images/modules/_icons/gold_icon.png" alt="Gold" />
+							<strong id="side_bar_gold_account_value">588</strong>&nbsp;<span>Gold</span>
+						</p>
+											</div>
+					<div class="currency_amount">
+						 <p>
+							<img src="http://s2.www.erepublik.net/images/flags_png/S/Armenia.png" alt="AMD" title="AMD" />
+							<strong id="side_bar_currency_account_value">42,114</strong>&nbsp;<span>AMD</span>
+						 </p>
+					</div>
+				</div>
+																		<div class="award_pop_up">
+			<input type="hidden" name="_token" value="f6f50a7f8cf9cdfb023b37158a9bfcdd" id="award_token" />
+</div>
+<script type="text/javascript">
+$j(document).ready(function() {
+	$j('.reward_pop_box div, .popup_reward_image').tipsy({
+		gravity: 's',
+		html: true
+	});
+	$j('.reward_pop_box .custom_reward_tooltip').tipsy({
+		gravity: 's',
+		html: true,
+		title: function() {
+			return $j(this).find('.reward_tooltip').html();
+		}
+	});
+});
+</script>
+								<div id="award_pop_up_ajax">
+				</div>
+				<div class="user_notify">
+									</div>
+								
+								
+				
+				
+				<div id="limit_health_pop" class="health_limit energ_limit">
+					<h2>Adquire mais energia!</h2>
+					<p>
+						Você atingiu o limite de consumo de alimentos.<br />
+						Podes recuperar 10 de energia a cada 6 minutos.					</p>
+					<div class="time_left">
+						<small>Recupera mais <strong>10</strong> em</small>
+						<em id="pop_timer">00:00:00</em>
+					</div>
+					<a href="/br/get-gold/health" class="get_health_text energy_bar" title="Comprar Barras de energia"><span>Comprar Barras de energia</span></a>
+					<a href="javascript:;" class="green_go" id="close_limit_health">Fechar</a>
+				</div>
+				
+
+
+
+		<script type="text/javascript">
+			function sidebar_tooltip(trigger, tooltip){
+				$j(trigger).hover(
+					function() { $j(tooltip).css({ display: "block" }); },
+					function() { $j(tooltip).css({ display: "none" }); }
+				);
+			}
+			$j(document).ready(function() {
+					sidebar_tooltip("#current_health", "#wellnessTooltip");
+					sidebar_tooltip(".user_progress", "#experienceTooltip");
+					sidebar_tooltip("#DailyConsumtionTrigger", "#eatFoodTooltip");
+			});
+						linkForBuy = '/br/economy/market/64/1';
+			textForBuy = "Comprar alimento";
+			food_remaining = parseInt("80", 10);
+			var smallestFood = {"q":"1","use":2};
+					</script>
+
+
+		<script type="text/javascript">
+			var upgrade_town_hall_url = 'http://www.erepublik.com/br/main/upgrade-town-hall';
+		</script>
+
+									
+		<input type="hidden" id="has_bonus_buildings" name="has_bonus_buildings" value="2">
+	
+		
+
+
+			</div>
+	<!-- end sidebar container -->
+
+	<!-- </div> -->
+	<!-- end sidebar -->
+		<div class="sidebar_banners_area">
+						
+		
+		
+		<script type="text/javascript" src="http://www.erepublik.com/js/jquery.mousewheel.min.js"></script>
+<script type="text/javascript" src="http://www.erepublik.com/js/jquery.mCustomScrollbar.min.js"></script>
+<script type="text/javascript" src="http://www.erepublik.com/js/jquery.dd3.min.js"></script>
+<link rel="stylesheet" href="http://www.erepublik.net/css/cmp/jquery.mCustomScrollbar.css" type="text/css" />
+
+<div id="promoPopupHolder" style="display:none;">
+    <a href="javascript:;" class="close_action close" title="Fechar janela">
+        <img src="http://s2.www.erepublik.net/images/modules/pvp/close_button.png" alt="" />
+    </a>
+</div>
+
+<script type="text/javascript">
+	var erepublik = erepublik || {};
+	$j.extend(erepublik.i18n, obj = {
+		donateToFriend: {
+			close:								"Fechar",
+			write_message:						"Acrescenta uma mensagem",
+			hide_save:							"Oculta&Guarda",
+			gift_amount_unavailable:			"Amount unavailable!",
+			receiver_must_not_be_sender:		"You cannot donate to yourself!",
+			warning_transaction_in_progress:	"<em>Este item pode estar indisponível!</em>\n Outro jogador começou a comprar este item antes de ti.\n O teu amigo só pode receber este item uma vez, por isso a tua compra pode ser convertida num tradicional Pacote de 25 golds. \n Aconselhamos-te a tentar outra vez mais tarde ou a enviar outro presente."
+		}
+	});
+
+	promoPopup = {
+	    packWithPayments : ['starterPack', 'stashPack', 'assaultPack', 'powerPack', 'giftsPack'],
+
+	    renderPopup: function(pack, returnTo, friend){
+	        var goBackUrlRel = false;
+	        var callUrl = '/' + erepublik.settings.culture;
+	        switch (pack){
+	            case 'starterPack':
+	                callUrl = "/" + erepublik.settings.culture + "/main/promo-packs/?pack=starter_pack";
+	                goBackUrlRel =  'buyForFriend';
+	            break;
+	            case 'powerPack':
+	                callUrl = "/" + erepublik.settings.culture + "/main/promo-packs/?pack=power_pack";
+	                goBackUrlRel =  'buyForFriend';
+	            break;
+	            case 'assaultPack':
+	                callUrl = "/" + erepublik.settings.culture + "/main/promo-packs/?pack=assault_pack";
+	                goBackUrlRel =  'buyForFriend';
+	            break;
+	            case 'stashPack':
+	                callUrl = "/" + erepublik.settings.culture + "/main/promo-packs/?pack=stash_pack";
+	                goBackUrlRel =  'buyForFriend';
+	            break;
+	            case 'giftsPack':
+	                callUrl = "/" + erepublik.settings.culture + "/main/promo-packs/?pack=gifts_pack";
+	                goBackUrlRel =  'buyForFriend';
+	            break;
+	            case 'ncGoldRush':
+	                callUrl = "/" + erepublik.settings.culture + "/main/promo-packs/?pack=nc_gold_rush";
+	                goBackUrlRel =  'buyForFriend';
+	            break;
+	            case 'forFriendPopup':
+
+	                callUrl = "/" + erepublik.settings.culture + "/main/buy-forfriend?to_citizen_id=" + friend;
+	            break;
+	        }
+
+	        var contentLabel = pack;
+	        $j("#promoPopupHolder").trigger('close');
+
+	        if ( parseInt(friend,10) && friend > 0 && pack !== 'forFriendPopup' ) {
+	            callUrl += '&to_citizen_id=' + friend;
+	            contentLabel = pack + 'Friend';
+	            $j("#promoPopupHolder").removeClass().addClass('gifts_popup');
+	        }
+
+	        $j.ajax({
+	            type: "GET",
+	            beforeSend: function(pack) {
+		            if ( $j.inArray(pack, this.packWithPayments)) {
+		                var head= document.getElementsByTagName('head')[0];
+		                var script= document.createElement('script');
+		                script.type= 'text/javascript';
+		                script.src= 'https://www.paypalobjects.com/js/external/dg.js';
+		                head.appendChild(script);
+
+		                var script2= document.createElement('script');
+		                script2.type= 'text/javascript';
+		                script2.src= 'http://static.pbc.com/js/ultimatepay-api.js';
+		                head.appendChild(script2);
+		            }
+	            },
+	            url: callUrl
+	            })
+	            .done(function( msg ) {
+		            setTimeout(function(){
+		                if(!$j("#promoPopupHolder").data('content') || $j("#promoPopupHolder").data('content') != contentLabel ) {
+		                    $j("#promoPopupHolder").html(msg);
+		                    $j("#promoPopupHolder").data('content', contentLabel );
+		                }
+
+		                if( goBackUrlRel ) {
+		                    $j("#goBackPromo").attr('rel', goBackUrlRel);
+		                    $j("#goBackPromo").attr('data-id', friend);
+		                }
+
+		                $j("#promoPopupHolder").lightbox_me({
+		                    centered: true,
+		                    closeClick: false,
+		                    closeEsc: true
+		                });
+		            },150);
+	        });
+	    }
+	}
+
+	//new general popups
+	generalPopup = {
+		
+	    renderPopup: function(generalPopupName){
+	        var callUrl = '/' + erepublik.settings.culture;
+	        switch (generalPopupName) {
+	            case 'ncGoldRush':
+	                callUrl = "/" + erepublik.settings.culture + "/main/citizenship-banner";
+	            break;
+	        }
+
+	        var contentLabel = 'banner';
+	        $j("#promoPopupHolder").trigger('close');
+
+	        $j.ajax({
+	            type: "GET",
+	            url: callUrl
+	            })
+	            .done(function( msg ) {
+		            setTimeout(function(){
+		                if(!$j("#promoPopupHolder").data('content') || $j("#promoPopupHolder").data('content') != contentLabel ) {
+		                    $j("#promoPopupHolder").html(msg);
+		                    $j("#promoPopupHolder").data('content', contentLabel );
+		                }
+
+		                 $j("#promoPopupHolder").lightbox_me({
+		                    centered: true,
+		                    closeClick: false,
+		                    closeEsc: true
+		                });
+		            },150);
+	        });
+	    }
+	}
+	//end new general popups
+
+$j(document).ready(function() {
+	var friend, pack, returnTo, generalPopupName;
+
+    $j('#pop_starter_pack').click(function(){
+        friend = 0;
+        pack = 'starterPack';
+        returnTo = false;
+        $j("#promoPopupHolder").removeClass();
+        promoPopup.renderPopup(pack, returnTo, friend);
+    });
+
+    $j('#pop_stash_pack').click(function(){
+        friend = 0;
+        pack = 'stashPack';
+        returnTo = false;
+        $j("#promoPopupHolder").removeClass();
+        promoPopup.renderPopup(pack, returnTo, friend);
+    });
+
+    $j('#pop_assault_pack').click(function(){
+        friend = 0;
+        pack = 'assaultPack';
+        returnTo = false;
+        $j("#promoPopupHolder").removeClass();
+        promoPopup.renderPopup(pack, returnTo, friend);
+    });
+
+    $j('#pop_power_pack').click(function(){
+        friend = 0;
+        pack = 'powerPack';
+        returnTo = false;
+        $j("#promoPopupHolder").removeClass();
+        promoPopup.renderPopup(pack, returnTo, friend);
+    });
+
+	$j('#donate_to_friend').click(function(){
+		friend = $j(this).attr('data-id');
+		pack = 'forFriendPopup';
+		returnTo = false;
+		$j("#promoPopupHolder").removeClass().addClass('allPackPopup');
+		promoPopup.renderPopup(pack, returnTo, friend);
+	});
+
+	$j('#nc_gold_rush_banner').click(function(){
+		generalPopupName = 'ncGoldRush';
+		generalPopup.renderPopup(generalPopupName);
+	});
+
+    $j('#goBackPromo').live('click', function() {
+        var toContent = $j(this).attr('rel');
+        var friendId = $j(this).attr('data-id');
+
+		switch (toContent) {
+			case 'buyForFriend':
+				toUrl = "/" + erepublik.settings.culture + "/main/buy-forfriend?to_citizen_id=" + friendId;
+				break;
+			default:
+				break;
+		}
+
+         $j.ajax({
+			type: "GET",
+			url:  toUrl
+            })
+            .done(function( msg ) {
+                setTimeout(function(){
+                    if(!$j("#promoPopupHolder").data('content') || $j("#promoPopupHolder").data('content') != toContent  ) {
+                        $j("#promoPopupHolder").html(msg);
+                        $j("#promoPopupHolder").data('content', toContent);
+                    }
+
+                    $j("#promoPopupHolder").removeClass().addClass('allPackPopup');
+
+                    $j("#promoPopupHolder").lightbox_me({
+                        centered: true,
+                        closeClick: false,
+                        closeEsc: true
+                    });
+                },150);
+
+              });
+    });
+
+});
+</script>
+		
+		<script type="text/javascript">
+		$j('.mission_new_path_sidebar b').countdown({until: 0, format: 'HMS', compact: true, description: ''});
+	</script>
+
+            	
+	
+		    	
+
+									<script type="text/javascript">
+			$j(document).ready(function() {
+				$j('a.military_tournament_small b').countdown({until: '96832', format: 'HMS', compact: true, description: ''});
+			});
+		</script>
+		<a class="military_tournament_small version2014 mu_tournament_more_info" href="javascript:;" title="Ver detalhes">
+			<span class="cd_title">Tempo restante:</span>
+			<b>00:00:00</b>
+			<span class="button_text">Ver detalhes</span>
+		</a>
+		<div id="mu_tournament_tutorial" class="mu_tournament_tutorial">
+	<a href="javascript:;" class="close">x</a>
+	<ul>
+		<li class="active"><a title="Descrição do Torneio" href="javascript:;">Descrição</a></li>
+		<li><a title="Competição de Unidades Militares" href="javascript:;">Competição de Unidades Militares</a></li>
+		<li><a title="Competição de Regimento" href="javascript:;">Competição de Regimento</a></li>
+		<li><a title="Regras & Elegibilidade" href="javascript:;">Regras & Elegibilidade</a></li>
+	</ul>
+	<div class="page p1 active" id="page1">
+		<table>
+			<tr>
+				<td colspan="2"><p>Play as team with your comrades and countrymen to accomplish these three goals:</p></td>
+			</tr>
+			<tr>
+				<td colspan="2" style="padding-top: 30px;"><p><strong>1. Coloca a tua Unidade Militar no Top 3 Nacional na Tabela de Dano da tua divisão</strong></p></td>
+			</tr>
+			<tr>
+				<td colspan="2"><p>...e ganhar Contratos de Treino, Barras de Energia e dinheiro para você e para sua Unidade Militar!</p></td>
+			</tr>
+			<tr>
+				<td style="padding: 5px 0 0 100px;"><a class="link_btn" href="http://www.erepublik.com/br/main/leaderboards-damage?showDivisions=true&division=4" target="_blank"><span>Ver as classificações</span></a></td>
+				<td style="padding: 5px 100px 0 0; text-align: right;"><a id="see_prizes_mu" class="link_btn" href="javascript:;">Ver a lista de prêmios</a></td>
+			</tr>
+			<tr>
+				<td colspan="2" style="padding-top: 15px;"><p><strong>2. Fazer parte do Top 25 MUNDIAL de regimentos</strong></p></td>
+			</tr>
+			<tr>
+				<td colspan="2"><p>...e você pode ajudar o seu país a ganhar um bônus de Determinação, além de 300,00 moedas para a sua unidade e seus membros!</p></td>
+			</tr>
+			<tr>
+				<td style="padding: 5px 0 0 100px;"><a class="link_btn" href="http://www.erepublik.com/br/main/leaderboards-damage?showRegiments=true" target="_blank">Ver as classificações</a></td>
+				<td style="padding: 5px 100px 0 0; text-align: right;"><a id="see_prizes_regiment" class="link_btn" href="javascript:;">Ver a lista de prêmios</a></td>
+			</tr>
+			<tr>
+				<td colspan="2" style="padding-top: 15px;"><p><strong>3. Classifique-se para a FINAL da Copa do Novo MUndo</strong></p></td>
+			</tr>
+			<tr>
+				<td colspan="2"><p>Os países com mais regimentos no Top 100 classificarão-se para um torneio separado, que envolverá Minas de Ouro! Apenas os 8 primeiros países irão se classificar!</p></td>
+			</tr>
+			<tr>
+				<td colspan="2"><span style="width: 560px; display: block; border-top: 1px solid rgba(255,255,255,0.2); margin: 15px auto 3px; "></span></td>
+			</tr>
+			<!-- <tr>
+				<td colspan="2"><p><b>Regras & Elegibilidade</b></p></td>
+			</tr>
+			<tr>
+				<td colspan="2" style="padding-top: 2px;"><p>Mover-te para outra Unidade Militar não vale: o teu dano será contado na Unidade Militar onde estavas às 9h00 do horário do eRepublik, do Dia 2,257</p></td>
+			</tr>
+			<tr>
+				<td colspan="2"><p>Para seres elegível para qualquer prêmio, tens de ganhar pelo menos 500 Pontos de Prestígio.</p></td>
+			</tr> -->
+			<tr>
+				<td colspan="2" style="padding-top: 3px;"><p id="read_the_rules">Para uma experiência tranquila durante o torneio, por favor não deixe de <strong> ler as regras.</strong></p></td>
+			</tr>
+		</table>
+		<a href="javascript:;" class="nav gonext set_right">Avançar</a>
+	</div>
+	<div class="page p2" id="page2">
+		<table>
+			<tr>
+				<td>
+					<p>Os vencedores são as <strong>TOP 3</strong> unidades nas Tabelas de Dano de <strong> cada divisão</strong> em <strong>cada país</strong>.					 As recompensas são atribuídas a cada posição Top 3 obtida, por isso obtém o máximo possível!</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="padding: 20px 0 8px;"><p>Dependendo da posição final da tua Unidade Militar, podes ganhar até:</p></td>
+			</tr>
+			<tr>
+				<td>
+					<ul style="margin-left: 220px;">
+						<li><strong>19 days of -99% Training Contract</strong></li>
+						<li><strong>19 Barras de Energia</strong></li>
+						<li><strong>19 x 50% Amplificador de Dano por 20 minutos</strong></li>
+					</ul>
+				</td>
+			</tr>
+			<tr>
+				<td style="padding: 15px 0 0;"><p><strong>Sua Unidade Militar pode ganhar grandes quantias de moedas baseadas em sua colocação no ranking e pela quantidade de oponentes derrotados durante o torneio.</strong></p></td>
+			</tr>
+			<tr>
+				<td><span style="width: 560px; display: block; border-top: 1px solid rgba(255,255,255,0.2); margin: 30px auto 3px; "></span></td>
+			</tr>
+			<tr>
+				<td style="text-align: center;"><a href="http://www.erepublik.com/en/main/latest-updates/0/147" target="_blank" style="font-size: 11px;">Veja a lista detalhada de prêmios</a></td>
+			</tr>
+		</table>
+		<a href="javascript:;" class="nav goprev set_left">Voltar</a>
+		<a href="javascript:;" class="nav gonext set_right">Avançar</a>
+	</div>
+	<div class="page p3" id="page3">
+		<table>
+			<tr>
+				<td>
+					<p>Regiments are ranked based on their damage in the international Regiment Leaderboard.</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="padding: 18px 0 8px 0;">
+					<p style="font-weight:bold;">Prêmio de Regimento</p>
+				</td>
+			</tr>
+			<tr>
+				<td><p>The best 25 regiments will get Elite Status and 50,000 currency for their Military Units, as well as 250,000 currency divided equally between eligible members of the regiment.</p></td>
+			</tr>
+			<tr>
+				<td style="padding: 10px 0 8px 0;"><p><strong>Qualquer regimento, de acordo com seus Pontos de Prestígio acumulados, pode tornar a Bazooka de 2 a 75 vezes mais potente por 7 dias!</strong></p></td>
+			</tr>
+			<tr>
+				<td style="padding: 10px 0 8px 0;">
+					<p style="font-weight:bold;">Prêmio Nacional</p>
+				</td>
+			</tr>
+			<tr>
+				<td><p>Países com o maior número de regimentos no Top 100 irão receber:</p></td>
+			</tr>
+			<tr>
+				<td><p style="line-height: 20px; margin-top: 10px;"><strong>1º lugar: +1 Determinação por 10 dias em todas as batalhas</strong></p></td>
+			</tr>
+			<tr>
+				<td><p style="line-height: 20px;"><strong>2º lugar: +1 Determinação por 10 dias quando atacarem</strong></p></td>
+			</tr>
+			<tr>
+				<td><p style="line-height: 20px;"><strong>3º lugar: +0.5 Determinação por 10 dias quando atacarem</strong></p></td>
+			</tr>
+			<tr>
+				<td style="padding: 10px 0 8px 0;"><p><strong>1º-8º lugar: classifique-se para a Final da Copa do Mundo para competir pelas Minas de Ouro!</strong> Mais detalhes serão divulgados em breve!</p></td>
+			</tr>
+		</table>
+		<a href="javascript:;" class="nav goprev set_left">Voltar</a>
+		<a href="javascript:;" class="nav gonext set_right">Avançar</a>
+	</div>
+	<div class="page p4" id="page4">
+		<table>
+			<tr>
+				<td>
+					<p><strong>O torneio ocorrerá entre os Dias 2,408 e 2,414 do Novo Mundo.</strong></p>
+				</td>
+			</tr>
+			<tr>
+				<td style="padding: 15px 0 0 0;">
+					<p><strong>Todo o dano e golpes feitos por um cidadão serão adicionados ao dano da Unidade Militar e do Regimento que ele/ela estava filiado quando o torneio teve início. Resignar ou se transferir para outra Unidade Militar não irá produzir efeitos neste torneio.</strong></p>
+				</td>
+			</tr>
+			<tr>
+				<td style="padding: 18px 0 0 0;">
+					<p>- Se o cidadão nao for membro de nenhuma unidade no momento do anúncio, o seu dano será contabilizado na primeira unidade a que se junte.</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="padding: 16px 0 0 0;">
+					<p>- O dano de um cidadão contará (neste torneio) unicamente para a divisão em que se encontra no momento de anúncio do torneio, mesmo que posteriormente suba para outra divisão.</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="padding: 16px 0 0 0;">
+					<p>- In order to be eligible for any prizes, citizens must reach a target of 500 Prestige Points until the end of the tournament.</p>
+				</td>
+			</tr>
+			<tr>
+				<td style="padding: 28px 0 0 0;">
+					<p>Obrigado por leres as regras e boa sorte no campo de batalha!</p>
+				</td>
+			</tr>
+			<tr>
+				<td><span style="width: 560px; display: block; border-top: 1px solid rgba(255,255,255,0.2); margin: 30px auto 3px; "></span></td>
+			</tr>
+			<tr>
+				<td style="padding: 0 0 0 0;">
+					<p><a href="http://www.erepublik.com/en/main/latest-updates/0/147" target="_blank">Podes saber mais sobre o torneio e como os prêmios são atribuídos em Últimas Atualizações.</a></p>
+				</td>
+			</tr>
+		</table>
+		<a href="javascript:;" class="nav goprev set_left">Voltar</a>
+	</div>
+</div>
+
+<script type="text/javascript">
+$j(function() {
+
+    if ($j.cookie('muTournamentPopup') === null) {
+		$j.cookie('muTournamentPopup', 1, {
+			expires: 365,
+			path: '/',
+			domain: erepublik.settings.domainname
+		});
+		$j('.mu_tournament_tutorial').lightbox_me({
+            centered: true,
+            closeClick: false
+        });
+	}
+
+	$j('.mu_tournament_more_info').click(function(){
+		$j('.mu_tournament_tutorial').lightbox_me({
+			centered: true,
+			closeClick: false
+		});
+	});
+
+	function changePage(page) {
+		var current_page, current_page_index;
+
+		if(page === true) {
+			current_page = $j('.mu_tournament_tutorial .page.active');
+			current_page_index = current_page.index() - 1;
+		} else {
+			current_page = $j('.mu_tournament_tutorial .page.active');
+			current_page_index = page;
+		}
+
+		$j(".hint.no1, .hint.no3").tipsy({gravity: 's'});
+		$j(".hud .hint.no2").tipsy({gravity: 'se'});
+		$j(".infos .hint.no2").tipsy({gravity: 's'});
+		$j(".hint").tipsy();
+
+		$j('.mu_tournament_tutorial > ul li').removeClass('active');
+		$j('.mu_tournament_tutorial > ul li').eq(current_page_index).addClass('active');
+		current_page.removeClass('active');
+		if(page === true) {
+			current_page.next().addClass('active')
+		} else {
+			$j('.mu_tournament_tutorial .page').eq(page).addClass('active');
+		}
+	}
+
+	$j('.mu_tournament_tutorial > ul li').click(function(){
+		changePage($j(this).index());
+	});
+
+	$j('.mu_tournament_tutorial #see_prizes_mu').click(function() {
+		changePage(1);
+	});
+
+	$j('.mu_tournament_tutorial #see_prizes_regiment').click(function() {
+		changePage(2);
+	});
+	$j('.mu_tournament_tutorial #read_the_rules strong').click(function() {
+		changePage(3);
+	});
+
+	$j('.mu_tournament_tutorial .goprev').click(function(){
+		changePage($j(this).parent().index()-3);
+	});
+
+	$j('.mu_tournament_tutorial .gonext').click(function(){
+		changePage(true);
+	});
+
+});
+</script>
+	
+	<a class="invite_anniversary_bonus" href="javascript:;" title="Convida amigos e ganha um bônus de 10% de todo o Gold que eles obtenham no eRepublik."></a>
+
+	
+	
+	
+	</div>
+</div>
+<!-- end large_sidebar -->
+</div>
+<!-- end sidebar_wrapper -->
+
+<div id="content" class="">
+
+
+<script type="text/javascript">
+	$j('.invite_anniversary_bonus, .tactical_heroes_notification').tipsy({
+		gravity: 'n'
+	})
+	$j('.mission_new_path_sidebar').click(function(){
+		$j('.mission_path_pop').lightbox_me({
+			centered: true
+		});
+	});
+</script>
+
+
+	<div id="pubnub" pub-key="pub-c-b8690376-f0ef-4228-9e0c-8a1ca6ed7bba" sub-key="sub-c-ee53c2ae-84a1-11e1-941d-0da3ff7904e6" uuid="5313713"></div>
+
+	<script type="text/javascript">
+		var erpkChat =new Object();
+		erpkChat.citizenId = 5313713;
+		erpkChat.isMentor = 0;
+		erpkChat.chatStatus = 1;
+		erpkChat.chatDataFeedStatus = 1;
+	</script>
+
+	<link type="text/css" href="/cometchat/cometchatcss.php" rel="stylesheet" media="screen" />
+	<script type="text/javascript" src="/cometchat/cometchatjs.php" charset="utf-8"></script>
+	<script type="text/javascript">
+
+						erpkChat.roomId = 60;
+		erpkChat.roomName = 'VGVycmEgQnJhc2lsaXM=';
+		erpkChat.inviteId = 'd41d8cd98f00b204e9800998ecf8427e';
+		
+		
+
+		var onlineUsersTimer = setInterval(hideUserList, 500);
+
+		function hideUserList(){
+			if ( $j('#cometchat_userstab').length > 0 ){
+				$j('#cometchat_userstab').remove()
+				clearInterval(onlineUsersTimer);
+			}
+		}
+			</script>
+
+	<script type="text/javascript">
+	var MILITARY_UNIT_TEXTS = {
+		resign_from_commander_position_text: "Tem certeza de que deseja renunciar o posto de comandante? (Esta decisão não pode ser revertida)",
+        confirm_change_um_name: "Ao alterar o nome da unidade militar, será deduzida a quantia de 2 Gold da sua conta. Tem certeza?",
+        invalid_image_uploaded: "Imagem inválida carregada"
+	}
+</script>
+
+
+
+<form action="/br/main/group-members" method="post" name="groupActionsForm">
+	<input type="hidden" name="groupId" value="2245"/>
+	<input type="hidden" name="_token" value="f6f50a7f8cf9cdfb023b37158a9bfcdd" />
+	<input type="hidden" name="action" value="resign" />
+	</form>
+
+<div id="military_group_header">
+	<div class="military_logo ">
+		<a href="/br/main/group-show/2245" title="Terra Brasilis">
+							<img id="avatar" src="http://static.erepublik.net/uploads/avatars/Groups/2012/08/08/10907813b97e249163587e6246612e21_medium.jpg" alt="" />
+					</a>
+        <small id="logo_error"></small>
+			</div>
+	<div class="header_content">
+		<h2>
+            			<span>Terra Brasilis</span><big>569 Membros</big>
+            		</h2>
+		<div class="details">
+			<span id="error_message"></span>
+			<strong>Local:</strong>
+			<a href="/br/country/society/Brazil" title="">
+				<img src="http://static.erepublik.net/images/flags_png/S/Brazil.png" alt="Brasil" />
+				Brasil			</a>
+			
+						<img src="http://s1.www.erepublik.net/images/modules/militaryunits/separator.png" class="separator" alt="" />
+			<strong>Comandante:</strong>
+			<a href="/br/citizen/profile/666732" title="Lorenzo Lopes Riviera">Lorenzo Lopes Riviera</a>
+			
+
+			
+											<img src="http://s1.www.erepublik.net/images/modules/militaryunits/separator.png" class="separator" alt="" />
+				<a href="javascript:;" class="simple" title="" onclick="javascript: if(confirm('Quer mesmo sair da unidade militar?')) document.groupActionsForm.submit(); ">
+					<em></em>
+					<strong>Renunciar</strong>
+					<small>Terra Brasilis</small>
+				</a>
+						
+						
+						<img src="http://s1.www.erepublik.net/images/modules/militaryunits/separator.png" class="separator" alt="" />
+			<a href="http://www.erepublik.com/br/main/rankings-military/1/9">Exibir classificação </a>
+						
+						<a href="/br/main/group-show/2245?action=show" class="backmu big" title="Acessar perfil da unidade militar">Perfil da unidade &hellip;</a>
+			
+		</div>
+		<p class="simple" id="description_container">
+					<span id="editable_about">Bem vindos à nossa MU!!!!  Infos gerais: http://goo.gl/58ZnFR</span>
+		</p>
+	</div>
+</div>
+<div class="rightHolder" style="float:right;">
+</div>
+<script type="text/javascript">
+	var SERVER_DATA = {
+						culture            	: 'br',
+						csrfToken          	: 'f6f50a7f8cf9cdfb023b37158a9bfcdd',
+						groupId			   	: 2245,
+						regimentId 			: 0,
+						invite_url			: '/br/main/group-invite',
+						regiment_url		: '/br/main/group-list/members',
+						text_search_citizen : 'Procurar cidadão',
+						text_invite_citizen : 'Invite citizen'
+
+					};
+</script>
+<div id="members_holder">
+<div class="regiment_drop_down">
+    <select name="regiments_lists" id="regiments_lists" onchange="changeRegiment(this);">
+		<option value="12295" url="/br/main/group-list/members/2245/12295">
+	    Regimento 1	</option>
+		<option value="12392" url="/br/main/group-list/members/2245/12392">
+	    Regimento 2	</option>
+		<option value="12441" url="/br/main/group-list/members/2245/12441">
+	    Regimento 3	</option>
+		<option value="12513" url="/br/main/group-list/members/2245/12513">
+	    Regimento 4	</option>
+		<option value="12852" url="/br/main/group-list/members/2245/12852">
+	    Regimento 5	</option>
+		<option value="12906" url="/br/main/group-list/members/2245/12906">
+	    Regimento 6	</option>
+		<option value="13147" url="/br/main/group-list/members/2245/13147">
+	    Regimento 7	</option>
+		<option value="13235" url="/br/main/group-list/members/2245/13235">
+	    Regimento 8	</option>
+		<option value="13295" url="/br/main/group-list/members/2245/13295">
+	    Regimento 9	</option>
+		<option value="14675" url="/br/main/group-list/members/2245/14675">
+	    Regimento 10	</option>
+		<option value="14728" url="/br/main/group-list/members/2245/14728">
+	    Regimento 11	</option>
+		<option value="14738" url="/br/main/group-list/members/2245/14738">
+	    Regimento 12	</option>
+		<option value="14802" url="/br/main/group-list/members/2245/14802">
+	    Regimento 13	</option>
+		<option value="14837" url="/br/main/group-list/members/2245/14837">
+	    Regimento 14	</option>
+		<option value="15078" url="/br/main/group-list/members/2245/15078">
+	    Regimento 15	</option>
+		<option value="15380" url="/br/main/group-list/members/2245/15380">
+	    Regimento 16	</option>
+		<option value="15410" url="/br/main/group-list/members/2245/15410">
+	    Regimento 17	</option>
+		<option value="15538" url="/br/main/group-list/members/2245/15538">
+	    Regimento 18	</option>
+		<option value="15576" url="/br/main/group-list/members/2245/15576">
+	    Regimento 19	</option>
+		<option value="15617" url="/br/main/group-list/members/2245/15617">
+	    Regimento 20	</option>
+		<option value="15703" url="/br/main/group-list/members/2245/15703">
+	    Regimento 21	</option>
+		<option value="15752" url="/br/main/group-list/members/2245/15752">
+	    Regimento 22	</option>
+		<option value="15769" url="/br/main/group-list/members/2245/15769">
+	    Regimento 23	</option>
+		<option value="15785" url="/br/main/group-list/members/2245/15785">
+	    Regimento 24	</option>
+		<option value="15808" url="/br/main/group-list/members/2245/15808">
+	    Regimento 25	</option>
+		<option value="15960" url="/br/main/group-list/members/2245/15960">
+	    Regimento 26	</option>
+		<option value="15978" url="/br/main/group-list/members/2245/15978">
+	    Regimento 27	</option>
+		<option value="15993" url="/br/main/group-list/members/2245/15993">
+	    Regimento 28	</option>
+		<option value="16003" url="/br/main/group-list/members/2245/16003">
+	    Regimento 29	</option>
+		<option value="16021" url="/br/main/group-list/members/2245/16021">
+	    Regimento 30	</option>
+		<option value="16031" url="/br/main/group-list/members/2245/16031">
+	    Regimento 31	</option>
+		<option value="16096" url="/br/main/group-list/members/2245/16096">
+	    Regimento 32	</option>
+		<option value="16147" url="/br/main/group-list/members/2245/16147">
+	    Regimento 33	</option>
+		<option value="16184" url="/br/main/group-list/members/2245/16184">
+	    Regimento 34	</option>
+		<option value="16568" url="/br/main/group-list/members/2245/16568">
+	    Regimento 35	</option>
+		<option value="17123" url="/br/main/group-list/members/2245/17123">
+	    Regimento 36	</option>
+		<option value="17166" url="/br/main/group-list/members/2245/17166">
+	    Regimento 37	</option>
+	    </select>
+</div>
+<h3 style="border:none;padding:0;">Membros</h3>
+
+
+<div id="container_members">
+
+</div>
+
+
+
+<div id="error_holder_invite_friends">
+	<a href="javascript:;" id="closeMessages" class="closeMessagesCls">Close Messages</a>
+</div>
+
+<div class="clear"></div>
+<ul class="pager comments" style="margin-left:0; margin-top:30px" id="pagination">
+</ul>
+<input type="hidden" id="inviteMemberUrl" value="/br/main/group-invite" />
+<input type="hidden" id="groupId" value="2245" />
+<input type="hidden" id="_token" value="f6f50a7f8cf9cdfb023b37158a9bfcdd" />
+<input type="hidden" id="maxPage" value="1" />
+<input type="hidden" id="limit" value="50" />
+<input type="hidden" id="pageType" value="members" />
+</div>			</div>
+
+		<div id="footer" >
+                    		<p>
+				
+		<a href="/br/main/ga_track/wiki" target="_blank">Wiki</a> &nbsp; | &nbsp;
+		<a href="/br/main/ga_track/latest-updates" target="_blank">Últimas Actualizações</a> &nbsp; | &nbsp;
+		<a href="/br/main/ga_track/blog" target="_blank">Blog</a> &nbsp; | &nbsp;
+		<a href="/br/main/ga_track/contact" rel="nofollow" target="_blank">Contato</a> &nbsp; | &nbsp;
+		<a href="/br/main/ga_track/jobs" rel="nofollow" target="_blank">Oportunidades</a> &nbsp; | &nbsp;
+
+		<a href="/br/main/ga_track/terms" rel="nofollow" target="_blank">Termos de serviço</a> &nbsp; | &nbsp;
+		<a href="/br/main/ga_track/privacy" rel="nofollow" target="_blank">Privacidade</a>&nbsp; | &nbsp;
+		<a href="/br/main/ga_track/rules" rel="nofollow" target="_blank">Leis do eRepublik</a>
+
+
+				 		&nbsp; | &nbsp; <a href="/br/badges">Insígnias</a>
+		
+					&nbsp; | &nbsp; <a href="http://forum.erepublik.com/" target="_blank">Fórum</a>
+				
+
+		</p>
+		<p class="follow">Siga-nos:            <a href="http://www.facebook.com/pages/Erepublik/26897053321?ref=ts" title="Facebook" target="_blank"><img alt="Facebook" src="http://s3.www.erepublik.net/images/parts/facebook_small_icon.png" title="Facebook" />Facebook</a>
+            <a href="http://www.twitter.com/erepublik" title="Twitter" target="_blank"><img alt="Twitter" src="http://s2.www.erepublik.net/images/parts/twitter_small_icon.png" title="Twitter" />Twitter</a>
+            <a href="http://www.youtube.com/erepublikcom" title="Youtube" target="_blank"><img alt="Youtube" src="http://s2.www.erepublik.net/images/parts/youtube_icon.png" title="Youtube" />Youtube</a>
+            <a href="https://plus.google.com/+erepublik/" title="Google+" target="_blank"><img alt="Google+" src="http://s3.www.erepublik.net/images/parts/google_plus_icon.png" title="Google+" />Google+</a>
+            <a href="http://www.erepublik.com/en/main/news/rated/all/all/1/rss" class="rss_footer">Articles</a>
+                </p>
+	<p>Copyright &copy; 2007-2014&nbsp;eRepublik</p>
+</div>
+			</div>
+
+
+
+
+<script type="text/javascript">
+
+		function switchToMobileVersion()
+		{
+			$j.cookie('prefer_full_site', 'false', {
+				expires: 14, path: '/', domain: erepublik.settings.domainname
+			});
+			window.location = "http://m.erepublik.com/br/main/group-list/members/2245/";
+		}
+</script>
+		<script type="text/javascript" language="Javascript" charset="utf-8">
+			erepublik.functions.liveClock("live_time",21,5);
+		</script>
+
+<!-- Correct fb_xd_fragment Bug Start -->
+<script type="text/javascript">
+document.getElementsByTagName('html')[0].style.display='block';
+</script>
+<!-- Correct fb_xd_fragment Bug End -->
+
+<div id="f_l_c"></div>
+
+ <script type="text/javascript">
+    var flc = new SWFObject("/flash/cookie.swf", "f_l_c", "1", "1", "9", "#ffffff");
+    flc.addParam("wmode", "transparent");
+    flc.addVariable("token","f6f50a7f8cf9cdfb023b37158a9bfcdd");
+    flc.addVariable("citizen_id","5313713");
+    flc.write("f_l_c");
+  </script>
+
+<div id="shortcut_list" class="shortcuts">
+	<h3>Lista de atalhos do eRepublik</h3>
+	<ul>
+		<li>
+			<strong>Alertas</strong>
+			<em>Shift + A</em>
+		</li>
+		<li>
+			<strong>Campanhas militares</strong>
+			<em>Shift + C</em>
+		</li>
+		<li>
+			<strong>Unidade militar</strong>
+			<em>Shift + M</em>
+		</li>
+		<li>
+			<strong>Meus lugares</strong>
+			<em>Shift + L</em>
+		</li>
+		<li>
+			<strong>Nova mensagem</strong>
+			<em>Shift + N</em>
+		</li>
+		<li>
+			<strong>Depósito</strong>
+			<em>Shift + S</em>
+		</li>
+		<li>
+			<strong>Principais notícias</strong>
+			<em>Shift + T</em>
+		</li>
+		<li>
+			<strong>Mapa mundial</strong>
+			<em>Shift + W</em>
+		</li>
+	</ul>
+	<em>(pressione ESC para fechar)</em>
+</div>
+<div id="div_b" style="display:block;padding:10px;position:absolute;top: 20%;left: 50%; margin-top: 0px; margin-left: -351px;z-index: 99999"></div>
+<script type="text/javascript">
+   var _mfq = _mfq || [];
+   (function() {
+       var mf = document.createElement("script"); mf.type = "text/javascript"; mf.async = true;
+       mf.src = "//cdn.mouseflow.com/projects/554ddefc-3f27-4718-a64f-85e06cf90558.js";
+       document.getElementsByTagName("head")[0].appendChild(mf);
+   })();
+</script>
+<script type="text/javascript">window.NREUM||(NREUM={});NREUM.info={"beacon":"beacon-3.newrelic.com","licenseKey":"c4d8d93179","applicationID":"3117631","transactionName":"NV0DNUFTVkQEAUZdDgwXIhRARldaSgVAWxQSS04NWkFM","queueTime":0,"applicationTime":121,"ttGuid":"","agentToken":"","userAttributes":"","errorBeacon":"bam.nr-data.net","agent":"js-agent.newrelic.com\/nr-411.min.js"}</script></body>
+</html>
