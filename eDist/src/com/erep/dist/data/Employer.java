@@ -49,6 +49,22 @@ public class Employer implements HasEncodedKey {
 	@RemoteProperty
 	private Date			lastUpdatedAt;
 
+	@Persistent
+	@RemoteProperty
+	private Integer			employeesCount;
+
+	@Persistent
+	@RemoteProperty
+	private Integer			jobsOpen;
+
+	@Persistent
+	@RemoteProperty
+	private String			jobsSalary;
+
+	@Persistent
+	@RemoteProperty
+	private Integer			jobsTotal;
+
 	@Unowned
 	@Persistent
 	private Set<Player>		players;
@@ -163,6 +179,38 @@ public class Employer implements HasEncodedKey {
 
 	public void setPlayers(Set<Player> players) {
 		this.players = players;
+	}
+
+	public Integer getEmployeesCount() {
+		return employeesCount;
+	}
+
+	public void setEmployeesCount(Integer employeesCount) {
+		this.employeesCount = employeesCount;
+	}
+
+	public Integer getJobsOpen() {
+		return jobsOpen;
+	}
+
+	public void setJobsOpen(Integer jobsOpen) {
+		this.jobsOpen = jobsOpen;
+	}
+
+	public String getJobsSalary() {
+		return jobsSalary;
+	}
+
+	public void setJobsSalary(String jobsSalary) {
+		this.jobsSalary = jobsSalary;
+	}
+
+	public Integer getJobsTotal() {
+		return jobsTotal;
+	}
+
+	public void setJobsTotal(Integer jobsTotal) {
+		this.jobsTotal = jobsTotal;
 	}
 
 }

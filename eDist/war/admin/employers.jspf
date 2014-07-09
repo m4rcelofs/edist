@@ -50,9 +50,20 @@
 		data-bind="if: employers().length > 0" id="employers-table">
 		<thead>
 			<tr>
+				<th></th>
+				<th></th>
+				<th><fmt:message key="admin.employers.registeredWorkers" /></th>
+				<th colspan="4"><fmt:message key="admin.employers.jobs" /></th>
+				<th></th>
+			</tr>
+			<tr>
 				<th><fmt:message key="admin.employers.name" /></th>
 				<th><fmt:message key="admin.employers.lastUpdate" /></th>
-				<th><fmt:message key="admin.employers.registeredWorkers" /></th>
+				<th><fmt:message key="admin.employers.registeredWorkers2" /></th>
+				<th><fmt:message key="admin.employers.jobs.open" /></th>
+				<th><fmt:message key="admin.employers.jobs.taken" /></th>
+				<th><fmt:message key="admin.employers.jobs.total" /></th>
+				<th><fmt:message key="admin.employers.jobs.salary" /></th>
 				<th></th>
 			</tr>
 		</thead>
@@ -63,6 +74,10 @@
 				<td
 					data-bind="text: lastUpdatedAt ? $.format.date(lastUpdatedAt, edist.format.date) : '<fmt:message key="admin.employers.noUpdate"/>'"></td>
 				<td><a data-bind="text: playersCount ? playersCount : '', attr:{href: '${baseUrl}/reports/work/employer/' + encodedKey }"></a></td>
+				<td data-bind="text: jobsOpen ? jobsOpen : ''"></td>
+				<td data-bind="text: employeesCount ? employeesCount : ''"></td>
+				<td data-bind="text: jobsTotal ? jobsTotal : ''"></td>
+				<td data-bind="text: jobsSalary ? jobsSalary : ''"></td>
 				<td><a data-toggle="modal" href="#employerKeyModal"
 					data-bind="click: $root.selectedEmployer"> <span
 						class="glyphicon glyphicon-barcode"></span> <fmt:message
