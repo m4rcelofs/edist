@@ -3,7 +3,7 @@
 // @namespace   http://edist-licence.appspot.com
 // @description	Plugin para o controle de funcionarios das dists por script
 // @include		http://www.erepublik.com/*
-// @version     0.8.1
+// @version     0.8.2
 // @downloadURL	https://{host}/js/dynamic/employer.user.js
 // @updateURL	https://{host}/js/dynamic/employer.user.js
 // @grant		GM_getValue
@@ -217,12 +217,22 @@ function update(doc) {
 
 	setUpdateRunning();
 
+    var employees = $('#employees_used', doc).text().split('/');
+    var employeeOpen = $('span.no_job_offers', doc).text();
+    var salary = $('strong.job_salary', doc).text();
+        
 	var data = {
 		id : getEmployer(),
-		key : GM_getValue('employerKey.' + getEmployer(), 'null'),
+        key : GM_getValue('employerKey.' + getEmployer(), 'null'),
+        employeeStats : {
+            count : employees[0],
+            open : employeeOpen,
+            salary : salary,
+            total : employees[1]
+        },
 		employees : getEmployees(doc)
 	};
-
+		
 	var jsonData = JSON.stringify(data);
 
 	GM_log('The following data will be uploaded: ' + jsonData);
