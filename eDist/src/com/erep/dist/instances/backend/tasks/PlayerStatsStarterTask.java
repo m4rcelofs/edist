@@ -58,7 +58,8 @@ public class PlayerStatsStarterTask implements DeferredTask {
 		Queue queue = QueueFactory.getQueue("erepublik-not-logged-in");
 		DeferredTask task = new PlayerStatsTask(day, dbPlayer);
 
-		TaskOptions taskOptions = withPayload(task).header(
+		TaskOptions taskOptions = withPayload(task).taskName(
+				"PlayerStatsTask_" + dbPlayer.getErId() + "_" + day).header(
 				"Host",
 				BackendServiceFactory.getBackendService().getBackendAddress(
 						"edist-default-backend"));

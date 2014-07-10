@@ -28,7 +28,7 @@ public class PlayerStatsStarterJob extends HttpServlet {
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
-		Queue queue = QueueFactory.getQueue("erepublik-not-logged-in");
+		Queue queue = QueueFactory.getDefaultQueue();
 
 		Integer day = eRepTimeCalculator.geteRepDay();
 		DeferredTask task = new PlayerStatsStarterTask(day);
@@ -37,7 +37,7 @@ public class PlayerStatsStarterJob extends HttpServlet {
 				"Host",
 				BackendServiceFactory.getBackendService().getBackendAddress(
 						"edist-default-backend"));
-		queue.addAsync(taskOptions);
+		queue.add(taskOptions);
 		logger.log(Level.WARNING, "Started PlayerStatsStarterTask for day "
 				+ day);
 	}
