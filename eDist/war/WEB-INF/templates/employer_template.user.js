@@ -75,9 +75,9 @@ function refresh() {
 
 	addStats();
 
-	// forces update every 6h
+	// forces update every 1h
 	var hasToUpdate = GM_getValue('lastUpdatedAt.' + getEmployer(), 0) < (new Date()
-			.getTime() - 21600000);
+			.getTime() - 3600000);
 	if (hasToUpdate) {
 		forceUpdate();
 	}
