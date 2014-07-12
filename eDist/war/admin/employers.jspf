@@ -51,14 +51,14 @@
 		<thead>
 			<tr>
 				<th></th>
-				<th></th>
+				<th colspan="2"></th>
 				<th><fmt:message key="admin.employers.registeredWorkers" /></th>
 				<th colspan="4"><fmt:message key="admin.employers.jobs" /></th>
 				<th></th>
 			</tr>
 			<tr>
 				<th><fmt:message key="admin.employers.name" /></th>
-				<th><fmt:message key="admin.employers.lastUpdate" /></th>
+				<th colspan="2"><fmt:message key="admin.employers.lastUpdate" /></th>
 				<th><fmt:message key="admin.employers.registeredWorkers2" /></th>
 				<th><fmt:message key="admin.employers.jobs.open" /></th>
 				<th><fmt:message key="admin.employers.jobs.taken" /></th>
@@ -72,8 +72,18 @@
 				<td><a
 					data-bind="attr: {href: 'http://www.erepublik.com/en/citizen/profile/' + erId}, text: name"></a></td>
 				<td
-					data-bind="text: lastUpdatedAt ? $.format.date(lastUpdatedAt, edist.format.date) : '<fmt:message key="admin.employers.noUpdate"/>'"></td>
-				<td><a data-bind="text: playersCount ? playersCount : '', attr:{href: '${baseUrl}/reports/work/employer/' + encodedKey }"></a></td>
+					data-bind="text: lastUpdatedAt ? $.format.date(lastUpdatedAt, edist.format.date) + ' ' : '<fmt:message key="admin.employers.noUpdate"/> '"></td>
+				<td>
+					<img
+					data-bind="attr: { src : 
+										XAppEngineCountry ? '${baseUrl}/img/flags/' + XAppEngineCountry.toLowerCase() + '.png' : 
+										'${baseUrl}/img/flags/zz.png',
+										'data-content' : XAppEngineCity + ', ' + XAppEngineRegion + ', ' + XAppEngineCountry,
+										'data-title' : ip + '' }, updatePopup:{}"
+					data-toggle="popover">
+				</td>
+				<td><a
+					data-bind="text: playersCount ? playersCount : '', attr:{href: '${baseUrl}/reports/work/employer/' + encodedKey }"></a></td>
 				<td data-bind="text: jobsOpen ? jobsOpen : ''"></td>
 				<td data-bind="text: employeesCount ? employeesCount : ''"></td>
 				<td data-bind="text: jobsTotal ? jobsTotal : ''"></td>

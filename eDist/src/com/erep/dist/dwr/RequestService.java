@@ -16,6 +16,7 @@ import org.directwebremoting.annotations.RemoteProxy;
 import com.erep.dist.CloseablePM;
 import com.erep.dist.ConfigHelper;
 import com.erep.dist.DataAccessObject;
+import com.erep.dist.IPLogger;
 import com.erep.dist.PMF;
 import com.erep.dist.PlayerIdentificator;
 import com.erep.dist.RequestsHelper;
@@ -40,7 +41,8 @@ public class RequestService {
 
 		if (player == null || player.getKey() == null || requestedFF == null
 				|| (requestedFF <= 0 && type != ROCKET) || type == null) {
-			logger.log(Level.SEVERE, "Dist request denied because there's something wrong with it");
+			logger.log(Level.SEVERE,
+					"Dist request denied because there's something wrong with it");
 			return false;
 		}
 
@@ -50,16 +52,14 @@ public class RequestService {
 			DataAccessObject dao = new DataAccessObject(pm);
 
 			if (!new LicensingHelper(dao).isValidLicence()) {
-				logger.log(Level.SEVERE, "Dist request denied because licence has expired");
+				logger.log(Level.SEVERE,
+						"Dist request denied because licence has expired");
 				return false;
 			}
 
 			Transaction tx = pm.currentTransaction();
 			try {
-
-				WebContext ctx = WebContextFactory.get();
-				RequestsHelper helper = new RequestsHelper(dao,
-						ctx.getHttpServletRequest());
+				RequestsHelper helper = new RequestsHelper(dao);
 
 				Player dbPlayer = dao.find(player);
 				PlayerGroup dbGroup = dao.find(group);
@@ -69,6 +69,9 @@ public class RequestService {
 						requestedFF, type);
 
 				if (request != null) {
+					WebContext ctx = WebContextFactory.get();
+					new IPLogger(ctx.getHttpServletRequest()).setIP(request);
+					
 					dbPlayer.addRequest(request);
 					dao.save(request);
 				}

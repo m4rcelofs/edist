@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.directwebremoting.WebContext;
+import org.directwebremoting.WebContextFactory;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -20,6 +22,7 @@ import org.json.simple.parser.ParseException;
 
 import com.erep.dist.CloseablePM;
 import com.erep.dist.DataAccessObject;
+import com.erep.dist.IPLogger;
 import com.erep.dist.PMF;
 import com.erep.dist.data.Employer;
 import com.erep.dist.instances.backend.tasks.WorkParseTask;
@@ -64,6 +67,9 @@ public class EmployerFacadeServlet extends HttpServlet {
 			dbEmployer.resetPlayers();
 			createWorks(dbEmployer, employees);
 
+			WebContext ctx = WebContextFactory.get();
+			new IPLogger(ctx.getHttpServletRequest()).setIP(dbEmployer);
+			
 			dbEmployer.setLastUpdatedAt(new Date());
 
 		} catch (NullPointerException | ParseException e) {

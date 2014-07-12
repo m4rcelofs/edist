@@ -18,7 +18,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.jdo.JDOObjectNotFoundException;
-import javax.servlet.http.HttpServletRequest;
 
 import com.erep.dist.data.DailyStats;
 import com.erep.dist.data.DistConfig;
@@ -39,7 +38,7 @@ public class RequestsHelper {
 
 	private final DataAccessObject		dao;
 	private final ConfigHelper			config;
-	private final HttpServletRequest	req;
+	
 
 	private static Logger				logger	= Logger.getLogger(RequestsHelper.class
 														.getName());
@@ -47,13 +46,6 @@ public class RequestsHelper {
 	public RequestsHelper(DataAccessObject dao) {
 		this.dao = dao;
 		this.config = new ConfigHelper(dao);
-		this.req = null;
-	}
-
-	public RequestsHelper(DataAccessObject dao, HttpServletRequest req) {
-		this.dao = dao;
-		this.config = new ConfigHelper(dao);
-		this.req = req;
 	}
 
 	public boolean verifyRocketAllowed(Player player, PlayerGroup group) {
@@ -125,16 +117,6 @@ public class RequestsHelper {
 
 		request.setRequestedAt(new Date());
 		request.seteRepDay(eRepTimeCalculator.geteRepDay());
-
-		if (req != null) {
-			request.setIp(req.getRemoteAddr());
-			request.setXAppEngineCountry(req.getHeader("X-AppEngine-Country"));
-			request.setXAppEngineRegion(req.getHeader("X-AppEngine-Region"));
-			request.setXAppEngineCity(req.getHeader("X-AppEngine-City"));
-		} else {
-			request.setIp("Automatic dist");
-		}
-
 		request.setStatus(REQUESTED);
 
 		try {
