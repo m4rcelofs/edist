@@ -62,14 +62,15 @@ public class EmployerFacadeServlet extends HttpServlet {
 
 			Employer dbEmployer = verifyEmployer(dao, authKey, id);
 
-			saveStats((JSONObject) jsObj.get("employeeStats"), dbEmployer);
+			if (jsObj.get("employeeStats") != null)
+				saveStats((JSONObject) jsObj.get("employeeStats"), dbEmployer);
 
 			dbEmployer.resetPlayers();
 			createWorks(dbEmployer, employees);
 
 			WebContext ctx = WebContextFactory.get();
 			new IPLogger(ctx.getHttpServletRequest()).setIP(dbEmployer);
-			
+
 			dbEmployer.setLastUpdatedAt(new Date());
 
 		} catch (NullPointerException | ParseException e) {
