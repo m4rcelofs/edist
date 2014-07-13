@@ -13,7 +13,6 @@ import javax.jdo.Query;
 import javax.jdo.Transaction;
 
 import com.erep.dist.data.DailyFights;
-import com.erep.dist.data.DailyStats;
 import com.erep.dist.data.DailyWork;
 import com.erep.dist.data.Distributor;
 import com.erep.dist.data.Employer;
@@ -24,7 +23,6 @@ import com.erep.dist.data.PlayerGroupRoot;
 import com.erep.dist.data.Request;
 import com.erep.dist.data.ResourceDist;
 import com.erep.dist.data.dao.Distributors;
-import com.erep.dist.data.enums.Division;
 import com.erep.dist.data.enums.RequestStatus;
 import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.dwr.dto.WorkWeek;
@@ -179,40 +177,6 @@ public class DataAccessObject {
 		return (List<Request>) q.execute(type);
 	}
 
-	public List<DailyStats> listStats(Player player, String encodedCursor) {
-		Query q = queryWithCursor(DailyStats.class, "player == playerParam",
-				encodedCursor);
-		q.declareParameters(Key.class.getName() + " playerParam");
-		q.setOrdering("day desc");
-		return (List<DailyStats>) q.execute(player.getKey());
-	}
-
-	public List<DailyStats> listStats(Integer day, PlayerGroup group,
-			String encodedCursor) {
-		Query q = queryWithCursor(DailyStats.class,
-				"groups.contains(groupParam) && day == dayParam", encodedCursor);
-		q.declareParameters(Key.class.getName() + " groupParam, "
-				+ Integer.class.getName() + " dayParam");
-		return (List<DailyStats>) q.execute(group.getKey(), day);
-	}
-
-	public List<DailyStats> listStats(Integer day, Division div,
-			String encodedCursor) {
-		Query q = queryWithCursor(DailyStats.class,
-				"div == divParam && day == dayParam", encodedCursor);
-		q.declareParameters(Division.class.getName() + " divParam, "
-				+ Integer.class.getName() + " dayParam");
-		return (List<DailyStats>) q.execute(div, day);
-	}
-
-	public List<DailyStats> listStats(Integer day, String encodedCursor) {
-		Query q = queryWithCursor(DailyStats.class, "day == dayParam",
-				encodedCursor);
-		q.declareParameters(Integer.class.getName() + " dayParam");
-		q.setOrdering("day desc");
-		return (List<DailyStats>) q.execute(day);
-	}
-
 	public List<DailyWork> listWork(Player player, String encodedCursor) {
 		Query q = queryWithCursor(DailyWork.class, "player == playerParam",
 				encodedCursor);
@@ -348,12 +312,6 @@ public class DataAccessObject {
 		return pm.getObjectById(DailyWork.class, work.getKey());
 	}
 
-	public DailyStats getStats(Player player, Integer day) {
-		Key key = KeyFactory.createKey(player.getKey(),
-				DailyStats.class.getSimpleName(), day);
-		return pm.getObjectById(DailyStats.class, key);
-	}
-
 	private void setCursor(Query query, String encodedCursor) {
 		if (encodedCursor != null && !encodedCursor.trim().isEmpty()) {
 			Cursor cursor = Cursor.fromWebSafeString(encodedCursor);
@@ -372,10 +330,6 @@ public class DataAccessObject {
 		} catch (JDOObjectNotFoundException e) {
 			return defaultGroup();
 		}
-	}
-
-	public DailyStats find(DailyStats dailyStats) {
-		return pm.getObjectById(DailyStats.class, dailyStats.getKey());
 	}
 
 	private EmployerRoot employerRoot() {
@@ -401,7 +355,7 @@ public class DataAccessObject {
 				groupRootKey(), PlayerGroup.class.getSimpleName(),
 				ServerConstants.DEFAULT_ID));
 	}
-	
+
 	public int getDailyRequestedFF(Player player, PlayerGroup group, int eRepDay) {
 		Query q = pm.newQuery(Request.class);
 
@@ -425,7 +379,7 @@ public class DataAccessObject {
 		Object response = q.execute(player.getKey(), group.getKey(), fromDay);
 		return response != null ? ((Long) response).intValue() : 0;
 	}
-	
+
 	public int getFightsFFSum(Player player, int fromDay) {
 		Query q = pm.newQuery(DailyFights.class);
 		q.setFilter("player == playerParam && day >= dayParam");

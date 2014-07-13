@@ -3,6 +3,7 @@ package com.erep.dist.data.dao;
 import static com.erep.dist.data.enums.PlayerStatus.ERROR;
 import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withPayload;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -76,6 +77,7 @@ public class Players extends GenericDAO {
 
 		Key key = createKey(newPlayer.getErId());
 		newPlayer.setKey(key);
+		newPlayer.setDbStatus(PlayerStatus.NEW);
 
 		if (newPlayer.getGroups() != null && !newPlayer.getGroups().isEmpty()) {
 			Set<PlayerGroup> groups = new HashSet<>();
@@ -203,7 +205,11 @@ public class Players extends GenericDAO {
 	}
 
 	public Player find(Player player) {
-		return pm().getObjectById(Player.class, player.getKey());
+		return find(player.getKey());
+	}
+
+	private Player find(Key key) {
+		return pm().getObjectById(Player.class, key);
 	}
 
 	public boolean remove(Player player) {
@@ -214,6 +220,20 @@ public class Players extends GenericDAO {
 
 		pm().deletePersistent(dbPlayer);
 		return true;
+	}
+
+	public void disable(Player dbPlayer) {
+		dbPlayer.setGroups(new HashSet<>(Arrays.asList(dao.defaultGroup())));
+
+		Employer employer = dbPlayer.getCurrentEmployer();
+		if (employer != null)
+			employer.getPlayers().remove(dbPlayer);
+
+		dbPlayer.setCurrentEmployer(null);
+		dbPlayer.setFightStatus(null);
+		dbPlayer.setWorkStatus(null);
+
+		dbPlayer.setDbStatus(PlayerStatus.DISABLED);
 	}
 
 	@Cacheable

@@ -22,6 +22,7 @@ import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerRoot;
 import com.erep.dist.data.dao.PlayerStatistics;
 import com.erep.dist.data.dao.Players;
+import com.erep.dist.data.dao.Stats;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.taskqueue.DeferredTask;
 import com.google.appengine.api.taskqueue.Queue;
@@ -106,9 +107,9 @@ public class DataMigrationServlet extends HttpServlet {
 					@Override
 					public void run() {
 						try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-							DataAccessObject dao = new DataAccessObject(pm);
+							Stats stats = new Stats(pm);
 							Players players = new Players(pm);
-							DailyStats stat = dao.find(new DailyStats(key));
+							DailyStats stat = stats.find(new DailyStats(key));
 							if (stat.getPlayer() == null) {
 								Key parentKey = stat.getKey().getParent();
 								Player parent = players.find(new Player(parentKey));

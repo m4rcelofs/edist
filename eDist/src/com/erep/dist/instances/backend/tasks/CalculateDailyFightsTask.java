@@ -9,13 +9,13 @@ import javax.jdo.JDOObjectNotFoundException;
 
 import com.erep.dist.CloseablePM;
 import com.erep.dist.ConfigHelper;
-import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
 import com.erep.dist.data.DailyFights;
 import com.erep.dist.data.DailyStats;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.dao.Players;
+import com.erep.dist.data.dao.Stats;
 import com.erep.dist.data.enums.ResourceQuality;
 import com.erep.dist.erep.HitCalculator;
 import com.google.appengine.api.datastore.Key;
@@ -42,13 +42,13 @@ public class CalculateDailyFightsTask implements DeferredTask {
 	@Override
 	public void run() {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			DataAccessObject dao = new DataAccessObject(pm);
 			Players players = new Players(pm);
+			Stats stats = new Stats(pm);
 			ConfigHelper config = new ConfigHelper(pm);
 
 			Player dbPlayer = players.find(new Player(playerKey));
-			DailyStats previousDayStats = dao.getStats(dbPlayer, today - 1);
-			DailyStats todayStats = dao.getStats(dbPlayer, today);
+			DailyStats previousDayStats = stats.find(dbPlayer, today - 1);
+			DailyStats todayStats = stats.find(dbPlayer, today);
 
 			ResourceQuality quality = ResourceQuality.Q1;
 			for (PlayerGroup group : dbPlayer.getGroups()) {

@@ -72,15 +72,17 @@ public class PlayerStatsTask implements DeferredTask {
 			pm.makePersistent(stats);
 			dbPlayer.setName(stats.getName());
 			
-			if(stats.getIsDead() || stats.getIsPermaBan())
-				dbPlayer.setDbStatus(PlayerStatus.DISABLED);
-			
-			startFightCalculationTask(day, dbPlayer);
-
 			Server server = new Server(pm);
 			if (server.getConfig().isAvatarHistory())
 				startAvatarFetchTask(stats);
-
+			
+			if(stats.getIsDead() || stats.getIsPermaBan()) {
+				players.disable(dbPlayer);
+				return;
+			}
+		
+			startFightCalculationTask(day, dbPlayer);
+			
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
