@@ -13,8 +13,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.directwebremoting.WebContext;
-import org.directwebremoting.WebContextFactory;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -68,8 +66,7 @@ public class EmployerFacadeServlet extends HttpServlet {
 			dbEmployer.resetPlayers();
 			createWorks(dbEmployer, employees);
 
-			WebContext ctx = WebContextFactory.get();
-			new IPLogger(ctx.getHttpServletRequest()).setIP(dbEmployer);
+			new IPLogger(req).setIP(dbEmployer);
 
 			dbEmployer.setLastUpdatedAt(new Date());
 

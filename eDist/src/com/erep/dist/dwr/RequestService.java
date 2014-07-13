@@ -60,14 +60,14 @@ public class RequestService {
 				return false;
 			}
 
-			Transaction tx = pm.currentTransaction();
+//			Transaction tx = pm.currentTransaction();
 			try {
 				RequestsHelper helper = new RequestsHelper(pm);
 
 				Player dbPlayer = players.find(player);
 				PlayerGroup dbGroup = dao.find(group);
 
-				tx.begin();
+//				tx.begin();
 				Request request = helper.createRequest(dbPlayer, dbGroup,
 						requestedFF, type);
 
@@ -79,7 +79,7 @@ public class RequestService {
 					dao.save(request);
 				}
 
-				tx.commit();
+//				tx.commit();
 
 				// transactional queue limit is 5 tasks
 				// rocket requests create 6 tasks
@@ -92,12 +92,12 @@ public class RequestService {
 				logger.log(Level.SEVERE, "Dist request denied", e);
 				return false;
 			} finally {
-				if (tx.isActive()) {
-					tx.rollback();
-					response = false;
-					logger.log(Level.SEVERE, "Request for player {0} failed",
-							player.getErId());
-				}
+//				if (tx.isActive()) {
+//					tx.rollback();
+//					response = false;
+//					logger.log(Level.SEVERE, "Request for player {0} failed",
+//							player.getErId());
+//				}
 			}
 			return response;
 		}
