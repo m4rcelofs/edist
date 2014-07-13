@@ -16,6 +16,7 @@ import com.erep.dist.data.Distributor;
 import com.erep.dist.data.Employer;
 import com.erep.dist.data.RegisteredUser;
 import com.erep.dist.data.ServerConfig;
+import com.erep.dist.data.dao.Distributors;
 import com.erep.dist.data.dao.Server;
 import com.erep.dist.data.enums.ResourceQuality;
 import com.erep.dist.data.enums.ResourceType;
@@ -89,7 +90,7 @@ public class AdminService {
 			return false;
 
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			return new DataAccessObject(pm).save(dist);
+			return new Distributors(pm).save(dist);
 		}
 	}
 
@@ -97,8 +98,7 @@ public class AdminService {
 	public List<Distributor> listDistributors() {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			pm.getFetchPlan().addGroup("distributorListing");
-			List<Distributor> dists = new DataAccessObject(pm)
-					.listDistributors();
+			List<Distributor> dists = new Distributors(pm).listDistributors();
 			return dists;
 		}
 	}
@@ -108,13 +108,12 @@ public class AdminService {
 			Distributor dist) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 
-			
 			Server server = new Server(pm);
 			if (!server.getConfig().isShowDistributorInventory())
 				return new HashMap<>();
 
 			pm.getFetchPlan().addGroup("inventoryListing");
-			Distributor dbDist = new DataAccessObject(pm).find(dist);
+			Distributor dbDist = new Distributors(pm).find(dist);
 			return dbDist.getLastInventory().rowMap();
 		}
 	}

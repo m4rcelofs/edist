@@ -8,7 +8,6 @@ import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 
-import com.erep.dist.DataAccessObject;
 import com.erep.dist.ServerConstants;
 import com.erep.dist.cache.CacheFacade;
 import com.erep.dist.cache.Cacheable;
@@ -88,9 +87,8 @@ public class Server extends GenericDAO {
 		}
 
 		if (newConfig.getConfig() != null) {
-			// FIXME
 			newConfig.getConfig().setDistributor(
-					new DataAccessObject(pm()).find(newConfig.getConfig()
+					new Distributors(pm()).find(newConfig.getConfig()
 							.getDistributor()));
 			dbConfig.setConfig(newConfig.getConfig());
 		}
@@ -100,6 +98,9 @@ public class Server extends GenericDAO {
 
 		if (newConfig.getFightVerif() != null)
 			dbConfig.setFightVerif(newConfig.getFightVerif());
+
+		if (newConfig.getSyncWithMuId() != null)
+			dbConfig.setSyncWithMuId(newConfig.getSyncWithMuId().trim());
 
 		// refresh the entity to create the fields if needed
 		dbConfig.setAvatarHistory(dbConfig.isAvatarHistory());

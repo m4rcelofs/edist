@@ -26,6 +26,7 @@ import com.erep.dist.data.Request;
 import com.erep.dist.data.RequestStatsDaily;
 import com.erep.dist.data.RequestStatsMonthly;
 import com.erep.dist.data.ResourceDist;
+import com.erep.dist.data.dao.Distributors;
 import com.erep.dist.data.dao.RequestStatistics;
 import com.erep.dist.data.dao.Server;
 import com.erep.dist.data.enums.RequestStatus;
@@ -52,7 +53,7 @@ public class ReportService {
 
 			AuthHelper auth = new AuthHelper(new Server(pm));
 			if (auth.hasManagementAccess())
-				dto.setDistributors(dao.listDistributors());
+				dto.setDistributors(new Distributors(pm).listDistributors());
 
 			dto.setEmployers(dao.listEmployers());
 			dto.setGroups(dao.listGroups());
@@ -380,7 +381,8 @@ public class ReportService {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			pm.getFetchPlan().addGroup("monthlyListing");
 			RequestStatistics stats = new RequestStatistics(pm);
-			RequestStatsMonthly result = stats.getRequestsMonthly(new YearMonth(yearMonth));
+			RequestStatsMonthly result = stats
+					.getRequestsMonthly(new YearMonth(yearMonth));
 			return pm.detachCopy(result);
 		}
 	}

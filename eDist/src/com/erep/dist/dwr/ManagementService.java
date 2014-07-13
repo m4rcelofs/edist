@@ -18,6 +18,7 @@ import com.erep.dist.PlayerIdentificator;
 import com.erep.dist.data.Distributor;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
+import com.erep.dist.data.dao.Distributors;
 import com.erep.dist.data.dao.Server;
 import com.erep.dist.data.enums.PlayerDistStatus;
 import com.erep.dist.data.enums.PlayerStatus;
@@ -241,7 +242,7 @@ public class ManagementService {
 	public List<Distributor> listDistributors() {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			pm.getFetchPlan().addGroup("distributorListing");
-			List<Distributor> dists = new DataAccessObject(pm)
+			List<Distributor> dists = new Distributors(pm)
 					.listDistributors();
 			return dists;
 		}

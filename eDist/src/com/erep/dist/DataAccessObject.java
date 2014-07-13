@@ -1,6 +1,5 @@
 package com.erep.dist;
 
-import static com.erep.dist.auth.SymmetricCipherUtils.encrypt;
 import static com.erep.dist.data.enums.RequestType.ROCKET;
 
 import java.util.ArrayList;
@@ -9,8 +8,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.jdo.Extent;
 import javax.jdo.JDOObjectNotFoundException;
@@ -24,7 +21,6 @@ import com.erep.dist.data.DailyFights;
 import com.erep.dist.data.DailyStats;
 import com.erep.dist.data.DailyWork;
 import com.erep.dist.data.Distributor;
-import com.erep.dist.data.DistributorRoot;
 import com.erep.dist.data.Employer;
 import com.erep.dist.data.EmployerRoot;
 import com.erep.dist.data.Player;
@@ -33,6 +29,7 @@ import com.erep.dist.data.PlayerGroupRoot;
 import com.erep.dist.data.PlayerRoot;
 import com.erep.dist.data.Request;
 import com.erep.dist.data.ResourceDist;
+import com.erep.dist.data.dao.Distributors;
 import com.erep.dist.data.enums.Division;
 import com.erep.dist.data.enums.PlayerDistStatus;
 import com.erep.dist.data.enums.PlayerStatus;
@@ -48,13 +45,12 @@ import com.google.appengine.datanucleus.query.JDOCursorHelper;
 @SuppressWarnings("unchecked")
 public class DataAccessObject {
 
-	private PersistenceManager	pm;
-
-	private static Logger		logger	= Logger.getLogger(DataAccessObject.class
-												.getName());
+	private final PersistenceManager	pm;
+	private final Distributors			distributors;
 
 	public DataAccessObject(PersistenceManager pm) {
 		this.pm = pm;
+		this.distributors = new Distributors(pm);
 	}
 
 	public boolean save(Employer employer) {
@@ -66,12 +62,6 @@ public class DataAccessObject {
 	public Key createEmployerKey(String erId) {
 		return KeyFactory.createKey(employerRootKey(),
 				Employer.class.getSimpleName(), erId);
-	}
-
-	public boolean save(Distributor dist) {
-		if (dist.getEncodedKey() != null)
-			return edit(dist);
-		return add(dist);
 	}
 
 	public boolean save(Request request) {
@@ -89,70 +79,11 @@ public class DataAccessObject {
 		return true;
 	}
 
-	private boolean add(Distributor dist) {
-		if (dist.getPassword() == null || dist.getPassword().trim().isEmpty()
-				|| dist.getEmail() == null
-				|| dist.getPassword().trim().isEmpty())
-			return false;
-		try {
-			dist.setPassword(encrypt(dist.getPassword()));
-
-			distributorRoot().addDistributor(dist);
-			pm.makePersistent(dist);
-
-			return true;
-		} catch (Exception e) {
-			logger.log(Level.SEVERE,
-					"Exception while trying to add a distributor", e);
-			return false;
-		}
-	}
-
-	private boolean edit(Distributor dist) {
-		boolean result = true;
-		Transaction tx = pm.currentTransaction();
-		try {
-			tx.begin();
-			Distributor old = pm
-					.getObjectById(Distributor.class, dist.getKey());
-			result = edit(old, dist);
-			tx.commit();
-		} catch (JDOObjectNotFoundException e) {
-			result = false;
-		} finally {
-			if (tx.isActive()) {
-				tx.rollback();
-				result = false;
-			}
-		}
-		return result;
-	}
-
-	private boolean edit(Distributor old, Distributor newest) {
-		try {
-			old.setName(newest.getName());
-			old.setEmail(newest.getEmail());
-			if (newest.getPassword() != null
-					&& !newest.getPassword().trim().isEmpty())
-				old.setPassword(encrypt(newest.getPassword()));
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
-	}
-
 	public List<Employer> listEmployers() {
 		Query q = pm.newQuery(Employer.class);
 		q.setFilter("root == rootParam");
 		q.declareParameters(Key.class.getName() + " rootParam");
 		return (List<Employer>) q.execute(employerRootKey());
-	}
-
-	public List<Distributor> listDistributors() {
-		Query q = pm.newQuery(Distributor.class);
-		q.setFilter("root == rootParam");
-		q.declareParameters(Key.class.getName() + " rootParam");
-		return (List<Distributor>) q.execute(distributorRootKey());
 	}
 
 	public boolean save(PlayerGroup group) {
@@ -193,7 +124,7 @@ public class DataAccessObject {
 		old.setGroupName(newest.getGroupName());
 		if (newest.getConfig() != null) {
 			newest.getConfig().setDistributor(
-					find(newest.getConfig().getDistributor()));
+					distributors.find(newest.getConfig().getDistributor()));
 		}
 		old.setConfig(newest.getConfig());
 		old.setFightVerif(newest.getFightVerif());
@@ -265,7 +196,7 @@ public class DataAccessObject {
 	private boolean edit(Player old, Player newest) {
 		if (newest.getConfig() != null) {
 			newest.getConfig().setDistributor(
-					find(newest.getConfig().getDistributor()));
+					distributors.find(newest.getConfig().getDistributor()));
 		}
 		old.setConfig(newest.getConfig());
 		old.setFightVerif(newest.getFightVerif());
@@ -293,8 +224,6 @@ public class DataAccessObject {
 
 		return true;
 	}
-
-	
 
 	/**
 	 * Don't forget to closeAll() after you are done!
@@ -664,34 +593,8 @@ public class DataAccessObject {
 		}
 	}
 
-	public Distributor find(Distributor dist) {
-		try {
-			if (dist == null || dist.getKey() == null)
-				return defaultDistributor();
-
-			return pm.getObjectById(Distributor.class, dist.getKey());
-		} catch (JDOObjectNotFoundException e) {
-			return defaultDistributor();
-		}
-	}
-
 	public DailyStats find(DailyStats dailyStats) {
 		return pm.getObjectById(DailyStats.class, dailyStats.getKey());
-	}
-
-	private DistributorRoot distributorRoot() {
-		return pm.getObjectById(DistributorRoot.class, distributorRootKey());
-	}
-
-	private Key distributorRootKey() {
-		return KeyFactory.createKey(DistributorRoot.class.getSimpleName(),
-				ServerConstants.DEFAULT_ID);
-	}
-
-	private Distributor defaultDistributor() {
-		return pm.getObjectById(Distributor.class, KeyFactory.createKey(
-				distributorRootKey(), Distributor.class.getSimpleName(),
-				ServerConstants.DEFAULT_ID));
 	}
 
 	private EmployerRoot employerRoot() {
