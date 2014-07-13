@@ -27,6 +27,7 @@ import com.erep.dist.data.RequestStatsDaily;
 import com.erep.dist.data.RequestStatsMonthly;
 import com.erep.dist.data.ResourceDist;
 import com.erep.dist.data.dao.Distributors;
+import com.erep.dist.data.dao.Players;
 import com.erep.dist.data.dao.RequestStatistics;
 import com.erep.dist.data.dao.Server;
 import com.erep.dist.data.enums.RequestStatus;
@@ -149,7 +150,7 @@ public class ReportService {
 
 			Player player = null;
 			try {
-				player = new PlayerIdentificator(dao)
+				player = new PlayerIdentificator(pm)
 						.identifyRequestString(idNameOrLink);
 			} catch (JDOObjectNotFoundException e) {
 				return queryResults;
@@ -245,7 +246,7 @@ public class ReportService {
 
 			Player player = null;
 			try {
-				player = new PlayerIdentificator(dao)
+				player = new PlayerIdentificator(pm)
 						.identifyRequestString(idNameOrLink);
 			} catch (JDOObjectNotFoundException e) {
 				return queryResults;
@@ -271,12 +272,13 @@ public class ReportService {
 			WorkWeekQuery queryResults = new WorkWeekQuery();
 
 			DataAccessObject dao = new DataAccessObject(pm);
+			Players players = new Players(pm);
 
-			List<Player> players = dao.listPlayersByGroup(group, cursor);
-			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(players)
+			List<Player> playerList = players.list(group, cursor);
+			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(playerList)
 					.toWebSafeString());
 
-			queryResults.setResults(dao.getWeeklyWorks(players));
+			queryResults.setResults(dao.getWeeklyWorks(playerList));
 
 			return queryResults;
 		}
@@ -291,12 +293,13 @@ public class ReportService {
 			WorkWeekQuery queryResults = new WorkWeekQuery();
 
 			DataAccessObject dao = new DataAccessObject(pm);
+			Players players = new Players(pm);
 
-			List<Player> players = dao.listPlayersByEmployer(employer, cursor);
-			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(players)
+			List<Player> playerList = players.list(employer, cursor);
+			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(playerList)
 					.toWebSafeString());
 
-			queryResults.setResults(dao.getWeeklyWorks(players));
+			queryResults.setResults(dao.getWeeklyWorks(playerList));
 
 			return queryResults;
 		}
@@ -311,7 +314,7 @@ public class ReportService {
 
 			Player player = null;
 			try {
-				player = new PlayerIdentificator(dao)
+				player = new PlayerIdentificator(pm)
 						.identifyRequestString(idNameOrLink);
 			} catch (JDOObjectNotFoundException e) {
 				return queryResults;

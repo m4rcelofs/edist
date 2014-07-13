@@ -25,6 +25,7 @@ import com.erep.dist.data.DistConfig;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.Request;
+import com.erep.dist.data.dao.Players;
 import com.erep.dist.data.dao.Server;
 import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.dwr.dto.RequestAttempt;
@@ -51,6 +52,7 @@ public class RequestService {
 			boolean response = false;
 
 			DataAccessObject dao = new DataAccessObject(pm);
+			Players players = new Players(pm);
 
 			if (!new LicensingHelper(new Server(pm)).isValidLicence()) {
 				logger.log(Level.SEVERE,
@@ -62,7 +64,7 @@ public class RequestService {
 			try {
 				RequestsHelper helper = new RequestsHelper(pm);
 
-				Player dbPlayer = dao.find(player);
+				Player dbPlayer = players.find(player);
 				PlayerGroup dbGroup = dao.find(group);
 
 				tx.begin();
@@ -108,8 +110,7 @@ public class RequestService {
 
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			pm.getFetchPlan().addGroup("requestIdentify");
-			DataAccessObject dao = new DataAccessObject(pm);
-			Player p = new PlayerIdentificator(dao)
+			Player p = new PlayerIdentificator(pm)
 					.identifyRequestString(idNameOrLink);
 
 			{
@@ -132,12 +133,13 @@ public class RequestService {
 			pm.getFetchPlan().addGroup("requestAttempt");
 
 			DataAccessObject dao = new DataAccessObject(pm);
+			Players players = new Players(pm);
 			RequestsHelper requests = new RequestsHelper(pm);
 			ConfigHelper config = new ConfigHelper(pm);
 
 			Transaction tx = pm.currentTransaction();
 			try {
-				Player dbPlayer = dao.find(player);
+				Player dbPlayer = players.find(player);
 				PlayerGroup dbGroup = dao.find(group);
 
 				DistConfig distConfig = config.getConfig(dbPlayer, dbGroup);

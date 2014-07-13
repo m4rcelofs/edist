@@ -50,7 +50,7 @@ public class PlayerReportService {
 
 			Player player = null;
 			try {
-				player = new PlayerIdentificator(dao)
+				player = new PlayerIdentificator(pm)
 						.identifyRequestString(idNameOrLink);
 			} catch (JDOObjectNotFoundException e) {
 				return queryResults;

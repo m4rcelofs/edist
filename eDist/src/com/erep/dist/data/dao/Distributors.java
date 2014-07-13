@@ -91,7 +91,7 @@ public class Distributors extends GenericDAO {
 		q.declareParameters(Key.class.getName() + " rootParam");
 		return (List<Distributor>) q.execute(rootKey());
 	}
-	
+
 	public Distributor find(Distributor dist) {
 		try {
 			if (dist == null || dist.getKey() == null)
@@ -119,5 +119,4 @@ public class Distributors extends GenericDAO {
 						Distributor.class.getSimpleName(),
 						ServerConstants.DEFAULT_ID));
 	}
-
 }

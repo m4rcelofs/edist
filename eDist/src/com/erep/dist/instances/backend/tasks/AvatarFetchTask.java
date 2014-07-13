@@ -23,6 +23,7 @@ import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
 import com.erep.dist.data.Avatar;
 import com.erep.dist.data.DailyStats;
+import com.erep.dist.data.dao.Avatars;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.datastore.Key;
@@ -63,9 +64,10 @@ public class AvatarFetchTask implements DeferredTask {
 
 			String digest = getDigest(response);
 			DataAccessObject dao = new DataAccessObject(pm);
+			Avatars avatars = new Avatars(pm);
 
 			try {
-				Avatar exists = dao.find(new Avatar(digest));
+				Avatar exists = avatars.find(new Avatar(digest));
 				DailyStats dbStats = dao.find(new DailyStats(statsKey));
 				dbStats.setAvatar(exists.getServingUrl());
 				dbStats.setAvatarKey(exists);

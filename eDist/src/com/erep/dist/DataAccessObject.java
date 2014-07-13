@@ -4,19 +4,14 @@ import static com.erep.dist.data.enums.RequestType.ROCKET;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import javax.jdo.Extent;
 import javax.jdo.JDOObjectNotFoundException;
 import javax.jdo.PersistenceManager;
 import javax.jdo.Query;
 import javax.jdo.Transaction;
 
-import com.erep.dist.cache.Cacheable;
-import com.erep.dist.data.Avatar;
 import com.erep.dist.data.DailyFights;
 import com.erep.dist.data.DailyStats;
 import com.erep.dist.data.DailyWork;
@@ -26,13 +21,10 @@ import com.erep.dist.data.EmployerRoot;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.PlayerGroupRoot;
-import com.erep.dist.data.PlayerRoot;
 import com.erep.dist.data.Request;
 import com.erep.dist.data.ResourceDist;
 import com.erep.dist.data.dao.Distributors;
 import com.erep.dist.data.enums.Division;
-import com.erep.dist.data.enums.PlayerDistStatus;
-import com.erep.dist.data.enums.PlayerStatus;
 import com.erep.dist.data.enums.RequestStatus;
 import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.dwr.dto.WorkWeek;
@@ -66,11 +58,6 @@ public class DataAccessObject {
 
 	public boolean save(Request request) {
 		pm.makePersistent(request);
-		return true;
-	}
-
-	public boolean save(Avatar avatar) {
-		pm.makePersistent(avatar);
 		return true;
 	}
 
@@ -137,157 +124,6 @@ public class DataAccessObject {
 		q.setFilter("root == rootParam");
 		q.declareParameters(Key.class.getName() + " rootParam");
 		return (List<PlayerGroup>) q.execute(groupRootKey());
-	}
-
-	public boolean save(Player player) {
-		return save(player, false);
-	}
-
-	public boolean save(Player player, boolean create) {
-		if (!create)
-			try {
-				return edit(player);
-			} catch (JDOObjectNotFoundException e) {
-				return add(player);
-			}
-		return add(player);
-	}
-
-	private boolean edit(Player player) {
-		Transaction tx = pm.currentTransaction();
-		boolean result = true;
-		try {
-			tx.begin();
-			Player oldPlayer = pm.getObjectById(Player.class, player.getKey());
-			result = edit(oldPlayer, player);
-			tx.commit();
-		} finally {
-			if (tx.isActive()) {
-				tx.rollback();
-				result = false;
-			}
-		}
-		return result;
-	}
-
-	private boolean add(Player newPlayer) {
-
-		Key key = createPlayerKey(newPlayer.getErId());
-		newPlayer.setKey(key);
-
-		if (newPlayer.getGroups() != null && !newPlayer.getGroups().isEmpty()) {
-			Set<PlayerGroup> groups = new HashSet<>();
-			for (PlayerGroup group : newPlayer.getGroups())
-				groups.add(find(group));
-			newPlayer.setGroups(groups);
-		} else
-			newPlayer.addGroup(defaultGroup());
-
-		playerRoot().addPlayer(newPlayer);
-
-		return true;
-	}
-
-	public Key createPlayerKey(String erId) {
-		return KeyFactory.createKey(playerRootKey(),
-				Player.class.getSimpleName(), Long.valueOf(erId));
-	}
-
-	private boolean edit(Player old, Player newest) {
-		if (newest.getConfig() != null) {
-			newest.getConfig().setDistributor(
-					distributors.find(newest.getConfig().getDistributor()));
-		}
-		old.setConfig(newest.getConfig());
-		old.setFightVerif(newest.getFightVerif());
-		old.setWorkVerif(newest.getWorkVerif());
-
-		old.setRocketEnabled(newest.getRocketEnabled());
-		old.setDbStatus(newest.getDbStatus());
-		old.setFightStatus(newest.getFightStatus());
-		old.setWorkStatus(newest.getWorkStatus());
-
-		if (newest.getCurrentEmployerName() == null) {
-			if (old.getCurrentEmployer() != null)
-				old.getCurrentEmployer().getPlayers().remove(old);
-			old.setCurrentEmployer(null);
-		}
-
-		Set<PlayerGroup> groups = new HashSet<>();
-		if (newest.getGroups() == null || newest.getGroups().isEmpty()) {
-			groups.add(defaultGroup());
-		} else {
-			for (PlayerGroup group : newest.getGroups())
-				groups.add(find(group));
-		}
-		old.setGroups(groups);
-
-		return true;
-	}
-
-	/**
-	 * Don't forget to closeAll() after you are done!
-	 * 
-	 * @return
-	 */
-	public Extent<Player> listAllPlayers() {
-		Extent<Player> players = pm.getExtent(Player.class);
-		return players;
-	}
-
-	public List<Player> listPlayers(String encodedCursor) {
-		Query q = queryWithCursor(Player.class, "root == rootParam",
-				encodedCursor);
-		q.declareParameters(Key.class.getName() + " rootParam");
-		return (List<Player>) q.execute(playerRootKey());
-	}
-
-	public List<Player> listPlayersByGroup(PlayerGroup group,
-			String encodedCursor) {
-		Query q = queryWithCursor(Player.class,
-				"root == rootParam && groups.contains(groupParam)",
-				encodedCursor);
-		q.declareParameters(Key.class.getName() + " rootParam, "
-				+ Key.class.getName() + " groupParam");
-		return (List<Player>) q.execute(playerRootKey(), group.getKey());
-	}
-
-	public List<Player> listPlayersByEmployer(Employer employer,
-			String encodedCursor) {
-		Query q = queryWithCursor(Player.class,
-				"root == rootParam && currentEmployer == employerParam",
-				encodedCursor);
-		q.declareParameters(Key.class.getName() + " rootParam, "
-				+ Key.class.getName() + " employerParam");
-		return (List<Player>) q.execute(playerRootKey(), employer.getKey());
-	}
-
-	public List<Player> listPlayersByFight(PlayerDistStatus status,
-			String encodedCursor) {
-		Query q = queryWithCursor(Player.class,
-				"root == rootParam && fightStatus == statusParam",
-				encodedCursor);
-		q.declareParameters(Key.class.getName() + " rootParam, "
-				+ PlayerDistStatus.class.getName() + " statusParam");
-		return (List<Player>) q.execute(playerRootKey(), status);
-	}
-
-	public List<Player> listPlayersByStatus(PlayerStatus status,
-			String encodedCursor) {
-		Query q = queryWithCursor(Player.class,
-				"root == rootParam && dbStatus == dbStatusParam", encodedCursor);
-		q.declareParameters(Key.class.getName() + " rootParam, "
-				+ PlayerStatus.class.getName() + " dbStatusParam");
-		return (List<Player>) q.execute(playerRootKey(), status);
-	}
-
-	public List<Player> listPlayersByWork(PlayerDistStatus status,
-			String encodedCursor) {
-		Query q = queryWithCursor(Player.class,
-				"root == rootParam && workStatus == statusParam", encodedCursor);
-		q.declareParameters(Key.class.getName() + " rootParam, "
-				+ PlayerDistStatus.class.getName() + " statusParam");
-		return (List<Player>) q.execute(playerRootKey(), status);
 	}
 
 	public List<Request> listRequests(String encodedCursor) {
@@ -441,40 +277,6 @@ public class DataAccessObject {
 		return q;
 	}
 
-	public int getDailyRequestedFF(Player player, PlayerGroup group, int eRepDay) {
-		Query q = pm.newQuery(Request.class);
-
-		q.setFilter("player == playerParam && group == groupParam && eRepDay == eRepDayParam");
-		q.declareParameters(Key.class.getName() + " playerParam, "
-				+ Key.class.getName() + " groupParam, "
-				+ Integer.class.getName() + " eRepDayParam");
-		q.setResult("sum(requestedFF)");
-
-		Object response = q.execute(player.getKey(), group.getKey(), eRepDay);
-		return response != null ? ((Long) response).intValue() : 0;
-	}
-
-	public int getRequestedFFSum(Player player, PlayerGroup group, int fromDay) {
-		Query q = pm.newQuery(Request.class);
-		q.setFilter("player == playerParam && group == groupParam && eRepDay >= fromDayParam");
-		q.declareParameters(Key.class.getName() + " playerParam, "
-				+ Key.class.getName() + " groupParam, "
-				+ Integer.class.getName() + " fromDayParam");
-		q.setResult("sum(requestedFF)");
-		Object response = q.execute(player.getKey(), group.getKey(), fromDay);
-		return response != null ? ((Long) response).intValue() : 0;
-	}
-
-	public int getFightsFFSum(Player player, int fromDay) {
-		Query q = pm.newQuery(DailyFights.class);
-		q.setFilter("player == playerParam && day >= dayParam");
-		q.declareParameters(Key.class.getName() + " playerParam, "
-				+ Integer.class.getName() + " dayParam");
-		q.setResult("sum(calculatedFfFights)");
-		Long response = ((Long) q.execute(player.getKey(), fromDay));
-		return response != null ? response.intValue() : 0;
-	}
-
 	public List<WorkWeek> getWeeklyWorks(List<Player> players) {
 		List<WorkWeek> works = new ArrayList<>();
 
@@ -538,14 +340,6 @@ public class DataAccessObject {
 		return pm.getObjectById(Employer.class, employer.getKey());
 	}
 
-	public Avatar find(Avatar avatar) {
-		return pm.getObjectById(Avatar.class, avatar.getKey());
-	}
-
-	public Player find(Player player) {
-		return pm.getObjectById(Player.class, player.getKey());
-	}
-
 	public DailyFights find(DailyFights fights) {
 		return pm.getObjectById(DailyFights.class, fights.getKey());
 	}
@@ -567,19 +361,6 @@ public class DataAccessObject {
 			extensionMap.put(JDOCursorHelper.CURSOR_EXTENSION, cursor);
 			query.setExtensions(extensionMap);
 		}
-	}
-
-	@Cacheable
-	public Key findPlayerKey(String playerName) {
-		Query q = pm.newQuery(Player.class);
-		q.setFilter("nameNormalized == nameNormalizedParam");
-		q.declareParameters(String.class.getName() + " nameNormalizedParam");
-		q.setResult("key");
-		q.setUnique(true);
-		Object key = q.execute(playerName.toLowerCase());
-		if (key == null)
-			throw new JDOObjectNotFoundException();
-		return (Key) key;
 	}
 
 	public PlayerGroup find(PlayerGroup group) {
@@ -606,15 +387,6 @@ public class DataAccessObject {
 				ServerConstants.DEFAULT_ID);
 	}
 
-	public PlayerRoot playerRoot() {
-		return pm.getObjectById(PlayerRoot.class, playerRootKey());
-	}
-
-	public static Key playerRootKey() {
-		return KeyFactory.createKey(PlayerRoot.class.getSimpleName(),
-				ServerConstants.DEFAULT_ID);
-	}
-
 	public PlayerGroupRoot groupRoot() {
 		return pm.getObjectById(PlayerGroupRoot.class, groupRootKey());
 	}
@@ -624,9 +396,44 @@ public class DataAccessObject {
 				ServerConstants.DEFAULT_ID);
 	}
 
-	private PlayerGroup defaultGroup() {
+	public PlayerGroup defaultGroup() {
 		return pm.getObjectById(PlayerGroup.class, KeyFactory.createKey(
 				groupRootKey(), PlayerGroup.class.getSimpleName(),
 				ServerConstants.DEFAULT_ID));
 	}
+	
+	public int getDailyRequestedFF(Player player, PlayerGroup group, int eRepDay) {
+		Query q = pm.newQuery(Request.class);
+
+		q.setFilter("player == playerParam && group == groupParam && eRepDay == eRepDayParam");
+		q.declareParameters(Key.class.getName() + " playerParam, "
+				+ Key.class.getName() + " groupParam, "
+				+ Integer.class.getName() + " eRepDayParam");
+		q.setResult("sum(requestedFF)");
+
+		Object response = q.execute(player.getKey(), group.getKey(), eRepDay);
+		return response != null ? ((Long) response).intValue() : 0;
+	}
+
+	public int getRequestedFFSum(Player player, PlayerGroup group, int fromDay) {
+		Query q = pm.newQuery(Request.class);
+		q.setFilter("player == playerParam && group == groupParam && eRepDay >= fromDayParam");
+		q.declareParameters(Key.class.getName() + " playerParam, "
+				+ Key.class.getName() + " groupParam, "
+				+ Integer.class.getName() + " fromDayParam");
+		q.setResult("sum(requestedFF)");
+		Object response = q.execute(player.getKey(), group.getKey(), fromDay);
+		return response != null ? ((Long) response).intValue() : 0;
+	}
+	
+	public int getFightsFFSum(Player player, int fromDay) {
+		Query q = pm.newQuery(DailyFights.class);
+		q.setFilter("player == playerParam && day >= dayParam");
+		q.declareParameters(Key.class.getName() + " playerParam, "
+				+ Integer.class.getName() + " dayParam");
+		q.setResult("sum(calculatedFfFights)");
+		Long response = ((Long) q.execute(player.getKey(), fromDay));
+		return response != null ? response.intValue() : 0;
+	}
+
 }

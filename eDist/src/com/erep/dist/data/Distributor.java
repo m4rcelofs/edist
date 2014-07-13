@@ -1,5 +1,7 @@
 package com.erep.dist.data;
 
+import static com.erep.dist.auth.SymmetricCipherUtils.decrypt;
+
 import java.io.Serializable;
 
 import javax.jdo.annotations.Extension;
@@ -28,42 +30,42 @@ import com.google.common.collect.HashBasedTable;
 				@Persistent(name = "email"),
 				@Persistent(name = "lastAccessTimestamp") }),
 		@FetchGroup(name = "configListing", members = { @Persistent(name = "email") }),
-		@FetchGroup(name = "inventoryListing", members = { @Persistent(name = "lastInventory") })})
+		@FetchGroup(name = "inventoryListing", members = { @Persistent(name = "lastInventory") }) })
 public class Distributor implements HasEncodedKey, Serializable {
 
-	private static final long	serialVersionUID	= 1L;
+	private static final long										serialVersionUID	= 1L;
 
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
-	private Key					key;
+	private Key														key;
 
 	@Persistent
-	private DistributorRoot		root;
+	private DistributorRoot											root;
 
 	@NotPersistent
 	@RemoteProperty
-	private String				encodedKey;
+	private String													encodedKey;
 
 	@Persistent
 	@RemoteProperty
-	private String				name;
+	private String													name;
 
 	@Persistent(defaultFetchGroup = "false")
 	@RemoteProperty
-	private String				email;
+	private String													email;
 
 	@Persistent(defaultFetchGroup = "false")
 	@RemoteProperty
-	private long				lastAccessTimestamp;
-	
-	@Persistent(defaultFetchGroup = "false", serialized="true")
+	private long													lastAccessTimestamp;
+
+	@Persistent(defaultFetchGroup = "false", serialized = "true")
 	private HashBasedTable<ResourceType, ResourceQuality, Integer>	lastInventory;
 
 	@Persistent(defaultFetchGroup = "false")
 	@RemoteProperty
 	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
-	private String				password;
-	
+	private String													password;
+
 	public Key getKey() {
 		return key;
 	}
@@ -125,7 +127,7 @@ public class Distributor implements HasEncodedKey, Serializable {
 	}
 
 	public HashBasedTable<ResourceType, ResourceQuality, Integer> getLastInventory() {
-		if(lastInventory == null)
+		if (lastInventory == null)
 			lastInventory = HashBasedTable.create(2, 7);
 		return lastInventory;
 	}
@@ -133,6 +135,16 @@ public class Distributor implements HasEncodedKey, Serializable {
 	public void setLastInventory(
 			HashBasedTable<ResourceType, ResourceQuality, Integer> lastInventory) {
 		this.lastInventory = lastInventory;
+	}
+
+	public String decryptPassword() throws Exception {
+		String password = decrypt(getPassword());
+
+		if (getEmail() == null || getEmail().isEmpty() || password == null
+				|| password.trim().isEmpty())
+			throw new IllegalStateException("Distributor is not configured");
+
+		return password;
 	}
 
 }

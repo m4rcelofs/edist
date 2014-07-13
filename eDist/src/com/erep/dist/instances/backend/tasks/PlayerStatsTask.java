@@ -12,10 +12,10 @@ import java.util.concurrent.Future;
 import org.apache.commons.io.IOUtils;
 
 import com.erep.dist.CloseablePM;
-import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
 import com.erep.dist.data.DailyStats;
 import com.erep.dist.data.Player;
+import com.erep.dist.data.dao.Players;
 import com.erep.dist.data.dao.Server;
 import com.erep.dist.data.enums.CountryCode;
 import com.erep.dist.data.enums.Division;
@@ -51,8 +51,8 @@ public class PlayerStatsTask implements DeferredTask {
 
 			Future<HTTPResponse> futureResponse = fetchPage(playerKey.getId());
 
-			DataAccessObject dao = new DataAccessObject(pm);
-			Player dbPlayer = dao.find(new Player(playerKey));
+			Players players = new Players(pm);
+			Player dbPlayer = players.find(new Player(playerKey));
 
 			HTTPResponse response = futureResponse.get();
 			if (response.getResponseCode() == 404) {

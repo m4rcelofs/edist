@@ -21,6 +21,7 @@ import com.erep.dist.data.DailyWork;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerRoot;
 import com.erep.dist.data.dao.PlayerStatistics;
+import com.erep.dist.data.dao.Players;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.taskqueue.DeferredTask;
 import com.google.appengine.api.taskqueue.Queue;
@@ -106,10 +107,11 @@ public class DataMigrationServlet extends HttpServlet {
 					public void run() {
 						try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 							DataAccessObject dao = new DataAccessObject(pm);
+							Players players = new Players(pm);
 							DailyStats stat = dao.find(new DailyStats(key));
 							if (stat.getPlayer() == null) {
 								Key parentKey = stat.getKey().getParent();
-								Player parent = dao.find(new Player(parentKey));
+								Player parent = players.find(new Player(parentKey));
 								stat.setPlayer(parent);
 							}
 						}
@@ -135,10 +137,11 @@ public class DataMigrationServlet extends HttpServlet {
 					public void run() {
 						try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 							DataAccessObject dao = new DataAccessObject(pm);
+							Players players = new Players(pm);
 							DailyWork stat = dao.find(new DailyWork(key));
 							if (stat.getPlayer() == null) {
 								Key parentKey = stat.getKey().getParent();
-								Player parent = dao.find(new Player(parentKey));
+								Player parent = players.find(new Player(parentKey));
 								stat.setPlayer(parent);
 							}
 						}
@@ -164,10 +167,11 @@ public class DataMigrationServlet extends HttpServlet {
 					public void run() {
 						try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 							DataAccessObject dao = new DataAccessObject(pm);
+							Players players = new Players(pm);
 							DailyFights stat = dao.find(new DailyFights(key));
 							if (stat.getPlayer() == null) {
 								Key parentKey = stat.getKey().getParent();
-								Player parent = dao.find(new Player(parentKey));
+								Player parent = players.find(new Player(parentKey));
 								stat.setPlayer(parent);
 							}
 						}
@@ -186,16 +190,16 @@ public class DataMigrationServlet extends HttpServlet {
 
 		int count = 0;
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			DataAccessObject dao = new DataAccessObject(pm);
+			Players players = new Players(pm);
 
-			PlayerRoot root = dao.playerRoot();
-			Extent<Player> players = dao.listAllPlayers();
-			for (Player p : players) {
+			PlayerRoot root = players.root();
+			Extent<Player> allPlayers = players.listAll();
+			for (Player p : allPlayers) {
 				root.addPlayer(p);
 				count++;
 			}
 
-			players.closeAll();
+			allPlayers.closeAll();
 		}
 
 		resp.getWriter().write(count + " players loaded and added to root");

@@ -17,6 +17,7 @@ import com.erep.dist.data.DailyStats;
 import com.erep.dist.data.DailyWork;
 import com.erep.dist.data.Employer;
 import com.erep.dist.data.Player;
+import com.erep.dist.data.dao.Players;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.taskqueue.DeferredTask;
 import com.google.appengine.api.taskqueue.Queue;
@@ -47,6 +48,7 @@ public class WorkParseTask implements DeferredTask {
 	public void run() {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			DataAccessObject dao = new DataAccessObject(pm);
+			Players players = new Players(pm);
 
 			String playerId = employeeUpdate.get("id").toString();
 
@@ -57,7 +59,7 @@ public class WorkParseTask implements DeferredTask {
 
 			Player dbPlayer = null;
 			try {
-				dbPlayer = dao.find(new Player(dao.createPlayerKey(playerId)));
+				dbPlayer = players.find(new Player(players.createKey(playerId)));
 			} catch (JDOObjectNotFoundException e) {
 				// some other player that works for the employer, just ignore
 				logger.log(Level.WARNING, "Player " + playerId
