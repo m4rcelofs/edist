@@ -28,7 +28,7 @@ public class NewMembersCheckIfExistsTask implements DeferredTask {
 
 	@Override
 	public void run() {
-		logger.log(Level.WARNING,
+		logger.log(Level.INFO,
 				"Starting NewMembersCheckIfExistsTask for member " + erId);
 
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {

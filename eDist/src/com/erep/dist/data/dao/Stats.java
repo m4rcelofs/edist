@@ -28,7 +28,7 @@ public class Stats extends GenericDAO {
 
 	public DailyStats findLastKnown(Player player) {
 		List<DailyStats> allKnown = list(player, null);
-		return allKnown.get(allKnown.size() - 1);
+		return allKnown.get(0);
 	}
 
 	private Key createKey(Player dbPlayer, Integer day) {

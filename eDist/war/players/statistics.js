@@ -110,7 +110,7 @@ var StatisticsViewModel = new function() {
 
 	// charts
 	self.graphs = new StatisticsGraphics();
-	self.chartCategory = ko.observable('1,2,7,12,13,14');
+	self.chartCategory = ko.observable('1,2,7');
 	ko.computed(function() {
 		var stringArray = self.chartCategory().split(',');
 		var catArray = [ 0 ]; // day
