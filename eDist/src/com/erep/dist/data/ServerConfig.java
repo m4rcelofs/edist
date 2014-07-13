@@ -79,6 +79,7 @@ public class ServerConfig implements Serializable {
 	private Boolean				showDistributorInventory;
 
 	@Persistent
+	@RemoteProperty
 	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	private String				syncWithMuId;
 

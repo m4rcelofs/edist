@@ -9,12 +9,12 @@ if (typeof FightVerification != "function") {
 
 if (typeof ServerConfig != "function") {
   function ServerConfig() {
+    this.syncWithMuId = null;
     this.contactEmail = null;
     this.playerReportsAccess = null;
     this.granularity = null;
     this.config = null;
     this.fightVerif = null;
-    this.avatarHistory = false;
     this.workVerif = null;
     this.reportsAccess = null;
     this.muName = null;
@@ -47,8 +47,17 @@ if (DWREngine == null) var DWREngine = dwr.engine;
 
 if (AdminService == null) var AdminService = {};
 AdminService._path = '/admin/dwr';
-AdminService.listDistributors = function(callback) {
-  dwr.engine._execute(AdminService._path, 'AdminService', 'listDistributors', callback);
+AdminService.listRegisteredUsers = function(p0, callback) {
+  dwr.engine._execute(AdminService._path, 'AdminService', 'listRegisteredUsers', p0, callback);
+}
+AdminService.saveRegisteredUser = function(p0, callback) {
+  dwr.engine._execute(AdminService._path, 'AdminService', 'saveRegisteredUser', p0, callback);
+}
+AdminService.removeRegisteredUser = function(p0, callback) {
+  dwr.engine._execute(AdminService._path, 'AdminService', 'removeRegisteredUser', p0, callback);
+}
+AdminService.getServerConfig = function(callback) {
+  dwr.engine._execute(AdminService._path, 'AdminService', 'getServerConfig', callback);
 }
 AdminService.listEmployers = function(callback) {
   dwr.engine._execute(AdminService._path, 'AdminService', 'listEmployers', callback);
@@ -56,23 +65,14 @@ AdminService.listEmployers = function(callback) {
 AdminService.loadInventory = function(p0, callback) {
   dwr.engine._execute(AdminService._path, 'AdminService', 'loadInventory', p0, callback);
 }
+AdminService.listDistributors = function(callback) {
+  dwr.engine._execute(AdminService._path, 'AdminService', 'listDistributors', callback);
+}
 AdminService.saveDistributor = function(p0, callback) {
   dwr.engine._execute(AdminService._path, 'AdminService', 'saveDistributor', p0, callback);
 }
 AdminService.saveServerConfig = function(p0, callback) {
   dwr.engine._execute(AdminService._path, 'AdminService', 'saveServerConfig', p0, callback);
-}
-AdminService.removeRegisteredUser = function(p0, callback) {
-  dwr.engine._execute(AdminService._path, 'AdminService', 'removeRegisteredUser', p0, callback);
-}
-AdminService.saveRegisteredUser = function(p0, callback) {
-  dwr.engine._execute(AdminService._path, 'AdminService', 'saveRegisteredUser', p0, callback);
-}
-AdminService.listRegisteredUsers = function(p0, callback) {
-  dwr.engine._execute(AdminService._path, 'AdminService', 'listRegisteredUsers', p0, callback);
-}
-AdminService.getServerConfig = function(callback) {
-  dwr.engine._execute(AdminService._path, 'AdminService', 'getServerConfig', callback);
 }
 AdminService.saveEmployer = function(p0, callback) {
   dwr.engine._execute(AdminService._path, 'AdminService', 'saveEmployer', p0, callback);
