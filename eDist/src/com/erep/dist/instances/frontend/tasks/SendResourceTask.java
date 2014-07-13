@@ -1,7 +1,5 @@
 package com.erep.dist.instances.frontend.tasks;
 
-import static com.erep.dist.auth.SymmetricCipherUtils.decrypt;
-
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -108,7 +106,7 @@ public class SendResourceTask implements DeferredTask {
 		}
 	}
 
-	//TODO check DeferredTaskContext.markForRetry()
+	// TODO check DeferredTaskContext.markForRetry()
 	private void checkDistributorAccess(PersistenceManager pm,
 			Distributor distributor) {
 
@@ -143,7 +141,7 @@ public class SendResourceTask implements DeferredTask {
 	private void execute(Request dbRequest, ResourceDist dbResource)
 			throws Exception {
 		Distributor dist = dbRequest.getDistributor();
-		String passwordPlain = decryptPassword(dist);
+		String passwordPlain = dist.decryptPassword();
 
 		try (ErepScrapper scrapper = new ErepScrapper(dist.getEmail(),
 				passwordPlain)) {
@@ -169,24 +167,6 @@ public class SendResourceTask implements DeferredTask {
 			throw e;
 		}
 
-	}
-
-	private String decryptPassword(Distributor distributor) throws Exception {
-		try {
-			String password = decrypt(distributor.getPassword());
-
-			if (distributor.getEmail() == null
-					|| distributor.getEmail().isEmpty() || password == null
-					|| password.trim().isEmpty())
-				throw new IllegalStateException("Distributor is not configured");
-
-			return password;
-		} catch (Exception e) {
-			logger.log(Level.SEVERE,
-					"Could not decrypt password for distributor {0}",
-					distributor.getEmail());
-			throw e;
-		}
 	}
 
 	private ManufacturedStrategy getStrategy(Request request,

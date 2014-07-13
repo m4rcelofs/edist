@@ -20,10 +20,13 @@ import com.google.appengine.api.datastore.KeyFactory;
 import com.google.appengine.datanucleus.annotations.Unowned;
 
 @FetchGroups({ @FetchGroup(name = "employerListing", members = {
-		@Persistent(name = "players"), @Persistent(name = "authKey") }) })
+		@Persistent(name = "players"), @Persistent(name = "authKey"),
+		@Persistent(name = "ip"), @Persistent(name = "XAppEngineCountry"),
+		@Persistent(name = "XAppEngineRegion"),
+		@Persistent(name = "XAppEngineCity") }) })
 @DataTransferObject
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class Employer implements HasEncodedKey {
+public class Employer implements HasEncodedKey, HasIPLog {
 
 	@PrimaryKey
 	@Persistent
@@ -48,6 +51,38 @@ public class Employer implements HasEncodedKey {
 	@Persistent
 	@RemoteProperty
 	private Date			lastUpdatedAt;
+
+	@Persistent
+	@RemoteProperty
+	private Integer			employeesCount;
+
+	@Persistent
+	@RemoteProperty
+	private Integer			jobsOpen;
+
+	@Persistent
+	@RemoteProperty
+	private String			jobsSalary;
+
+	@Persistent
+	@RemoteProperty
+	private Integer			jobsTotal;
+
+	@Persistent(defaultFetchGroup = "false")
+	@RemoteProperty
+	private String			ip;
+
+	@Persistent(defaultFetchGroup = "false")
+	@RemoteProperty
+	private String			XAppEngineCountry;
+
+	@Persistent(defaultFetchGroup = "false")
+	@RemoteProperty
+	private String			XAppEngineRegion;
+
+	@Persistent(defaultFetchGroup = "false")
+	@RemoteProperty
+	private String			XAppEngineCity;
 
 	@Unowned
 	@Persistent
@@ -163,6 +198,70 @@ public class Employer implements HasEncodedKey {
 
 	public void setPlayers(Set<Player> players) {
 		this.players = players;
+	}
+
+	public Integer getEmployeesCount() {
+		return employeesCount;
+	}
+
+	public void setEmployeesCount(Integer employeesCount) {
+		this.employeesCount = employeesCount;
+	}
+
+	public Integer getJobsOpen() {
+		return jobsOpen;
+	}
+
+	public void setJobsOpen(Integer jobsOpen) {
+		this.jobsOpen = jobsOpen;
+	}
+
+	public String getJobsSalary() {
+		return jobsSalary;
+	}
+
+	public void setJobsSalary(String jobsSalary) {
+		this.jobsSalary = jobsSalary;
+	}
+
+	public Integer getJobsTotal() {
+		return jobsTotal;
+	}
+
+	public void setJobsTotal(Integer jobsTotal) {
+		this.jobsTotal = jobsTotal;
+	}
+
+	public String getIp() {
+		return ip;
+	}
+
+	public void setIp(String ip) {
+		this.ip = ip;
+	}
+
+	public String getXAppEngineCountry() {
+		return XAppEngineCountry;
+	}
+
+	public void setXAppEngineCountry(String xAppEngineCountry) {
+		XAppEngineCountry = xAppEngineCountry;
+	}
+
+	public String getXAppEngineRegion() {
+		return XAppEngineRegion;
+	}
+
+	public void setXAppEngineRegion(String xAppEngineRegion) {
+		XAppEngineRegion = xAppEngineRegion;
+	}
+
+	public String getXAppEngineCity() {
+		return XAppEngineCity;
+	}
+
+	public void setXAppEngineCity(String xAppEngineCity) {
+		XAppEngineCity = xAppEngineCity;
 	}
 
 }

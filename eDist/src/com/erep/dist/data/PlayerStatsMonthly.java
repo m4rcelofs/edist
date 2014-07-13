@@ -125,14 +125,17 @@ public class PlayerStatsMonthly implements HasEncodedKey {
 
 		addInfluence(daily.getInfluence());
 
-		getDead().addAll(daily.getDead());
-		setDeadCount(getDead().size());
+		Set<Player> dead = new HashSet<>(getDead());
+		dead.addAll(daily.getDead());
+		setDead(dead);
 
-		getTempBanned().addAll(daily.getTempBanned());
-		setTempBannedCount(getTempBanned().size());
+		Set<Player> tempBan = new HashSet<>(getTempBanned());
+		tempBan.addAll(daily.getTempBanned());
+		setTempBanned(tempBan);
 
-		getPermaBanned().addAll(daily.getPermaBanned());
-		setPermaBannedCount(getPermaBanned().size());
+		Set<Player> permaBan = new HashSet<>(getPermaBanned());
+		permaBan.addAll(daily.getPermaBanned());
+		setPermaBanned(permaBan);
 	}
 
 	private void addInfluence(Map<Division, Long> influenceToAdd) {
@@ -190,6 +193,8 @@ public class PlayerStatsMonthly implements HasEncodedKey {
 
 	public void setDead(Set<Player> dead) {
 		this.dead = dead;
+		if (dead != null)
+			setDeadCount(dead.size());
 	}
 
 	public Set<Player> getTempBanned() {
@@ -200,6 +205,8 @@ public class PlayerStatsMonthly implements HasEncodedKey {
 
 	public void setTempBanned(Set<Player> tempBanned) {
 		this.tempBanned = tempBanned;
+		if (tempBanned != null)
+			setTempBannedCount(tempBanned.size());
 	}
 
 	public Set<Player> getPermaBanned() {
@@ -210,6 +217,8 @@ public class PlayerStatsMonthly implements HasEncodedKey {
 
 	public void setPermaBanned(Set<Player> permaBanned) {
 		this.permaBanned = permaBanned;
+		if (permaBanned != null)
+			setPermaBannedCount(permaBanned.size());
 	}
 
 }

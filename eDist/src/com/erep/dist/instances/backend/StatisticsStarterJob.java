@@ -3,6 +3,8 @@ package com.erep.dist.instances.backend;
 import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withPayload;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -21,6 +23,8 @@ import com.google.appengine.api.taskqueue.TaskOptions;
 public class StatisticsStarterJob extends HttpServlet {
 
 	private static final long	serialVersionUID	= 1L;
+	private static Logger		logger				= Logger.getLogger(StatisticsStarterJob.class
+															.getName());
 
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
@@ -37,6 +41,10 @@ public class StatisticsStarterJob extends HttpServlet {
 
 		DeferredTask playersDaily = new PlayerDailyStatisticsTask(day);
 		addToQueue(playersDaily);
+
+		logger.log(Level.WARNING,
+				"Started RequestDailyStatisticsTask and PlayerDailyStatisticsTask for day "
+						+ day);
 	}
 
 	private void addToQueue(DeferredTask task) {
@@ -46,7 +54,7 @@ public class StatisticsStarterJob extends HttpServlet {
 				"Host",
 				BackendServiceFactory.getBackendService().getBackendAddress(
 						"edist-default-backend"));
-		queue.add(taskOptions);
+		queue.addAsync(taskOptions);
 	}
 
 }
