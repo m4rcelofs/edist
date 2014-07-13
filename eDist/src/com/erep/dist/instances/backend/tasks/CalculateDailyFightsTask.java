@@ -42,7 +42,7 @@ public class CalculateDailyFightsTask implements DeferredTask {
 	public void run() {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			DataAccessObject dao = new DataAccessObject(pm);
-			ConfigHelper config = new ConfigHelper(dao);
+			ConfigHelper config = new ConfigHelper(pm);
 
 			Player dbPlayer = dao.find(new Player(playerKey));
 			DailyStats previousDayStats = dao.getStats(dbPlayer, today - 1);

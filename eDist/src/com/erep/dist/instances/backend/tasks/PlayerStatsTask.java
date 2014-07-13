@@ -16,6 +16,7 @@ import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
 import com.erep.dist.data.DailyStats;
 import com.erep.dist.data.Player;
+import com.erep.dist.data.dao.Server;
 import com.erep.dist.data.enums.CountryCode;
 import com.erep.dist.data.enums.Division;
 import com.erep.dist.data.enums.PlayerStatus;
@@ -76,7 +77,8 @@ public class PlayerStatsTask implements DeferredTask {
 			
 			startFightCalculationTask(day, dbPlayer);
 
-			if (dao.getServerConfig().isAvatarHistory())
+			Server server = new Server(pm);
+			if (server.getConfig().isAvatarHistory())
 				startAvatarFetchTask(stats);
 
 		} catch (Exception e) {

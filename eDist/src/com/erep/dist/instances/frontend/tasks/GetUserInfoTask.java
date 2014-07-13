@@ -17,6 +17,7 @@ import com.erep.dist.PMF;
 import com.erep.dist.cache.CacheFacade;
 import com.erep.dist.data.DailyStats;
 import com.erep.dist.data.Player;
+import com.erep.dist.data.dao.Server;
 import com.erep.dist.data.enums.CountryCode;
 import com.erep.dist.data.enums.Division;
 import com.erep.dist.data.enums.PlayerStatus;
@@ -81,7 +82,7 @@ public class GetUserInfoTask implements DeferredTask {
 			else
 				dbPlayer.setDbStatus(PlayerStatus.ENABLED);
 
-			if (dao.getServerConfig().isAvatarHistory())
+			if (new Server(pm).getConfig().isAvatarHistory())
 				startAvatarFetchTask(stats);
 
 			CacheFacade

@@ -18,6 +18,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.jdo.JDOObjectNotFoundException;
+import javax.jdo.PersistenceManager;
 
 import com.erep.dist.data.DailyStats;
 import com.erep.dist.data.DistConfig;
@@ -43,9 +44,9 @@ public class RequestsHelper {
 	private static Logger				logger	= Logger.getLogger(RequestsHelper.class
 														.getName());
 
-	public RequestsHelper(DataAccessObject dao) {
-		this.dao = dao;
-		this.config = new ConfigHelper(dao);
+	public RequestsHelper(PersistenceManager pm) {
+		this.dao = new DataAccessObject(pm);
+		this.config = new ConfigHelper(pm);
 	}
 
 	public boolean verifyRocketAllowed(Player player, PlayerGroup group) {

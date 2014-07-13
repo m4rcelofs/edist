@@ -33,7 +33,7 @@ public class FightsVerificationTask implements DeferredTask {
 	public void run() {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			DataAccessObject dao = new DataAccessObject(pm);
-			ConfigHelper config = new ConfigHelper(dao);
+			ConfigHelper config = new ConfigHelper(pm);
 
 			DailyFights fights = dao.find(new DailyFights(dailyFightsKey));
 			Player dbPlayer = dao.find(new Player(playerKey));

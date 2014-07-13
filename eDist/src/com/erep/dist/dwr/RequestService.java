@@ -25,6 +25,7 @@ import com.erep.dist.data.DistConfig;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.Request;
+import com.erep.dist.data.dao.Server;
 import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.dwr.dto.RequestAttempt;
 import com.erep.dist.erep.eRepTimeCalculator;
@@ -51,7 +52,7 @@ public class RequestService {
 
 			DataAccessObject dao = new DataAccessObject(pm);
 
-			if (!new LicensingHelper(dao).isValidLicence()) {
+			if (!new LicensingHelper(new Server(pm)).isValidLicence()) {
 				logger.log(Level.SEVERE,
 						"Dist request denied because licence has expired");
 				return false;
@@ -59,7 +60,7 @@ public class RequestService {
 
 			Transaction tx = pm.currentTransaction();
 			try {
-				RequestsHelper helper = new RequestsHelper(dao);
+				RequestsHelper helper = new RequestsHelper(pm);
 
 				Player dbPlayer = dao.find(player);
 				PlayerGroup dbGroup = dao.find(group);
@@ -131,8 +132,8 @@ public class RequestService {
 			pm.getFetchPlan().addGroup("requestAttempt");
 
 			DataAccessObject dao = new DataAccessObject(pm);
-			RequestsHelper requests = new RequestsHelper(dao);
-			ConfigHelper config = new ConfigHelper(dao);
+			RequestsHelper requests = new RequestsHelper(pm);
+			ConfigHelper config = new ConfigHelper(pm);
 
 			Transaction tx = pm.currentTransaction();
 			try {

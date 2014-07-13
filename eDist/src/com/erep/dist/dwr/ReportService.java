@@ -27,6 +27,7 @@ import com.erep.dist.data.RequestStatsDaily;
 import com.erep.dist.data.RequestStatsMonthly;
 import com.erep.dist.data.ResourceDist;
 import com.erep.dist.data.dao.RequestStatistics;
+import com.erep.dist.data.dao.Server;
 import com.erep.dist.data.enums.RequestStatus;
 import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.data.enums.ResourceQuality;
@@ -49,7 +50,7 @@ public class ReportService {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			DataAccessObject dao = new DataAccessObject(pm);
 
-			AuthHelper auth = new AuthHelper(dao);
+			AuthHelper auth = new AuthHelper(new Server(pm));
 			if (auth.hasManagementAccess())
 				dto.setDistributors(dao.listDistributors());
 
@@ -99,7 +100,7 @@ public class ReportService {
 			pm.getFetchPlan().addGroup("reportListing");
 
 			DataAccessObject dao = new DataAccessObject(pm);
-			AuthHelper auth = new AuthHelper(dao);
+			AuthHelper auth = new AuthHelper(new Server(pm));
 			if (auth.hasManagementAccess())
 				pm.getFetchPlan().addGroup("managementAccess");
 
@@ -122,7 +123,7 @@ public class ReportService {
 			RequestQuery queryResults = new RequestQuery();
 
 			DataAccessObject dao = new DataAccessObject(pm);
-			AuthHelper auth = new AuthHelper(dao);
+			AuthHelper auth = new AuthHelper(new Server(pm));
 			if (!auth.hasManagementAccess())
 				return queryResults;
 
@@ -155,7 +156,7 @@ public class ReportService {
 
 			pm.getFetchPlan().addGroup("reportListing");
 
-			AuthHelper auth = new AuthHelper(dao);
+			AuthHelper auth = new AuthHelper(new Server(pm));
 			if (auth.hasManagementAccess())
 				pm.getFetchPlan().addGroup("managementAccess");
 
@@ -175,7 +176,7 @@ public class ReportService {
 			pm.getFetchPlan().addGroup("reportListing");
 
 			DataAccessObject dao = new DataAccessObject(pm);
-			AuthHelper auth = new AuthHelper(dao);
+			AuthHelper auth = new AuthHelper(new Server(pm));
 			if (auth.hasManagementAccess())
 				pm.getFetchPlan().addGroup("managementAccess");
 
@@ -197,7 +198,7 @@ public class ReportService {
 			pm.getFetchPlan().addGroup("reportListing");
 
 			DataAccessObject dao = new DataAccessObject(pm);
-			AuthHelper auth = new AuthHelper(dao);
+			AuthHelper auth = new AuthHelper(new Server(pm));
 			if (auth.hasManagementAccess())
 				pm.getFetchPlan().addGroup("managementAccess");
 
@@ -219,7 +220,7 @@ public class ReportService {
 			pm.getFetchPlan().addGroup("reportListing");
 
 			DataAccessObject dao = new DataAccessObject(pm);
-			AuthHelper auth = new AuthHelper(dao);
+			AuthHelper auth = new AuthHelper(new Server(pm));
 			if (auth.hasManagementAccess())
 				pm.getFetchPlan().addGroup("managementAccess");
 

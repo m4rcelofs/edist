@@ -14,8 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.erep.dist.CloseablePM;
-import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
+import com.erep.dist.data.dao.Server;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
@@ -37,7 +37,7 @@ public class ReportsFilter implements Filter {
 		UserService userService = UserServiceFactory.getUserService();
 
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			AuthHelper auth = new AuthHelper(new DataAccessObject(pm),
+			AuthHelper auth = new AuthHelper(new Server(pm),
 					userService);
 
 			if (auth.hasReportsAccess())

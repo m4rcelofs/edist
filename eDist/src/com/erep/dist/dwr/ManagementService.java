@@ -18,6 +18,7 @@ import com.erep.dist.PlayerIdentificator;
 import com.erep.dist.data.Distributor;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
+import com.erep.dist.data.dao.Server;
 import com.erep.dist.data.enums.PlayerDistStatus;
 import com.erep.dist.data.enums.PlayerStatus;
 import com.erep.dist.dwr.dto.PlayerGroupQuery;
@@ -44,7 +45,7 @@ public class ManagementService {
 
 			PlayerGroupQuery dto = new PlayerGroupQuery();
 			DataAccessObject dao = new DataAccessObject(pm);
-			
+
 			dto.setGroupsCount(dao.groupRoot().getGroupsCount());
 			dto.setPlayersCount(dao.playerRoot().getPlayersCount());
 			dto.setResults(dao.listGroups());
@@ -59,16 +60,17 @@ public class ManagementService {
 
 			PlayerGroupQuery dto = new PlayerGroupQuery();
 			DataAccessObject dao = new DataAccessObject(pm);
+			Server server = new Server(pm);
 
 			pm.getFetchPlan().addGroup("groupConfigListing");
 			pm.getFetchPlan().addGroup("configListing");
 
 			dto.setGroupsCount(dao.groupRoot().getGroupsCount());
 			dto.setPlayersCount(dao.playerRoot().getPlayersCount());
-			
-			List<PlayerGroup> groups = dao.listGroups(); 
+
+			List<PlayerGroup> groups = dao.listGroups();
 			dto.setResults(pm.detachCopyAll(groups));
-			dto.setGranularity(dao.getServerConfig().getGranularity());
+			dto.setGranularity(server.getConfig().getGranularity());
 
 			return dto;
 		}
@@ -76,8 +78,6 @@ public class ManagementService {
 
 	@RemoteMethod
 	public boolean addPlayer(Player player) {
-
-		// TODO check licence
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 
 			boolean created = new DataAccessObject(pm).save(player, true);
@@ -108,13 +108,14 @@ public class ManagementService {
 
 			PlayerQuery queryResults = new PlayerQuery();
 			DataAccessObject dao = new DataAccessObject(pm);
+			Server server = new Server(pm);
 			List<Player> players = dao.listPlayers(cursor);
 
 			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(players)
 					.toWebSafeString());
 			queryResults.setResults(pm.detachCopyAll(players));
 
-			queryResults.setGranularity(dao.getServerConfig().getGranularity());
+			queryResults.setGranularity(server.getConfig().getGranularity());
 
 			return queryResults;
 		}
@@ -129,6 +130,7 @@ public class ManagementService {
 
 			PlayerQuery queryResults = new PlayerQuery();
 			DataAccessObject dao = new DataAccessObject(pm);
+			Server server = new Server(pm);
 
 			if (param != null) {
 				List<Player> players = dao.listPlayersByGroup(param, cursor);
@@ -137,7 +139,7 @@ public class ManagementService {
 						.getCursor(players).toWebSafeString());
 			}
 
-			queryResults.setGranularity(dao.getServerConfig().getGranularity());
+			queryResults.setGranularity(server.getConfig().getGranularity());
 
 			return queryResults;
 		}
@@ -152,6 +154,7 @@ public class ManagementService {
 
 			PlayerQuery queryResults = new PlayerQuery();
 			DataAccessObject dao = new DataAccessObject(pm);
+			Server server = new Server(pm);
 
 			try {
 				Player player = new PlayerIdentificator(dao)
@@ -162,7 +165,7 @@ public class ManagementService {
 				// ignore
 			}
 
-			queryResults.setGranularity(dao.getServerConfig().getGranularity());
+			queryResults.setGranularity(server.getConfig().getGranularity());
 
 			return queryResults;
 		}
@@ -177,13 +180,14 @@ public class ManagementService {
 
 			PlayerQuery queryResults = new PlayerQuery();
 			DataAccessObject dao = new DataAccessObject(pm);
+			Server server = new Server(pm);
 			List<Player> players = dao.listPlayersByStatus(param, cursor);
 
 			queryResults.setResults(players);
 			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(players)
 					.toWebSafeString());
 
-			queryResults.setGranularity(dao.getServerConfig().getGranularity());
+			queryResults.setGranularity(server.getConfig().getGranularity());
 
 			return queryResults;
 		}
@@ -198,13 +202,14 @@ public class ManagementService {
 
 			PlayerQuery queryResults = new PlayerQuery();
 			DataAccessObject dao = new DataAccessObject(pm);
+			Server server = new Server(pm);
 			List<Player> players = dao.listPlayersByFight(param, cursor);
 
 			queryResults.setResults(players);
 			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(players)
 					.toWebSafeString());
 
-			queryResults.setGranularity(dao.getServerConfig().getGranularity());
+			queryResults.setGranularity(server.getConfig().getGranularity());
 
 			return queryResults;
 		}
@@ -219,13 +224,14 @@ public class ManagementService {
 
 			PlayerQuery queryResults = new PlayerQuery();
 			DataAccessObject dao = new DataAccessObject(pm);
+			Server server = new Server(pm);
 			List<Player> players = dao.listPlayersByWork(param, cursor);
 
 			queryResults.setResults(players);
 			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(players)
 					.toWebSafeString());
 
-			queryResults.setGranularity(dao.getServerConfig().getGranularity());
+			queryResults.setGranularity(server.getConfig().getGranularity());
 
 			return queryResults;
 		}

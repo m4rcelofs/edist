@@ -13,6 +13,7 @@ import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
 import com.erep.dist.auth.LicensingHelper;
 import com.erep.dist.data.Player;
+import com.erep.dist.data.dao.Server;
 import com.google.appengine.api.backends.BackendServiceFactory;
 import com.google.appengine.api.taskqueue.DeferredTask;
 import com.google.appengine.api.taskqueue.Queue;
@@ -36,7 +37,7 @@ public class PlayerStatsStarterTask implements DeferredTask {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			DataAccessObject dao = new DataAccessObject(pm);
 
-			if (!new LicensingHelper(dao).isValidLicence())
+			if (!new LicensingHelper(new Server(pm)).isValidLicence())
 				return;
 
 			Extent<Player> players = dao.listAllPlayers();
