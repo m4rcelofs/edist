@@ -26,6 +26,11 @@ public class Stats extends GenericDAO {
 		return pm().getObjectById(DailyStats.class, createKey(dbPlayer, day));
 	}
 
+	public DailyStats findLastKnown(Player player) {
+		List<DailyStats> allKnown = list(player, null);
+		return allKnown.get(allKnown.size() - 1);
+	}
+
 	private Key createKey(Player dbPlayer, Integer day) {
 		return KeyFactory.createKey(dbPlayer.getKey(),
 				DailyStats.class.getSimpleName(), day);
@@ -51,8 +56,7 @@ public class Stats extends GenericDAO {
 	}
 
 	@SuppressWarnings("unchecked")
-	public List<DailyStats> list(Integer day, Division div,
-			String encodedCursor) {
+	public List<DailyStats> list(Integer day, Division div, String encodedCursor) {
 		Query q = queryWithCursor(DailyStats.class,
 				"div == divParam && day == dayParam", encodedCursor);
 		q.declareParameters(Division.class.getName() + " divParam, "

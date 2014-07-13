@@ -223,6 +223,16 @@ public class Players extends GenericDAO {
 	}
 
 	public void disable(Player dbPlayer) {
+		clearStats(dbPlayer);
+		dbPlayer.setDbStatus(PlayerStatus.DISABLED);
+	}
+
+	public void enable(Player dbPlayer) {
+		clearStats(dbPlayer);
+		dbPlayer.setDbStatus(PlayerStatus.ENABLED);
+	}
+
+	private void clearStats(Player dbPlayer) {
 		dbPlayer.setGroups(new HashSet<>(Arrays.asList(dao.defaultGroup())));
 
 		Employer employer = dbPlayer.getCurrentEmployer();
@@ -232,8 +242,6 @@ public class Players extends GenericDAO {
 		dbPlayer.setCurrentEmployer(null);
 		dbPlayer.setFightStatus(null);
 		dbPlayer.setWorkStatus(null);
-
-		dbPlayer.setDbStatus(PlayerStatus.DISABLED);
 	}
 
 	@Cacheable
