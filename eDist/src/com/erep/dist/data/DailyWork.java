@@ -1,5 +1,6 @@
 package com.erep.dist.data;
 
+import java.util.Date;
 import java.util.Set;
 
 import javax.jdo.annotations.Extension;
@@ -77,6 +78,10 @@ public class DailyWork {
 	@Persistent
 	@RemoteProperty
 	private PlayerDistStatus	verificationStatus;
+	
+	@Persistent
+	@RemoteProperty
+	private Date verifiedAt;
 
 	@Deprecated
 	public DailyWork() {
@@ -156,5 +161,13 @@ public class DailyWork {
 
 	public void setStats(DailyStats stats) {
 		this.stats = stats;
+	}
+
+	public Date getVerifiedAt() {
+		return verifiedAt;
+	}
+
+	public void setVerifiedAt(Date verifiedAt) {
+		this.verifiedAt = verifiedAt;
 	}
 }

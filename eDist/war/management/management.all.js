@@ -1905,6 +1905,17 @@ var PlayersViewModel = new function() {
 	}
 
 	function setResults(response) {
+		if(self.groups().length === 0) {
+			loadGroupNames(function(){
+				doShowResults(response);
+			});
+		} else{
+			doShowResults(response);
+		}
+	}
+	
+	function doShowResults(response) {
+		console.log(self.groups());
 		var cursor = response.results.length >= window.edist.server.pageSize ? response.encodedCursor
 				: null
 		self.playersCursor(cursor);
@@ -1925,7 +1936,7 @@ var PlayersViewModel = new function() {
 				create : noRecursion
 			}
 		};
-		var newArray = self.players();
+		var newArray = self.players().slice(0);
 
 		response.results.forEach(function(item) {
 			newArray.push(ko.mapping.fromJS(item, mapping));
@@ -1933,12 +1944,16 @@ var PlayersViewModel = new function() {
 		self.players(newArray);
 	}
 
-	function loadGroupNames() {
+	function loadGroupNames(callbackFct) {
 		ManagementService.listGroupNames({
 			callback : function(response) {
 				response.results.sort(Management.groupSortFct);
 				self.groups(response.results);
 				Management.setCount(response);
+				
+				if(callbackFct) {
+					callbackFct();
+				}
 			}
 		});
 	}
@@ -1956,8 +1971,8 @@ var PlayersViewModel = new function() {
 	}
 
 	function showTab() {
-		loadGroupNames();
-
+//		loadGroupNames();
+		
 		if (Navigation.getCurrenLocation() === '/management/playersList') {
 			Navigation.setCurrentLocation('/management/playersList/search');
 		}

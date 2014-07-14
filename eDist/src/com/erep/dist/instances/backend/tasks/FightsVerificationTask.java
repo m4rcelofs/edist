@@ -2,6 +2,8 @@ package com.erep.dist.instances.backend.tasks;
 
 import static com.erep.dist.data.enums.PlayerDistStatus.OK;
 
+import java.util.Date;
+
 import com.erep.dist.CloseablePM;
 import com.erep.dist.ConfigHelper;
 import com.erep.dist.DataAccessObject;
@@ -59,6 +61,7 @@ public class FightsVerificationTask implements DeferredTask {
 			}
 
 			fights.setVerificationStatus(statusToSet);
+			fights.setVerifiedAt(new Date());
 			dbPlayer.setFightStatus(statusToSet);
 		}
 	}
