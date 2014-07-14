@@ -2,6 +2,7 @@ package com.erep.dist.instances.backend.tasks;
 
 import static com.erep.dist.data.enums.PlayerDistStatus.OK;
 
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -77,6 +78,7 @@ public class WorkVerificationTask implements DeferredTask {
 
 			DailyWork dbWork = dao.find(new DailyWork(latestWorkKey));
 			dbWork.setVerificationStatus(statusToSet);
+			dbWork.setVerifiedAt(new Date());
 			dbPlayer.setWorkStatus(statusToSet);
 
 			logger.log(
