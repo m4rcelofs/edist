@@ -74,13 +74,13 @@ public class NewMembersStarterTask implements DeferredTask {
 	}
 
 	private void addToQueue(String muId, String regiment) {
-		DeferredTask task = new NewMembersRegimentTask(muId, regiment);
+		DeferredTask task = new NewMembersRegimentTask(muId, regiment, day);
 		Queue queue = QueueFactory.getQueue("erepublik-logged-in");
 		TaskOptions taskOptions = withPayload(task).taskName(
-				"NewMembersRegimentTask_" + muId + "_" + regiment).header(
-				"Host",
-				BackendServiceFactory.getBackendService().getBackendAddress(
-						"edist-default-backend"));
+				"NewMembersRegimentTask_" + muId + "_" + regiment + "_" + day)
+				.header("Host",
+						BackendServiceFactory.getBackendService()
+								.getBackendAddress("edist-default-backend"));
 		queue.addAsync(taskOptions);
 	}
 }
