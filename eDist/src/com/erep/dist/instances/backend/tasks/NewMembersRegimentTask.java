@@ -24,10 +24,12 @@ public class NewMembersRegimentTask implements DeferredTask {
 															.getName());
 	private final String		muId;
 	private final String		regimentId;
+	private final Integer		day;
 
-	protected NewMembersRegimentTask(String muId, String regimentId) {
+	protected NewMembersRegimentTask(String muId, String regimentId, Integer day) {
 		this.muId = muId;
 		this.regimentId = regimentId;
+		this.day = day;
 	}
 
 	@Override
@@ -69,7 +71,7 @@ public class NewMembersRegimentTask implements DeferredTask {
 		DeferredTask task = new NewMembersCheckIfExistsTask(memberId);
 		Queue queue = QueueFactory.getDefaultQueue();
 		TaskOptions taskOptions = withPayload(task).taskName(
-				"NewMembersCheckIfExistsTask_" + memberId).header(
+				"NewMembersCheckIfExistsTask_" + memberId + "_" + day).header(
 				"Host",
 				BackendServiceFactory.getBackendService().getBackendAddress(
 						"edist-default-backend"));
