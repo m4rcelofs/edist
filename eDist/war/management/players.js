@@ -198,10 +198,14 @@ var PlayersViewModel = new function() {
 		player.dbStatus('ENABLED');
 		self.clearFightStatus(player);
 		self.clearWorkStatus(player);
+		self.clearCurrentEmployer(player);
 	}
 
 	self.disable = function(player) {
 		player.dbStatus('DISABLED');
+		self.clearFightStatus(player);
+		self.clearWorkStatus(player);
+		self.clearCurrentEmployer(player);
 	}
 
 	self.remove = function(player) {
