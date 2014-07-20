@@ -78,7 +78,7 @@ public class PlayerStatsTask implements DeferredTask {
 			
 			if(stats.getIsDead() || stats.getIsPermaBan()) {
 				players.disable(dbPlayer);
-				return;
+				//do not return or 'dead' stats won't update
 			}
 		
 			startFightCalculationTask(day, dbPlayer);
