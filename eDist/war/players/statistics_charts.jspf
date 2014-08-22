@@ -4,7 +4,7 @@
 			<form class="form-inline" role="form" id="categoryForm">
 				<div class="radio">
 					<label> <input type="radio" name="category"
-						value="1,2,7,12,13,14" data-chart-type="line"
+						value="1,2,7" data-chart-type="line"
 						data-bind="checked: chartCategory"> <fmt:message
 							key="header.players" />
 					</label>

@@ -1,28 +1,28 @@
 package com.erep.dist.auth;
 
-import com.erep.dist.DataAccessObject;
 import com.erep.dist.data.RegisteredUser;
 import com.erep.dist.data.ServerConfig;
+import com.erep.dist.data.dao.Server;
 import com.erep.dist.data.enums.RegisteredUserRole;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
 
 public class AuthHelper {
 
-	private final DataAccessObject	dao;
+	private final Server	server;
 	private final UserService		userService;
 
-	public AuthHelper(DataAccessObject dao) {
-		this(dao, UserServiceFactory.getUserService());
+	public AuthHelper(Server server) {
+		this(server, UserServiceFactory.getUserService());
 	}
 
-	public AuthHelper(DataAccessObject dao, UserService userService) {
-		this.dao = dao;
+	public AuthHelper(Server server, UserService userService) {
+		this.server = server;
 		this.userService = userService;
 	}
 
 	public boolean hasReportsAccess() {
-		ServerConfig config = dao.getServerConfig();
+		ServerConfig config = server.getConfig();
 
 		switch (config.getReportsAccess()) {
 			case ADMINS:
@@ -39,7 +39,7 @@ public class AuthHelper {
 	}
 
 	public boolean hasPlayerReportsAccess() {
-		ServerConfig config = dao.getServerConfig();
+		ServerConfig config = server.getConfig();
 
 		switch (config.getPlayerReportsAccess()) {
 			case ADMINS:
@@ -65,7 +65,7 @@ public class AuthHelper {
 
 	private boolean isViewer() {
 		if (userService.isUserLoggedIn()) {
-			RegisteredUser regUser = dao.find(userService.getCurrentUser());
+			RegisteredUser regUser = server.find(userService.getCurrentUser());
 			return regUser.getRole() == RegisteredUserRole.VIEWER;
 		}
 		return false;
@@ -73,7 +73,7 @@ public class AuthHelper {
 
 	private boolean isModerator() {
 		if (userService.isUserLoggedIn()) {
-			RegisteredUser regUser = dao.find(userService.getCurrentUser());
+			RegisteredUser regUser = server.find(userService.getCurrentUser());
 			return regUser.getRole() == RegisteredUserRole.MODERATOR;
 		}
 		return false;

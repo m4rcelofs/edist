@@ -25,6 +25,7 @@
 			<th></th>
 			<th
 				data-bind="visible: $root.textProvider.hasCustomText(), text: $root.textProvider.getCustomTextTitle()"></th>
+			<th></th>
 		</tr>
 	</thead>
 	<tbody data-bind="foreach: weeklyWorks">
@@ -103,6 +104,40 @@
 			<td data-bind="text: $root.textProvider.getWorkWeekPct(results)"></td>
 			<td
 				data-bind="visible: $root.textProvider.hasCustomText(), text: $root.textProvider.getCustomText(results)">
+			</td>
+			<td>
+				<div class="btn-toolbar">
+					<div class="btn-group">
+						<button class="btn btn-default dropdown-toggle"
+							data-toggle="dropdown"
+							title="<fmt:message key="management.players.actions"/>">
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu">
+							<li><a
+								data-bind="if: edist.user.hasManagementAccess,
+											  attr: {href: '${baseUrl}/management/playersList/search/' + player.erId  }">
+									<span class="glyphicon glyphicon-list"></span> <fmt:message
+										key="header.mod" />
+							</a></li>
+							<li><a
+								data-bind="attr: {href: '${baseUrl}/reports/requests/player/' + player.erId }">
+									<span class="glyphicon glyphicon-cutlery"></span> <fmt:message
+										key="management.players.template.dist" />
+							</a></li>
+							<li><a
+								data-bind="attr: {href: '${baseUrl}/players/history/player/' + player.erId }">
+									<span class="glyphicon glyphicon-calendar"></span> <fmt:message
+										key="players.history" />
+							</a></li>
+							<li><a
+								data-bind="attr: {href: '${baseUrl}/reports/fights/player/' + player.erId  }">
+									<span class="glyphicon glyphicon-screenshot"></span> <fmt:message
+										key="management.players.template.fights" />
+							</a></li>
+						</ul>
+					</div>
+				</div>
 			</td>
 		</tr>
 	</tbody>

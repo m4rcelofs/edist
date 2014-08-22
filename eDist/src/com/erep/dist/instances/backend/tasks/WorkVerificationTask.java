@@ -2,6 +2,7 @@ package com.erep.dist.instances.backend.tasks;
 
 import static com.erep.dist.data.enums.PlayerDistStatus.OK;
 
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,6 +15,7 @@ import com.erep.dist.data.DailyWork;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.WorkVerification;
+import com.erep.dist.data.dao.Players;
 import com.erep.dist.data.enums.PlayerDistStatus;
 import com.erep.dist.erep.eRepTimeCalculator;
 import com.google.appengine.api.datastore.Key;
@@ -38,9 +40,10 @@ public class WorkVerificationTask implements DeferredTask {
 	public void run() {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			DataAccessObject dao = new DataAccessObject(pm);
-			ConfigHelper config = new ConfigHelper(dao);
+			Players players = new Players(pm);
+			ConfigHelper config = new ConfigHelper(pm);
 
-			Player dbPlayer = dao.find(new Player(playerKey));
+			Player dbPlayer = players.find(new Player(playerKey));
 
 			logger.log(Level.WARNING, "Starting player work verification for "
 					+ dbPlayer.getName());
@@ -75,6 +78,7 @@ public class WorkVerificationTask implements DeferredTask {
 
 			DailyWork dbWork = dao.find(new DailyWork(latestWorkKey));
 			dbWork.setVerificationStatus(statusToSet);
+			dbWork.setVerifiedAt(new Date());
 			dbPlayer.setWorkStatus(statusToSet);
 
 			logger.log(

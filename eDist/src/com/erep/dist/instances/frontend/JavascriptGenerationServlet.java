@@ -13,13 +13,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.io.IOUtils;
 
 import com.erep.dist.CloseablePM;
-import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
 import com.erep.dist.ServerConstants;
 import com.erep.dist.auth.AuthHelper;
 import com.erep.dist.auth.LicensingHelper;
 import com.erep.dist.cache.Cacheable;
 import com.erep.dist.data.RegisteredUser;
+import com.erep.dist.data.dao.Server;
 import com.erep.dist.erep.eRepTimeCalculator;
 import com.google.appengine.api.users.UserService;
 import com.google.appengine.api.users.UserServiceFactory;
@@ -77,9 +77,9 @@ public class JavascriptGenerationServlet extends HttpServlet {
 				
 		try (CloseablePM pm = new CloseablePM(
 			PMF.getNewPersistenceManager())) {
-			DataAccessObject dao = new DataAccessObject(pm);
-			AuthHelper auth = new AuthHelper(dao, users);
-			RegisteredUser user = dao.find(users.getCurrentUser());
+			Server server = new Server(pm);
+			AuthHelper auth = new AuthHelper(server, users);
+			RegisteredUser user = server.find(users.getCurrentUser());
 
 			template = replace(template, "{name}", user != null ? "'" + user.getName() + "'" : "null");
 			template = replace(template, "{email}", loggedIn ? "'" + users.getCurrentUser().getEmail() + "'" : "null");
@@ -98,9 +98,9 @@ public class JavascriptGenerationServlet extends HttpServlet {
 		
 		try (CloseablePM pm = new CloseablePM(
 				PMF.getNewPersistenceManager())) {
-			DataAccessObject dao = new DataAccessObject(pm);
-			template = replace(template, "{muName}", dao.getServerConfig().getMuName());	
-			template = replace(template, "hasExpired : false", "hasExpired : " + String.valueOf(!new LicensingHelper(dao).isValidLicence()));
+			Server server = new Server(pm);
+			template = replace(template, "{muName}", server.getConfig().getMuName());	
+			template = replace(template, "hasExpired : false", "hasExpired : " + String.valueOf(!new LicensingHelper(server).isValidLicence()));
 		}
 		
 		resp.getWriter().write(template);

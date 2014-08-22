@@ -17,7 +17,7 @@
 			<th><fmt:message key="players.fights.damage" /></th>
 			<th><fmt:message key="players.fights.weapons" /></th>
 			<th></th>
-			<th><fmt:message key="players.fights.dist" /></th>
+			<th colspan="2"><fmt:message key="players.fights.dist" /></th>
 			<th></th>
 		</tr>
 	</thead>
@@ -57,24 +57,19 @@
 				data-bind="attr: {title: calculatedWithWeaponQuality, 
 									   src: '${baseUrl}/img/weapons/' + calculatedWithWeaponQuality + '.png'}">
 			</td>
-			<td>
-				<span data-bind="if: guerrillaWon">
-					<img src="${baseUrl}/img/weapons/guerrilla_won.png">
-					<span data-bind="text: guerrillaWon"></span>
-				</span>
-				<span data-bind="if: guerrillaLost">
-					<img src="${baseUrl}/img/weapons/guerrilla_lost.png">
-					<span data-bind="text: guerrillaLost"></span>
-				</span>
-				<span data-bind="if: smallBombsUsed">
-					<img src="${baseUrl}/img/weapons/small_bomb.png" width="30px">
-					<span data-bind="text: smallBombsUsed"></span>
-				</span>
-				<span data-bind="if: bigBombsUsed">
-					<img src="${baseUrl}/img/weapons/big_bomb.png" width="30px">
-					<span data-bind="text: bigBombsUsed"></span>
-				</span>
-			</td>
+			<td><span data-bind="if: guerrillaWon"> <img
+					src="${baseUrl}/img/weapons/guerrilla_won.png"> <span
+					data-bind="text: guerrillaWon"></span>
+			</span> <span data-bind="if: guerrillaLost"> <img
+					src="${baseUrl}/img/weapons/guerrilla_lost.png"> <span
+					data-bind="text: guerrillaLost"></span>
+			</span> <span data-bind="if: smallBombsUsed"> <img
+					src="${baseUrl}/img/weapons/small_bomb.png" width="30px"> <span
+					data-bind="text: smallBombsUsed"></span>
+			</span> <span data-bind="if: bigBombsUsed"> <img
+					src="${baseUrl}/img/weapons/big_bomb.png" width="30px"> <span
+					data-bind="text: bigBombsUsed"></span>
+			</span></td>
 			<td><a
 				data-bind="attr: { href: edist.user.hasReportsAccess === true ? 
 								'${baseUrl}/reports/requests/player/' + (stats ? stats.erId : '') 
@@ -96,6 +91,10 @@
 							key="shared.ok" />
 				</span>
 			</a></td>
+			<td data-bind="if: verifiedAt"><span
+				class="glyphicon glyphicon-time"
+				data-bind="attr: {'data-content': '<fmt:message key="reports.verifiedAt" />: ' + (verifiedAt ? $.format.date(verifiedAt, edist.format.date) : '')}, updatePopup:{}"
+				data-toggle="popover"></span></td>
 			<td>
 				<div class="btn-toolbar">
 					<div class="btn-group">

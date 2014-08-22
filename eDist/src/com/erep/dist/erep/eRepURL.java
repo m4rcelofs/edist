@@ -13,7 +13,8 @@ public enum eRepURL
 	COUNTRY_ECONOMY("http://www.erepublik.com/en/country/economy/{id}"),
 	DONATE_ITEMS("http://www.erepublik.com/en/economy/donate-items/{id}"),
 	DONATE_ITEMS_ACTION("http://www.erepublik.com/en/economy/donate-items-action"),
-	DONATE_MONEY("http://www.erepublik.com/en/economy/donate-money/{id}")
+	DONATE_MONEY("http://www.erepublik.com/en/economy/donate-money/{id}"),
+	MU_REGIMENTS("http://www.erepublik.com/en/main/group-list/members/{id}")
 	;
 
 	private String	url;

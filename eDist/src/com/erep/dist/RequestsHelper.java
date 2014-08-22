@@ -18,14 +18,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.jdo.JDOObjectNotFoundException;
-import javax.servlet.http.HttpServletRequest;
+import javax.jdo.PersistenceManager;
 
-import com.erep.dist.data.DailyStats;
 import com.erep.dist.data.DistConfig;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.Request;
 import com.erep.dist.data.ResourceDist;
+import com.erep.dist.data.dao.Stats;
 import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.data.enums.ResourceQuality;
 import com.erep.dist.data.enums.ResourceType;
@@ -37,23 +37,17 @@ import com.google.appengine.api.taskqueue.QueueFactory;
 
 public class RequestsHelper {
 
-	private final DataAccessObject		dao;
-	private final ConfigHelper			config;
-	private final HttpServletRequest	req;
+	private final DataAccessObject	dao;
+	private final Stats				stats;
+	private final ConfigHelper		config;
 
-	private static Logger				logger	= Logger.getLogger(RequestsHelper.class
-														.getName());
+	private static Logger			logger	= Logger.getLogger(RequestsHelper.class
+													.getName());
 
-	public RequestsHelper(DataAccessObject dao) {
-		this.dao = dao;
-		this.config = new ConfigHelper(dao);
-		this.req = null;
-	}
-
-	public RequestsHelper(DataAccessObject dao, HttpServletRequest req) {
-		this.dao = dao;
-		this.config = new ConfigHelper(dao);
-		this.req = req;
+	public RequestsHelper(PersistenceManager pm) {
+		this.dao = new DataAccessObject(pm);
+		this.stats = new Stats(pm);
+		this.config = new ConfigHelper(pm);
 	}
 
 	public boolean verifyRocketAllowed(Player player, PlayerGroup group) {
@@ -125,21 +119,10 @@ public class RequestsHelper {
 
 		request.setRequestedAt(new Date());
 		request.seteRepDay(eRepTimeCalculator.geteRepDay());
-
-		if (req != null) {
-			request.setIp(req.getRemoteAddr());
-			request.setXAppEngineCountry(req.getHeader("X-AppEngine-Country"));
-			request.setXAppEngineRegion(req.getHeader("X-AppEngine-Region"));
-			request.setXAppEngineCity(req.getHeader("X-AppEngine-City"));
-		} else {
-			request.setIp("Automatic dist");
-		}
-
 		request.setStatus(REQUESTED);
 
 		try {
-			request.setStats(dao.find(new DailyStats(player, request
-					.geteRepDay() - 1)));
+			request.setStats(stats.find(player, request.geteRepDay() - 1));
 		} catch (JDOObjectNotFoundException e) {
 			// ignore
 			logger.log(
@@ -207,9 +190,9 @@ public class RequestsHelper {
 
 	public void addToQueue(Request request) {
 		Queue queue = QueueFactory.getQueue("erepublik-logged-in");
-		for(ResourceDist resource : request.getResources()) {
+		for (ResourceDist resource : request.getResources()) {
 			DeferredTask task = new SendResourceTask(request, resource);
-			queue.add(withPayload(task));			
+			queue.add(withPayload(task));
 		}
 	}
 

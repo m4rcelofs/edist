@@ -12,9 +12,9 @@ import org.joda.time.DateTime;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
-import com.erep.dist.DataAccessObject;
 import com.erep.dist.ServerConstants;
 import com.erep.dist.data.Licence;
+import com.erep.dist.data.dao.Server;
 import com.erep.dist.erep.eRepTimeCalculator;
 import com.google.appengine.api.backends.BackendServiceFactory;
 import com.google.appengine.api.taskqueue.Queue;
@@ -42,14 +42,14 @@ public class LicensingHelper {
 
 	private static final LicenceCache	cache	= new LicenceCache();
 
-	private final DataAccessObject		dao;
+	private final Server				server;
 
-	public LicensingHelper(DataAccessObject dao) {
-		this.dao = dao;
+	public LicensingHelper(Server server) {
+		this.server = server;
 	}
 
 	public LicensingHelper(PersistenceManager pm) {
-		this.dao = new DataAccessObject(pm);
+		this.server = new Server(pm);
 	}
 
 	public boolean isValidLicence() {
@@ -81,7 +81,7 @@ public class LicensingHelper {
 	}
 
 	private void refreshCache() throws Exception {
-		Licence licence = dao.getLicence();
+		Licence licence = server.getLicence();
 
 		if (licence.getSigned() == null || licence.getSigned().isEmpty())
 			forceLicenceRefresh();
@@ -103,7 +103,7 @@ public class LicensingHelper {
 		try {
 			URL licenceServer = getLicenceServer();
 
-			Licence licence = dao.getLicence();
+			Licence licence = server.getLicence();
 			licence.setSigned(fetchLicence(licenceServer));
 
 			cache.time = null;
