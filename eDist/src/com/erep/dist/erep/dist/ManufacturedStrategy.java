@@ -70,8 +70,10 @@ public abstract class ManufacturedStrategy implements DistStrategy {
 		String response = scrapper.sendItem(player, resource, formToken);
 
 		String successMessage = "Successfully transferred "
-				+ resource.getQuantity() + " item(s) to " + player.getName()
-				+ ".";
+				+ resource.getQuantity() + " item(s) to "; 
+
+		// bugs if player changes name between scrapping and request
+		//  + player.getName() + ".";
 		
 		parser.parse(response, inventory);
 		logger.log(Level.WARNING, "Current inventory: "
@@ -82,9 +84,9 @@ public abstract class ManufacturedStrategy implements DistStrategy {
 					"Redirection had success message, marking as sent");
 			return true;
 		} else {
-			logger.log(Level.INFO, "Success message should be: \""
+			logger.log(Level.WARNING, "Success message should be: \""
 					+ successMessage + "\"");
-			logger.log(Level.INFO, response);
+			logger.log(Level.WARNING, response);
 			throw new ResourcesSendingException(
 					"Redirection DID NOT have success message, marking as NOT sent");
 		}

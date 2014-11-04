@@ -78,6 +78,11 @@ public class ServerConfig implements Serializable {
 	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
 	private Boolean				showDistributorInventory;
 
+	@Persistent
+	@RemoteProperty
+	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
+	private String				syncWithMuId;
+
 	public String getMuName() {
 		return muName;
 	}
@@ -168,6 +173,14 @@ public class ServerConfig implements Serializable {
 
 	public void setShowDistributorInventory(boolean showDistributorInventory) {
 		this.showDistributorInventory = showDistributorInventory;
+	}
+
+	public String getSyncWithMuId() {
+		return syncWithMuId;
+	}
+
+	public void setSyncWithMuId(String syncWithMuId) {
+		this.syncWithMuId = syncWithMuId;
 	}
 
 }

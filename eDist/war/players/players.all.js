@@ -1750,7 +1750,7 @@ function StatisticsGraphics() {
 		hAxis : {
 			title : edist.stats.day
 		},
-		pointSize: 3
+		pointSize : 3
 	};
 
 	self.chart = null;
@@ -1786,7 +1786,7 @@ function StatisticsGraphics() {
 		});
 
 		self.dataView = new google.visualization.DataView(self.dataTable);
-		self.draw([ 0, 1, 2, 7, 12, 13, 14 ], 'line');
+		self.draw([ 0, 1, 2, 7 ], 'line');
 	}
 
 	self.draw = function(columns, chartType) {
@@ -1801,12 +1801,14 @@ function StatisticsGraphics() {
 		var data = new google.visualization.DataTable();
 		data.addColumn('string', edist.stats.day);
 		data.addColumn('number', edist.stats.enabled);
-		data.addColumn('number', edist.stats.active + ' (' + edist.stats.total + ')');
+		data.addColumn('number', edist.stats.active + ' (' + edist.stats.total
+				+ ')');
 		data.addColumn('number', edist.stats.active + ' (D1)');
 		data.addColumn('number', edist.stats.active + ' (D2)');
 		data.addColumn('number', edist.stats.active + ' (D3)');
 		data.addColumn('number', edist.stats.active + ' (D4)');
-		data.addColumn('number', edist.stats.fighters + ' (' + edist.stats.total + ')');
+		data.addColumn('number', edist.stats.fighters + ' ('
+				+ edist.stats.total + ')');
 		data.addColumn('number', edist.stats.fighters + ' (D1)');
 		data.addColumn('number', edist.stats.fighters + ' (D2)');
 		data.addColumn('number', edist.stats.fighters + ' (D3)');
@@ -1846,7 +1848,7 @@ var StatisticsViewModel = new function() {
 
 	// charts
 	self.graphs = new StatisticsGraphics();
-	self.chartCategory = ko.observable('1,2,7,12,13,14');
+	self.chartCategory = ko.observable('1,2,7');
 	ko.computed(function() {
 		var stringArray = self.chartCategory().split(',');
 		var catArray = [ 0 ]; // day

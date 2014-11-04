@@ -19,10 +19,11 @@ import org.apache.http.impl.client.DefaultHttpClient;
 import org.esxx.js.protocol.GAEConnectionManager;
 
 import com.erep.dist.CloseablePM;
-import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
 import com.erep.dist.data.Avatar;
 import com.erep.dist.data.DailyStats;
+import com.erep.dist.data.dao.Avatars;
+import com.erep.dist.data.dao.Stats;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
 import com.google.appengine.api.datastore.Key;
@@ -62,11 +63,12 @@ public class AvatarFetchTask implements DeferredTask {
 			}
 
 			String digest = getDigest(response);
-			DataAccessObject dao = new DataAccessObject(pm);
+			Stats stats = new Stats(pm);
+			Avatars avatars = new Avatars(pm);
 
 			try {
-				Avatar exists = dao.find(new Avatar(digest));
-				DailyStats dbStats = dao.find(new DailyStats(statsKey));
+				Avatar exists = avatars.find(new Avatar(digest));
+				DailyStats dbStats = stats.find(new DailyStats(statsKey));
 				dbStats.setAvatar(exists.getServingUrl());
 				dbStats.setAvatarKey(exists);
 			} catch (JDOObjectNotFoundException e) {
