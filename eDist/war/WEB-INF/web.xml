@@ -424,7 +424,8 @@
 	</security-constraint>
 
 	<!-- Management only -->
-	<security-constraint>
+	<!-- throwing weird 100 URL limit on deploy -->
+	<!-- security-constraint>
 		<web-resource-collection>
 			<web-resource-name>Manager</web-resource-name>
 			<url-pattern>/management/*</url-pattern>
@@ -435,7 +436,7 @@
 		<user-data-constraint>
 			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
 		</user-data-constraint>
-	</security-constraint>
+	</security-constraint-->
 
 	<!-- Filters -->
 	<filter>
