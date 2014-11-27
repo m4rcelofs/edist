@@ -71,6 +71,7 @@ public class PlayerStatsTask implements DeferredTask {
 
 			pm.makePersistent(stats);
 			dbPlayer.setName(stats.getName());
+			dbPlayer.setAvatar(stats.getAvatar());
 			
 			Server server = new Server(pm);
 			if (server.getConfig().isAvatarHistory())
