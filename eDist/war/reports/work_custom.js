@@ -21,14 +21,21 @@ function WorkTextProvider() {
 	}
 	
 	self.hasCustomText = function() {
-		return false;
+		return true;
 	}
 	
 	self.getCustomTextTitle = function() {
-		return '';
+		return 'Overtime';
 	}
 	
 	self.getCustomText = function(works) {
-		return '';
+		var overtime = 0;
+		works.forEach(function(item){
+			if(item.worked != null) {
+				overtime += item.nbrWorks - 1;
+				i++;
+			}
+		});
+		return '' + overtime;
 	} 
 }
