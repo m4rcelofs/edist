@@ -35,6 +35,6 @@ function WorkTextProvider() {
 				overtime += item.nbrWorks - 1;
 			}
 		});
-		return '' + overtime;
+		return overtime > 0 ? '' + overtime : '';
 	} 
 }
