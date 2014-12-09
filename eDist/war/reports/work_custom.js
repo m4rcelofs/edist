@@ -7,7 +7,7 @@ function WorkTextProvider() {
 		works.forEach(function(item){
 			if(item.worked != null) {
 				if(item.worked == true) {
-					worked++;
+					worked += item.nbrWorks;
 				}
 				i++;
 			}
