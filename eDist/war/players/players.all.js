@@ -1557,7 +1557,7 @@ var Players = new function() {
 		if (stats && stats.avatar) {
 			if (stats.avatar.indexOf('142x142') !== -1) {
 				// from eR
-				return 'url(' + stats.avatar.replace('142x142', '55x55') + ')';
+				return 'url(' + stats.avatar + ')';
 			} else {
 				// from blobstore
 				return 'url(' + stats.avatar + '=s55)';
