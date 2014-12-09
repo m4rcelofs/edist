@@ -2343,7 +2343,7 @@ var WorkViewModel = new function() {
 		if(works && works[edist.server.eRepDay - days]) {
 			return works[edist.server.eRepDay - days].nbrWorks; 
 		} else {
-			return '';
+			return '?';
 		} 
 	}
 	
