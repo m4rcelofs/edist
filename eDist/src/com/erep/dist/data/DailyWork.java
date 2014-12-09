@@ -37,48 +37,52 @@ public class DailyWork {
 	 */
 	@PrimaryKey
 	@Persistent
-	private Key					key;
+	private Key key;
 
 	@Unowned
 	@Persistent
-	private Player				player;
+	private Player player;
 
 	// v0.5
 	@Deprecated
 	@NotPersistent
-	private Player				playerInfo;
+	private Player playerInfo;
 
 	@Unowned
 	@Persistent
 	@RemoteProperty
 	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
-	private DailyStats			stats;
+	private DailyStats stats;
 
 	@Unowned
 	@Persistent
 	@RemoteProperty
-	private Set<PlayerGroup>	groups;
+	private Set<PlayerGroup> groups;
 
 	@Unowned
 	@Persistent
 	@RemoteProperty
-	private Employer			employer;
+	private Employer employer;
 
 	@Persistent
 	@RemoteProperty
-	private Integer				day;
+	private Integer day;
 
 	/**
 	 * true, false or unknown
 	 */
 	@Persistent
 	@RemoteProperty
-	private Boolean				worked;
+	private Boolean worked;
 
 	@Persistent
 	@RemoteProperty
-	private PlayerDistStatus	verificationStatus;
-	
+	private Integer nbrWorks;
+
+	@Persistent
+	@RemoteProperty
+	private PlayerDistStatus verificationStatus;
+
 	@Persistent
 	@RemoteProperty
 	private Date verifiedAt;
@@ -169,5 +173,13 @@ public class DailyWork {
 
 	public void setVerifiedAt(Date verifiedAt) {
 		this.verifiedAt = verifiedAt;
+	}
+
+	public Integer getNbrWorks() {
+		return nbrWorks;
+	}
+
+	public void setNbrWorks(Integer nbrWorks) {
+		this.nbrWorks = nbrWorks;
 	}
 }
