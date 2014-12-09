@@ -2339,6 +2339,14 @@ var WorkViewModel = new function() {
 		}
 	}
 	
+	self.getNbrWorks = function(works, days) {
+		if(works && works[edist.server.eRepDay - days]) {
+			return works[edist.server.eRepDay - days].nbrWorks; 
+		} else {
+			return '';
+		} 
+	}
+	
 	function checkWorked(works, days, status) {
 		if(works && works[edist.server.eRepDay - days]) {
 			return works[edist.server.eRepDay - days].worked === status; 
@@ -2347,7 +2355,7 @@ var WorkViewModel = new function() {
 			return status === null;
 		}
 	}
-	
+		
 	function checkVerificationStatus(works, days, status) {
 		if(!works) {
 			return false;

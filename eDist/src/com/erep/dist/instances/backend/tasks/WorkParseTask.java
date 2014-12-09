@@ -28,17 +28,17 @@ import com.google.appengine.api.taskqueue.TaskOptions;
 
 public class WorkParseTask implements DeferredTask {
 
-	private static final long	serialVersionUID	= 1L;
+	private static final long serialVersionUID = 1L;
 
-	private static Logger		logger				= Logger.getLogger(WorkParseTask.class
-															.getName());
+	private static Logger logger = Logger.getLogger(WorkParseTask.class
+			.getName());
 
-	private final Key			employerKey;
-	private final JSONObject	employeeUpdate;
+	private final Key employerKey;
+	private final JSONObject employeeUpdate;
 
-	private int					tasksCreated		= 0;
-	private int					tasksFailed			= 0;
-	private int					tasksIgnored		= 0;
+	private int tasksCreated = 0;
+	private int tasksFailed = 0;
+	private int tasksIgnored = 0;
 
 	public WorkParseTask(Employer employer, JSONObject employeeUpdate) {
 		this.employerKey = employer.getKey();
@@ -106,13 +106,18 @@ public class WorkParseTask implements DeferredTask {
 
 		DailyWork work = new DailyWork(player, day);
 
+		Object jsNbrWorks = workDay.get("nbrWorks");
+		Integer nbrWorks = jsNbrWorks != null ? Integer.valueOf(jsNbrWorks
+				.toString()) : 0;
+
 		try {
 			DailyWork dbWork = dao.find(work);
-			if (dbWork.getWorked() != null) {
+			if (dbWork.getWorked() != null && dbWork.getNbrWorks() != null
+					&& dbWork.getNbrWorks() == nbrWorks) {
 				logger.log(Level.WARNING,
 						"Work parse for player " + player.getName()
-								+ " on day " + day
-								+ " already exists, ignoring");
+								+ " on day " + day + " with " + nbrWorks
+								+ " works already exists, ignoring");
 				return;
 			}
 		} catch (JDOObjectNotFoundException ignore) {
@@ -133,6 +138,8 @@ public class WorkParseTask implements DeferredTask {
 		Object worked = workDay.get("worked");
 		work.setWorked(worked != null ? Boolean.valueOf(worked.toString())
 				: null);
+
+		work.setNbrWorks(nbrWorks);
 
 		dao.save(work);
 
