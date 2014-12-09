@@ -33,7 +33,6 @@ function WorkTextProvider() {
 		works.forEach(function(item){
 			if(item.worked != null) {
 				overtime += item.nbrWorks - 1;
-				i++;
 			}
 		});
 		return '' + overtime;
