@@ -37,11 +37,10 @@
 					<span data-bind="if: worked === null" class="label label-default"><fmt:message
 							key="shared.unknown" /></span> <span data-bind="if: worked === false"
 						class="label label-danger"> <span
-						class="glyphicon glyphicon-ban-circle"></span> <fmt:message
-							key="shared.no" />
+						class="glyphicon glyphicon-ban-circle"></span> <span>0</span>
 					</span> <span data-bind="if: worked === true" class="label label-success">
-						<span class="glyphicon glyphicon-ok"></span> <fmt:message
-							key="shared.yes" />
+						<span class="glyphicon glyphicon-ok"></span> <span
+						data-bind="text: nbrWorks"></span>
 					</span>
 				</p>
 			</td>
