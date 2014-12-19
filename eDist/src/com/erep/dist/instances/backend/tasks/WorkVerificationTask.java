@@ -23,13 +23,13 @@ import com.google.appengine.api.taskqueue.DeferredTask;
 
 public class WorkVerificationTask implements DeferredTask {
 
-	private static final long	serialVersionUID	= 1L;
+	private static final long serialVersionUID = 1L;
 
-	private final Key			playerKey;
-	private final Key			latestWorkKey;
+	private final Key playerKey;
+	private final Key latestWorkKey;
 
-	private static Logger		logger				= Logger.getLogger(WorkVerificationTask.class
-															.getName());
+	private static Logger logger = Logger.getLogger(WorkVerificationTask.class
+			.getName());
 
 	public WorkVerificationTask(Player player, DailyWork work) {
 		this.playerKey = player.getKey();
@@ -63,7 +63,8 @@ public class WorkVerificationTask implements DeferredTask {
 				for (DailyWork work : works) {
 					if (work.getWorked() != null) {
 						if (work.getWorked())
-							worked++;
+							worked += work.getNbrWorks() != null ? work
+									.getNbrWorks() : 1;
 						trackedTotal++;
 					}
 				}

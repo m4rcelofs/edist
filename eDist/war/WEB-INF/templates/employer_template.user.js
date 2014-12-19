@@ -3,7 +3,7 @@
 // @namespace   http://edist-licence.appspot.com
 // @description	Plugin para o controle de funcionarios das dists por script
 // @include		http://www.erepublik.com/*
-// @version     0.8.2
+// @version     0.8.3
 // @downloadURL	https://{host}/js/dynamic/employer.user.js
 // @updateURL	https://{host}/js/dynamic/employer.user.js
 // @grant		GM_getValue
@@ -219,7 +219,7 @@ function update(doc) {
 
     var employees = $('#employees_used', doc).text().split('/');
     var employeeOpen = $('span.no_job_offers', doc).text();
-    var salary = $('strong.job_salary', doc).text();
+    var salary = $('strong.job_salary', doc).text().replace('BRL', 'BRL ');
         
 	var data = {
 		id : getEmployer(),
@@ -262,7 +262,7 @@ function cache(data) {
 	data.employees.forEach(function(employee) {
 		employee.work.forEach(function(work) {
 			if (work.worked != null || work.day != getDay()) {
-				var key = employee.id + '.' + work.day;
+				var key = buildEmployeeCacheKey(employee.id, work.day, work.nbrWorks);
 				GM_setValue(key, true);
 			}
 		});
@@ -312,17 +312,23 @@ function getEmployees(doc) {
 
 						for ( var i = 1; i <= 7; i++) {
 							var relTo = today - (7 - i);
-							var key = employee.id + '.' + relTo;
+							var nbrWorks = findNbrWorks(this, i);
+							var key = buildEmployeeCacheKey(employee.id, relTo, nbrWorks);
 							if (GM_getValue(key, false) == false) {
 								employee.work.push({
 									day : relTo,
-									worked : findWorked(this, i)
+									worked : findWorked(this, i),
+									nbrWorks : nbrWorks
 								});
 							}
 						}
 						employees.push(employee);
 					});
 	return employees;
+}
+
+function buildEmployeeCacheKey(employeeId, workDay, nbrWorks) {
+	return employeeId + '.' + workDay + '.' + nbrWorks;
 }
 
 function getServer() {
@@ -350,6 +356,16 @@ function findWorked(listing, day) {
 		return true;
 	}
 	return false;
+}
+
+
+function findNbrWorks(listing, day) {
+	var worksSpan = $(listing).find('.day' + day).children("b");
+	
+	if(worksSpan[0]) {
+		return parseInt($(worksSpan[0]).text(), 10);
+	}
+	return 0;
 }
 
 start();
