@@ -1,0 +1,23 @@
+## AppEngine: ##
+
+* Gerar appid
+
+* Proibir download de código
+
+## Geral: ##
+
+* Licença
+
+* Gerar branch bitbucket
+
+* Pull, gerar branch local
+
+* Gerar chaves privadas, commitar no branch
+
+* Gerar id google analytics
+
+* Editar baseimports.tag com a id, commitar no branch
+
+* Upar código
+
+* Rodar /admin/install
