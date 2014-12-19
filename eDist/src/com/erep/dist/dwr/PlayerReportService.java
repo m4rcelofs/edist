@@ -20,6 +20,7 @@ import com.erep.dist.data.PlayerGroup;
 import com.erep.dist.data.PlayerStatsMonthly;
 import com.erep.dist.data.dao.PlayerStatistics;
 import com.erep.dist.data.dao.RequestStatistics;
+import com.erep.dist.data.dao.Stats;
 import com.erep.dist.data.enums.Division;
 import com.erep.dist.dwr.dto.FiltersInitialInfo;
 import com.erep.dist.dwr.dto.StatsQuery;
@@ -45,12 +46,11 @@ public class PlayerReportService {
 	public StatsQuery statsByPlayer(String idNameOrLink, String encodedCursor) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 
-			DataAccessObject dao = new DataAccessObject(pm);
 			StatsQuery queryResults = new StatsQuery();
 
 			Player player = null;
 			try {
-				player = new PlayerIdentificator(dao)
+				player = new PlayerIdentificator(pm)
 						.identifyRequestString(idNameOrLink);
 			} catch (JDOObjectNotFoundException e) {
 				return queryResults;
@@ -58,7 +58,8 @@ public class PlayerReportService {
 
 			pm.getFetchPlan().addGroup("statsListing");
 
-			List<DailyStats> requests = dao.listStats(player, encodedCursor);
+			List<DailyStats> requests = new Stats(pm).list(player,
+					encodedCursor);
 
 			queryResults.setResults(requests);
 			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(requests)
@@ -80,7 +81,7 @@ public class PlayerReportService {
 			pm.getFetchPlan().addGroup("statsListing");
 
 			StatsQuery queryResults = new StatsQuery();
-			List<DailyStats> requests = new DataAccessObject(pm).listStats(day,
+			List<DailyStats> requests = new Stats(pm).list(day,
 					encodedCursor);
 
 			queryResults.setResults(requests);
@@ -98,8 +99,8 @@ public class PlayerReportService {
 			pm.getFetchPlan().addGroup("statsListing");
 
 			StatsQuery queryResults = new StatsQuery();
-			List<DailyStats> requests = new DataAccessObject(pm).listStats(day,
-					group, encodedCursor);
+			List<DailyStats> requests = new Stats(pm).list(day, group,
+					encodedCursor);
 
 			queryResults.setResults(requests);
 			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(requests)
@@ -116,8 +117,8 @@ public class PlayerReportService {
 			pm.getFetchPlan().addGroup("statsListing");
 
 			StatsQuery queryResults = new StatsQuery();
-			List<DailyStats> requests = new DataAccessObject(pm).listStats(day,
-					division, encodedCursor);
+			List<DailyStats> requests = new Stats(pm).list(day, division,
+					encodedCursor);
 
 			queryResults.setResults(requests);
 			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(requests)

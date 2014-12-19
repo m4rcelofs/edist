@@ -1,5 +1,7 @@
 package com.erep.dist.instances.backend.tasks;
 
+import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withPayload;
+
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -13,7 +15,11 @@ import com.erep.dist.data.dao.Fights;
 import com.erep.dist.data.dao.PlayerStatistics;
 import com.erep.dist.data.dao.Stats;
 import com.erep.dist.data.enums.PlayerStatus;
+import com.google.appengine.api.backends.BackendServiceFactory;
 import com.google.appengine.api.taskqueue.DeferredTask;
+import com.google.appengine.api.taskqueue.Queue;
+import com.google.appengine.api.taskqueue.QueueFactory;
+import com.google.appengine.api.taskqueue.TaskOptions;
 
 public class PlayerDailyStatisticsTask implements DeferredTask {
 
@@ -34,10 +40,10 @@ public class PlayerDailyStatisticsTask implements DeferredTask {
 				+ day);
 
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			
+
 			if (!new LicensingHelper(pm).isValidLicence())
 				return;
-			
+
 			PlayerStatistics stats = new PlayerStatistics(pm);
 
 			PlayerStatsDaily dailyStats = calculateStatistics(new Fights(pm),
@@ -45,8 +51,15 @@ public class PlayerDailyStatisticsTask implements DeferredTask {
 
 			stats.save(dailyStats);
 		}
+
 		logger.log(Level.WARNING, "PlayerDailyStatisticsTask for day " + day
 				+ " finished");
+
+		DeferredTask newMembers = new NewMembersStarterTask(day);
+		addToQueue(newMembers);
+		logger.log(Level.WARNING, "NewMembersStarterTask for day " + day
+				+ " added to queue");
+
 	}
 
 	private PlayerStatsDaily calculateStatistics(Fights fights, Stats stats) {
@@ -85,4 +98,13 @@ public class PlayerDailyStatisticsTask implements DeferredTask {
 		return dailyStats;
 	}
 
+	private void addToQueue(DeferredTask task) {
+		Queue queue = QueueFactory.getQueue("erepublik-logged-in");
+		TaskOptions taskOptions = withPayload(task).taskName(
+				"NewMembersStarterTask_" + day).header(
+				"Host",
+				BackendServiceFactory.getBackendService().getBackendAddress(
+						"edist-default-backend"));
+		queue.add(taskOptions);
+	}
 }

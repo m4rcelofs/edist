@@ -20,6 +20,7 @@ import org.json.simple.parser.ParseException;
 
 import com.erep.dist.CloseablePM;
 import com.erep.dist.DataAccessObject;
+import com.erep.dist.IPLogger;
 import com.erep.dist.PMF;
 import com.erep.dist.data.Employer;
 import com.erep.dist.instances.backend.tasks.WorkParseTask;
@@ -58,9 +59,14 @@ public class EmployerFacadeServlet extends HttpServlet {
 			checkParams(authKey, id);
 
 			Employer dbEmployer = verifyEmployer(dao, authKey, id);
-			dbEmployer.resetPlayers();
 
+			if (jsObj.get("employeeStats") != null)
+				saveStats((JSONObject) jsObj.get("employeeStats"), dbEmployer);
+
+			dbEmployer.resetPlayers();
 			createWorks(dbEmployer, employees);
+
+			new IPLogger(req).setIP(dbEmployer);
 
 			dbEmployer.setLastUpdatedAt(new Date());
 
@@ -75,11 +81,22 @@ public class EmployerFacadeServlet extends HttpServlet {
 		}
 	}
 
+	private void saveStats(JSONObject jsStats, Employer dbEmployer) {
+		dbEmployer.setEmployeesCount(Integer.valueOf(jsStats.get("count")
+				.toString()));
+		dbEmployer.setJobsOpen(Integer.valueOf(jsStats.get("open").toString()));
+		dbEmployer.setJobsTotal(Integer
+				.valueOf(jsStats.get("total").toString()));
+
+		String jobsSalary = jsStats.get("salary").toString().trim();
+		if (jobsSalary.length() == 0 || Character.isDigit(jobsSalary.charAt(0)))
+			dbEmployer.setJobsSalary(jobsSalary);
+	}
+
 	private Employer verifyEmployer(DataAccessObject dao, String authKey,
 			String id) {
 		Employer emp = dao.find(new Employer(dao.createEmployerKey(id)));
-		if (!emp.getErId().equals(id.trim())
-				|| !emp.isAuthKeyValid(authKey))
+		if (!emp.getErId().equals(id.trim()) || !emp.isAuthKeyValid(authKey))
 			throw new IllegalArgumentException("Invalid employer");
 		return emp;
 	}

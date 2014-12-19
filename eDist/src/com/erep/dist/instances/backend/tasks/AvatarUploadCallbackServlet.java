@@ -10,10 +10,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.erep.dist.CloseablePM;
-import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
 import com.erep.dist.data.Avatar;
 import com.erep.dist.data.DailyStats;
+import com.erep.dist.data.dao.Avatars;
+import com.erep.dist.data.dao.Stats;
 import com.google.appengine.api.blobstore.BlobKey;
 import com.google.appengine.api.blobstore.BlobstoreService;
 import com.google.appengine.api.blobstore.BlobstoreServiceFactory;
@@ -41,9 +42,10 @@ public class AvatarUploadCallbackServlet extends HttpServlet {
 					.getHeader("edist-stats-encodedKey"));
 
 			try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-				DataAccessObject dao = new DataAccessObject(pm);
+				Avatars avatars = new Avatars(pm); 
 
 				Avatar avatar = new Avatar(digest);
+				Stats stats = new Stats(pm);
 				avatar.setBlob(blobKey);
 
 				ImagesService imgService = ImagesServiceFactory
@@ -51,9 +53,9 @@ public class AvatarUploadCallbackServlet extends HttpServlet {
 				avatar.setServingUrl(imgService.getServingUrl(withBlobKey(
 						blobKey).secureUrl(true)));
 
-				dao.save(avatar);
+				avatars.save(avatar);
 				
-				DailyStats dbStats = dao.find(new DailyStats(statsKey));
+				DailyStats dbStats = stats.find(new DailyStats(statsKey));
 				dbStats.setAvatar(avatar.getServingUrl());
 				dbStats.setAvatarKey(avatar);
 				

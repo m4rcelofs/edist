@@ -16,6 +16,8 @@ import com.erep.dist.data.Distributor;
 import com.erep.dist.data.Employer;
 import com.erep.dist.data.RegisteredUser;
 import com.erep.dist.data.ServerConfig;
+import com.erep.dist.data.dao.Distributors;
+import com.erep.dist.data.dao.Server;
 import com.erep.dist.data.enums.ResourceQuality;
 import com.erep.dist.data.enums.ResourceType;
 import com.erep.dist.dwr.dto.RegisteredUserQuery;
@@ -29,7 +31,7 @@ public class AdminService {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			RegisteredUserQuery dto = new RegisteredUserQuery();
 
-			List<RegisteredUser> registered = new DataAccessObject(pm)
+			List<RegisteredUser> registered = new Server(pm)
 					.listUsers(encodedCursor);
 			dto.setResults(registered);
 			dto.setEncodedCursor(JDOCursorHelper.getCursor(registered)
@@ -42,14 +44,14 @@ public class AdminService {
 	@RemoteMethod
 	public boolean saveRegisteredUser(RegisteredUser user) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			return new DataAccessObject(pm).save(user);
+			return new Server(pm).save(user);
 		}
 	}
 
 	@RemoteMethod
 	public boolean removeRegisteredUser(RegisteredUser user) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			RegisteredUser dbUser = new DataAccessObject(pm).find(user);
+			RegisteredUser dbUser = new Server(pm).find(user);
 			pm.deletePersistent(dbUser);
 			return true;
 		}
@@ -60,7 +62,7 @@ public class AdminService {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			pm.getFetchPlan().setMaxFetchDepth(-1);
 			pm.getFetchPlan().addGroup("configListing");
-			ServerConfig config = new DataAccessObject(pm).getServerConfig();
+			ServerConfig config = new Server(pm).getConfig();
 			return config;
 		}
 	}
@@ -70,7 +72,7 @@ public class AdminService {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			Transaction tx = pm.currentTransaction();
 			tx.begin();
-			boolean response = new DataAccessObject(pm).save(config);
+			boolean response = new Server(pm).save(config);
 			tx.commit();
 			if (!response || tx.isActive()) {
 				tx.rollback();
@@ -88,7 +90,7 @@ public class AdminService {
 			return false;
 
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			return new DataAccessObject(pm).save(dist);
+			return new Distributors(pm).save(dist);
 		}
 	}
 
@@ -96,8 +98,7 @@ public class AdminService {
 	public List<Distributor> listDistributors() {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			pm.getFetchPlan().addGroup("distributorListing");
-			List<Distributor> dists = new DataAccessObject(pm)
-					.listDistributors();
+			List<Distributor> dists = new Distributors(pm).listDistributors();
 			return dists;
 		}
 	}
@@ -107,13 +108,12 @@ public class AdminService {
 			Distributor dist) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 
-			DataAccessObject dao = new DataAccessObject(pm);
-
-			if (!dao.getServerConfig().isShowDistributorInventory())
+			Server server = new Server(pm);
+			if (!server.getConfig().isShowDistributorInventory())
 				return new HashMap<>();
 
 			pm.getFetchPlan().addGroup("inventoryListing");
-			Distributor dbDist = dao.find(dist);
+			Distributor dbDist = new Distributors(pm).find(dist);
 			return dbDist.getLastInventory().rowMap();
 		}
 	}
