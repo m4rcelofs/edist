@@ -104,11 +104,12 @@ public class CitizenParser {
 	}
 
 	private void parseXP(Document doc, Map<String, String> citizen) {
-		Elements expDOM = doc.select(".citizen_experience");
-
-		String xp = expDOM.get(0).getElementsByTag("p").text();
-		xp = xp.substring(0, xp.indexOf(" ")).replace(",", "");
-		citizen.put("xp", xp);
+		Elements expDOM = doc.select(".citizen_level");
+		
+		String xp = expDOM.attr("title");
+		xp = xp.substring(xp.lastIndexOf('>')+1, xp.lastIndexOf('/')).replace(",", "");
+	
+		citizen.put("xp", xp.trim());
 	}
 
 	private void parseMU(Document doc, Map<String, String> citizen) {
@@ -119,15 +120,13 @@ public class CitizenParser {
 	}
 
 	private void parseStrRank(Document doc, Map<String, String> citizen) {
-		Elements militaryDOM = doc.select(".citizen_military");
+		
+		String str = doc.select("div.citizen_military_box:nth-child(4) > span:nth-child(3)").text().replace(",", "");
+		citizen.put("strength", str.trim());
 
-		String str = militaryDOM.get(0).select("h4").text().replace(",", "");
-		citizen.put("strength", str);
-
-		String rank = militaryDOM.get(1).getElementsByTag("strong").get(1)
-				.text();
-		rank = rank.substring(0, rank.indexOf(" ")).replace(",", "");
-		citizen.put("rank", rank);
+		String rank = doc.select(".rank_numbers").text();
+		rank = rank.substring(0, rank.indexOf('/')).replace(",", "");
+		citizen.put("rank", rank.trim());
 	}
 
 }
