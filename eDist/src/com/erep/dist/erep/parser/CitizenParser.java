@@ -121,7 +121,8 @@ public class CitizenParser {
 
 	private void parseStrRank(Document doc, Map<String, String> citizen) {
 		
-		String str = doc.select("div.citizen_military_box:nth-child(4) > span:nth-child(3)").text().replace(",", "");
+		Elements strEl = doc.select(".mb_bottom");
+		String str = strEl.get(0).text().replace(",", "");
 		citizen.put("strength", str.trim());
 
 		String rank = doc.select(".rank_numbers").text();
