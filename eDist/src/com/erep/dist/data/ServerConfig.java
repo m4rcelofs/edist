@@ -24,64 +24,78 @@ import com.google.appengine.api.datastore.Key;
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class ServerConfig implements Serializable {
 
-	private static final long	serialVersionUID	= 1L;
+	private static final long serialVersionUID = 1L;
 
 	@PrimaryKey
 	@Persistent
-	private Key					key;
+	private Key key;
 
 	@Persistent
 	@RemoteProperty
 	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
-	private String				muName;
+	private String muName;
 
 	@Persistent(dependent = "true")
 	@RemoteProperty
 	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
-	private DistConfig			config;
+	private DistConfig config;
 
 	@Persistent(dependent = "true")
 	@RemoteProperty
 	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
-	private FightVerification	fightVerif;
+	private FightVerification fightVerif;
 
 	@Persistent(dependent = "true")
 	@RemoteProperty
 	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
-	private WorkVerification	workVerif;
+	private WorkVerification workVerif;
 
 	@Persistent
 	@RemoteProperty
 	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
-	private ConfigGranularity	granularity;
+	private ConfigGranularity granularity;
 
 	@Persistent
 	@RemoteProperty
 	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
-	private ReportsAccessLevel	reportsAccess;
+	private ReportsAccessLevel reportsAccess;
 
 	@Persistent
 	@RemoteProperty
 	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
-	private ReportsAccessLevel	playerReportsAccess;
+	private ReportsAccessLevel playerReportsAccess;
 
 	@Persistent
 	@RemoteProperty
 	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
-	private String				contactEmail;
+	private String contactEmail;
 
 	@Persistent
 	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
-	private Boolean				avatarHistory;
+	private Boolean avatarHistory;
 
 	@Persistent
 	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
-	private Boolean				showDistributorInventory;
+	private Boolean showDistributorInventory;
 
 	@Persistent
 	@RemoteProperty
 	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
-	private String				syncWithMuId;
+	private String syncWithMuId;
+
+	@Persistent
+	@Extension(vendorName = "datanucleus", key = "gae.unindexed", value = "true")
+	private Boolean useRequestTransaction;
+
+	public boolean isUseRequestTransaction() {
+		if (useRequestTransaction == null)
+			setUseRequestTransaction(true);
+		return useRequestTransaction;
+	}
+
+	public void setUseRequestTransaction(boolean useRequestTransaction) {
+		this.useRequestTransaction = useRequestTransaction;
+	}
 
 	public String getMuName() {
 		return muName;
