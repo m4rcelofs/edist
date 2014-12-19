@@ -1778,14 +1778,17 @@ var PlayersViewModel = new function() {
 				if (response) {
 					$('#' + jsPlayer.encodedKey).removeClass('panel-danger');
 					$('#' + jsPlayer.encodedKey).addClass('panel-success');
+					$('#' + jsPlayer.encodedKey + 'btn').removeClass('btn-danger');
+					$('#' + jsPlayer.encodedKey + 'btn').addClass('btn-success');
 
 					setTimeout(function() {
-						$('#' + jsPlayer.encodedKey).removeClass(
-								'panel-success');
+						$('#' + jsPlayer.encodedKey).removeClass('panel-success');
+						$('#' + jsPlayer.encodedKey + 'btn').removeClass('btn-success');
 					}, 3000);
 				} else {
 					$('#' + jsPlayer.encodedKey).removeClass('panel-success');
 					$('#' + jsPlayer.encodedKey).addClass('panel-danger');
+					$('#' + jsPlayer.encodedKey + 'btn').addClass('btn-danger');
 					Management.defaultError();
 				}
 			},
@@ -1846,7 +1849,7 @@ var PlayersViewModel = new function() {
 	self.clearWorkStatus = function(player) {
 		player.workStatus(null);
 	}
-	
+
 	self.clearCurrentEmployer = function(player) {
 		player.currentEmployerName(null);
 	}
@@ -1855,10 +1858,14 @@ var PlayersViewModel = new function() {
 		player.dbStatus('ENABLED');
 		self.clearFightStatus(player);
 		self.clearWorkStatus(player);
+		self.clearCurrentEmployer(player);
 	}
 
 	self.disable = function(player) {
 		player.dbStatus('DISABLED');
+		self.clearFightStatus(player);
+		self.clearWorkStatus(player);
+		self.clearCurrentEmployer(player);
 	}
 
 	self.remove = function(player) {
@@ -1902,6 +1909,17 @@ var PlayersViewModel = new function() {
 	}
 
 	function setResults(response) {
+		if(self.groups().length === 0) {
+			loadGroupNames(function(){
+				doShowResults(response);
+			});
+		} else{
+			doShowResults(response);
+		}
+	}
+	
+	function doShowResults(response) {
+		console.log(self.groups());
 		var cursor = response.results.length >= window.edist.server.pageSize ? response.encodedCursor
 				: null
 		self.playersCursor(cursor);
@@ -1922,7 +1940,7 @@ var PlayersViewModel = new function() {
 				create : noRecursion
 			}
 		};
-		var newArray = self.players();
+		var newArray = self.players().slice(0);
 
 		response.results.forEach(function(item) {
 			newArray.push(ko.mapping.fromJS(item, mapping));
@@ -1930,12 +1948,16 @@ var PlayersViewModel = new function() {
 		self.players(newArray);
 	}
 
-	function loadGroupNames() {
+	function loadGroupNames(callbackFct) {
 		ManagementService.listGroupNames({
 			callback : function(response) {
 				response.results.sort(Management.groupSortFct);
 				self.groups(response.results);
 				Management.setCount(response);
+				
+				if(callbackFct) {
+					callbackFct();
+				}
 			}
 		});
 	}
@@ -1953,8 +1975,8 @@ var PlayersViewModel = new function() {
 	}
 
 	function showTab() {
-		loadGroupNames();
-
+//		loadGroupNames();
+		
 		if (Navigation.getCurrenLocation() === '/management/playersList') {
 			Navigation.setCurrentLocation('/management/playersList/search');
 		}

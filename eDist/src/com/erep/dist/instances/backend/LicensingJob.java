@@ -11,6 +11,7 @@ import com.erep.dist.CloseablePM;
 import com.erep.dist.DataAccessObject;
 import com.erep.dist.PMF;
 import com.erep.dist.auth.LicensingHelper;
+import com.erep.dist.data.dao.Server;
 
 public class LicensingJob extends HttpServlet {
 
@@ -24,8 +25,7 @@ public class LicensingJob extends HttpServlet {
 		resp.setCharacterEncoding("UTF-8");
 
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			DataAccessObject dao = new DataAccessObject(pm);
-			LicensingHelper licensing = new LicensingHelper(dao);
+			LicensingHelper licensing = new LicensingHelper(new Server(pm));
 
 			boolean refreshed = false;
 			int attempts = 0;

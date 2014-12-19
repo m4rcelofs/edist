@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Consts;
+import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
@@ -21,6 +22,7 @@ import org.apache.http.client.params.CookiePolicy;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.impl.cookie.BasicClientCookie;
+import org.apache.http.message.BasicHeader;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.params.CoreProtocolPNames;
 import org.apache.http.params.HttpConnectionParams;
@@ -47,12 +49,27 @@ public class ErepScrapper implements Closeable {
 	}
 
 	public String scrape(String url) throws IOException {
+		return scrape(url, new Header[] {});
+	}
+
+	public String scrape(String url, Header... headers) throws IOException {
 		HttpGet httpGet = new HttpGet(url);
+		if (headers != null)
+			for (Header header : headers)
+				httpGet.addHeader(header);
 		HttpResponse response = client.execute(httpGet);
-		logger.log(Level.INFO, "main response");
+		logger.warning("main response");
 		printHeaders(response);
 		printCookies(client.getCookieStore().getCookies());
 		return read(response);
+	}
+
+	public String scrapeRegimentMembers(String muId, String regiment)
+			throws IOException {
+		Header header = new BasicHeader("X-Requested-With", "XMLHttpRequest");
+		return scrape(
+				eRepURL.MU_REGIMENTS.getUrl(muId) + "/" + regiment.trim(),
+				header);
 	}
 
 	public String sendItem(Player player, ResourceDist resource,

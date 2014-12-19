@@ -102,6 +102,7 @@ var FormViewModel = new function() {
 			encodedKey : ko.unwrap(self.selectedGroup().encodedKey)
 		};
 
+		self.requestStatus('LOADING');
 		RequestService.sendRequest(player, group, self.selectedFFs(), self
 				.selectedType(), {
 			callback : function(response) {

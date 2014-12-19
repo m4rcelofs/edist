@@ -2,6 +2,8 @@ package com.erep.dist.instances.backend.tasks;
 
 import static com.erep.dist.data.enums.PlayerDistStatus.OK;
 
+import java.util.Date;
+
 import com.erep.dist.CloseablePM;
 import com.erep.dist.ConfigHelper;
 import com.erep.dist.DataAccessObject;
@@ -10,6 +12,7 @@ import com.erep.dist.data.DailyFights;
 import com.erep.dist.data.FightVerification;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
+import com.erep.dist.data.dao.Players;
 import com.erep.dist.data.enums.PlayerDistStatus;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.taskqueue.DeferredTask;
@@ -33,10 +36,11 @@ public class FightsVerificationTask implements DeferredTask {
 	public void run() {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			DataAccessObject dao = new DataAccessObject(pm);
-			ConfigHelper config = new ConfigHelper(dao);
+			Players players = new Players(pm);
+			ConfigHelper config = new ConfigHelper(pm);
 
 			DailyFights fights = dao.find(new DailyFights(dailyFightsKey));
-			Player dbPlayer = dao.find(new Player(playerKey));
+			Player dbPlayer = players.find(new Player(playerKey));
 
 			PlayerDistStatus statusToSet = OK;
 			for (PlayerGroup group : dbPlayer.getGroups()) {
@@ -57,6 +61,7 @@ public class FightsVerificationTask implements DeferredTask {
 			}
 
 			fights.setVerificationStatus(statusToSet);
+			fights.setVerifiedAt(new Date());
 			dbPlayer.setFightStatus(statusToSet);
 		}
 	}

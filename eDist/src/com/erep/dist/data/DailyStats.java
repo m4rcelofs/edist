@@ -207,7 +207,7 @@ public class DailyStats {
 	}
 
 	public Set<PlayerGroup> getGroups() {
-		if(groups == null)
+		if (groups == null)
 			setGroups(new HashSet<PlayerGroup>());
 		return groups;
 	}

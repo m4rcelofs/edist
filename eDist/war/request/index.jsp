@@ -124,7 +124,8 @@
 								data-bind="if: player().dbStatus() === 'ENABLED'">
 									<button id="sendRequestBtn" type="submit"
 									class="btn btn-primary btn-lg btn-block" autocomplete="off"
-									data-bind="enable: (requestAttempt().availableFF() > 0 || requestAttempt().rocketAllowed() == true),
+									data-bind="enable: ((requestAttempt().availableFF() > 0 || requestAttempt().rocketAllowed() == true) 
+														&& requestStatus() !== 'LOADING'),
 											   css: {'btn-success' : requestStatus() == 'OK',
 													 'btn-danger' : requestStatus() == 'ERROR'}">
 									<fmt:message key="request.doRequest" />

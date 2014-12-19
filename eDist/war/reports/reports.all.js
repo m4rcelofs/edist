@@ -2055,7 +2055,7 @@ var Reports = new function() {
 		if (stats && stats.avatar) {
 			if (stats.avatar.indexOf('142x142') !== -1) {
 				// from eR
-				return 'url(' + stats.avatar.replace('142x142', '55x55') + ')';
+				return 'url(' + stats.avatar + ')';
 			} else {
 				// from blobstore
 				return 'url(' + stats.avatar + '=s55)';
@@ -2339,6 +2339,14 @@ var WorkViewModel = new function() {
 		}
 	}
 	
+	self.getNbrWorks = function(works, days) {
+		if(works && works[edist.server.eRepDay - days]) {
+			return works[edist.server.eRepDay - days].nbrWorks; 
+		} else {
+			return '?';
+		} 
+	}
+	
 	function checkWorked(works, days, status) {
 		if(works && works[edist.server.eRepDay - days]) {
 			return works[edist.server.eRepDay - days].worked === status; 
@@ -2347,7 +2355,7 @@ var WorkViewModel = new function() {
 			return status === null;
 		}
 	}
-	
+		
 	function checkVerificationStatus(works, days, status) {
 		if(!works) {
 			return false;

@@ -1,5 +1,6 @@
 package com.erep.dist.data;
 
+import java.util.Date;
 import java.util.Set;
 
 import javax.jdo.annotations.Extension;
@@ -72,6 +73,10 @@ public class DailyFights {
 	@Persistent
 	@RemoteProperty
 	private PlayerDistStatus	verificationStatus;
+	
+	@Persistent
+	@RemoteProperty
+	private Date				verifiedAt;
 
 	@Persistent
 	@RemoteProperty
@@ -208,6 +213,14 @@ public class DailyFights {
 
 	public void setBigBombsUsed(Integer bigBombsUsed) {
 		this.bigBombsUsed = bigBombsUsed;
+	}
+
+	public Date getVerifiedAt() {
+		return verifiedAt;
+	}
+
+	public void setVerifiedAt(Date verifiedAt) {
+		this.verifiedAt = verifiedAt;
 	}
 
 }
