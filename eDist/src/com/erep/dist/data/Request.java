@@ -36,7 +36,7 @@ import com.google.appengine.datanucleus.annotations.Unowned;
 				@Persistent(name = "XAppEngineCountry"),
 				@Persistent(name = "XAppEngineRegion"),
 				@Persistent(name = "XAppEngineCity") }) })
-public class Request implements HasEncodedKey {
+public class Request implements HasEncodedKey, HasIPLog {
 
 	@PrimaryKey
 	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)

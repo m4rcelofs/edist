@@ -25,6 +25,7 @@
 			<th></th>
 			<th
 				data-bind="visible: $root.textProvider.hasCustomText(), text: $root.textProvider.getCustomTextTitle()"></th>
+			<th></th>
 		</tr>
 	</thead>
 	<tbody data-bind="foreach: weeklyWorks">
@@ -44,7 +45,9 @@
 				<span class="glyphicon glyphicon-user"
 				data-bind="css: {'text-muted': $root.noWorkInfo(resultsMap, 6),
 										'text-success': $root.hasWorked(resultsMap, 6),
-										'text-danger': $root.hasNotWorked(resultsMap, 6) }"></span>
+										'text-danger': $root.hasNotWorked(resultsMap, 6) }">
+					<sup data-bind="text: $root.getNbrWorks(resultsMap, 6)"></sup>
+				</span>
 			</td>
 			<td class="text-center vertical-center"
 				data-bind="css: {'bg-danger': $root.isTempBanned(resultsMap, 5), 
@@ -53,7 +56,9 @@
 				<span class="glyphicon glyphicon-user"
 				data-bind="css: {'text-muted': $root.noWorkInfo(resultsMap, 5),
 										'text-success': $root.hasWorked(resultsMap, 5),
-										'text-danger': $root.hasNotWorked(resultsMap, 5) }"></span>
+										'text-danger': $root.hasNotWorked(resultsMap, 5) }">
+					<sup data-bind="text: $root.getNbrWorks(resultsMap, 5)"></sup>
+				</span>
 			</td>
 			<td class="text-center vertical-center"
 				data-bind="css: {'bg-danger': $root.isTempBanned(resultsMap, 4), 
@@ -62,7 +67,9 @@
 				<span class="glyphicon glyphicon-user"
 				data-bind="css: {'text-muted': $root.noWorkInfo(resultsMap, 4),
 										'text-success': $root.hasWorked(resultsMap, 4),
-										'text-danger': $root.hasNotWorked(resultsMap, 4) }"></span>
+										'text-danger': $root.hasNotWorked(resultsMap, 4) }">
+					<sup data-bind="text: $root.getNbrWorks(resultsMap, 4)"></sup>
+				</span>
 			</td>
 			<td class="text-center vertical-center"
 				data-bind="css: {'bg-danger': $root.isTempBanned(resultsMap, 3), 
@@ -71,7 +78,9 @@
 				<span class="glyphicon glyphicon-user"
 				data-bind="css: {'text-muted': $root.noWorkInfo(resultsMap, 3),
 										'text-success': $root.hasWorked(resultsMap, 3),
-										'text-danger': $root.hasNotWorked(resultsMap, 3) }"></span>
+										'text-danger': $root.hasNotWorked(resultsMap, 3) }">
+					<sup data-bind="text: $root.getNbrWorks(resultsMap, 3)"></sup>
+				</span>
 			</td>
 			<td class="text-center vertical-center"
 				data-bind="css: {'bg-danger': $root.isTempBanned(resultsMap, 2), 
@@ -80,7 +89,9 @@
 				<span class="glyphicon glyphicon-user"
 				data-bind="css: {'text-muted': $root.noWorkInfo(resultsMap, 2),
 										'text-success': $root.hasWorked(resultsMap, 2),
-										'text-danger': $root.hasNotWorked(resultsMap, 2) }"></span>
+										'text-danger': $root.hasNotWorked(resultsMap, 2) }">
+					<sup data-bind="text: $root.getNbrWorks(resultsMap, 2)"></sup>
+				</span>
 			</td>
 			<td class="text-center vertical-center"
 				data-bind="css: {'bg-danger': $root.isTempBanned(resultsMap, 1), 
@@ -89,7 +100,9 @@
 				<span class="glyphicon glyphicon-user"
 				data-bind="css: {'text-muted': $root.noWorkInfo(resultsMap, 1),
 										'text-success': $root.hasWorked(resultsMap, 1),
-										'text-danger': $root.hasNotWorked(resultsMap, 1) }"></span>
+										'text-danger': $root.hasNotWorked(resultsMap, 1) }">
+					<sup data-bind="text: $root.getNbrWorks(resultsMap, 1)"></sup>
+				</span>
 			</td>
 			<td class="text-center vertical-center"
 				data-bind="css: {'bg-danger': $root.isTempBanned(resultsMap, 0), 
@@ -98,11 +111,47 @@
 				<span class="glyphicon glyphicon-user"
 				data-bind="css: {'text-muted': $root.noWorkInfo(resultsMap, 0),
 										'text-success': $root.hasWorked(resultsMap, 0),
-										'text-danger': $root.hasNotWorked(resultsMap, 0) }"></span>
+										'text-danger': $root.hasNotWorked(resultsMap, 0) }">
+					<sup data-bind="text: $root.getNbrWorks(resultsMap, 0)"></sup>
+				</span>
 			</td>
 			<td data-bind="text: $root.textProvider.getWorkWeekPct(results)"></td>
 			<td
 				data-bind="visible: $root.textProvider.hasCustomText(), text: $root.textProvider.getCustomText(results)">
+			</td>
+			<td>
+				<div class="btn-toolbar">
+					<div class="btn-group">
+						<button class="btn btn-default dropdown-toggle"
+							data-toggle="dropdown"
+							title="<fmt:message key="management.players.actions"/>">
+							<span class="caret"></span>
+						</button>
+						<ul class="dropdown-menu">
+							<li><a
+								data-bind="if: edist.user.hasManagementAccess,
+											  attr: {href: '${baseUrl}/management/playersList/search/' + player.erId  }">
+									<span class="glyphicon glyphicon-list"></span> <fmt:message
+										key="header.mod" />
+							</a></li>
+							<li><a
+								data-bind="attr: {href: '${baseUrl}/reports/requests/player/' + player.erId }">
+									<span class="glyphicon glyphicon-cutlery"></span> <fmt:message
+										key="management.players.template.dist" />
+							</a></li>
+							<li><a
+								data-bind="attr: {href: '${baseUrl}/players/history/player/' + player.erId }">
+									<span class="glyphicon glyphicon-calendar"></span> <fmt:message
+										key="players.history" />
+							</a></li>
+							<li><a
+								data-bind="attr: {href: '${baseUrl}/reports/fights/player/' + player.erId  }">
+									<span class="glyphicon glyphicon-screenshot"></span> <fmt:message
+										key="management.players.template.fights" />
+							</a></li>
+						</ul>
+					</div>
+				</div>
 			</td>
 		</tr>
 	</tbody>

@@ -16,7 +16,7 @@ public class CitizenParserTest {
 
 	@Test
 	public void testParse() throws IOException {
-		URL url = new URL("http://www.erepublik.com/en/citizen/profile/1432558");
+		URL url = new URL("http://www.erepublik.com/br/citizen/profile/5313713");
 		String html = IOUtils.toString(url.openConnection().getInputStream(),
 				"UTF-8");
 
@@ -30,7 +30,6 @@ public class CitizenParserTest {
 		assertNotNull(response.get("mu"));
 		assertNotNull(response.get("xp"));
 		assertNotNull(response.get("rank"));
-		assertNotNull(response.get("strength"));
 		
 		assertNotNull(Long.valueOf(response.get("xp")));
 		assertNotNull(Long.valueOf(response.get("rank")));
@@ -52,6 +51,7 @@ public class CitizenParserTest {
 		Map<String, String> response = new CitizenParser().parse(html);
 		System.out.println(response.toString());
 		
+		assertNotNull(Double.valueOf(response.get("strength")));
 		assertFalse(Boolean.valueOf(response.get("tempBanned")));
 		assertTrue(Boolean.valueOf(response.get("permaBanned")));
 		assertTrue(Boolean.valueOf(response.get("dead")));

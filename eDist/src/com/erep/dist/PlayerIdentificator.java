@@ -1,25 +1,25 @@
 package com.erep.dist;
 
-import static com.erep.dist.DataAccessObject.playerRootKey;
-
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import javax.jdo.JDOObjectNotFoundException;
+import javax.jdo.PersistenceManager;
 
 import com.erep.dist.data.Player;
+import com.erep.dist.data.dao.Players;
 import com.google.appengine.api.datastore.Key;
 import com.google.appengine.api.datastore.KeyFactory;
 
 public class PlayerIdentificator {
 
-	private static Pattern			profilePattern	= Pattern
-															.compile("(http://|https://)?(www\\.)?erepublik\\.com/\\D{2}/citizen/profile/(?<id>\\d+)");
+	private static Pattern	profilePattern	= Pattern
+													.compile("(http://|https://)?(www\\.)?erepublik\\.com/\\D{2}/citizen/profile/(?<id>\\d+)");
 
-	private final DataAccessObject	dao;
+	private final Players	players;
 
-	public PlayerIdentificator(DataAccessObject dao) {
-		this.dao = dao;
+	public PlayerIdentificator(PersistenceManager pm) {
+		this.players = new Players(pm);
 	}
 
 	public Player identifyRequestString(String idNameOrLink) {
@@ -37,16 +37,16 @@ public class PlayerIdentificator {
 				p.setKey(keyFromId(matcher.group("id")));
 			else
 				// assume name
-				p.setKey(dao.findPlayerKey(idNameOrLink));
+				p.setKey(players.findPlayerKey(idNameOrLink));
 		} catch (IllegalArgumentException e) {
 			throw new JDOObjectNotFoundException(e.getMessage(), e);
 		}
-		return dao.find(p);
+		return players.find(p);
 	}
 
 	private Key keyFromId(String id) {
 		Integer keyValue = Integer.parseInt(id);
-		return KeyFactory.createKey(playerRootKey(),
+		return KeyFactory.createKey(Players.rootKey(),
 				Player.class.getSimpleName(), keyValue);
 	}
 }

@@ -13,6 +13,7 @@ public enum CountryCode
 {
 	AL("Albania"),
 	AR("Argentina"),
+	AM("Armenia"),
 	AU("Australia"),
 	AT("Austria"),
 	BY("Belarus"),
@@ -26,6 +27,7 @@ public enum CountryCode
 	CN("China"),
 	CO("Colombia"),
 	HR("Croatia"),
+	CU("Cuba"),
 	CY("Cyprus"),
 	CZ("Czech Republic"),
 	DK("Denmark"),
@@ -50,6 +52,7 @@ public enum CountryCode
 	ME("Montenegro"),
 	NL("Netherlands"),
 	NZ("New Zealand"),
+	NG("Nigeria"),
 	KP("North Korea"),
 	NO("Norway"),
 	PK("Pakistan"),

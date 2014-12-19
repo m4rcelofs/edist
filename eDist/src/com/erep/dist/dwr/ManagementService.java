@@ -1,8 +1,5 @@
 package com.erep.dist.dwr;
 
-import static com.erep.dist.data.enums.PlayerStatus.ERROR;
-import static com.google.appengine.api.taskqueue.TaskOptions.Builder.withPayload;
-
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,14 +15,13 @@ import com.erep.dist.PlayerIdentificator;
 import com.erep.dist.data.Distributor;
 import com.erep.dist.data.Player;
 import com.erep.dist.data.PlayerGroup;
+import com.erep.dist.data.dao.Distributors;
+import com.erep.dist.data.dao.Players;
+import com.erep.dist.data.dao.Server;
 import com.erep.dist.data.enums.PlayerDistStatus;
 import com.erep.dist.data.enums.PlayerStatus;
 import com.erep.dist.dwr.dto.PlayerGroupQuery;
 import com.erep.dist.dwr.dto.PlayerQuery;
-import com.erep.dist.instances.frontend.tasks.GetUserInfoTask;
-import com.google.appengine.api.taskqueue.DeferredTask;
-import com.google.appengine.api.taskqueue.Queue;
-import com.google.appengine.api.taskqueue.QueueFactory;
 import com.google.appengine.datanucleus.query.JDOCursorHelper;
 
 @RemoteProxy
@@ -44,9 +40,10 @@ public class ManagementService {
 
 			PlayerGroupQuery dto = new PlayerGroupQuery();
 			DataAccessObject dao = new DataAccessObject(pm);
-			
+			Players players = new Players(pm);
+
 			dto.setGroupsCount(dao.groupRoot().getGroupsCount());
-			dto.setPlayersCount(dao.playerRoot().getPlayersCount());
+			dto.setPlayersCount(players.root().getPlayersCount());
 			dto.setResults(dao.listGroups());
 
 			return dto;
@@ -59,16 +56,18 @@ public class ManagementService {
 
 			PlayerGroupQuery dto = new PlayerGroupQuery();
 			DataAccessObject dao = new DataAccessObject(pm);
+			Server server = new Server(pm);
+			Players players = new Players(pm);
 
 			pm.getFetchPlan().addGroup("groupConfigListing");
 			pm.getFetchPlan().addGroup("configListing");
 
 			dto.setGroupsCount(dao.groupRoot().getGroupsCount());
-			dto.setPlayersCount(dao.playerRoot().getPlayersCount());
-			
-			List<PlayerGroup> groups = dao.listGroupsUncached(); 
+			dto.setPlayersCount(players.root().getPlayersCount());
+
+			List<PlayerGroup> groups = dao.listGroups();
 			dto.setResults(pm.detachCopyAll(groups));
-			dto.setGranularity(dao.getServerConfig().getGranularity());
+			dto.setGranularity(server.getConfig().getGranularity());
 
 			return dto;
 		}
@@ -76,26 +75,15 @@ public class ManagementService {
 
 	@RemoteMethod
 	public boolean addPlayer(Player player) {
-
-		// TODO check licence
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-
-			boolean created = new DataAccessObject(pm).save(player, true);
-
-			if (created) {
-				DeferredTask task = new GetUserInfoTask(player);
-				Queue queue = QueueFactory.getQueue("erepublik-not-logged-in");
-				queue.add(withPayload(task));
-			}
-			return created;
+			return new Players(pm).save(player, true);
 		}
-
 	}
 
 	@RemoteMethod
 	public boolean editPlayer(Player player) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			return new DataAccessObject(pm).save(player);
+			return new Players(pm).save(player);
 		}
 	}
 
@@ -107,14 +95,16 @@ public class ManagementService {
 			pm.getFetchPlan().addGroup("configListing");
 
 			PlayerQuery queryResults = new PlayerQuery();
-			DataAccessObject dao = new DataAccessObject(pm);
-			List<Player> players = dao.listPlayers(cursor);
+			Server server = new Server(pm);
+			Players players = new Players(pm);
 
-			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(players)
+			List<Player> playerList = players.list(cursor);
+
+			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(playerList)
 					.toWebSafeString());
-			queryResults.setResults(pm.detachCopyAll(players));
+			queryResults.setResults(pm.detachCopyAll(playerList));
 
-			queryResults.setGranularity(dao.getServerConfig().getGranularity());
+			queryResults.setGranularity(server.getConfig().getGranularity());
 
 			return queryResults;
 		}
@@ -128,16 +118,18 @@ public class ManagementService {
 			pm.getFetchPlan().addGroup("configListing");
 
 			PlayerQuery queryResults = new PlayerQuery();
-			DataAccessObject dao = new DataAccessObject(pm);
+
+			Server server = new Server(pm);
+			Players players = new Players(pm);
 
 			if (param != null) {
-				List<Player> players = dao.listPlayersByGroup(param, cursor);
-				queryResults.setResults(players);
-				queryResults.setEncodedCursor(JDOCursorHelper
-						.getCursor(players).toWebSafeString());
+				List<Player> playerList = players.list(param, cursor);
+				queryResults.setResults(playerList);
+				queryResults.setEncodedCursor(JDOCursorHelper.getCursor(
+						playerList).toWebSafeString());
 			}
 
-			queryResults.setGranularity(dao.getServerConfig().getGranularity());
+			queryResults.setGranularity(server.getConfig().getGranularity());
 
 			return queryResults;
 		}
@@ -151,10 +143,11 @@ public class ManagementService {
 			pm.getFetchPlan().addGroup("configListing");
 
 			PlayerQuery queryResults = new PlayerQuery();
-			DataAccessObject dao = new DataAccessObject(pm);
+
+			Server server = new Server(pm);
 
 			try {
-				Player player = new PlayerIdentificator(dao)
+				Player player = new PlayerIdentificator(pm)
 						.identifyRequestString(param);
 				if (player != null)
 					queryResults.setResults(Arrays.asList(player));
@@ -162,7 +155,7 @@ public class ManagementService {
 				// ignore
 			}
 
-			queryResults.setGranularity(dao.getServerConfig().getGranularity());
+			queryResults.setGranularity(server.getConfig().getGranularity());
 
 			return queryResults;
 		}
@@ -176,14 +169,17 @@ public class ManagementService {
 			pm.getFetchPlan().addGroup("configListing");
 
 			PlayerQuery queryResults = new PlayerQuery();
-			DataAccessObject dao = new DataAccessObject(pm);
-			List<Player> players = dao.listPlayersByStatus(param, cursor);
 
-			queryResults.setResults(players);
-			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(players)
+			Server server = new Server(pm);
+			Players players = new Players(pm);
+
+			List<Player> playerList = players.list(param, cursor);
+
+			queryResults.setResults(playerList);
+			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(playerList)
 					.toWebSafeString());
 
-			queryResults.setGranularity(dao.getServerConfig().getGranularity());
+			queryResults.setGranularity(server.getConfig().getGranularity());
 
 			return queryResults;
 		}
@@ -197,14 +193,17 @@ public class ManagementService {
 			pm.getFetchPlan().addGroup("configListing");
 
 			PlayerQuery queryResults = new PlayerQuery();
-			DataAccessObject dao = new DataAccessObject(pm);
-			List<Player> players = dao.listPlayersByFight(param, cursor);
 
-			queryResults.setResults(players);
-			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(players)
+			Server server = new Server(pm);
+			Players players = new Players(pm);
+
+			List<Player> playerList = players.listByFight(param, cursor);
+
+			queryResults.setResults(playerList);
+			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(playerList)
 					.toWebSafeString());
 
-			queryResults.setGranularity(dao.getServerConfig().getGranularity());
+			queryResults.setGranularity(server.getConfig().getGranularity());
 
 			return queryResults;
 		}
@@ -218,14 +217,17 @@ public class ManagementService {
 			pm.getFetchPlan().addGroup("configListing");
 
 			PlayerQuery queryResults = new PlayerQuery();
-			DataAccessObject dao = new DataAccessObject(pm);
-			List<Player> players = dao.listPlayersByWork(param, cursor);
 
-			queryResults.setResults(players);
-			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(players)
+			Server server = new Server(pm);
+			Players players = new Players(pm);
+
+			List<Player> playerList = players.listByWork(param, cursor);
+
+			queryResults.setResults(playerList);
+			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(playerList)
 					.toWebSafeString());
 
-			queryResults.setGranularity(dao.getServerConfig().getGranularity());
+			queryResults.setGranularity(server.getConfig().getGranularity());
 
 			return queryResults;
 		}
@@ -235,8 +237,7 @@ public class ManagementService {
 	public List<Distributor> listDistributors() {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			pm.getFetchPlan().addGroup("distributorListing");
-			List<Distributor> dists = new DataAccessObject(pm)
-					.listDistributors();
+			List<Distributor> dists = new Distributors(pm).listDistributors();
 			return dists;
 		}
 	}
@@ -244,16 +245,7 @@ public class ManagementService {
 	@RemoteMethod
 	public boolean removePlayer(Player player) {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
-			DataAccessObject dao = new DataAccessObject(pm);
-
-			Player dbPlayer = dao.find(player);
-
-			if (dbPlayer.getDbStatus() != ERROR)
-				return false;
-
-			pm.deletePersistent(dbPlayer);
-			return true;
-
+			return new Players(pm).remove(player);
 		} catch (JDOObjectNotFoundException | NullPointerException e) {
 			return false;
 		}

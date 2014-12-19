@@ -26,7 +26,10 @@ import com.erep.dist.data.Request;
 import com.erep.dist.data.RequestStatsDaily;
 import com.erep.dist.data.RequestStatsMonthly;
 import com.erep.dist.data.ResourceDist;
+import com.erep.dist.data.dao.Distributors;
+import com.erep.dist.data.dao.Players;
 import com.erep.dist.data.dao.RequestStatistics;
+import com.erep.dist.data.dao.Server;
 import com.erep.dist.data.enums.RequestStatus;
 import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.data.enums.ResourceQuality;
@@ -49,9 +52,9 @@ public class ReportService {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			DataAccessObject dao = new DataAccessObject(pm);
 
-			AuthHelper auth = new AuthHelper(dao);
+			AuthHelper auth = new AuthHelper(new Server(pm));
 			if (auth.hasManagementAccess())
-				dto.setDistributors(dao.listDistributors());
+				dto.setDistributors(new Distributors(pm).listDistributors());
 
 			dto.setEmployers(dao.listEmployers());
 			dto.setGroups(dao.listGroups());
@@ -99,7 +102,7 @@ public class ReportService {
 			pm.getFetchPlan().addGroup("reportListing");
 
 			DataAccessObject dao = new DataAccessObject(pm);
-			AuthHelper auth = new AuthHelper(dao);
+			AuthHelper auth = new AuthHelper(new Server(pm));
 			if (auth.hasManagementAccess())
 				pm.getFetchPlan().addGroup("managementAccess");
 
@@ -122,7 +125,7 @@ public class ReportService {
 			RequestQuery queryResults = new RequestQuery();
 
 			DataAccessObject dao = new DataAccessObject(pm);
-			AuthHelper auth = new AuthHelper(dao);
+			AuthHelper auth = new AuthHelper(new Server(pm));
 			if (!auth.hasManagementAccess())
 				return queryResults;
 
@@ -147,7 +150,7 @@ public class ReportService {
 
 			Player player = null;
 			try {
-				player = new PlayerIdentificator(dao)
+				player = new PlayerIdentificator(pm)
 						.identifyRequestString(idNameOrLink);
 			} catch (JDOObjectNotFoundException e) {
 				return queryResults;
@@ -155,7 +158,7 @@ public class ReportService {
 
 			pm.getFetchPlan().addGroup("reportListing");
 
-			AuthHelper auth = new AuthHelper(dao);
+			AuthHelper auth = new AuthHelper(new Server(pm));
 			if (auth.hasManagementAccess())
 				pm.getFetchPlan().addGroup("managementAccess");
 
@@ -175,7 +178,7 @@ public class ReportService {
 			pm.getFetchPlan().addGroup("reportListing");
 
 			DataAccessObject dao = new DataAccessObject(pm);
-			AuthHelper auth = new AuthHelper(dao);
+			AuthHelper auth = new AuthHelper(new Server(pm));
 			if (auth.hasManagementAccess())
 				pm.getFetchPlan().addGroup("managementAccess");
 
@@ -197,7 +200,7 @@ public class ReportService {
 			pm.getFetchPlan().addGroup("reportListing");
 
 			DataAccessObject dao = new DataAccessObject(pm);
-			AuthHelper auth = new AuthHelper(dao);
+			AuthHelper auth = new AuthHelper(new Server(pm));
 			if (auth.hasManagementAccess())
 				pm.getFetchPlan().addGroup("managementAccess");
 
@@ -219,7 +222,7 @@ public class ReportService {
 			pm.getFetchPlan().addGroup("reportListing");
 
 			DataAccessObject dao = new DataAccessObject(pm);
-			AuthHelper auth = new AuthHelper(dao);
+			AuthHelper auth = new AuthHelper(new Server(pm));
 			if (auth.hasManagementAccess())
 				pm.getFetchPlan().addGroup("managementAccess");
 
@@ -243,7 +246,7 @@ public class ReportService {
 
 			Player player = null;
 			try {
-				player = new PlayerIdentificator(dao)
+				player = new PlayerIdentificator(pm)
 						.identifyRequestString(idNameOrLink);
 			} catch (JDOObjectNotFoundException e) {
 				return queryResults;
@@ -269,12 +272,13 @@ public class ReportService {
 			WorkWeekQuery queryResults = new WorkWeekQuery();
 
 			DataAccessObject dao = new DataAccessObject(pm);
+			Players players = new Players(pm);
 
-			List<Player> players = dao.listPlayersByGroup(group, cursor);
-			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(players)
+			List<Player> playerList = players.list(group, cursor);
+			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(playerList)
 					.toWebSafeString());
 
-			queryResults.setResults(dao.getWeeklyWorks(players));
+			queryResults.setResults(dao.getWeeklyWorks(playerList));
 
 			return queryResults;
 		}
@@ -289,12 +293,13 @@ public class ReportService {
 			WorkWeekQuery queryResults = new WorkWeekQuery();
 
 			DataAccessObject dao = new DataAccessObject(pm);
+			Players players = new Players(pm);
 
-			List<Player> players = dao.listPlayersByEmployer(employer, cursor);
-			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(players)
+			List<Player> playerList = players.list(employer, cursor);
+			queryResults.setEncodedCursor(JDOCursorHelper.getCursor(playerList)
 					.toWebSafeString());
 
-			queryResults.setResults(dao.getWeeklyWorks(players));
+			queryResults.setResults(dao.getWeeklyWorks(playerList));
 
 			return queryResults;
 		}
@@ -309,7 +314,7 @@ public class ReportService {
 
 			Player player = null;
 			try {
-				player = new PlayerIdentificator(dao)
+				player = new PlayerIdentificator(pm)
 						.identifyRequestString(idNameOrLink);
 			} catch (JDOObjectNotFoundException e) {
 				return queryResults;
@@ -379,7 +384,8 @@ public class ReportService {
 		try (CloseablePM pm = PMF.getNewPersistenceManager()) {
 			pm.getFetchPlan().addGroup("monthlyListing");
 			RequestStatistics stats = new RequestStatistics(pm);
-			RequestStatsMonthly result = stats.getRequestsMonthly(new YearMonth(yearMonth));
+			RequestStatsMonthly result = stats
+					.getRequestsMonthly(new YearMonth(yearMonth));
 			return pm.detachCopy(result);
 		}
 	}
