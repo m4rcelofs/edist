@@ -22,8 +22,12 @@
 				influence : '<fmt:message key="header.influence"/>'
 			};
 		</script>
-		<script type='text/javascript'
-			src='${baseUrl}/players/players.all.closure.js'></script>
+		
+		<script type="text/javascript" src="${baseUrl}/js/FileSaver.min.cache.js"></script>
+		<script type="text/javascript" src="${baseUrl}/js/export.closure.js"></script>
+		
+		<script type="text/javascript"
+			src="${baseUrl}/players/players.all.closure.js"></script>
 		<script type="text/javascript"
 			src="//www.google.com/jsapi?autoload=%7B%22modules%22%3A%5B%7B%22name%22%3A%22visualization%22%2C%22version%22%3A%221%22%2C%22packages%22%3A%5B%22corechart%22%5D%7D%5D%7D"></script>
     </jsp:attribute>

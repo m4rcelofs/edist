@@ -1,4 +1,4 @@
-<table class="table table-striped table-hover table-responsive"
+<table id="historytable" class="table table-striped table-hover table-responsive"
 	data-bind="if: statsHistory().length > 0">
 	<thead>
 		<tr>
@@ -7,7 +7,8 @@
 			<th colspan="2"><fmt:message key="players.fights.player" /></th>
 			<th data-bind="visible: category() !== 'group' && edist.user.hasManagementAccess"><fmt:message
 					key="players.fights.groups" /></th>
-			<th colspan="2"><fmt:message key="players.history.xp" /></th>
+			<th><fmt:message key="players.history.xp" /></th>
+			<th><span class="hidden">Div</span></th>
 			<th><fmt:message key="players.history.str" /></th>
 			<th><fmt:message key="players.history.rank" /></th>
 			<th><fmt:message key="players.history.maxHit" /></th>

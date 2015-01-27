@@ -228,7 +228,7 @@ public class ErepScrapper implements Closeable {
 
 	private DefaultHttpClient createNewHttpClient() {
 
-		String userAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64; rv:15.0) Gecko/20100101 Firefox/15.0.1";
+		String userAgent = "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36";
 
 		DefaultHttpClient client = new DefaultHttpClient(
 				new GAEConnectionManager());
