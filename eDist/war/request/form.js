@@ -183,6 +183,7 @@ var FormViewModel = new function() {
 			self.selectedType('ROCKET');
 		} else {
 			self.selectedType(requestAttempt.allowedType);
+			self.selectedFFs(requestAttempt.availableFF);
 		}
 	}
 
