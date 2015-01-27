@@ -190,6 +190,9 @@ var FormViewModel = new function() {
 		if (!self.refreshCountdown()) {
 			setInterval(function() {
 				var count = self.requestAttempt().rechargeTime();
+				if(count <= 0){
+					window.location.reload();
+				}
 
 				var seconds = fixIntegers(count % 60);
 				count = Math.floor(count / 60);
