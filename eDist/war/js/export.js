@@ -4,7 +4,7 @@ var Export = new function() {
 	self.toCSV = function(table) {
 		var csv = 'sep=;\n';
 		$(table).find('tr').each(function(i, row){
-		    $(row).find('th,td>:not(div)').each(function(j, cell){
+		    $(row).find('th,td>:not(div,.badge)').each(function(j, cell){
 		    	var text = $(cell).text().trim();
 		    	if(text) {
 		    		csv += text + ';';
