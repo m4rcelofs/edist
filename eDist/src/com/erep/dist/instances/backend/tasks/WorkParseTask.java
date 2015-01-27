@@ -119,6 +119,8 @@ public class WorkParseTask implements DeferredTask {
 								+ " on day " + day + " with " + nbrWorks
 								+ " works already exists, ignoring");
 				return;
+			} else {
+				work = dbWork;
 			}
 		} catch (JDOObjectNotFoundException ignore) {
 			// not run yet, go ahead
