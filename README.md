@@ -14,7 +14,7 @@
 
 * Gerar chaves privadas, commitar no branch
 
-* Gerar id google analytics
+* Gerar id google analytics (habilitar Display Advertiser + Demographics and Interest Reports)
 
 * Editar baseimports.tag com a id, commitar no branch
 
