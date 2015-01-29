@@ -50,22 +50,25 @@
 					<br />
 				</p>
 			</td>
-			<td><span
-				data-bind="text: $.format.number(xp, edist.format.number)"></span> <span
-				data-bind="if: $root.statsHistory().length > $index() + 1 && $root.category() === 'player'">
+			<td>
+				<span data-bind="text: $.format.number(xp, edist.format.number)"></span> 
+				<span data-bind="if: $root.statsHistory().length > $index() + 1 && $root.category() === 'player'"
+					  class="no-csv">
 					<span class="badge pull-right"
 					data-bind="text: '+' +  $.format.number(xp - $root.statsHistory()[$index() + 1].xp, edist.format.number)"></span>
-			</span></td>
+				</span>
+			</td>
 			<td data-bind="if: $root.category() !== 'division'">
 				<a data-bind="text: div, attr: {href: '${baseUrl}/players/history/division/' + day + '/' + (div ? div : '')}"></a>
 			</td>
-			<td><span
-				data-bind="text:  $.format.number(strength, edist.format.number)"></span>
-				<span
-				data-bind="if: $root.statsHistory().length > $index() + 1 && $root.category() === 'player'">
+			<td>
+				<span data-bind="text:  $.format.number(strength, edist.format.number)"></span>
+				<span data-bind="if: $root.statsHistory().length > $index() + 1 && $root.category() === 'player'"
+					class="no-csv">
 					<span class="badge pull-right"
 					data-bind="text: '+' + $.format.number(strength - $root.statsHistory()[$index() + 1].strength, edist.format.number)"></span>
-			</span></td>
+				</span>
+			</td>
 			<td><img width="30px"
 				data-bind="attr: {'data-content':  $.format.number(rank, edist.format.number) + ' <fmt:message key="players.history.points"/>', 
 										src: '${baseUrl}/img/ranks/' + RankCalculator.getRank(rank).rank + '.png'},
@@ -74,13 +77,13 @@
 				data-bind="text: RankCalculator.getRank(rank).name"></span> <span
 				data-bind="if: $root.statsHistory().length > $index() + 1 && $root.category() === 'player'">
 			</span></td>
-			<td><span
-				data-bind="text: $.format.number(maxHit, edist.format.number)"></span>
-				<span
-				data-bind="if: $root.statsHistory().length > $index() + 1 && $root.category() === 'player'">
-					<span class="badge"
-					data-bind="text: '+' +  $.format.number(maxHit - $root.statsHistory()[$index() + 1].maxHit, edist.format.number)"></span>
-			</span></td>
+			<td>
+				<span data-bind="text: $.format.number(maxHit, edist.format.number)"></span>
+				<span data-bind="if: $root.statsHistory().length > $index() + 1 && $root.category() === 'player'"
+						class="no-csv">
+					<span class="badge" data-bind="text: '+' +  $.format.number(maxHit - $root.statsHistory()[$index() + 1].maxHit, edist.format.number)"></span>
+				</span>
+			</td>
 			<td data-bind="visible: $root.category() === 'player'">
 				<span data-bind="if: $root.statsHistory().length > $index() + 1 && $root.category() === 'player'">
 					<span

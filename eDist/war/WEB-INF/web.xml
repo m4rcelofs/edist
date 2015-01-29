@@ -63,6 +63,16 @@
 		<url-pattern>/players/*</url-pattern>
 	</servlet-mapping>
 
+	<servlet>
+		<servlet-name>events</servlet-name>
+		<servlet-class>com.erep.dist.instances.frontend.LatestEventsServlet</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>events</servlet-name>
+		<url-pattern>/events</url-pattern>
+	</servlet-mapping>
+
 	<!-- Public DWR (requests) -->
 	<servlet>
 		<display-name>DWR Servlet</display-name>
@@ -384,7 +394,7 @@
 		<servlet-name>loginServlet</servlet-name>
 		<url-pattern>/login</url-pattern>
 	</servlet-mapping>
-	
+
 	<servlet>
 		<servlet-name>logoutServlet</servlet-name>
 		<servlet-class>com.erep.dist.instances.frontend.LogoutServlet</servlet-class>
@@ -425,18 +435,10 @@
 
 	<!-- Management only -->
 	<!-- throwing weird 100 URL limit on deploy -->
-	<!-- security-constraint>
-		<web-resource-collection>
-			<web-resource-name>Manager</web-resource-name>
-			<url-pattern>/management/*</url-pattern>
-		</web-resource-collection>
-		<auth-constraint>
-			<role-name>*</role-name>
-		</auth-constraint>
-		<user-data-constraint>
-			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
-		</user-data-constraint>
-	</security-constraint-->
+	<!-- security-constraint> <web-resource-collection> <web-resource-name>Manager</web-resource-name> 
+		<url-pattern>/management/*</url-pattern> </web-resource-collection> <auth-constraint> 
+		<role-name>*</role-name> </auth-constraint> <user-data-constraint> <transport-guarantee>CONFIDENTIAL</transport-guarantee> 
+		</user-data-constraint> </security-constraint -->
 
 	<!-- Filters -->
 	<filter>
