@@ -11,8 +11,6 @@
 	<jsp:attribute name="imports">
 		<script type='text/javascript'
 			src="${baseUrl}/request/form.all.closure.js"></script>
-		<script type="text/javascript"
-			src="//www.google.com/jsapi?autoload=%7B%22modules%22%3A%5B%7B%22name%22%3A%22feeds%22%2C%22version%22%3A%221%22%7D%5D%7D"></script>
     </jsp:attribute>
 
 	<jsp:body>
@@ -20,9 +18,8 @@
 		<div id="feeds" class="panel panel-default" data-bind="visible: feed() && currentResult()">
   			<div class="panel-body" data-bind="if: currentResult()">
   				<img data-bind="attr:{src: $root.getLocalIcon(currentResult(), '${baseUrl}')}" height="20px">
-  				<span data-bind="text: currentResult().author ? (currentResult().author.replace(/-/g, ' ') + ':') : ''"></span>
-    			<a data-bind="text: currentResult().title, attr:{href: currentResult().link}"></a>
-    			<small data-bind="text: currentResult().content ? (' - ' + currentResult().content): ''" class="text-muted"></small>
+    			<a data-bind="text: currentResult()['what/_text'], attr:{href: currentResult().what}"></a>
+    			<small data-bind="text: currentResult().when ? (' - ' + currentResult().when): ''" class="text-muted"></small>
   			</div>
 		</div>
 		
