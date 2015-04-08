@@ -153,10 +153,15 @@ public class SendResourceTask implements DeferredTask {
 			logger.log(Level.WARNING, "Sending resource...");
 			ManufacturedStrategy strategy = getStrategy(dbRequest, dbResource,
 					scrapper);
-			strategy.execute();
-			logger.log(Level.WARNING, "Resource sent");
-
-			dbResource.setStatus(ResourceDistStatus.SENT);
+			
+			if(strategy.execute()) {
+				logger.log(Level.WARNING, "Resource sent");
+				dbResource.setStatus(ResourceDistStatus.SENT);	
+			}else {
+				logger.log(Level.WARNING, "Resource not sent");
+				dbResource.setStatus(ResourceDistStatus.ERROR);	
+			}		
+			
 			dbRequest.getDistributor()
 					.setLastInventory(strategy.getInventory());
 
