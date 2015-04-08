@@ -15,17 +15,17 @@ import com.google.common.collect.HashBasedTable;
 
 public abstract class ManufacturedStrategy implements DistStrategy {
 
-	private final ResourceDist												resource;
-	private final Player													player;
-	private final ErepScrapper												scrapper;
-	private final DonateItemsParser											parser;
+	private final ResourceDist resource;
+	private final Player player;
+	private final ErepScrapper scrapper;
+	private final DonateItemsParser parser;
 
-	private final HashBasedTable<ResourceType, ResourceQuality, Integer>	inventory;
-	protected String														formToken;
-	protected boolean														hasCaptcha;
+	private final HashBasedTable<ResourceType, ResourceQuality, Integer> inventory;
+	protected String formToken;
+	protected boolean hasCaptcha;
 
-	protected static Logger													logger	= Logger.getLogger(ManufacturedStrategy.class
-																							.getName());
+	protected static Logger logger = Logger
+			.getLogger(ManufacturedStrategy.class.getName());
 
 	protected ManufacturedStrategy(ResourceDist resource, Player player,
 			ErepScrapper scrapper) throws Exception {
@@ -42,11 +42,11 @@ public abstract class ManufacturedStrategy implements DistStrategy {
 	}
 
 	@Override
-	public void execute() throws Exception {
+	public boolean execute() throws Exception {
 		scanInventory();
 		if (!validateInventory())
 			throw new InventoryValidationException();
-		sendResource();
+		return sendResource();
 	}
 
 	protected String scanInventory() throws IOException,
@@ -70,19 +70,24 @@ public abstract class ManufacturedStrategy implements DistStrategy {
 		String response = scrapper.sendItem(player, resource, formToken);
 
 		String successMessage = "Successfully transferred "
-				+ resource.getQuantity() + " item(s) to "; 
+				+ resource.getQuantity() + " item(s) to ";
 
 		// bugs if player changes name between scrapping and request
-		//  + player.getName() + ".";
-		
+		// + player.getName() + ".";
+
 		parser.parse(response, inventory);
 		logger.log(Level.WARNING, "Current inventory: "
 				+ getInventory().toString());
-		
+
 		if (response.contains(successMessage)) {
 			logger.log(Level.WARNING,
 					"Redirection had success message, marking as sent");
 			return true;
+		} else if (response
+				.contains("Cannot transfer the items because the user has only")) {
+			logger.log(Level.WARNING,
+					"Could not send item - user had a full storage");
+			return false;
 		} else {
 			logger.log(Level.WARNING, "Success message should be: \""
 					+ successMessage + "\"");

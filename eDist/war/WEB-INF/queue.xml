@@ -2,6 +2,9 @@
 	<queue>
 		<name>default</name>
 		<rate>5/s</rate>
+		<retry-parameters>
+			<min-backoff-seconds>60</min-backoff-seconds>
+		</retry-parameters>
 	</queue>
 	<queue>
 		<name>erepublik-not-logged-in</name>

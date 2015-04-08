@@ -86,7 +86,8 @@ public class Server extends GenericDAO {
 			dbConfig.setContactEmail(newConfig.getContactEmail());
 		}
 
-		if (newConfig.getConfig() != null) {
+		if (newConfig.getConfig() != null 
+				&& newConfig.getConfig().getAllowedType() != null) {
 			newConfig.getConfig().setDistributor(
 					new Distributors(pm()).find(newConfig.getConfig()
 							.getDistributor()));
