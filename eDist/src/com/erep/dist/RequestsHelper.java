@@ -30,6 +30,7 @@ import com.erep.dist.data.enums.RequestType;
 import com.erep.dist.data.enums.ResourceQuality;
 import com.erep.dist.data.enums.ResourceType;
 import com.erep.dist.erep.eRepTimeCalculator;
+import com.erep.dist.instances.frontend.tasks.FindFakesTask;
 import com.erep.dist.instances.frontend.tasks.SendResourceTask;
 import com.google.appengine.api.taskqueue.DeferredTask;
 import com.google.appengine.api.taskqueue.Queue;
@@ -194,6 +195,10 @@ public class RequestsHelper {
 			DeferredTask task = new SendResourceTask(request, resource);
 			queue.add(withPayload(task));
 		}
+		
+		Queue defaultQueue = QueueFactory.getDefaultQueue();
+		DeferredTask fakesTask = new FindFakesTask(request);
+		defaultQueue.add(withPayload(fakesTask));
 	}
 
 }

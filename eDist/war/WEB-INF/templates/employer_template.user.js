@@ -302,7 +302,7 @@ function getEmployees(doc) {
 								.find('.employee_entry')
 								.attr('href')
 								.replace(
-										/http:\/\/www\.erepublik\.com\/[a-z]*\/citizen\/profile\//,
+										/(http:|https:)?\/\/www\.erepublik\.com\/[a-z]*\/citizen\/profile\//,
 										'');
 
 						var employee = {
@@ -332,8 +332,6 @@ function buildEmployeeCacheKey(employeeId, workDay, nbrWorks) {
 }
 
 function getServer() {
-	// this works on chrome, but stopped working on fx
-	// var server = GM_info.script.downloadURL.match(/https:\/\/[^\/]*/);
 	var server = 'https://{host}';
 	GM_log('You are uploading to server ' + server);
 	return server;

@@ -116,6 +116,8 @@ public class ErepScrapper implements Closeable {
 			throw new ResourcesSendingException("Redirection failed?");
 		} else {
 			String redirect = postResponse.getHeaders("Location")[0].getValue();
+			if(!redirect.startsWith("http"))
+				redirect = "http:" + redirect;
 
 			logger.log(Level.WARNING, "Game redirected to \"" + redirect + "\"");
 
