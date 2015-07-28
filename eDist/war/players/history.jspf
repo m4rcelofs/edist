@@ -30,6 +30,11 @@
 					data-bind="css: {disabled: cursor() === null || cursor() === ''},
 						click: loadNextPage"><a
 					href="#"><fmt:message key="shared.showNext" /></a></li>
+				<li class="previous" data-bind="click: function() {Export.toCSV($('#historytable'))}" title=".csv">
+					<a href="#">
+						<span class="glyphicon glyphicon-floppy-disk"></span>
+					</a>
+				</li>
 			</ul>
 		</div>
 	</div>

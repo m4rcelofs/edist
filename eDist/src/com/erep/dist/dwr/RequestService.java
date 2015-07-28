@@ -72,7 +72,7 @@ public class RequestService {
 
 				if (tx != null)
 					tx.begin();
-				
+
 				Request request = helper.createRequest(dbPlayer, dbGroup,
 						requestedFF, type);
 
@@ -95,8 +95,10 @@ public class RequestService {
 				}
 
 			} catch (JDOObjectNotFoundException e) {
-				logger.log(Level.SEVERE, "Dist request denied", e);
+				logger.log(Level.WARNING, "Dist request denied", e);
 				return false;
+			} catch (Exception e) {
+				logger.log(Level.SEVERE, "Something wrong!", e);
 			} finally {
 				if (tx != null && tx.isActive()) {
 					tx.rollback();

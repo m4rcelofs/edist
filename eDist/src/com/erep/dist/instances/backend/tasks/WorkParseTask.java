@@ -119,15 +119,19 @@ public class WorkParseTask implements DeferredTask {
 								+ " on day " + day + " with " + nbrWorks
 								+ " works already exists, ignoring");
 				return;
+			} else {
+				work = dbWork;
 			}
 		} catch (JDOObjectNotFoundException ignore) {
 			// not run yet, go ahead
 		}
 
 		work.setEmployer(employer);
-		work.setGroups(player.getGroups());
 		work.setPlayer(player);
-
+		
+		if(work.getGroups() == null) 
+			work.setGroups(player.getGroups());	
+		
 		try {
 			work.setStats(new Stats(pm).find(player, day - 1));
 		} catch (JDOObjectNotFoundException e) {
@@ -158,7 +162,7 @@ public class WorkParseTask implements DeferredTask {
 		Queue queue = QueueFactory.getDefaultQueue();
 		TaskOptions taskOptions = withPayload(task).taskName(
 				"WorkVerificationTask_" + player.getErId() + "_"
-						+ work.getDay());
+						+ work.getDay() + "_" + work.getNbrWorks());
 		try {
 			queue.add(taskOptions);
 			tasksCreated++;

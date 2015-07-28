@@ -50,11 +50,12 @@ public class CalculateDailyFightsTask implements DeferredTask {
 			DailyStats previousDayStats = stats.find(dbPlayer, today - 1);
 			DailyStats todayStats = stats.find(dbPlayer, today);
 
-			ResourceQuality quality = ResourceQuality.Q1;
+			ResourceQuality quality = ResourceQuality.Q7;
 			for (PlayerGroup group : dbPlayer.getGroups()) {
 				ResourceQuality groupQuality = config
 						.getConfig(dbPlayer, group).getAllowedWeaponQuality();
-				if (groupQuality.firepower > quality.firepower)
+				if (groupQuality != null 
+						&& groupQuality.firepower < quality.firepower)
 					quality = groupQuality;
 			}
 
