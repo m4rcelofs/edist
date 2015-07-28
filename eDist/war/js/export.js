@@ -5,7 +5,7 @@ var Export = new function() {
 		var csv = 'sep=;\n';
 		$(table).find('tr').each(function(i, row){
 		    $(row).find('th,td>:not(div,.badge,.no-csv)').each(function(j, cell){
-		    	var text = $(cell).text().trim();
+		    	var text = $(cell).text().trim().replace(/\s{2,}/g, ', ');
 		    	if(text) {
 		    		csv += text + ';';
 		    	}
