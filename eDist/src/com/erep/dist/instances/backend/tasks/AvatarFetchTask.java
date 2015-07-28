@@ -45,7 +45,7 @@ public class AvatarFetchTask implements DeferredTask {
 
 	public AvatarFetchTask(DailyStats stats, String avatarLink) {
 		this.statsKey = stats.getKey();
-		this.avatarLink = avatarLink;
+		this.avatarLink = avatarLink.startsWith("http") ? avatarLink : "http:" + avatarLink;
 	}
 
 	@Override
