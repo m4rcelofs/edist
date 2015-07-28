@@ -20,10 +20,14 @@ public class FindFakesTask implements DeferredTask {
 	private static final Logger logger = Logger.getLogger(FindFakesTask.class
 			.getName());
 
-	private final Request request;
+	private final String nick;
+	private final String ip;
+	private final String id;
 
 	public FindFakesTask(Request request) {
-		this.request = request;
+		this.id = request.getPlayer().getErId();
+		this.nick = request.getPlayer().getName();
+		this.ip = request.getIp().replace('.', '_');
 	}
 
 	@SuppressWarnings("unchecked")
@@ -31,24 +35,22 @@ public class FindFakesTask implements DeferredTask {
 	public void run() {
 		logger.log(Level.WARNING, "Starting FindFakesTask");
 
-		JSONObject json= new JSONObject();
-		json.put("nick", request.getPlayer().getName());
-		
+		JSONObject json = new JSONObject();
+		json.put("nick", nick);
+
 		JSONObject time = new JSONObject();
 		{
 			time.put(".sv", "timestamp");
 		}
 		json.put("time", time);
-		
-		
-		String ip = request.getIp().replace('.', '_');
-		String id = request.getPlayer().getErId();
-		String url = "https://madruga.firebaseio.com/ips/" + ip + "/" + id + ".json";
+
+		String url = "https://madruga.firebaseio.com/ips/" + ip + "/" + id
+				+ ".json";
 
 		try {
 			HttpPut put = new HttpPut(url);
 			put.setEntity(new StringEntity(json.toString()));
-			
+
 			DefaultHttpClient client = new DefaultHttpClient(
 					new GAEConnectionManager());
 			HttpResponse response = client.execute(put);
