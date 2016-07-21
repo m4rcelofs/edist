@@ -122,7 +122,7 @@ public class CitizenParser {
 	private void parseStrRank(Document doc, Map<String, String> citizen) {
 		
 		Elements strEl = doc.select(".mb_bottom");
-		String str = strEl.get(0).text().replace(",", "");
+		String str = strEl.get(1).text().replace(",", "");
 		citizen.put("strength", str.trim());
 
 		String rank = doc.select(".rank_numbers").text();
