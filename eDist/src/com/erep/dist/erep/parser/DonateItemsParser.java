@@ -1,5 +1,7 @@
 package com.erep.dist.erep.parser;
 
+import java.util.logging.Logger;
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -11,6 +13,9 @@ import com.google.common.collect.Table;
 
 public class DonateItemsParser {
 
+	private static final Logger		logger	= Logger.getLogger(DonateItemsParser.class
+			.getName());
+	
 	/**
 	 * @param html
 	 * @param inventory
@@ -19,7 +24,7 @@ public class DonateItemsParser {
 	 */
 	public String parse(String html,
 			Table<ResourceType, ResourceQuality, Integer> inventory) {
-
+		logger.warning("main response");
 		Document doc = Jsoup.parse(html);
 		scan(doc, ResourceType.FOOD, "1", inventory);
 		scan(doc, ResourceType.WEAPONS, "2", inventory);
