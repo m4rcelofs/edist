@@ -132,7 +132,7 @@ public class ErepScrapper implements Closeable {
 	public void login() throws IOException, ErepLoginException {
 
 		logger.log(Level.INFO, "GET response");
-		HttpGet httpGet = new HttpGet("http://www.erepublik.com/en");
+		HttpGet httpGet = new HttpGet("https://www.erepublik.com/en");
 
 		HttpResponse getResponse = client.execute(httpGet);
 
@@ -142,12 +142,12 @@ public class ErepScrapper implements Closeable {
 		String hiddenToken = html
 				.substring(
 						html.indexOf("<input type=\"hidden\" id=\"_token\" name=\"_token\" value=\"") + 54,
-						html.indexOf("<div class=\"visible_form\">") - 6);
+						html.indexOf("<input type=\"hidden\" id=\"_token\" name=\"_token\" value=\"") + 54 + 32);
 
 		logger.log(Level.WARNING, "Hidden token: " + hiddenToken);
 
 		logger.log(Level.INFO, "Post response");
-		HttpPost httpPost = new HttpPost("http://www.erepublik.com/en/login");
+		HttpPost httpPost = new HttpPost("https://www.erepublik.com/en/login");
 
 		List<NameValuePair> nvps = new ArrayList<>(4);
 		nvps.add(new BasicNameValuePair("_token", hiddenToken));
@@ -166,21 +166,21 @@ public class ErepScrapper implements Closeable {
 		String erpkValue = setCookieHeader.substring(
 				setCookieHeader.indexOf("erpk=") + 5,
 				setCookieHeader.indexOf("; expires="));
-		String erpkMidValue = setCookieHeader.substring(
-				setCookieHeader.indexOf("erpk_mid=") + 9,
-				setCookieHeader.lastIndexOf("; expires="));
+//		String erpkMidValue = setCookieHeader.substring(
+//				setCookieHeader.indexOf("erpk_mid=") + 9,
+//				setCookieHeader.lastIndexOf("; expires="));
 
 		BasicClientCookie erpk = new BasicClientCookie("erpk", erpkValue);
-		BasicClientCookie erpk_mid = new BasicClientCookie("erpk_mid",
-				erpkMidValue);
-		BasicClientCookie erpk_rm = new BasicClientCookie("erpk_rm",
-				erpkMidValue);
+//		BasicClientCookie erpk_mid = new BasicClientCookie("erpk_mid",
+//				erpkMidValue);
+//		BasicClientCookie erpk_rm = new BasicClientCookie("erpk_rm",
+//				erpkMidValue);
 
 		BasicClientCookie erpk_auth = new BasicClientCookie("erpk_auth", "1");
 		BasicClientCookie erpk_plang = new BasicClientCookie("erpk_plang", "en");
 
 		for (BasicClientCookie c : new BasicClientCookie[] { erpk, erpk_auth,
-				erpk_plang, erpk_mid, erpk_rm }) {
+				erpk_plang }) {
 			c.setPath("/");
 			c.setDomain(".erepublik.com");
 		}
@@ -188,7 +188,7 @@ public class ErepScrapper implements Closeable {
 		client.getCookieStore().addCookie(erpk);
 		client.getCookieStore().addCookie(erpk_auth);
 		client.getCookieStore().addCookie(erpk_plang);
-		client.getCookieStore().addCookie(erpk_mid);
+//		client.getCookieStore().addCookie(erpk_mid);
 		// client.getCookieStore().addCookie(erpk_rm);
 
 		read(postResponse);
@@ -234,6 +234,8 @@ public class ErepScrapper implements Closeable {
 
 		DefaultHttpClient client = new DefaultHttpClient(
 				new GAEConnectionManager());
+		
+//		DefaultHttpClient client = new DefaultHttpClient();
 
 		HttpParams params = client.getParams();
 
@@ -246,6 +248,16 @@ public class ErepScrapper implements Closeable {
 		HttpConnectionParams.setSoTimeout(params, 60000);
 
 		return client;
+	}
+	
+	public static void main(String[] args) {
+//		ErepScrapper s = new ErepScrapper("tribalrazr@hotmail.com", "mpk04611");
+//		try {
+//			s.login();
+//		} catch (Exception e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 	}
 
 }
