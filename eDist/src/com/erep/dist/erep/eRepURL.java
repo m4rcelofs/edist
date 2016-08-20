@@ -11,8 +11,8 @@ public enum eRepURL
 	COUNTRY_LAWS("http://www.erepublik.com/en/country-administration/{id}/1"), 
 	LAW("http://www.erepublik.com/en/main/law/Brazil/{id}"), 
 	COUNTRY_ECONOMY("http://www.erepublik.com/en/country/economy/{id}"),
-	DONATE_ITEMS("http://www.erepublik.com/en/economy/donate-items/{id}"),
-	DONATE_ITEMS_ACTION("http://www.erepublik.com/en/economy/donate-items-action"),
+	DONATE_ITEMS("https://www.erepublik.com/en/economy/donate-items/{id}"),
+	DONATE_ITEMS_ACTION("https://www.erepublik.com/en/economy/donate-items-action"),
 	DONATE_MONEY("http://www.erepublik.com/en/economy/donate-money/{id}"),
 	MU_REGIMENTS("http://www.erepublik.com/en/main/group-list/members/{id}")
 	;
